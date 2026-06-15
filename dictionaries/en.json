@@ -6,6 +6,8 @@
     "pages": {
       "pricing": "Pricing",
       "features": "Features",
+      "platform": "Platform",
+      "partners": "Partners",
       "company": "Company",
       "resources": "Resources",
       "signup": "Start free trial",
@@ -16,8 +18,10 @@
     "product": "Product",
     "features": "Features",
     "pricing": "Pricing",
+    "platform": "Platform",
     "company": "Company",
     "resources": "Resources",
+    "partners": "Partners",
     "signin": "Sign in",
     "startTrial": "Start free trial"
   },
@@ -129,6 +133,49 @@
       "security": "Security"
     }
   },
+  "platformPage": {
+    "eyebrow": "The platform",
+    "title": "Built to run anywhere, at scale, with confidence",
+    "lead": "SkyRH adapts to how your company operates — where your data lives, how fast you grow, and the controls you answer to.",
+    "pillars": [
+      { "title": "Flexible deployment", "desc": "Managed cloud, your own infrastructure, or fully standalone — keep your data where the law and your rules require." },
+      { "title": "Performance at scale", "desc": "A parallelized payroll engine computes thousands of payslips in minutes, not hours." },
+      { "title": "Security & traceability", "desc": "Fine-grained access, a complete audit trail and observability over every action." }
+    ],
+    "modesTitle": "Deploy your way",
+    "modesLead": "The same product, delivered the way your organization needs it.",
+    "modes": [
+      { "title": "Cloud", "desc": "We host and operate it. Up and running in minutes, updates included." },
+      { "title": "On-premise", "desc": "Runs on your own servers or private cloud, behind your firewall." },
+      { "title": "Standalone", "desc": "A self-contained package for fully offline or air-gapped environments." }
+    ],
+    "ctaTitle": "Let's find your fit",
+    "ctaBody": "Tell us how your teams work and where your data needs to live.",
+    "ctaPrimary": "Talk to us",
+    "partnersCta": "Partner with us"
+  },
+  "partnersPage": {
+    "eyebrow": "Partners & resellers",
+    "title": "Grow your business with SkyRH",
+    "lead": "Resell, implement or refer modern HR & payroll — and manage all your clients from one operator console.",
+    "typesTitle": "Ways to partner",
+    "types": [
+      { "title": "Reseller", "desc": "Sell SkyRH under your own brand, set your margin and own the relationship." },
+      { "title": "Implementation partner", "desc": "Deploy, localize and configure SkyRH for your clients' countries and rules." },
+      { "title": "Referral", "desc": "Send us business and earn a commission on every account you bring." }
+    ],
+    "consoleTitle": "One console to run all your clients",
+    "consoleBody": "Harmony, the operator console, gives partners a single place to manage every tenant they serve.",
+    "consolePoints": [
+      "Create and manage client workspaces",
+      "Assign plans and modules, track billing & MRR",
+      "Fine-grained roles across companies",
+      "Multi-company overview at a glance"
+    ],
+    "ctaTitle": "Become a partner",
+    "ctaBody": "Join our reseller and implementation network — we'll get you set up.",
+    "ctaPrimary": "Get in touch"
+  },
   "features": {
     "heading": "Everything your HR team needs",
     "sub": "From hire to retire — modular, and connected end to end.",
@@ -170,11 +217,13 @@
     "company": "Company",
     "resources": "Resources",
     "modules": "Modules",
+    "platform": "Platform",
     "pricing": "Pricing",
     "signup": "Sign up",
     "about": "About",
     "careers": "Careers",
     "contact": "Contact",
+    "partners": "Partners",
     "guides": "Guides",
     "security": "Security",
     "status": "Status",

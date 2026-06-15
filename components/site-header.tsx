@@ -9,6 +9,7 @@ type NavDict = {
   product: string;
   features: string;
   pricing: string;
+  platform: string;
   company: string;
   resources: string;
   signin: string;
@@ -19,6 +20,7 @@ export function SiteHeader({ lang, dict }: { lang: Locale; dict: NavDict }) {
   const nav = [
     { label: dict.features, href: `/${lang}/features` },
     { label: dict.pricing, href: `/${lang}/pricing` },
+    { label: dict.platform, href: `/${lang}/platform` },
     { label: dict.company, href: `/${lang}/company` },
     { label: dict.resources, href: `/${lang}/resources` },
   ];

@@ -8,11 +8,13 @@ type FooterDict = {
   company: string;
   resources: string;
   modules: string;
+  platform: string;
   pricing: string;
   signup: string;
   about: string;
   careers: string;
   contact: string;
+  partners: string;
   guides: string;
   security: string;
   status: string;
@@ -67,6 +69,7 @@ export function SiteFooter({
             title={dict.product}
             links={[
               [dict.modules, `/${lang}/features`],
+              [dict.platform, `/${lang}/platform`],
               [dict.pricing, `/${lang}/pricing`],
               [dict.signup, `/${lang}/signup`],
             ]}
@@ -76,6 +79,7 @@ export function SiteFooter({
             links={[
               [dict.about, `/${lang}/company`],
               [dict.careers, `/${lang}/company#careers`],
+              [dict.partners, `/${lang}/partners`],
               [dict.contact, `/${lang}/company#contact`],
             ]}
           />

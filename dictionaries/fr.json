@@ -6,6 +6,8 @@
     "pages": {
       "pricing": "Tarifs",
       "features": "Fonctionnalités",
+      "platform": "Plateforme",
+      "partners": "Partenaires",
       "company": "Entreprise",
       "resources": "Ressources",
       "signup": "Essai gratuit",
@@ -16,8 +18,10 @@
     "product": "Produit",
     "features": "Fonctionnalités",
     "pricing": "Tarifs",
+    "platform": "Plateforme",
     "company": "Entreprise",
     "resources": "Ressources",
+    "partners": "Partenaires",
     "signin": "Se connecter",
     "startTrial": "Essai gratuit"
   },
@@ -129,6 +133,49 @@
       "security": "Sécurité"
     }
   },
+  "platformPage": {
+    "eyebrow": "La plateforme",
+    "title": "Conçue pour tourner partout, à grande échelle, en confiance",
+    "lead": "SkyRH s'adapte à votre façon d'opérer — où vivent vos données, à quelle vitesse vous grandissez, et les contrôles auxquels vous répondez.",
+    "pillars": [
+      { "title": "Déploiement flexible", "desc": "Cloud géré, votre propre infrastructure, ou 100 % autonome — gardez vos données là où la loi et vos règles l'exigent." },
+      { "title": "Performance à l'échelle", "desc": "Un moteur de paie parallélisé calcule des milliers de bulletins en quelques minutes, pas en heures." },
+      { "title": "Sécurité & traçabilité", "desc": "Droits fins, journal d'audit complet et observabilité de chaque action." }
+    ],
+    "modesTitle": "Déployez à votre manière",
+    "modesLead": "Le même produit, livré comme votre organisation en a besoin.",
+    "modes": [
+      { "title": "Cloud", "desc": "Nous l'hébergeons et l'exploitons. Opérationnel en quelques minutes, mises à jour incluses." },
+      { "title": "Sur site", "desc": "Sur vos propres serveurs ou cloud privé, derrière votre pare-feu." },
+      { "title": "Autonome", "desc": "Un paquet autonome pour les environnements hors-ligne ou isolés." }
+    ],
+    "ctaTitle": "Trouvons votre configuration",
+    "ctaBody": "Dites-nous comment vos équipes travaillent et où vos données doivent résider.",
+    "ctaPrimary": "Parler à un expert",
+    "partnersCta": "Devenir partenaire"
+  },
+  "partnersPage": {
+    "eyebrow": "Partenaires & revendeurs",
+    "title": "Développez votre activité avec SkyRH",
+    "lead": "Revendez, intégrez ou recommandez une RH & paie moderne — et pilotez tous vos clients depuis une seule console opérateur.",
+    "typesTitle": "Façons de devenir partenaire",
+    "types": [
+      { "title": "Revendeur", "desc": "Vendez SkyRH sous votre marque, fixez votre marge et gardez la relation client." },
+      { "title": "Intégrateur", "desc": "Déployez, localisez et configurez SkyRH pour les pays et règles de vos clients." },
+      { "title": "Apporteur d'affaires", "desc": "Recommandez-nous et touchez une commission sur chaque compte apporté." }
+    ],
+    "consoleTitle": "Une console pour piloter tous vos clients",
+    "consoleBody": "Harmony, la console opérateur, offre aux partenaires un seul endroit pour gérer chaque client servi.",
+    "consolePoints": [
+      "Créer et gérer les espaces clients",
+      "Affecter plans et modules, suivre facturation & MRR",
+      "Droits fins multi-sociétés",
+      "Vue d'ensemble multi-société en un coup d'œil"
+    ],
+    "ctaTitle": "Devenir partenaire",
+    "ctaBody": "Rejoignez notre réseau de revendeurs et d'intégrateurs — on vous accompagne.",
+    "ctaPrimary": "Nous contacter"
+  },
   "features": {
     "heading": "Tout ce dont votre équipe RH a besoin",
     "sub": "De l'embauche à la retraite — modulaire, et connecté de bout en bout.",
@@ -170,11 +217,13 @@
     "company": "Entreprise",
     "resources": "Ressources",
     "modules": "Modules",
+    "platform": "Plateforme",
     "pricing": "Tarifs",
     "signup": "Inscription",
     "about": "À propos",
     "careers": "Carrières",
     "contact": "Contact",
+    "partners": "Partenaires",
     "guides": "Guides",
     "security": "Sécurité",
     "status": "Statut",
