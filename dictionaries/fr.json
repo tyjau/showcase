@@ -65,6 +65,26 @@
     "required": "Requis",
     "recommended": "Recommandé"
   },
+  "pricingPage": {
+    "heading": "Tarifs simples, par employé",
+    "sub": "Chaque plan inclut 14 jours d'essai. Facturé par employé actif, au prorata.",
+    "employees": "Employés",
+    "monthly": "Mensuel",
+    "annual": "Annuel",
+    "annualSave": "−20%",
+    "tabPackages": "Packages",
+    "tabCustom": "À la carte",
+    "perEmployee": "par employé / mois",
+    "estTotal": "Total estimé",
+    "monthlyTotal": "/ mois",
+    "annualTotal": "/ an",
+    "startTrial": "Démarrer l'essai",
+    "contact": "Nous contacter",
+    "autoIncluded": "auto-inclus",
+    "selectModules": "Choisissez les modules voulus — les dépendances requises sont ajoutées automatiquement.",
+    "popular": "Le plus populaire",
+    "free": "Gratuit"
+  },
   "features": {
     "heading": "Tout ce dont votre équipe RH a besoin",
     "sub": "De l'embauche à la retraite — modulaire, et connecté de bout en bout.",

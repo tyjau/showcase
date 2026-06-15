@@ -65,6 +65,26 @@
     "required": "Required",
     "recommended": "Recommended"
   },
+  "pricingPage": {
+    "heading": "Simple pricing, per employee",
+    "sub": "Every plan includes a 14-day trial. Billed per active employee, prorated.",
+    "employees": "Employees",
+    "monthly": "Monthly",
+    "annual": "Annual",
+    "annualSave": "Save 20%",
+    "tabPackages": "Packages",
+    "tabCustom": "Build your own",
+    "perEmployee": "per employee / month",
+    "estTotal": "Estimated total",
+    "monthlyTotal": "/ month",
+    "annualTotal": "/ year",
+    "startTrial": "Start free trial",
+    "contact": "Contact us",
+    "autoIncluded": "auto-included",
+    "selectModules": "Pick the modules you need — required dependencies are added automatically.",
+    "popular": "Most popular",
+    "free": "Free"
+  },
   "features": {
     "heading": "Everything your HR team needs",
     "sub": "From hire to retire — modular, and connected end to end.",
