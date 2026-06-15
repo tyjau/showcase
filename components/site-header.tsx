@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { BrandLogo } from "./brand-logo";
 import { LocaleSwitcher } from "./locale-switcher";
+import { CurrencySwitcher } from "./currency-switcher";
 import { MobileNav } from "./mobile-nav";
 import type { Locale } from "@/lib/i18n";
 
@@ -36,6 +37,7 @@ export function SiteHeader({ lang, dict }: { lang: Locale; dict: NavDict }) {
           ))}
         </nav>
         <div className="flex items-center gap-3 text-sm">
+          <CurrencySwitcher className="hidden sm:inline-flex" />
           <LocaleSwitcher current={lang} />
           <Link
             href={`/${lang}/login`}

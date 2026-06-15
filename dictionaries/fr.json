@@ -83,7 +83,9 @@
     "autoIncluded": "auto-inclus",
     "selectModules": "Choisissez les modules voulus — les dépendances requises sont ajoutées automatiquement.",
     "popular": "Le plus populaire",
-    "free": "Gratuit"
+    "free": "Gratuit",
+    "showAll": "Tout voir",
+    "showLess": "Réduire"
   },
   "companyPage": {
     "eyebrow": "L'entreprise",

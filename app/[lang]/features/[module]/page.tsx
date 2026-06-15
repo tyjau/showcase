@@ -4,13 +4,9 @@ import type { Metadata } from "next";
 import { ArrowLeft, Check } from "lucide-react";
 import { i18n, type Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
-import {
-  fetchCatalog,
-  moduleText,
-  priceFor,
-  type CatalogModule,
-} from "@/lib/catalog";
+import { fetchCatalog, moduleText, type CatalogModule } from "@/lib/catalog";
 import { ModuleIcon } from "@/components/module-icon";
+import { Price } from "@/components/price";
 
 export const dynamicParams = false;
 
@@ -45,7 +41,7 @@ export default async function ModulePage({
   const t = await getDictionary(params.lang);
   const lang = params.lang;
   const txt = moduleText(m, lang);
-  const usd = priceFor(m.prices, "USD");
+  const hasPrice = m.prices.some((p) => p.cycle === "monthly");
   const inPackages = catalog.packages.filter((p) => p.modules.includes(m.code));
   const requires = m.requires
     .map((r) => ({
@@ -78,10 +74,10 @@ export default async function ModulePage({
                 >
                   {t.nav.startTrial}
                 </Link>
-                {usd != null && (
+                {hasPrice && (
                   <span className="text-sm text-muted">
                     {t.modulePage.orFrom}{" "}
-                    <span className="font-semibold text-ink">${usd}</span>{" "}
+                    <Price prices={m.prices} className="font-semibold text-ink" />{" "}
                     {t.modulePage.perEmployee}
                   </span>
                 )}

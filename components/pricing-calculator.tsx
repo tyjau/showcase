@@ -2,11 +2,10 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { Check } from "lucide-react";
+import { Check, ChevronDown } from "lucide-react";
 import { type Catalog, type Money, moduleText } from "@/lib/catalog";
 import { ModuleIcon } from "./module-icon";
-
-const CURRENCIES = ["USD", "EUR", "XAF"] as const;
+import { useCurrency } from "./currency-provider";
 
 function unitPrice(prices: Money[], currency: string): number {
   const p = prices.find((x) => x.currency === currency && x.cycle === "monthly");
@@ -36,10 +35,11 @@ export function PricingCalculator({
   lang: string;
   dict: Dict;
 }) {
-  const [currency, setCurrency] = useState<string>("USD");
+  const { currency } = useCurrency();
   const [annual, setAnnual] = useState(false);
   const [employees, setEmployees] = useState(25);
   const [mode, setMode] = useState<"packages" | "custom">("packages");
+  const [expanded, setExpanded] = useState<string | null>(null);
   const [selected, setSelected] = useState<Set<string>>(
     () => new Set(["WAGE-GEN00"]),
   );
@@ -86,24 +86,9 @@ export function PricingCalculator({
     });
   }
 
-  const segBtn = (active: boolean) =>
-    `px-3 py-1.5 transition ${active ? "bg-navy font-semibold text-white" : "text-muted hover:text-navy"}`;
-
   return (
     <div>
       <div className="flex flex-wrap items-center justify-center gap-3">
-        <div className="inline-flex overflow-hidden rounded-md border border-line text-sm">
-          {CURRENCIES.map((c) => (
-            <button
-              key={c}
-              type="button"
-              onClick={() => setCurrency(c)}
-              className={segBtn(currency === c)}
-            >
-              {c}
-            </button>
-          ))}
-        </div>
         <div className="inline-flex overflow-hidden rounded-md border border-line text-sm">
           <button
             type="button"
@@ -195,7 +180,10 @@ export function PricingCalculator({
                   </div>
                 )}
                 <div className="mt-3 flex-1 space-y-1.5 text-xs text-muted">
-                  {p.modules.slice(0, 5).map((code) => {
+                  {(expanded === p.code
+                    ? p.modules
+                    : p.modules.slice(0, 5)
+                  ).map((code) => {
                     const m = catalog.modules.find((x) => x.code === code);
                     return (
                       <div key={code} className="flex items-center gap-1.5">
@@ -205,7 +193,21 @@ export function PricingCalculator({
                     );
                   })}
                   {p.modules.length > 5 && (
-                    <div>+{p.modules.length - 5}…</div>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setExpanded(expanded === p.code ? null : p.code)
+                      }
+                      className="inline-flex items-center gap-1 pt-0.5 font-semibold text-sky"
+                    >
+                      {expanded === p.code
+                        ? dict.showLess
+                        : `${dict.showAll} (${p.modules.length})`}
+                      <ChevronDown
+                        size={13}
+                        className={`transition ${expanded === p.code ? "rotate-180" : ""}`}
+                      />
+                    </button>
                   )}
                 </div>
                 <Link
