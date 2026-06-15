@@ -56,6 +56,15 @@
       "health": "Health & safety"
     }
   },
+  "modulePage": {
+    "back": "All features",
+    "availableIn": "Available in",
+    "orFrom": "or from",
+    "perEmployee": "/ employee / month",
+    "worksWith": "Works with",
+    "required": "Required",
+    "recommended": "Recommended"
+  },
   "features": {
     "heading": "Everything your HR team needs",
     "sub": "From hire to retire — modular, and connected end to end.",

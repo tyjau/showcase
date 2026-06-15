@@ -56,6 +56,15 @@
       "health": "Santé & sécurité"
     }
   },
+  "modulePage": {
+    "back": "Toutes les fonctionnalités",
+    "availableIn": "Inclus dans",
+    "orFrom": "ou à partir de",
+    "perEmployee": "/ employé / mois",
+    "worksWith": "Fonctionne avec",
+    "required": "Requis",
+    "recommended": "Recommandé"
+  },
   "features": {
     "heading": "Tout ce dont votre équipe RH a besoin",
     "sub": "De l'embauche à la retraite — modulaire, et connecté de bout en bout.",
