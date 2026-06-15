@@ -40,6 +40,8 @@ export function PricingCalculator({
   const [employees, setEmployees] = useState(25);
   const [mode, setMode] = useState<"packages" | "custom">("packages");
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [optionsOpen, setOptionsOpen] = useState<string | null>(null);
+  const [packAddons, setPackAddons] = useState<Record<string, Set<string>>>({});
   const [selected, setSelected] = useState<Set<string>>(
     () => new Set(["WAGE-GEN00"]),
   );
@@ -83,6 +85,15 @@ export function PricingCalculator({
       if (next.has(code)) next.delete(code);
       else next.add(code);
       return next;
+    });
+  }
+
+  function togglePackAddon(packCode: string, code: string) {
+    setPackAddons((prev) => {
+      const cur = new Set(prev[packCode] ?? []);
+      if (cur.has(code)) cur.delete(code);
+      else cur.add(code);
+      return { ...prev, [packCode]: cur };
     });
   }
 
@@ -146,8 +157,16 @@ export function PricingCalculator({
         <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {catalog.packages.map((p) => {
             const base = unitPrice(p.prices, currency);
-            const rate = base * factor;
-            const isFree = base === 0;
+            const sel = packAddons[p.code] ?? new Set<string>();
+            const addonMods = catalog.modules.filter(
+              (m) => m.isAddon && !p.modules.includes(m.code),
+            );
+            const addonSum = addonMods.reduce(
+              (s, m) => (sel.has(m.code) ? s + unitPrice(m.prices, currency) : s),
+              0,
+            );
+            const rate = (base + addonSum) * factor;
+            const isFree = base === 0 && addonSum === 0;
             const popular = p.code === "BUSINESS";
             return (
               <div
@@ -210,8 +229,56 @@ export function PricingCalculator({
                     </button>
                   )}
                 </div>
+                {addonMods.length > 0 && (
+                  <div className="mt-3 border-t border-line pt-3">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setOptionsOpen(optionsOpen === p.code ? null : p.code)
+                      }
+                      className="flex w-full items-center justify-between text-xs font-semibold text-navy"
+                    >
+                      <span>
+                        {dict.addOptions}
+                        {sel.size > 0 ? ` (${sel.size})` : ""}
+                      </span>
+                      <ChevronDown
+                        size={14}
+                        className={`transition ${optionsOpen === p.code ? "rotate-180" : ""}`}
+                      />
+                    </button>
+                    {optionsOpen === p.code && (
+                      <div className="mt-2 space-y-1">
+                        {addonMods.map((m) => {
+                          const on = sel.has(m.code);
+                          const arate = unitPrice(m.prices, currency) * factor;
+                          return (
+                            <button
+                              key={m.code}
+                              type="button"
+                              onClick={() => togglePackAddon(p.code, m.code)}
+                              className="flex w-full items-center gap-2 text-left text-xs"
+                            >
+                              <span
+                                className={`flex h-4 w-4 shrink-0 items-center justify-center rounded ${on ? "bg-sky text-white" : "border border-line"}`}
+                              >
+                                {on && <Check size={11} />}
+                              </span>
+                              <span className="flex-1 truncate text-ink">
+                                {moduleText(m, lang).headline}
+                              </span>
+                              <span className="shrink-0 text-muted">
+                                +{fmtRate(arate, currency)}
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                )}
                 <Link
-                  href={`/${lang}/signup`}
+                  href={`/${lang}/signup?plan=${p.code}${sel.size ? `&addons=${Array.from(sel).join(",")}` : ""}`}
                   className={`mt-4 block rounded-full px-4 py-2 text-center text-sm font-semibold ${popular ? "bg-sky text-white" : "border border-line text-navy"}`}
                 >
                   {p.code === "ENTERPRISE" ? dict.contact : dict.startTrial}

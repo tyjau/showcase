@@ -1,6 +1,14 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { ShieldCheck, HeartHandshake, Sparkles, Lock } from "lucide-react";
+import {
+  ShieldCheck,
+  HeartHandshake,
+  Sparkles,
+  Lock,
+  Layers,
+  Handshake,
+  ArrowRight,
+} from "lucide-react";
 import { i18n, type Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
 
@@ -71,6 +79,51 @@ export default async function CompanyPage({
               );
             })}
           </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-5 py-14">
+        <div className="max-w-xl">
+          <h2 className="text-2xl font-bold text-navy">{c.ecosystemTitle}</h2>
+          <p className="mt-2 text-muted">{c.ecosystemLead}</p>
+        </div>
+        <div className="mt-8 grid gap-5 sm:grid-cols-2">
+          <Link
+            href={`/${lang}/platform`}
+            className="group rounded-xl border border-line p-6 transition hover:-translate-y-1 hover:shadow-sm"
+          >
+            <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-[#e7f4fb] text-sky">
+              <Layers size={22} />
+            </div>
+            <h3 className="mt-4 flex items-center gap-1.5 font-semibold text-ink">
+              {c.ecoPlatform}
+              <ArrowRight
+                size={15}
+                className="text-sky transition group-hover:translate-x-0.5"
+              />
+            </h3>
+            <p className="mt-1.5 text-sm leading-relaxed text-muted">
+              {c.ecoPlatformDesc}
+            </p>
+          </Link>
+          <Link
+            href={`/${lang}/partners`}
+            className="group rounded-xl border border-line p-6 transition hover:-translate-y-1 hover:shadow-sm"
+          >
+            <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-[#e7f4fb] text-sky">
+              <Handshake size={22} />
+            </div>
+            <h3 className="mt-4 flex items-center gap-1.5 font-semibold text-ink">
+              {c.ecoPartners}
+              <ArrowRight
+                size={15}
+                className="text-sky transition group-hover:translate-x-0.5"
+              />
+            </h3>
+            <p className="mt-1.5 text-sm leading-relaxed text-muted">
+              {c.ecoPartnersDesc}
+            </p>
+          </Link>
         </div>
       </section>
 

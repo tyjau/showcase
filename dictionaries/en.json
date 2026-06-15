@@ -89,7 +89,8 @@
     "popular": "Most popular",
     "free": "Free",
     "showAll": "See all",
-    "showLess": "Show less"
+    "showLess": "Show less",
+    "addOptions": "Add options"
   },
   "companyPage": {
     "eyebrow": "Our company",
@@ -109,7 +110,13 @@
     "careersCta": "Join the team",
     "contactTitle": "Let's talk",
     "contactBody": "Customer, partner or future teammate — we'd love to hear from you.",
-    "contactCta": "Book a demo"
+    "contactCta": "Book a demo",
+    "ecosystemTitle": "More than an app",
+    "ecosystemLead": "SkyRH is a platform and an ecosystem — deploy it your way, and grow with partners.",
+    "ecoPlatform": "The platform",
+    "ecoPlatformDesc": "Cloud, your own infrastructure or standalone — at scale, with a full audit trail.",
+    "ecoPartners": "Partners & resellers",
+    "ecoPartnersDesc": "Resell, implement or refer — and manage your clients from one console."
   },
   "resourcesPage": {
     "eyebrow": "Resources",
