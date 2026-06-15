@@ -1,0 +1,208 @@
+name: Deploy (showcase)
+
+# Chaîne CD du site vitrine : build Next.js (static export → out/) → déploiement de l'export
+# vers la racine web (en EXCLUANT un éventuel back 'guardian'/'api' voisin) : rsync-over-SSH
+# PRIMAIRE, FTPS en FALLBACK si rsync échoue ou si les secrets SSH ne sont pas posés → smoke.
+#
+# Calqué EXACTEMENT sur skyrh-front/harmony (.github/workflows/deploy.yml) : même mécanisme de
+# déploiement, mêmes noms de secrets/vars (préfixe FRONT_), même bloc de concurrence. Seuls
+# diffèrent le BUILD (Next export → out/, pas d'injection d'env Angular) et le TAG.
+#
+# Convention de tag (showcase = instance UNIQUE partagée — PAS de <client>, "showcase" est le
+# nom produit dans le tag) :
+#   release-prod-showcase-X.Y.Z    → environnement "production"
+#   release-staging-showcase-X.Y.Z → environnement "staging"
+# L'ENVIRONNEMENT est dérivé du tag ; les secrets/vars sont résolus par le GitHub Environment
+# du même nom → un seul workflow, piloté par le tag.
+#
+# ⚠️ Prérequis — créer les Environments "production" et "staging" et y poser, par environnement :
+#  Variables (non secrètes) :
+#    FRONT_REMOTE_DIR     (requis)  dossier web cible du miroir FTPS, ex. /showcase/  (chroot FTP)
+#    FRONT_SSH_REMOTE_DIR (requis pour rsync) chemin SSH RÉEL du dossier, ex. public_html/showcase/
+#    FRONT_FTP_DELETE     (optionnel) 'true' pour activer --delete (miroir strict). Défaut: additif (sûr).
+#    FRONT_SMOKE_URL      (optionnel) URL publique du site pour le smoke post-deploy
+#  Secrets :
+#    FRONT_SSH_KEY / FRONT_SSH_HOST / FRONT_SSH_PORT / FRONT_SSH_USER (cible rsync-SSH — primaire)
+#    FRONT_FTP_HOST / FRONT_FTP_USER / FRONT_FTP_PASS                 (cible FTPS — fallback)
+
+on:
+  push:
+    tags:
+      - "release-prod-showcase-*"
+      - "release-staging-showcase-*"
+
+concurrency:
+  group: deploy-showcase-${{ github.ref_name }}
+  cancel-in-progress: false
+
+env:
+  NODE_VERSION: "20"
+
+jobs:
+  # Dérive {environnement, version} du tag (même logique que skyrh/harmony).
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      env_name: ${{ steps.parse.outputs.env_name }}
+      version: ${{ steps.parse.outputs.version }}
+    steps:
+      - name: 🏷️ Dériver env + version depuis le tag
+        id: parse
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          if [[ "$TAG" =~ ^release-(prod|staging)-showcase-([0-9]+\.[0-9]+\.[0-9]+)$ ]]; then
+            RAW="${BASH_REMATCH[1]}"; VER="${BASH_REMATCH[2]}"
+            ENV_NAME=$([ "$RAW" = "prod" ] && echo production || echo staging)
+            echo "env_name=$ENV_NAME" >> "$GITHUB_OUTPUT"
+            echo "version=$VER" >> "$GITHUB_OUTPUT"
+            echo "🌍 $ENV_NAME / showcase / $VER"
+          else
+            echo "❌ Tag invalide: $TAG (attendu: release-{prod|staging}-showcase-X.Y.Z)"; exit 1
+          fi
+
+  # Build du static export Next.js. `output: "export"` n'est actif qu'en NODE_ENV=production
+  # (cf. next.config.mjs) → on force NODE_ENV=production pour générer out/.
+  build:
+    needs: setup
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: ${{ needs.setup.outputs.env_name }}
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v6
+
+      - name: ⚙️ Setup Node ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: 📦 Install
+        run: npm ci || npm install
+
+      - name: 🏗️ Build (Next static export → out/)
+        run: |
+          NODE_ENV=production npm run build
+          test -f out/index.html || { echo "❌ build incomplet (pas d'out/index.html)"; exit 1; }
+          echo "✓ build OK : $(find out -type f | wc -l) fichiers, $(du -sh out | cut -f1)"
+
+      - name: ⬆️ Upload artifact (out/)
+        uses: actions/upload-artifact@v4
+        with:
+          name: showcase-out
+          path: out/
+          retention-days: 1
+          if-no-files-found: error
+
+  deploy:
+    needs: [setup, build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # Secrets/vars résolus dans cet Environment (mêmes noms en staging et production).
+    environment: ${{ needs.setup.outputs.env_name }}
+    steps:
+      - name: ⬇️ Download artifact (out/)
+        uses: actions/download-artifact@v4
+        with:
+          name: showcase-out
+          path: out
+
+      # ── Déploiement PRIMAIRE : rsync-over-SSH (transfert DELTA incrémental), calqué sur le
+      #    back. Bien plus rapide + fiable que le FTPS cPanel. FALLBACK FTPS à l'étape suivante
+      #    (si rsync échoue OU si les secrets SSH ne sont pas encore posés). Secrets requis sur
+      #    l'Environment : FRONT_SSH_KEY / FRONT_SSH_HOST / FRONT_SSH_PORT / FRONT_SSH_USER
+      #    + variable FRONT_SSH_REMOTE_DIR (chemin SSH RÉEL du dossier — PAS le FRONT_REMOTE_DIR
+      #    relatif au chroot FTP). ──
+      - name: 🚀 Déploiement rsync-over-SSH (primaire)
+        id: rsync
+        continue-on-error: true
+        env:
+          SSH_KEY: ${{ secrets.FRONT_SSH_KEY }}
+          SSH_HOST: ${{ secrets.FRONT_SSH_HOST }}
+          SSH_PORT: ${{ secrets.FRONT_SSH_PORT }}
+          SSH_USER: ${{ secrets.FRONT_SSH_USER }}
+          SSH_REMOTE_DIR: ${{ vars.FRONT_SSH_REMOTE_DIR }}
+          FTP_DELETE: ${{ vars.FRONT_FTP_DELETE }}
+        run: |
+          if [ -z "$SSH_KEY" ] || [ -z "$SSH_HOST" ] || [ -z "$SSH_USER" ] || [ -z "$SSH_REMOTE_DIR" ]; then
+            echo "ℹ️ Secrets SSH absents (FRONT_SSH_KEY/HOST/USER + var FRONT_SSH_REMOTE_DIR) — saut du rsync → fallback FTPS"; exit 1
+          fi
+          DELETE_FLAG=""
+          if [ "$FTP_DELETE" = "true" ]; then DELETE_FLAG="--delete"; echo "⚠️ miroir STRICT (--delete) actif"; else echo "ℹ️ miroir additif (sans --delete)"; fi
+          # tr -d '\r' : une clé posée depuis Windows peut contenir des CRLF que le ssh Linux du
+          # runner rejette (« connection closed / code 255 ») alors que Windows les tolère.
+          printf '%s\n' "$SSH_KEY" | tr -d '\r' > /tmp/deploy_key && chmod 600 /tmp/deploy_key
+          ssh-keygen -l -f /tmp/deploy_key 2>&1 | sed 's/^/clé chargée: /' || echo "⚠️ clé /tmp/deploy_key illisible"
+          SSH="ssh -i /tmp/deploy_key -p ${SSH_PORT:-22} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=20"
+          # PRÉ-VOL CONNECTIVITÉ — le runner doit joindre l'hôte. Échec ICI = host/port/clé/user
+          # (FRONT_SSH_*) erronés ou injoignables. Sur échec on dump le -v (l'IP résolue n'est pas
+          # masquée, contrairement au host secret) pour voir DNS / refus / timeout.
+          if ! $SSH "${SSH_USER}@${SSH_HOST}" 'echo connected' >/dev/null 2>&1; then
+            echo "❌ Connexion SSH KO (FRONT_SSH_HOST/PORT/USER/KEY erronés ou injoignables). Détail :"
+            $SSH -v "${SSH_USER}@${SSH_HOST}" 'echo connected' 2>&1 | tail -25 || true
+            rm -f /tmp/deploy_key
+            echo "Abort → fallback FTPS"; exit 1
+          fi
+          echo "✓ pré-vol OK : SSH joignable"
+          find out -type l -print -delete   # cPanel rejette les symlinks
+          # Exclusions : protègent un éventuel back 'guardian'/'api' + dossiers hôte d'un --delete
+          # (rsync ne supprime jamais un chemin exclu côté serveur). No-op si ces dossiers n'existent pas.
+          rsync -az ${DELETE_FLAG} \
+            --exclude='/guardian' --exclude='/api' --exclude='/.well-known' --exclude='/cgi-bin' --exclude='.git' \
+            -e "$SSH" \
+            out/ "${SSH_USER}@${SSH_HOST}:${SSH_REMOTE_DIR}" \
+            || { rm -f /tmp/deploy_key; echo "❌ rsync échoué → fallback FTPS"; exit 1; }
+          rm -f /tmp/deploy_key
+          echo "✅ rsync-over-SSH terminé → ${SSH_REMOTE_DIR}"
+
+      # ── FALLBACK FTPS — UNIQUEMENT si le rsync ci-dessus a échoué (ou secrets SSH absents).
+      #    Exclut 'guardian' et 'api' (si un back voisin partage le docroot) sinon --delete
+      #    l'écraserait. --delete est OPT-IN (FRONT_FTP_DELETE='true') : par défaut additif. ──
+      - name: 🚀 Fallback FTPS (si rsync échoue)
+        if: steps.rsync.outcome == 'failure'
+        env:
+          FTP_HOST: ${{ secrets.FRONT_FTP_HOST }}
+          FTP_USER: ${{ secrets.FRONT_FTP_USER }}
+          FTP_PASS: ${{ secrets.FRONT_FTP_PASS }}
+          REMOTE_DIR: ${{ vars.FRONT_REMOTE_DIR }}
+          FTP_DELETE: ${{ vars.FRONT_FTP_DELETE }}
+        run: |
+          if [ -z "$FTP_HOST" ] || [ -z "$FTP_USER" ] || [ -z "$FTP_PASS" ] || [ -z "$REMOTE_DIR" ]; then
+            echo "::error::FRONT_FTP_HOST/USER/PASS ou variable FRONT_REMOTE_DIR manquants"; exit 1
+          fi
+          sudo apt-get update -qq && sudo apt-get install -y lftp >/dev/null
+          DELETE_FLAG=""
+          if [ "$FTP_DELETE" = "true" ]; then DELETE_FLAG="--delete"; echo "⚠️ miroir STRICT (--delete) actif"; else echo "ℹ️ miroir additif (sans --delete)"; fi
+          # cPanel rejette SITE SYMLINK (500) → drop les symlinks avant le miroir.
+          find out -type l -print -delete
+          cd out
+          lftp -u "$FTP_USER","$FTP_PASS" "$FTP_HOST" <<EOF
+          set ftp:ssl-allow yes
+          set ftp:ssl-force true
+          set ssl:verify-certificate no
+          set mirror:use-pget-n 5
+          mirror -R --only-newer --parallel=2 ${DELETE_FLAG} \
+            -x '(^|/)guardian(/|\$)' \
+            -x '(^|/)api(/|\$)' \
+            -x '(^|/)\.well-known(/|\$)' \
+            -x '(^|/)cgi-bin(/|\$)' \
+            -x '(^|/)\.git(/|\$)' \
+            . ${REMOTE_DIR}
+          quit
+          EOF
+          echo "✅ Upload FTPS terminé → ${REMOTE_DIR}"
+
+      # ── Smoke post-deploy : l'index Next doit être servi (200 + markup Next/HTML). ──
+      - name: 🩺 Smoke test (showcase)
+        env:
+          SMOKE_URL: ${{ vars.FRONT_SMOKE_URL }}
+        run: |
+          if [ -z "$SMOKE_URL" ]; then echo "ℹ️ FRONT_SMOKE_URL non défini — smoke ignoré (optionnel)"; exit 0; fi
+          echo "→ $SMOKE_URL"
+          code=$(curl -s -o /tmp/idx.html -w '%{http_code}' --max-time 30 "$SMOKE_URL" || echo 000)
+          echo "HTTP $code"
+          if printf '%s' "$code" | grep -q '^2' && grep -qiE '__next|<!doctype html|<html' /tmp/idx.html; then
+            echo "✅ site servi (index Next)"
+          else
+            echo "❌ smoke KO (HTTP $code, ou index Next absent)"; sed -n '1,20p' /tmp/idx.html; exit 1
+          fi
