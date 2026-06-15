@@ -1,0 +1,82 @@
+{
+  "nav": {
+    "product": "Product",
+    "pricing": "Pricing",
+    "company": "Company",
+    "resources": "Resources",
+    "signin": "Sign in",
+    "startTrial": "Start free trial"
+  },
+  "hero": {
+    "eyebrow": "HR & payroll platform",
+    "title": "Modern HR and payroll for teams everywhere",
+    "lead": "Run your whole people cycle — payroll, time off, hiring, performance and an employee self-service portal — on one platform, with compliance localized to your country.",
+    "ctaPrimary": "Start free trial",
+    "ctaDemo": "Book a demo",
+    "trustNote": "14-day free trial · no credit card"
+  },
+  "preview": {
+    "title": "Payroll · June 2026",
+    "status": "Closed",
+    "employees": "Employees",
+    "netPayroll": "Net payroll",
+    "payslips": "Payslips"
+  },
+  "trust": [
+    "Payroll & payslips",
+    "Time off & attendance",
+    "Self-service portal",
+    "Localized compliance"
+  ],
+  "features": {
+    "heading": "Everything your HR team needs",
+    "sub": "From hire to retire — modular, and connected end to end.",
+    "items": {
+      "payroll": {
+        "title": "Payroll & payslips",
+        "desc": "Full monthly cycle with country-localized compliance."
+      },
+      "attendance": {
+        "title": "Time off & attendance",
+        "desc": "Leave, schedules, holidays and team calendar."
+      },
+      "records": {
+        "title": "Employee records",
+        "desc": "One source of truth for people and contracts."
+      },
+      "recruitment": {
+        "title": "Recruitment",
+        "desc": "From open role to hire, with a talent pool."
+      },
+      "career": {
+        "title": "Performance & career",
+        "desc": "Goals, review campaigns and skills mapping."
+      },
+      "selfservice": {
+        "title": "Employee self-service",
+        "desc": "Payslips, requests and time off, on any device."
+      }
+    }
+  },
+  "ctaBand": {
+    "title": "Ready to modernize your HR?",
+    "sub": "Start a 14-day free trial — set up your workspace in minutes.",
+    "button": "Start free trial"
+  },
+  "footer": {
+    "tagline": "Modern HR & payroll, on one platform, with compliance localized to your country.",
+    "product": "Product",
+    "company": "Company",
+    "resources": "Resources",
+    "modules": "Modules",
+    "pricing": "Pricing",
+    "signup": "Sign up",
+    "about": "About",
+    "careers": "Careers",
+    "contact": "Contact",
+    "guides": "Guides",
+    "security": "Security",
+    "status": "Status",
+    "rights": "All rights reserved."
+  }
+}

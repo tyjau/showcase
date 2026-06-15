@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "export",
+  // Static export only at build time; dev renders dynamic routes normally.
+  output: process.env.NODE_ENV === "production" ? "export" : undefined,
   trailingSlash: true,
   images: { unoptimized: true },
 };

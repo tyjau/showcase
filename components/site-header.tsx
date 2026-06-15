@@ -1,18 +1,29 @@
 import Link from "next/link";
 import { BrandLogo } from "./brand-logo";
+import { LocaleSwitcher } from "./locale-switcher";
+import type { Locale } from "@/lib/i18n";
 
-const nav = [
-  { label: "Product", href: "/#product" },
-  { label: "Pricing", href: "/pricing" },
-  { label: "Company", href: "/company" },
-  { label: "Resources", href: "/resources" },
-];
+type NavDict = {
+  product: string;
+  pricing: string;
+  company: string;
+  resources: string;
+  signin: string;
+  startTrial: string;
+};
 
-export function SiteHeader() {
+export function SiteHeader({ lang, dict }: { lang: Locale; dict: NavDict }) {
+  const nav = [
+    { label: dict.product, href: `/${lang}#product` },
+    { label: dict.pricing, href: `/${lang}/pricing` },
+    { label: dict.company, href: `/${lang}/company` },
+    { label: dict.resources, href: `/${lang}/resources` },
+  ];
+
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-white/90 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
-        <Link href="/">
+        <Link href={`/${lang}`}>
           <BrandLogo />
         </Link>
         <nav className="hidden items-center gap-6 text-sm text-ink md:flex">
@@ -23,17 +34,18 @@ export function SiteHeader() {
           ))}
         </nav>
         <div className="flex items-center gap-3 text-sm">
-          <span className="hidden rounded-md border border-line px-2 py-0.5 text-xs text-muted sm:inline">
-            EN
-          </span>
-          <Link href="/login" className="hidden text-navy hover:text-sky sm:inline">
-            Sign in
+          <LocaleSwitcher current={lang} />
+          <Link
+            href={`/${lang}/login`}
+            className="hidden text-navy hover:text-sky sm:inline"
+          >
+            {dict.signin}
           </Link>
           <Link
-            href="/signup"
+            href={`/${lang}/signup`}
             className="rounded-full bg-sky px-4 py-2 font-semibold text-white transition-colors hover:bg-[#0d8bbd]"
           >
-            Start free trial
+            {dict.startTrial}
           </Link>
         </div>
       </div>

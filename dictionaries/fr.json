@@ -1,0 +1,82 @@
+{
+  "nav": {
+    "product": "Produit",
+    "pricing": "Tarifs",
+    "company": "Entreprise",
+    "resources": "Ressources",
+    "signin": "Se connecter",
+    "startTrial": "Essai gratuit"
+  },
+  "hero": {
+    "eyebrow": "Plateforme RH & paie",
+    "title": "La RH et la paie modernes, pour les équipes du monde entier",
+    "lead": "Gérez tout le cycle RH — paie, congés, recrutement, performance et un portail self-service employé — sur une seule plateforme, avec une conformité localisée selon votre pays.",
+    "ctaPrimary": "Démarrer l'essai gratuit",
+    "ctaDemo": "Réserver une démo",
+    "trustNote": "14 jours d'essai · sans carte bancaire"
+  },
+  "preview": {
+    "title": "Paie · juin 2026",
+    "status": "Clôturée",
+    "employees": "Employés",
+    "netPayroll": "Net à payer",
+    "payslips": "Bulletins"
+  },
+  "trust": [
+    "Paie & bulletins",
+    "Congés & présences",
+    "Portail self-service",
+    "Conformité localisée"
+  ],
+  "features": {
+    "heading": "Tout ce dont votre équipe RH a besoin",
+    "sub": "De l'embauche à la retraite — modulaire, et connecté de bout en bout.",
+    "items": {
+      "payroll": {
+        "title": "Paie & bulletins",
+        "desc": "Cycle mensuel complet avec conformité localisée par pays."
+      },
+      "attendance": {
+        "title": "Congés & présences",
+        "desc": "Absences, plannings, jours fériés et calendrier d'équipe."
+      },
+      "records": {
+        "title": "Dossier du personnel",
+        "desc": "Une source de vérité unique pour les employés et les contrats."
+      },
+      "recruitment": {
+        "title": "Recrutement",
+        "desc": "Du besoin à l'embauche, avec une CVthèque."
+      },
+      "career": {
+        "title": "Performance & carrière",
+        "desc": "Objectifs, campagnes d'évaluation et cartographie des compétences."
+      },
+      "selfservice": {
+        "title": "Self-service employé",
+        "desc": "Bulletins, demandes et congés, sur tout appareil."
+      }
+    }
+  },
+  "ctaBand": {
+    "title": "Prêt à moderniser votre RH ?",
+    "sub": "Démarrez un essai gratuit de 14 jours — configurez votre espace en quelques minutes.",
+    "button": "Démarrer l'essai gratuit"
+  },
+  "footer": {
+    "tagline": "RH & paie modernes, sur une seule plateforme, avec une conformité localisée selon votre pays.",
+    "product": "Produit",
+    "company": "Entreprise",
+    "resources": "Ressources",
+    "modules": "Modules",
+    "pricing": "Tarifs",
+    "signup": "Inscription",
+    "about": "À propos",
+    "careers": "Carrières",
+    "contact": "Contact",
+    "guides": "Guides",
+    "security": "Sécurité",
+    "status": "Statut",
+    "rights": "Tous droits réservés."
+  }
+}
