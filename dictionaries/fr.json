@@ -14,6 +14,7 @@
   },
   "nav": {
     "product": "Produit",
+    "features": "Fonctionnalités",
     "pricing": "Tarifs",
     "company": "Entreprise",
     "resources": "Ressources",
@@ -41,6 +42,20 @@
     "Portail self-service",
     "Conformité localisée"
   ],
+  "modulesPage": {
+    "heading": "Des modules pensés pour les RH",
+    "sub": "Modulaire par conception — commencez par l'essentiel, ajoutez le reste en grandissant.",
+    "addon": "Option",
+    "worksWith": "Fonctionne avec",
+    "learnMore": "En savoir plus",
+    "categories": {
+      "people": "Personnel",
+      "time-off": "Temps & présences",
+      "payroll": "Paie",
+      "talent": "Talents",
+      "health": "Santé & sécurité"
+    }
+  },
   "features": {
     "heading": "Tout ce dont votre équipe RH a besoin",
     "sub": "De l'embauche à la retraite — modulaire, et connecté de bout en bout.",

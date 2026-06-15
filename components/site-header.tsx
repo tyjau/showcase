@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { BrandLogo } from "./brand-logo";
 import { LocaleSwitcher } from "./locale-switcher";
+import { MobileNav } from "./mobile-nav";
 import type { Locale } from "@/lib/i18n";
 
 type NavDict = {
   product: string;
+  features: string;
   pricing: string;
   company: string;
   resources: string;
@@ -14,7 +16,7 @@ type NavDict = {
 
 export function SiteHeader({ lang, dict }: { lang: Locale; dict: NavDict }) {
   const nav = [
-    { label: dict.product, href: `/${lang}#product` },
+    { label: dict.features, href: `/${lang}/features` },
     { label: dict.pricing, href: `/${lang}/pricing` },
     { label: dict.company, href: `/${lang}/company` },
     { label: dict.resources, href: `/${lang}/resources` },
@@ -47,6 +49,12 @@ export function SiteHeader({ lang, dict }: { lang: Locale; dict: NavDict }) {
           >
             {dict.startTrial}
           </Link>
+          <MobileNav
+            items={nav}
+            signin={dict.signin}
+            signinHref={`/${lang}/login`}
+            className="md:hidden"
+          />
         </div>
       </div>
     </header>

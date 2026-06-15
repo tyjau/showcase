@@ -14,6 +14,7 @@
   },
   "nav": {
     "product": "Product",
+    "features": "Features",
     "pricing": "Pricing",
     "company": "Company",
     "resources": "Resources",
@@ -41,6 +42,20 @@
     "Self-service portal",
     "Localized compliance"
   ],
+  "modulesPage": {
+    "heading": "Modules built for HR teams",
+    "sub": "Modular by design — start with what you need, add the rest as you grow.",
+    "addon": "Add-on",
+    "worksWith": "Works with",
+    "learnMore": "Learn more",
+    "categories": {
+      "people": "People",
+      "time-off": "Time & attendance",
+      "payroll": "Payroll",
+      "talent": "Talent",
+      "health": "Health & safety"
+    }
+  },
   "features": {
     "heading": "Everything your HR team needs",
     "sub": "From hire to retire — modular, and connected end to end.",
