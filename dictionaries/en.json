@@ -1,4 +1,17 @@
 {
+  "seo": {
+    "defaultTitle": "SkyRH — Modern HR & payroll for teams everywhere",
+    "titleTemplate": "%s · SkyRH",
+    "description": "Run your whole people cycle — payroll, time off, hiring, performance and an employee self-service portal — on one platform, with compliance localized to your country.",
+    "pages": {
+      "pricing": "Pricing",
+      "features": "Features",
+      "company": "Company",
+      "resources": "Resources",
+      "signup": "Start free trial",
+      "login": "Sign in"
+    }
+  },
   "nav": {
     "product": "Product",
     "pricing": "Pricing",

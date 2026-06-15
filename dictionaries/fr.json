@@ -1,4 +1,17 @@
 {
+  "seo": {
+    "defaultTitle": "SkyRH — La RH et la paie modernes pour le monde entier",
+    "titleTemplate": "%s · SkyRH",
+    "description": "Gérez tout le cycle RH — paie, congés, recrutement, performance et un portail self-service employé — sur une seule plateforme, avec une conformité localisée selon votre pays.",
+    "pages": {
+      "pricing": "Tarifs",
+      "features": "Fonctionnalités",
+      "company": "Entreprise",
+      "resources": "Ressources",
+      "signup": "Essai gratuit",
+      "login": "Connexion"
+    }
+  },
   "nav": {
     "product": "Produit",
     "pricing": "Tarifs",

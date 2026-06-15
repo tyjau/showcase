@@ -13,11 +13,31 @@ const mulish = Mulish({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "SkyRH — Modern HR & payroll for teams everywhere",
-  description:
-    "Run your whole people cycle — payroll, time off, hiring, performance and an employee self-service portal — on one platform, with compliance localized to your country.",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: { lang: Locale };
+}): Promise<Metadata> {
+  const t = await getDictionary(params.lang);
+  return {
+    metadataBase: new URL(
+      process.env.NEXT_PUBLIC_SITE_URL ?? "https://get.ikwhat.com",
+    ),
+    title: { default: t.seo.defaultTitle, template: t.seo.titleTemplate },
+    description: t.seo.description,
+    alternates: {
+      canonical: `/${params.lang}`,
+      languages: { en: "/en", fr: "/fr" },
+    },
+    openGraph: {
+      title: t.seo.defaultTitle,
+      description: t.seo.description,
+      siteName: "SkyRH",
+      locale: params.lang === "fr" ? "fr_FR" : "en_US",
+      type: "website",
+    },
+  };
+}
 
 export const dynamicParams = false;
 
