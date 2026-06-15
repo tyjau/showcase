@@ -85,6 +85,48 @@
     "popular": "Most popular",
     "free": "Free"
   },
+  "companyPage": {
+    "eyebrow": "Our company",
+    "title": "Building HR that works everywhere",
+    "lead": "SkyRH makes modern, compliant HR & payroll accessible to every company — wherever they operate.",
+    "missionTitle": "Our mission",
+    "missionBody": "Too many teams still juggle spreadsheets and country-specific rules. We bring the whole people cycle onto one platform and build compliance in — so HR can focus on people, not paperwork.",
+    "valuesTitle": "What guides us",
+    "values": [
+      { "title": "Compliance first", "desc": "Local rules built into the product and kept up to date — not bolted on." },
+      { "title": "Close to the field", "desc": "Built with HR, finance and managers, for the way teams really work." },
+      { "title": "Simplicity", "desc": "Clear workflows and self-service that everyone actually adopts." },
+      { "title": "Security", "desc": "Fine-grained access, audit trails and privacy for sensitive data." }
+    ],
+    "careersTitle": "Careers",
+    "careersBody": "We hire people who want real impact on how companies manage their teams — engineering, payroll compliance, customer success and sales.",
+    "careersCta": "Join the team",
+    "contactTitle": "Let's talk",
+    "contactBody": "Customer, partner or future teammate — we'd love to hear from you.",
+    "contactCta": "Book a demo"
+  },
+  "resourcesPage": {
+    "eyebrow": "Resources",
+    "title": "Everything to get started and go further",
+    "lead": "Documentation, guides and help — built from the product itself.",
+    "items": [
+      { "title": "Documentation", "desc": "Guides for every module, from setup to daily use." },
+      { "title": "Help center", "desc": "Answers, how-tos and troubleshooting." },
+      { "title": "Security", "desc": "How we protect your data." },
+      { "title": "Status", "desc": "Live service availability." }
+    ]
+  },
+  "legalPage": {
+    "draft": "Draft — to be finalized with legal counsel before launch.",
+    "back": "Back to home",
+    "body": "This page is a placeholder. The final version will be published here before launch. For any question in the meantime, please reach out via the contact page.",
+    "docs": {
+      "terms": "Terms of Service",
+      "privacy": "Privacy Policy",
+      "cookies": "Cookie Policy",
+      "security": "Security"
+    }
+  },
   "features": {
     "heading": "Everything your HR team needs",
     "sub": "From hire to retire — modular, and connected end to end.",

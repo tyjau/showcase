@@ -19,6 +19,8 @@ type FooterDict = {
   rights: string;
 };
 
+type LegalDict = { terms: string; privacy: string; cookies: string };
+
 function FooterCol({
   title,
   links,
@@ -44,7 +46,15 @@ function FooterCol({
   );
 }
 
-export function SiteFooter({ lang, dict }: { lang: Locale; dict: FooterDict }) {
+export function SiteFooter({
+  lang,
+  dict,
+  legal,
+}: {
+  lang: Locale;
+  dict: FooterDict;
+  legal: LegalDict;
+}) {
   return (
     <footer className="bg-navy text-[#a9bccd]">
       <div className="mx-auto max-w-6xl px-5 py-14">
@@ -56,7 +66,7 @@ export function SiteFooter({ lang, dict }: { lang: Locale; dict: FooterDict }) {
           <FooterCol
             title={dict.product}
             links={[
-              [dict.modules, `/${lang}#product`],
+              [dict.modules, `/${lang}/features`],
               [dict.pricing, `/${lang}/pricing`],
               [dict.signup, `/${lang}/signup`],
             ]}
@@ -74,13 +84,23 @@ export function SiteFooter({ lang, dict }: { lang: Locale; dict: FooterDict }) {
             links={[
               [dict.guides, `/${lang}/resources`],
               [dict.security, `/${lang}/legal/security`],
-              [dict.status, `/${lang}/status`],
+              [dict.status, `/${lang}/resources`],
             ]}
           />
         </div>
         <div className="mt-10 flex flex-wrap items-center justify-between gap-2 border-t border-white/10 pt-6 text-sm">
           <span>© {new Date().getFullYear()} SkyRH. {dict.rights}</span>
-          <span>Terms · Privacy · Cookies</span>
+          <span className="flex flex-wrap gap-x-3 gap-y-1">
+            <Link href={`/${lang}/legal/terms`} className="hover:text-white">
+              {legal.terms}
+            </Link>
+            <Link href={`/${lang}/legal/privacy`} className="hover:text-white">
+              {legal.privacy}
+            </Link>
+            <Link href={`/${lang}/legal/cookies`} className="hover:text-white">
+              {legal.cookies}
+            </Link>
+          </span>
         </div>
       </div>
     </footer>

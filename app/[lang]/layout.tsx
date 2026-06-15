@@ -55,7 +55,11 @@ export default async function LangLayout({
       <body className="font-sans bg-white text-ink antialiased">
         <SiteHeader lang={params.lang} dict={dict.nav} />
         {children}
-        <SiteFooter lang={params.lang} dict={dict.footer} />
+        <SiteFooter
+          lang={params.lang}
+          dict={dict.footer}
+          legal={dict.legalPage.docs}
+        />
       </body>
     </html>
   );

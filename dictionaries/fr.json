@@ -85,6 +85,48 @@
     "popular": "Le plus populaire",
     "free": "Gratuit"
   },
+  "companyPage": {
+    "eyebrow": "L'entreprise",
+    "title": "Une RH qui fonctionne partout",
+    "lead": "SkyRH rend la RH et la paie modernes et conformes accessibles à toutes les entreprises — où qu'elles opèrent.",
+    "missionTitle": "Notre mission",
+    "missionBody": "Trop d'équipes jonglent encore entre tableurs et règles propres à chaque pays. Nous réunissons tout le cycle RH sur une seule plateforme et y intégrons la conformité — pour que les RH se concentrent sur l'humain, pas sur la paperasse.",
+    "valuesTitle": "Ce qui nous guide",
+    "values": [
+      { "title": "La conformité d'abord", "desc": "Les règles locales intégrées au produit et tenues à jour — pas en option." },
+      { "title": "Proches du terrain", "desc": "Conçu avec les RH, la finance et les managers, pour le travail réel des équipes." },
+      { "title": "Simplicité", "desc": "Des workflows clairs et un self-service que tout le monde adopte." },
+      { "title": "Sécurité", "desc": "Droits fins, traçabilité et confidentialité des données sensibles." }
+    ],
+    "careersTitle": "Carrières",
+    "careersBody": "Nous recrutons des personnes qui veulent un impact réel sur la gestion des équipes — ingénierie, conformité paie, succès client et ventes.",
+    "careersCta": "Nous rejoindre",
+    "contactTitle": "Parlons-en",
+    "contactBody": "Client, partenaire ou futur collègue — écrivez-nous.",
+    "contactCta": "Réserver une démo"
+  },
+  "resourcesPage": {
+    "eyebrow": "Ressources",
+    "title": "Tout pour démarrer et aller plus loin",
+    "lead": "Documentation, guides et aide — issus du produit lui-même.",
+    "items": [
+      { "title": "Documentation", "desc": "Des guides pour chaque module, du paramétrage à l'usage quotidien." },
+      { "title": "Centre d'aide", "desc": "Réponses, tutoriels et dépannage." },
+      { "title": "Sécurité", "desc": "Comment nous protégeons vos données." },
+      { "title": "Statut", "desc": "Disponibilité du service en temps réel." }
+    ]
+  },
+  "legalPage": {
+    "draft": "Brouillon — à finaliser avec un conseil juridique avant le lancement.",
+    "back": "Retour à l'accueil",
+    "body": "Cette page est un espace réservé. La version finale sera publiée ici avant le lancement. Pour toute question d'ici là, contactez-nous via la page contact.",
+    "docs": {
+      "terms": "Conditions d'utilisation",
+      "privacy": "Politique de confidentialité",
+      "cookies": "Politique des cookies",
+      "security": "Sécurité"
+    }
+  },
   "features": {
     "heading": "Tout ce dont votre équipe RH a besoin",
     "sub": "De l'embauche à la retraite — modulaire, et connecté de bout en bout.",
