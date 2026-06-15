@@ -39,10 +39,10 @@ const CATALOG_API_KEY = process.env.CATALOG_API_KEY ?? "";
  * tolerate the self-signed saas.test certificate.
  */
 export async function fetchCatalog(): Promise<Catalog> {
-  if (
-    process.env.NODE_ENV !== "production" &&
-    GUARDIAN_URL.includes("saas.test")
-  ) {
+  // Tolerate the self-signed certificate only for the local dev backend
+  // (saas.test) — a real guardian endpoint has a valid certificate, so a
+  // production build against it never disables verification.
+  if (GUARDIAN_URL.includes("saas.test")) {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
   }
 

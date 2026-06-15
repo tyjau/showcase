@@ -70,7 +70,7 @@ export function PricingCalculator({
 
   const customRate = useMemo(() => {
     let sum = 0;
-    for (const code of resolved) {
+    for (const code of Array.from(resolved)) {
       const m = catalog.modules.find((x) => x.code === code);
       if (m) sum += unitPrice(m.prices, currency);
     }
@@ -80,7 +80,8 @@ export function PricingCalculator({
   function toggleModule(code: string) {
     setSelected((prev) => {
       const next = new Set(prev);
-      next.has(code) ? next.delete(code) : next.add(code);
+      if (next.has(code)) next.delete(code);
+      else next.add(code);
       return next;
     });
   }
