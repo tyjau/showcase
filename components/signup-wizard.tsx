@@ -189,6 +189,7 @@ export function SignupWizard({
       first_name: firstName,
       last_name: lastName,
       country,
+      currency,
       lang,
     });
     setSubmitting(false);
