@@ -5,6 +5,9 @@
 :root {
   --background: #ffffff;
   --foreground: #13212e;
+  /* Brand colours — overridden at runtime per partner (see partner-provider). */
+  --brand-navy: #0e2841;
+  --brand-sky: #0f9ed5;
 }
 
 html {

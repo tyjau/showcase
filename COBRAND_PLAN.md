@@ -37,11 +37,14 @@ le front doit **commencer à l'envoyer**.
 5. **Prix wholesale** : si `partner_config.pricing` présent, l'utiliser au lieu du catalogue baké.
 
 ## Checklist
-- [ ] `lib/partner.ts`
-- [ ] `partner-provider` + lecture des params URL
-- [ ] theming dynamique + logo
-- [ ] wizard : attribution (`referral_code` + UTM)
-- [ ] wizard : prix selon `billing_unit`
-- [ ] domaine succès partenaire
+- [x] `lib/partner.ts` (fetch runtime `partner_config` + fallback)
+- [x] `partner-provider` + lecture `?partner_code`/`?ref` + UTM
+- [x] theming dynamique : `navy`/`sky` en CSS vars (override runtime) + `BrandLogo` dynamique
+- [x] wizard : attribution (`referral_code` + UTM dans `signup_request`)
+- [x] wizard : prix selon `billing_unit` (per_employee ✓ · per_company flat ✓ · tiered_caps = TODO bandes)
+- [x] domaine succès partenaire (`domainBase`)
+- [ ] **RESTE — override catalogue wholesale** (`partner_config.pricing.packages/modules`) : per_company/tiered ont besoin des **prix flat fournis par le back**. Aujourd'hui per_employee est pleinement correct ; per_company affiche le total depuis `rate` (placeholder tant que les prix wholesale ne sont pas câblés).
+- [ ] **Backend (fondateur)** : exposer `GET /auth.php?c=partner_config&code=`.
+- [ ] **Vérif visuelle/e2e** : nécessite le back `partner_config` + un code partenaire.
 
 Voir aussi `PRICING_NOTE.md` (la règle de prix configurable).

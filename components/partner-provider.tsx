@@ -55,6 +55,19 @@ export function PartnerProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
+  // Partner brand colours → CSS variables (themes every bg-sky / text-navy …).
+  useEffect(() => {
+    const root = document.documentElement;
+    if (partner?.primary_color)
+      root.style.setProperty("--brand-sky", partner.primary_color);
+    if (partner?.secondary_color)
+      root.style.setProperty("--brand-navy", partner.secondary_color);
+    return () => {
+      root.style.removeProperty("--brand-sky");
+      root.style.removeProperty("--brand-navy");
+    };
+  }, [partner]);
+
   return (
     <PartnerContext.Provider value={{ partner, refCode, utm }}>
       {children}

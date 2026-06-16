@@ -116,7 +116,7 @@ export function SignupWizard({
   legal: { terms: string; privacy: string };
 }) {
   const { currency } = useCurrency();
-  const { refCode, utm } = usePartner();
+  const { partner, refCode, utm } = usePartner();
   const [step, setStep] = useState(0);
   const [planCode, setPlanCode] = useState("BUSINESS");
   const [addons, setAddons] = useState<Set<string>>(() => new Set());
@@ -157,6 +157,10 @@ export function SignupWizard({
   );
   const rate = base + addonSum;
   const isFree = rate === 0;
+  // Co-brand: configurable billing unit (default per-employee) + partner success domain.
+  const billingUnit = partner?.pricing?.billing_unit ?? "per_employee";
+  const monthlyTotal = billingUnit === "per_company" ? rate : rate * employees;
+  const domainBase = partner?.domain ?? "skyrh.app";
 
   const emailOk = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
   const subOk = /^[a-z0-9](?:[a-z0-9-]{1,28}[a-z0-9])$/.test(subdomain);
@@ -219,7 +223,7 @@ export function SignupWizard({
         <p className="mx-auto mt-2 max-w-md text-muted">{dict.successBody}</p>
         <div className="mt-3 text-sm">
           <span className="text-muted">{subdomain}</span>
-          <span className="font-semibold text-ink">.skyrh.app</span>
+          <span className="font-semibold text-ink">.{domainBase}</span>
         </div>
         <Link
           href={`/${lang}`}
@@ -356,7 +360,7 @@ export function SignupWizard({
                 dict.free
               ) : (
                 <>
-                  {fmtMoney(rate * employees, currency)}
+                  {fmtMoney(monthlyTotal, currency)}
                   <span className="text-sm font-normal text-muted">
                     {" "}
                     {dict.monthlyTotal}
@@ -393,7 +397,7 @@ export function SignupWizard({
                   }}
                   className="min-w-0 flex-1 bg-transparent px-3 py-2.5 text-sm outline-none"
                 />
-                <span className="px-3 text-sm text-muted">.skyrh.app</span>
+                <span className="px-3 text-sm text-muted">.{domainBase}</span>
               </div>
               {subdomain.length > 0 && !subOk && (
                 <p className="mt-1 text-xs text-[#b4441f]">
@@ -457,14 +461,16 @@ export function SignupWizard({
               value={
                 isFree
                   ? `${pkg?.name ?? planCode} · ${dict.free}`
-                  : `${pkg?.name ?? planCode} · ${fmtRate(rate, currency)} ${dict.perEmployee} × ${employees}`
+                  : billingUnit === "per_company"
+                    ? `${pkg?.name ?? planCode} · ${fmtMoney(monthlyTotal, currency)} ${dict.monthlyTotal}`
+                    : `${pkg?.name ?? planCode} · ${fmtRate(rate, currency)} ${dict.perEmployee} × ${employees}`
               }
             />
             <Row
               label={dict.rOptions}
               value={addonNames.length ? addonNames.join(", ") : dict.none}
             />
-            <Row label={dict.rWorkspace} value={`${subdomain}.skyrh.app`} />
+            <Row label={dict.rWorkspace} value={`${subdomain}.${domainBase}`} />
             <Row
               label={dict.rAdmin}
               value={`${firstName} ${lastName} · ${email}`}
