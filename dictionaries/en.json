@@ -239,6 +239,15 @@
       "successCta": "Sign in"
     }
   },
+  "loginPage": {
+    "title": "Sign in",
+    "lead": "Go to your team's workspace.",
+    "workspaceLabel": "Your workspace address",
+    "placeholder": "your-company",
+    "cta": "Continue",
+    "noWorkspace": "No workspace yet?",
+    "signupCta": "Start a free trial"
+  },
   "features": {
     "heading": "Everything your HR team needs",
     "sub": "From hire to retire — modular, and connected end to end.",

@@ -54,11 +54,11 @@ export default async function LangLayout({
   const dict = await getDictionary(params.lang);
   return (
     <html lang={params.lang} className={mulish.variable}>
-      <body className="font-sans bg-white text-ink antialiased">
+      <body className="font-sans bg-white text-ink antialiased flex min-h-screen flex-col">
         <PartnerProvider>
           <CurrencyProvider>
             <SiteHeader lang={params.lang} dict={dict.nav} />
-            {children}
+            <div className="flex-1">{children}</div>
             <SiteFooter
               lang={params.lang}
               dict={dict.footer}

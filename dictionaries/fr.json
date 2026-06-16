@@ -239,6 +239,15 @@
       "successCta": "Se connecter"
     }
   },
+  "loginPage": {
+    "title": "Se connecter",
+    "lead": "Accédez à l'espace de travail de votre équipe.",
+    "workspaceLabel": "Adresse de votre espace",
+    "placeholder": "votre-entreprise",
+    "cta": "Continuer",
+    "noWorkspace": "Pas encore d'espace ?",
+    "signupCta": "Démarrer un essai gratuit"
+  },
   "features": {
     "heading": "Tout ce dont votre équipe RH a besoin",
     "sub": "De l'embauche à la retraite — modulaire, et connecté de bout en bout.",
