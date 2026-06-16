@@ -223,7 +223,21 @@
     "successTitle": "Vous y êtes presque",
     "successBody": "Nous avons enregistré votre demande d'espace. Consultez votre boîte mail pour l'activer et définir votre mot de passe.",
     "successCta": "Retour à l'accueil",
-    "none": "Aucune"
+    "none": "Aucune",
+    "confirm": {
+      "title": "Définissez votre mot de passe",
+      "lead": "Choisissez un mot de passe pour activer votre espace et vous connecter.",
+      "password": "Mot de passe",
+      "passwordConfirm": "Confirmer le mot de passe",
+      "hint": "Au moins 8 caractères, avec majuscule, minuscule, chiffre et symbole.",
+      "cta": "Activer mon espace",
+      "mismatch": "Les mots de passe ne correspondent pas.",
+      "weak": "Le mot de passe doit faire 8+ caractères avec majuscule, minuscule, chiffre et symbole.",
+      "noToken": "Lien d'activation invalide ou manquant.",
+      "successTitle": "Votre espace est prêt",
+      "successBody": "Vous pouvez maintenant vous connecter et inviter votre équipe.",
+      "successCta": "Se connecter"
+    }
   },
   "features": {
     "heading": "Tout ce dont votre équipe RH a besoin",

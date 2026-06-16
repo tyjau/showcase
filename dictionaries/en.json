@@ -223,7 +223,21 @@
     "successTitle": "You're almost there",
     "successBody": "We've recorded your workspace request. Check your inbox to activate it and set your password.",
     "successCta": "Back to home",
-    "none": "None"
+    "none": "None",
+    "confirm": {
+      "title": "Set your password",
+      "lead": "Choose a password to activate your workspace and sign in.",
+      "password": "Password",
+      "passwordConfirm": "Confirm password",
+      "hint": "At least 8 characters, with uppercase, lowercase, a digit and a symbol.",
+      "cta": "Activate workspace",
+      "mismatch": "The passwords don't match.",
+      "weak": "Password needs 8+ chars with uppercase, lowercase, a digit and a symbol.",
+      "noToken": "Invalid or missing activation link.",
+      "successTitle": "Your workspace is ready",
+      "successBody": "You can now sign in and invite your team.",
+      "successCta": "Sign in"
+    }
   },
   "features": {
     "heading": "Everything your HR team needs",

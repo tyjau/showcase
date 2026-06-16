@@ -10,6 +10,7 @@ import {
   moduleText,
 } from "@/lib/catalog";
 import { useCurrency } from "./currency-provider";
+import { apiPost } from "@/lib/api";
 
 type Dict = {
   steps: Record<string, string>;
@@ -127,6 +128,8 @@ export function SignupWizard({
   const [email, setEmail] = useState("");
   const [agree, setAgree] = useState(false);
   const [done, setDone] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const sp = new URLSearchParams(window.location.search);
@@ -173,11 +176,27 @@ export function SignupWizard({
     });
   }
 
-  function submit() {
-    // Integration point for backend Voie A (auth.php?c=signup_request): the
-    // payload is assembled from this state; the POST is wired when the endpoint
-    // ships. For now we confirm client-side.
-    setDone(true);
+  async function submit() {
+    setSubmitting(true);
+    setError(null);
+    const res = await apiPost("signup_request", {
+      email,
+      company_name: company,
+      subdomain,
+      plan_code: planCode,
+      addons: Array.from(addons),
+      employees,
+      first_name: firstName,
+      last_name: lastName,
+      country,
+      lang,
+    });
+    setSubmitting(false);
+    if (res.ok) {
+      setDone(true);
+    } else {
+      setError(res.error ?? "Something went wrong");
+    }
   }
 
   if (done) {
@@ -471,6 +490,12 @@ export function SignupWizard({
         </div>
       )}
 
+      {error && (
+        <p className="mt-6 rounded-lg border border-[#f0c2b4] bg-[#fdeee9] px-4 py-2.5 text-sm text-[#b4441f]">
+          {error}
+        </p>
+      )}
+
       <div className="mt-8 flex items-center justify-between">
         {step > 0 ? (
           <button
@@ -495,11 +520,11 @@ export function SignupWizard({
         ) : (
           <button
             type="button"
-            disabled={!canNext}
+            disabled={!canNext || submitting}
             onClick={submit}
-            className={`rounded-full px-6 py-2.5 text-sm font-semibold ${canNext ? "bg-sky text-white" : "cursor-not-allowed bg-mist text-muted"}`}
+            className={`rounded-full px-6 py-2.5 text-sm font-semibold ${canNext && !submitting ? "bg-sky text-white" : "cursor-not-allowed bg-mist text-muted"}`}
           >
-            {dict.create}
+            {submitting ? "…" : dict.create}
           </button>
         )}
       </div>
