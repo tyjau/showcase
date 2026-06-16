@@ -10,6 +10,7 @@ import {
   moduleText,
 } from "@/lib/catalog";
 import { useCurrency } from "./currency-provider";
+import { usePartner } from "./partner-provider";
 import { apiPost } from "@/lib/api";
 
 type Dict = {
@@ -115,6 +116,7 @@ export function SignupWizard({
   legal: { terms: string; privacy: string };
 }) {
   const { currency } = useCurrency();
+  const { refCode, utm } = usePartner();
   const [step, setStep] = useState(0);
   const [planCode, setPlanCode] = useState("BUSINESS");
   const [addons, setAddons] = useState<Set<string>>(() => new Set());
@@ -191,6 +193,11 @@ export function SignupWizard({
       country,
       currency,
       lang,
+      // Attribution partenaire (funnels co-brandés) — referrers/referrals (back migr.112)
+      ...(refCode ? { referral_code: refCode } : {}),
+      ...(utm.source ? { utm_source: utm.source } : {}),
+      ...(utm.campaign ? { utm_campaign: utm.campaign } : {}),
+      ...(utm.medium ? { utm_medium: utm.medium } : {}),
     });
     setSubmitting(false);
     if (res.ok) {
