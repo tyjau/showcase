@@ -8,8 +8,8 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        navy: { DEFAULT: "#0E2841", deep: "#0a1f33" },
-        sky: { DEFAULT: "#0F9ED5", soft: "#3CAEF2" },
+        navy: { DEFAULT: "var(--brand-navy, #0E2841)", deep: "#0a1f33" },
+        sky: { DEFAULT: "var(--brand-sky, #0F9ED5)", soft: "#3CAEF2" },
         accent: "#156082",
         ink: "#13212e",
         muted: "#5a6b7b",

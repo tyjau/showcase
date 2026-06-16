@@ -6,6 +6,7 @@ import { getDictionary } from "@/lib/dictionaries";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { CurrencyProvider } from "@/components/currency-provider";
+import { PartnerProvider } from "@/components/partner-provider";
 
 const mulish = Mulish({
   subsets: ["latin"],
@@ -54,15 +55,17 @@ export default async function LangLayout({
   return (
     <html lang={params.lang} className={mulish.variable}>
       <body className="font-sans bg-white text-ink antialiased">
-        <CurrencyProvider>
-          <SiteHeader lang={params.lang} dict={dict.nav} />
-          {children}
-          <SiteFooter
-            lang={params.lang}
-            dict={dict.footer}
-            legal={dict.legalPage.docs}
-          />
-        </CurrencyProvider>
+        <PartnerProvider>
+          <CurrencyProvider>
+            <SiteHeader lang={params.lang} dict={dict.nav} />
+            {children}
+            <SiteFooter
+              lang={params.lang}
+              dict={dict.footer}
+              legal={dict.legalPage.docs}
+            />
+          </CurrencyProvider>
+        </PartnerProvider>
       </body>
     </html>
   );
