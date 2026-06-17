@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { apiAuthed, getToken, getWorkspace, clearSession } from "@/lib/api";
 import { PaymentMethod } from "@/components/payment-method";
+import { OrderCheckout } from "@/components/order-checkout";
 
 type Dict = Record<string, string>;
 const APP_DOMAIN = process.env.NEXT_PUBLIC_APP_DOMAIN ?? "skyrh.app";
@@ -94,6 +95,10 @@ export function AccountPortal({ lang, dict }: { lang: string; dict: Dict }) {
         <button onClick={logout} className="shrink-0 text-sm text-muted hover:text-ink">
           {dict.logout}
         </button>
+      </div>
+
+      <div className="mt-6">
+        <OrderCheckout dict={dict} />
       </div>
 
       {workspace && (

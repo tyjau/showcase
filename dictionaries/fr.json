@@ -277,7 +277,11 @@
     "payError": "Une erreur est survenue. Veuillez réessayer.",
     "paySubmit": "Enregistrer la carte",
     "paySaving": "Enregistrement…",
-    "payCancel": "Annuler"
+    "payCancel": "Annuler",
+    "orderPendingTitle": "Commande en attente de paiement",
+    "orderPendingLead": "Réglez cette facture pour activer votre accès.",
+    "payNow": "Payer maintenant",
+    "payThanks": "Paiement reçu — votre accès est en cours d'activation."
   },
   "features": {
     "heading": "Tout ce dont votre équipe RH a besoin",

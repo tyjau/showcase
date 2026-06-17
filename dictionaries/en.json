@@ -277,7 +277,11 @@
     "payError": "Something went wrong. Please try again.",
     "paySubmit": "Save card",
     "paySaving": "Saving…",
-    "payCancel": "Cancel"
+    "payCancel": "Cancel",
+    "orderPendingTitle": "Order awaiting payment",
+    "orderPendingLead": "Pay this invoice to activate your access.",
+    "payNow": "Pay now",
+    "payThanks": "Payment received — your access is being activated."
   },
   "features": {
     "heading": "Everything your HR team needs",
