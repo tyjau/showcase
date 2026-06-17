@@ -17,7 +17,13 @@ import { appendFileSync, readFileSync } from "node:fs";
 const repo = process.env.FORGE_REPO || "tyjau/showcase";
 let snap = {};
 try {
-  snap = JSON.parse(process.env.RELEASE_SNAPSHOT || "{}");
+  // RELEASE_SNAPSHOT en env (CD) ; sinon RELEASE_SNAPSHOT_FILE = chemin d'un snapshot exporté
+  // (build local/dev sans Guardian, Lot 4 du plan) ; sinon objet vide (mock).
+  snap = JSON.parse(
+    process.env.RELEASE_SNAPSHOT
+      || (process.env.RELEASE_SNAPSHOT_FILE ? readFileSync(process.env.RELEASE_SNAPSHOT_FILE, "utf8") : "")
+      || "{}",
+  );
 } catch {
   console.error("forge: RELEASE_SNAPSHOT is not valid JSON");
   process.exit(1);
