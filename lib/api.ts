@@ -122,6 +122,36 @@ export function storeSession(
   }
 }
 
+// Social login (Google / Microsoft). The browser obtains a provider id_token (or, in dev mock
+// mode, a `mock:<email>` token); the backend validates it + issues the session. scope=billing
+// like apiLogin. Reuses storeSession on success.
+export async function apiLoginOAuth(
+  workspace: string,
+  provider: "google" | "microsoft",
+  token: string,
+): Promise<{ ok: boolean; error?: string }> {
+  try {
+    const res = await fetch(`${apiUrl("login")}&company=${encodeURIComponent(workspace)}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ provider, token, scope: "billing" }),
+    });
+    const json = (await res.json().catch(() => ({}))) as {
+      meta?: { code?: number };
+      data?: { access_token?: string; refresh_token?: string };
+      error?: string;
+    };
+    const code = json?.meta?.code ?? res.status;
+    if (!res.ok || code >= 400) return { ok: false, error: json?.error || `Error ${code}` };
+    const tok = json?.data?.access_token;
+    if (!tok) return { ok: false, error: "No token returned" };
+    storeSession(workspace, tok, json?.data?.refresh_token ?? null);
+    return { ok: true };
+  } catch {
+    return { ok: false, error: "Network error — please try again." };
+  }
+}
+
 function getRefresh(): string | null {
   if (typeof window === "undefined") return null;
   try {

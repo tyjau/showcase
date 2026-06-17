@@ -254,7 +254,10 @@
     "cta": "Sign in",
     "error": "Invalid credentials or workspace.",
     "noWorkspace": "No workspace yet?",
-    "signupCta": "Start a free trial"
+    "signupCta": "Start a free trial",
+    "socialOr": "or",
+    "socialGoogle": "Continue with Google",
+    "socialMicrosoft": "Continue with Microsoft"
   },
   "accountPage": {
     "title": "My account",

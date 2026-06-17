@@ -3,12 +3,14 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { apiLogin, getToken } from "@/lib/api";
+import { apiLogin, apiLoginOAuth, getToken } from "@/lib/api";
 
 type Dict = Record<string, string>;
 
 const APP_DOMAIN = process.env.NEXT_PUBLIC_APP_DOMAIN ?? "skyrh.app";
 const INPUT = "w-full rounded-lg border border-line px-3 py-2.5 text-sm outline-none focus:border-sky";
+// Dev: show the social buttons (mock OAuth). In prod, wire the real Google/Microsoft SDK + client ID.
+const OAUTH_MOCK = process.env.NEXT_PUBLIC_OAUTH_MOCK === "1";
 
 // Client portal login. Tenants live on per-workspace subdomains, so we collect the
 // workspace slug (scopes the tenant) + the account owner's credentials, authenticate
@@ -35,6 +37,21 @@ export function PortalLogin({ lang, dict }: { lang: string; dict: Dict }) {
     setSubmitting(true);
     setError(null);
     const res = await apiLogin(slug, email.trim(), password);
+    setSubmitting(false);
+    if (res.ok) router.push(`/${lang}/account`);
+    else setError(dict.error);
+  }
+
+  // Social login. The real Google/Microsoft SDK is wired when client IDs exist; in dev mock mode
+  // the entered email is sent as a `mock:<email>` token (no password).
+  async function social(provider: "google" | "microsoft") {
+    if (!slug || !email.trim()) {
+      setError(dict.error);
+      return;
+    }
+    setSubmitting(true);
+    setError(null);
+    const res = await apiLoginOAuth(slug, provider, `mock:${email.trim()}`);
     setSubmitting(false);
     if (res.ok) router.push(`/${lang}/account`);
     else setError(dict.error);
@@ -99,6 +116,34 @@ export function PortalLogin({ lang, dict }: { lang: string; dict: Dict }) {
       >
         {submitting ? "…" : dict.cta}
       </button>
+
+      {OAUTH_MOCK && (
+        <div className="mt-4">
+          <div className="flex items-center gap-3 text-xs uppercase text-muted">
+            <span className="h-px flex-1 bg-line" />
+            {dict.socialOr}
+            <span className="h-px flex-1 bg-line" />
+          </div>
+          <div className="mt-3 grid gap-2">
+            <button
+              type="button"
+              onClick={() => social("google")}
+              disabled={!slug || !email.trim() || submitting}
+              className="w-full rounded-full border border-line px-6 py-2.5 text-sm font-semibold text-navy hover:border-sky disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {dict.socialGoogle}
+            </button>
+            <button
+              type="button"
+              onClick={() => social("microsoft")}
+              disabled={!slug || !email.trim() || submitting}
+              className="w-full rounded-full border border-line px-6 py-2.5 text-sm font-semibold text-navy hover:border-sky disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {dict.socialMicrosoft}
+            </button>
+          </div>
+        </div>
+      )}
 
       <p className="mt-6 text-center text-sm text-muted">
         {dict.noWorkspace}{" "}

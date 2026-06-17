@@ -254,7 +254,10 @@
     "cta": "Se connecter",
     "error": "Identifiants ou espace invalides.",
     "noWorkspace": "Pas encore d'espace ?",
-    "signupCta": "Démarrer un essai gratuit"
+    "signupCta": "Démarrer un essai gratuit",
+    "socialOr": "ou",
+    "socialGoogle": "Continuer avec Google",
+    "socialMicrosoft": "Continuer avec Microsoft"
   },
   "accountPage": {
     "title": "Mon compte",
