@@ -6,6 +6,9 @@ import { useRouter } from "next/navigation";
 import { apiAuthed, getToken, getWorkspace, clearSession } from "@/lib/api";
 import { PaymentMethod } from "@/components/payment-method";
 import { OrderCheckout } from "@/components/order-checkout";
+import { ConsumptionSection } from "@/components/consumption-section";
+import { ReferralsSection } from "@/components/referrals-section";
+import { SettingsSection } from "@/components/settings-section";
 
 type Dict = Record<string, string>;
 const APP_DOMAIN = process.env.NEXT_PUBLIC_APP_DOMAIN ?? "skyrh.app";
@@ -39,22 +42,16 @@ function StatusChip({ status }: { status: string }) {
   );
 }
 
-export function AccountPortal({ lang, dict }: { lang: string; dict: Dict }) {
-  const router = useRouter();
-  const [state, setState] = useState<"loading" | "out" | "ready">("loading");
+// Factures tab — invoice list + per-row PDF download (#6, base64 → Blob → download).
+function InvoicesTab({ dict }: { dict: Dict }) {
   const [invoices, setInvoices] = useState<Invoice[]>([]);
-  const [workspace, setWorkspace] = useState<string | null>(null);
+  const [state, setState] = useState<"loading" | "error" | "ready">("loading");
+  const [downloading, setDownloading] = useState<number | null>(null);
 
   useEffect(() => {
-    setWorkspace(getWorkspace());
-    if (!getToken()) {
-      setState("out");
-      return;
-    }
     apiAuthed("my_invoices").then((res) => {
       if (!res.ok) {
-        if (res.status === 401) clearSession();
-        setState("out");
+        setState("error");
         return;
       }
       setInvoices((res.data?.invoices as Invoice[]) ?? []);
@@ -62,15 +59,104 @@ export function AccountPortal({ lang, dict }: { lang: string; dict: Dict }) {
     });
   }, []);
 
+  async function download(id: number) {
+    setDownloading(id);
+    const res = await apiAuthed("my_invoice_pdf", { id });
+    setDownloading(null);
+    const b64 = res.data?.pdf_base64 as string | undefined;
+    if (!res.ok || !b64) return;
+    const bin = atob(b64);
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    const url = URL.createObjectURL(new Blob([bytes], { type: "application/pdf" }));
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = (res.data?.filename as string) || `facture-${id}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  if (state === "loading") return <p className="text-muted">{dict.loading}</p>;
+  if (state === "error") return <p className="text-sm text-[#b4441f]">{dict.payError}</p>;
+  if (invoices.length === 0) return <p className="text-muted">{dict.empty}</p>;
+
+  return (
+    <div className="overflow-x-auto rounded-xl border border-line">
+      <table className="w-full text-sm">
+        <thead className="bg-mist text-left text-xs uppercase text-muted">
+          <tr>
+            <th className="px-4 py-2.5 font-semibold">{dict.colPeriod}</th>
+            <th className="px-4 py-2.5 text-right font-semibold">{dict.colTotal}</th>
+            <th className="px-4 py-2.5 text-right font-semibold">{dict.colPaid}</th>
+            <th className="px-4 py-2.5 text-right font-semibold">{dict.colDue}</th>
+            <th className="px-4 py-2.5 font-semibold">{dict.colStatus}</th>
+            <th className="px-4 py-2.5 text-right font-semibold" />
+          </tr>
+        </thead>
+        <tbody>
+          {invoices.map((inv) => (
+            <tr key={inv.id} className="border-t border-line">
+              <td className="whitespace-nowrap px-4 py-2.5">
+                {inv.period_start} → {inv.period_end}
+              </td>
+              <td className="px-4 py-2.5 text-right">{money(inv.total, inv.currency)}</td>
+              <td className="px-4 py-2.5 text-right text-muted">{money(inv.paid, inv.currency)}</td>
+              <td className="px-4 py-2.5 text-right font-semibold">{money(inv.outstanding, inv.currency)}</td>
+              <td className="px-4 py-2.5">
+                <StatusChip status={inv.status} />
+              </td>
+              <td className="px-4 py-2.5 text-right">
+                <button
+                  onClick={() => download(inv.id)}
+                  disabled={downloading === inv.id}
+                  className="font-semibold text-sky hover:underline disabled:opacity-50"
+                >
+                  {downloading === inv.id ? dict.paySaving : dict.invDownload}
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+const TABS = [
+  { key: "consumption", anchor: "consumption" },
+  { key: "invoices", anchor: "invoices" },
+  { key: "payment", anchor: "payment" },
+  { key: "referrals", anchor: "referrals" },
+  { key: "settings", anchor: "settings" },
+];
+
+export function AccountPortal({ lang, dict }: { lang: string; dict: Dict }) {
+  const router = useRouter();
+  const [state, setState] = useState<"loading" | "out" | "ready">("loading");
+  const [workspace, setWorkspace] = useState<string | null>(null);
+  const [tab, setTab] = useState("consumption");
+
+  useEffect(() => {
+    setWorkspace(getWorkspace());
+    if (!getToken()) {
+      setState("out");
+      return;
+    }
+    setState("ready");
+    // Dropdown deep-links (#invoices, #payment, …) open the matching tab.
+    const h = window.location.hash.replace("#", "");
+    const match = TABS.find((t) => t.anchor === h);
+    if (match) setTab(match.key);
+  }, []);
+
   function logout() {
     clearSession();
     router.push(`/${lang}/login`);
   }
 
-  if (state === "loading") {
-    return <p className="text-muted">{dict.loading}</p>;
-  }
-
+  if (state === "loading") return <p className="text-muted">{dict.loading}</p>;
   if (state === "out") {
     return (
       <div>
@@ -85,70 +171,62 @@ export function AccountPortal({ lang, dict }: { lang: string; dict: Dict }) {
     );
   }
 
+  const tabLabel: Record<string, string> = {
+    consumption: dict.tabConsumption,
+    invoices: dict.invoicesTitle,
+    payment: dict.payTitle,
+    referrals: dict.tabReferrals,
+    settings: dict.tabSettings,
+  };
+
   return (
     <div>
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-navy">{dict.title}</h1>
           <p className="text-muted">{dict.subtitle}</p>
         </div>
-        <button onClick={logout} className="shrink-0 text-sm text-muted hover:text-ink">
-          {dict.logout}
-        </button>
+        <div className="flex items-center gap-3">
+          {workspace && (
+            <a
+              href={`https://${workspace}.${APP_DOMAIN}`}
+              className="inline-flex rounded-full border border-line px-4 py-2 text-sm font-semibold text-navy hover:border-sky"
+            >
+              {dict.openWorkspace} →
+            </a>
+          )}
+          <button onClick={logout} className="text-sm text-muted hover:text-ink">
+            {dict.logout}
+          </button>
+        </div>
       </div>
 
+      {/* pay_first banner — always visible while the order is pending */}
       <div className="mt-6">
         <OrderCheckout dict={dict} />
       </div>
 
-      {workspace && (
-        <a
-          href={`https://${workspace}.${APP_DOMAIN}`}
-          className="mt-4 inline-flex rounded-full border border-line px-4 py-2 text-sm font-semibold text-navy hover:border-sky"
-        >
-          {dict.openWorkspace} →
-        </a>
-      )}
+      <nav className="mt-6 flex flex-wrap gap-1 border-b border-line">
+        {TABS.map((t) => (
+          <button
+            key={t.key}
+            onClick={() => setTab(t.key)}
+            className={`-mb-px border-b-2 px-4 py-2.5 text-sm font-semibold transition-colors ${
+              tab === t.key ? "border-sky text-navy" : "border-transparent text-muted hover:text-ink"
+            }`}
+          >
+            {tabLabel[t.key]}
+          </button>
+        ))}
+      </nav>
 
-      <div id="payment" className="scroll-mt-20">
-        <PaymentMethod dict={dict} />
+      <div className="mt-6">
+        {tab === "consumption" && <ConsumptionSection dict={dict} />}
+        {tab === "invoices" && <InvoicesTab dict={dict} />}
+        {tab === "payment" && <PaymentMethod dict={dict} />}
+        {tab === "referrals" && <ReferralsSection dict={dict} />}
+        {tab === "settings" && <SettingsSection dict={dict} />}
       </div>
-
-      <h2 id="invoices" className="mt-8 scroll-mt-20 text-lg font-bold text-navy">{dict.invoicesTitle}</h2>
-      {invoices.length === 0 ? (
-        <p className="mt-3 text-muted">{dict.empty}</p>
-      ) : (
-        <div className="mt-3 overflow-x-auto rounded-xl border border-line">
-          <table className="w-full text-sm">
-            <thead className="bg-mist text-left text-xs uppercase text-muted">
-              <tr>
-                <th className="px-4 py-2.5 font-semibold">{dict.colPeriod}</th>
-                <th className="px-4 py-2.5 text-right font-semibold">{dict.colTotal}</th>
-                <th className="px-4 py-2.5 text-right font-semibold">{dict.colPaid}</th>
-                <th className="px-4 py-2.5 text-right font-semibold">{dict.colDue}</th>
-                <th className="px-4 py-2.5 font-semibold">{dict.colStatus}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {invoices.map((inv) => (
-                <tr key={inv.id} className="border-t border-line">
-                  <td className="whitespace-nowrap px-4 py-2.5">
-                    {inv.period_start} → {inv.period_end}
-                  </td>
-                  <td className="px-4 py-2.5 text-right">{money(inv.total, inv.currency)}</td>
-                  <td className="px-4 py-2.5 text-right text-muted">{money(inv.paid, inv.currency)}</td>
-                  <td className="px-4 py-2.5 text-right font-semibold">
-                    {money(inv.outstanding, inv.currency)}
-                  </td>
-                  <td className="px-4 py-2.5">
-                    <StatusChip status={inv.status} />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
     </div>
   );
 }
