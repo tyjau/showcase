@@ -116,11 +116,34 @@ jobs:
     # Secrets/vars résolus dans cet Environment (mêmes noms en staging et production).
     environment: ${{ needs.setup.outputs.env_name }}
     steps:
+      - name: 📥 Checkout (pour scripts/forge-deploy.mjs)
+        uses: actions/checkout@v6 # apporte le repo ; out/ (artefact) est ajouté par l'étape suivante
+
       - name: ⬇️ Download artifact (out/)
         uses: actions/download-artifact@v4
         with:
           name: showcase-out
           path: out
+
+      # ── Forge des COORDONNÉES de deploy depuis le snapshot (host/port/user/remote_dir/smoke_url)
+      #    → $GITHUB_ENV (SSH_HOST/PORT/USER/REMOTE_DIR/SMOKE_URL). « Dé-sature » GitHub : ces valeurs
+      #    voyagent dans le snapshot temporaire au lieu d'être des secrets/vars permanents par repo/env.
+      #    La CLÉ PRIVÉE SSH reste un secret permanent (non routée dans le snapshot). Fallback sur les
+      #    FRONT_SSH_*/vars permanents tant que rien n'est authored en DB → comportement INCHANGÉ.
+      - name: 🔧 Forge deploy coords (snapshot → env ; fallback secrets permanents)
+        env:
+          SNAP_STAGING: ${{ secrets.RELEASE_SNAPSHOT_STAGING }}
+          SNAP_PROD: ${{ secrets.RELEASE_SNAPSHOT_PROD }}
+          ENV_NAME: ${{ needs.setup.outputs.env_name }}
+          FORGE_REPO: ${{ github.repository }}
+          FB_HOST: ${{ secrets.FRONT_SSH_HOST }}
+          FB_PORT: ${{ secrets.FRONT_SSH_PORT }}
+          FB_USER: ${{ secrets.FRONT_SSH_USER }}
+          FB_REMOTE_DIR: ${{ vars.FRONT_SSH_REMOTE_DIR }}
+          FB_SMOKE_URL: ${{ vars.FRONT_SMOKE_URL }}
+        run: |
+          if [ "$ENV_NAME" = "production" ]; then export RELEASE_SNAPSHOT="$SNAP_PROD"; else export RELEASE_SNAPSHOT="$SNAP_STAGING"; fi
+          node scripts/forge-deploy.mjs
 
       # ── Déploiement PRIMAIRE : rsync-over-SSH (transfert DELTA incrémental), calqué sur le
       #    back. Bien plus rapide + fiable que le FTPS cPanel. FALLBACK FTPS à l'étape suivante
@@ -132,12 +155,9 @@ jobs:
         id: rsync
         continue-on-error: true
         env:
-          SSH_KEY: ${{ secrets.FRONT_SSH_KEY }}
-          SSH_HOST: ${{ secrets.FRONT_SSH_HOST }}
-          SSH_PORT: ${{ secrets.FRONT_SSH_PORT }}
-          SSH_USER: ${{ secrets.FRONT_SSH_USER }}
-          SSH_REMOTE_DIR: ${{ vars.FRONT_SSH_REMOTE_DIR }}
+          SSH_KEY: ${{ secrets.FRONT_SSH_KEY }} # clé privée = SEUL secret permanent (deploy key, posée une fois)
           FTP_DELETE: ${{ vars.FRONT_FTP_DELETE }}
+          # SSH_HOST / SSH_PORT / SSH_USER / SSH_REMOTE_DIR : forgés depuis le snapshot ($GITHUB_ENV ci-dessus)
         run: |
           if [ -z "$SSH_KEY" ] || [ -z "$SSH_HOST" ] || [ -z "$SSH_USER" ] || [ -z "$SSH_REMOTE_DIR" ]; then
             echo "ℹ️ Secrets SSH absents (FRONT_SSH_KEY/HOST/USER + var FRONT_SSH_REMOTE_DIR) — saut du rsync → fallback FTPS"; exit 1
@@ -211,11 +231,10 @@ jobs:
           echo "✅ Upload FTPS terminé → ${REMOTE_DIR}"
 
       # ── Smoke post-deploy : l'index Next doit être servi (200 + markup Next/HTML). ──
+      #    SMOKE_URL forgé depuis le snapshot ($GITHUB_ENV ; fallback var permanente). Vide → sauté.
       - name: 🩺 Smoke test (showcase)
-        env:
-          SMOKE_URL: ${{ vars.FRONT_SMOKE_URL }}
         run: |
-          if [ -z "$SMOKE_URL" ]; then echo "ℹ️ FRONT_SMOKE_URL non défini — smoke ignoré (optionnel)"; exit 0; fi
+          if [ -z "${SMOKE_URL:-}" ]; then echo "ℹ️ SMOKE_URL non défini — smoke ignoré (optionnel)"; exit 0; fi
           echo "→ $SMOKE_URL"
           # Retry : l'hôte peut throttler/ralentir l'IP du runner (faux négatif sur un deploy OK).
           ok=0; code=000
