@@ -80,6 +80,21 @@ jobs:
       - name: 📦 Install
         run: npm ci || npm install
 
+      # ── Forge : RELEASE_SNAPSHOT_<ENV> (secret repo posé par Guardian) → env de build :
+      #    NEXT_PUBLIC_API_BASE (inliné, funnel self-signup) + GUARDIAN_URL/CATALOG_API_KEY
+      #    (server-side, pour le fetch du catalogue AU BUILD — lib/catalog.ts). On passe les
+      #    deux secrets et on choisit selon l'env (les secrets ne s'indexent pas dynamiquement).
+      - name: 🔧 Forge config (depuis le snapshot)
+        env:
+          SNAP_STAGING: ${{ secrets.RELEASE_SNAPSHOT_STAGING }}
+          SNAP_PROD: ${{ secrets.RELEASE_SNAPSHOT_PROD }}
+          ENV_NAME: ${{ needs.setup.outputs.env_name }}
+          FORGE_REPO: ${{ github.repository }}
+        run: |
+          if [ "$ENV_NAME" = "production" ]; then export RELEASE_SNAPSHOT="$SNAP_PROD"; else export RELEASE_SNAPSHOT="$SNAP_STAGING"; fi
+          if [ -z "$RELEASE_SNAPSHOT" ]; then echo "⚠ pas de RELEASE_SNAPSHOT pour $ENV_NAME → build avec defaults dev"; fi
+          node scripts/forge-config.mjs
+
       - name: 🏗️ Build (Next static export → out/)
         run: |
           NODE_ENV=production npm run build
@@ -158,8 +173,11 @@ jobs:
       # ── FALLBACK FTPS — UNIQUEMENT si le rsync ci-dessus a échoué (ou secrets SSH absents).
       #    Exclut 'guardian' et 'api' (si un back voisin partage le docroot) sinon --delete
       #    l'écraserait. --delete est OPT-IN (FRONT_FTP_DELETE='true') : par défaut additif. ──
+      # Opt-in : tant que FRONT_FTP_* n'est pas validé, marteler des auth FTP ratées (530) fait
+      # bannir l'IP du runner par le fail2ban du host (→ rsync tombe en timeout). Poser la var
+      # FRONT_FTP_ENABLED=true une fois les creds FTP confirmés.
       - name: 🚀 Fallback FTPS (si rsync échoue)
-        if: steps.rsync.outcome == 'failure'
+        if: steps.rsync.outcome == 'failure' && vars.FRONT_FTP_ENABLED == 'true'
         env:
           FTP_HOST: ${{ secrets.FRONT_FTP_HOST }}
           FTP_USER: ${{ secrets.FRONT_FTP_USER }}
@@ -199,10 +217,16 @@ jobs:
         run: |
           if [ -z "$SMOKE_URL" ]; then echo "ℹ️ FRONT_SMOKE_URL non défini — smoke ignoré (optionnel)"; exit 0; fi
           echo "→ $SMOKE_URL"
-          code=$(curl -s -o /tmp/idx.html -w '%{http_code}' --max-time 30 "$SMOKE_URL" || echo 000)
-          echo "HTTP $code"
-          if printf '%s' "$code" | grep -q '^2' && grep -qiE '__next|<!doctype html|<html' /tmp/idx.html; then
+          # Retry : l'hôte peut throttler/ralentir l'IP du runner (faux négatif sur un deploy OK).
+          ok=0; code=000
+          for i in 1 2 3 4 5; do
+            code=$(curl -s -o /tmp/idx.html -w '%{http_code}' --max-time 20 "$SMOKE_URL" || echo 000)
+            echo "tentative $i: HTTP $code"
+            if printf '%s' "$code" | grep -q '^2' && grep -qiE '__next|<!doctype html|<html' /tmp/idx.html; then ok=1; break; fi
+            sleep 10
+          done
+          if [ "$ok" = "1" ]; then
             echo "✅ site servi (index Next)"
           else
-            echo "❌ smoke KO (HTTP $code, ou index Next absent)"; sed -n '1,20p' /tmp/idx.html; exit 1
+            echo "❌ smoke KO après 5 tentatives (dernier HTTP $code, ou index Next absent)"; sed -n '1,20p' /tmp/idx.html; exit 1
           fi

@@ -1,0 +1,37 @@
+name: CI (showcase)
+
+# Validation sur push de branche + PR : lint + typecheck.
+# PAS de build complet ici : l'export prod fetch le catalogue AU BUILD
+# (lib/catalog.ts → GUARDIAN_URL/CATALOG_API_KEY), injoignable sans snapshot/backend.
+# Le build complet vit dans la CD (deploy.yml, piloté par tag avec la forge).
+# Les tags release-* ne déclenchent pas cette CI (filtre `branches`).
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+concurrency:
+  group: ci-showcase-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: "20"
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+      - name: 📦 Install
+        run: npm ci || npm install
+
+      - name: 🔎 Lint (next lint)
+        run: npm run lint
+
+      - name: 🧪 Typecheck (tsc --noEmit)
+        run: npx tsc --noEmit
