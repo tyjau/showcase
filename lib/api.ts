@@ -106,6 +106,22 @@ export async function apiLogin(
   }
 }
 
+// Persist a session minted elsewhere (e.g. signup_confirm auto-login) so the funnel can
+// land a new pay_first customer authenticated on /account without a second login round-trip.
+export function storeSession(
+  workspace: string,
+  accessToken: string,
+  refreshToken?: string | null,
+): void {
+  try {
+    localStorage.setItem(TOKEN_KEY, accessToken);
+    if (refreshToken) localStorage.setItem(REFRESH_KEY, refreshToken);
+    if (workspace) localStorage.setItem(WORKSPACE_KEY, workspace);
+  } catch {
+    /* storage unavailable */
+  }
+}
+
 function getRefresh(): string | null {
   if (typeof window === "undefined") return null;
   try {

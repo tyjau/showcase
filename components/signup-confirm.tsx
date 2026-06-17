@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Check } from "lucide-react";
-import { apiPost } from "@/lib/api";
+import { apiPost, storeSession } from "@/lib/api";
 
 type Dict = Record<string, string>;
 
@@ -18,6 +19,7 @@ export function SignupConfirm({
   lang: string;
   dict: Dict;
 }) {
+  const router = useRouter();
   const [token, setToken] = useState("");
   const [pw, setPw] = useState("");
   const [pw2, setPw2] = useState("");
@@ -46,10 +48,23 @@ export function SignupConfirm({
     setSubmitting(true);
     setError(null);
     const res = await apiPost("signup_confirm", { token, new_password: pw });
-    setSubmitting(false);
     if (res.ok) {
+      // Auto-login: signup_confirm mints a billing session for pay_first signups. Land the
+      // customer straight on /account (the pay screen) instead of bouncing through login.
+      const d = res.data || {};
+      if (d.access_token) {
+        storeSession(
+          (d.subdomain as string) ?? "",
+          d.access_token as string,
+          (d.refresh_token as string) ?? null,
+        );
+        router.replace(`/${lang}/account`);
+        return;
+      }
+      setSubmitting(false);
       setDone((res.data?.subdomain as string) ?? "");
     } else {
+      setSubmitting(false);
       setError(res.error ?? "Something went wrong");
     }
   }
