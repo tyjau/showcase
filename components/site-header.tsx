@@ -3,6 +3,7 @@ import { BrandLogo } from "./brand-logo";
 import { LocaleSwitcher } from "./locale-switcher";
 import { CurrencySwitcher } from "./currency-switcher";
 import { MobileNav } from "./mobile-nav";
+import { HeaderAuthLink } from "./header-auth-link";
 import type { Locale } from "@/lib/i18n";
 
 type NavDict = {
@@ -13,6 +14,7 @@ type NavDict = {
   company: string;
   resources: string;
   signin: string;
+  account: string;
   startTrial: string;
 };
 
@@ -41,12 +43,12 @@ export function SiteHeader({ lang, dict }: { lang: Locale; dict: NavDict }) {
         <div className="flex items-center gap-3 text-sm">
           <CurrencySwitcher className="hidden sm:inline-flex" />
           <LocaleSwitcher current={lang} />
-          <Link
-            href={`/${lang}/login`}
+          <HeaderAuthLink
+            lang={lang}
+            signinLabel={dict.signin}
+            accountLabel={dict.account}
             className="hidden text-navy hover:text-sky sm:inline"
-          >
-            {dict.signin}
-          </Link>
+          />
           <Link
             href={`/${lang}/signup`}
             className="rounded-full bg-sky px-4 py-2 font-semibold text-white transition-colors hover:bg-[#0d8bbd]"
@@ -55,8 +57,14 @@ export function SiteHeader({ lang, dict }: { lang: Locale; dict: NavDict }) {
           </Link>
           <MobileNav
             items={nav}
-            signin={dict.signin}
-            signinHref={`/${lang}/login`}
+            authLink={
+              <HeaderAuthLink
+                lang={lang}
+                signinLabel={dict.signin}
+                accountLabel={dict.account}
+                className="mt-1 border-t border-line px-4 pb-1 pt-3 text-navy"
+              />
+            }
             className="md:hidden"
           />
         </div>

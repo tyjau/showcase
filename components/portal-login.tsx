@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { apiLogin } from "@/lib/api";
+import { apiLogin, getToken } from "@/lib/api";
 
 type Dict = Record<string, string>;
 
@@ -20,6 +20,12 @@ export function PortalLogin({ lang, dict }: { lang: string; dict: Dict }) {
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Already signed in (token present) → straight to the account portal, so the header
+  // "account" link and re-visiting /login don't show the form pointlessly.
+  useEffect(() => {
+    if (getToken()) router.replace(`/${lang}/account`);
+  }, [lang, router]);
 
   const slug = workspace.trim().toLowerCase().replace(/[^a-z0-9-]/g, "");
   const canSubmit = !!slug && !!email.trim() && !!password;

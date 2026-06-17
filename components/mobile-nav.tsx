@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Menu } from "lucide-react";
+import type { ReactNode } from "react";
 
 type NavItem = { label: string; href: string };
 
@@ -7,13 +8,11 @@ type NavItem = { label: string; href: string };
 // static export and avoids a fragile client component for a simple menu.
 export function MobileNav({
   items,
-  signin,
-  signinHref,
+  authLink,
   className = "",
 }: {
   items: NavItem[];
-  signin: string;
-  signinHref: string;
+  authLink: ReactNode;
   className?: string;
 }) {
   return (
@@ -35,12 +34,7 @@ export function MobileNav({
               {n.label}
             </Link>
           ))}
-          <Link
-            href={signinHref}
-            className="mt-1 border-t border-line px-4 pb-1 pt-3 text-navy"
-          >
-            {signin}
-          </Link>
+          {authLink}
         </nav>
       </div>
     </details>
