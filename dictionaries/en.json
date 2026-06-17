@@ -266,7 +266,17 @@
     "logout": "Sign out",
     "loading": "Loading…",
     "signedOut": "You're not signed in.",
-    "signin": "Sign in"
+    "signin": "Sign in",
+    "payTitle": "Payment method",
+    "payNone": "No card on file.",
+    "payExpiry": "exp.",
+    "payAdd": "Add a card",
+    "payUpdate": "Update card",
+    "payDisabled": "Card payments aren't enabled for your workspace yet.",
+    "payError": "Something went wrong. Please try again.",
+    "paySubmit": "Save card",
+    "paySaving": "Saving…",
+    "payCancel": "Cancel"
   },
   "features": {
     "heading": "Everything your HR team needs",

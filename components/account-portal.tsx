@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { apiAuthed, getToken, getWorkspace, clearSession } from "@/lib/api";
+import { PaymentMethod } from "@/components/payment-method";
 
 type Dict = Record<string, string>;
 const APP_DOMAIN = process.env.NEXT_PUBLIC_APP_DOMAIN ?? "skyrh.app";
@@ -103,6 +104,8 @@ export function AccountPortal({ lang, dict }: { lang: string; dict: Dict }) {
           {dict.openWorkspace} →
         </a>
       )}
+
+      <PaymentMethod dict={dict} />
 
       <h2 className="mt-8 text-lg font-bold text-navy">{dict.invoicesTitle}</h2>
       {invoices.length === 0 ? (

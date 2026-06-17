@@ -266,7 +266,17 @@
     "logout": "Se déconnecter",
     "loading": "Chargement…",
     "signedOut": "Vous n'êtes pas connecté.",
-    "signin": "Se connecter"
+    "signin": "Se connecter",
+    "payTitle": "Moyen de paiement",
+    "payNone": "Aucune carte enregistrée.",
+    "payExpiry": "exp.",
+    "payAdd": "Ajouter une carte",
+    "payUpdate": "Mettre à jour la carte",
+    "payDisabled": "Le paiement par carte n'est pas encore activé sur votre espace.",
+    "payError": "Une erreur est survenue. Veuillez réessayer.",
+    "paySubmit": "Enregistrer la carte",
+    "paySaving": "Enregistrement…",
+    "payCancel": "Annuler"
   },
   "features": {
     "heading": "Tout ce dont votre équipe RH a besoin",
