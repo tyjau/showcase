@@ -1,0 +1,8 @@
+{
+  "product": "tyjau/showcase",
+  "keys": [
+    "api_base_url",
+    "catalog_api_key",
+    "guardian_url"
+  ]
+}
