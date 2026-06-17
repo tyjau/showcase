@@ -27,7 +27,8 @@
     "startTrial": "Essai gratuit",
     "logout": "Se déconnecter",
     "invoices": "Factures",
-    "paymentMethod": "Moyen de paiement"
+    "paymentMethod": "Moyen de paiement",
+    "partner": "Espace partenaire"
   },
   "hero": {
     "eyebrow": "Plateforme RH & paie",
@@ -273,6 +274,7 @@
     "mEarned": "Total acquis",
     "codeLabel": "Votre code de parrainage",
     "rewardLabel": "Récompense",
+    "cobrandLabel": "Co-branding",
     "shareLabel": "Lien de parrainage à partager",
     "copy": "Copier",
     "copied": "Copié !",

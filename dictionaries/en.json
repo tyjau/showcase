@@ -27,7 +27,8 @@
     "startTrial": "Start free trial",
     "logout": "Sign out",
     "invoices": "Invoices",
-    "paymentMethod": "Payment method"
+    "paymentMethod": "Payment method",
+    "partner": "Partner area"
   },
   "hero": {
     "eyebrow": "HR & payroll platform",
@@ -273,6 +274,7 @@
     "mEarned": "Earned to date",
     "codeLabel": "Your referral code",
     "rewardLabel": "Reward",
+    "cobrandLabel": "Co-branding",
     "shareLabel": "Referral link to share",
     "copy": "Copy",
     "copied": "Copied!",

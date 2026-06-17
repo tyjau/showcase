@@ -22,6 +22,7 @@ type Data = {
   currency: string | null;
   reward_total: number;
   referrals: Referral[];
+  brand: { logo_url: string | null; primary_color: string | null; secondary_color: string | null; domain: string | null } | null;
 };
 
 function Metric({ label, value }: { label: string; value: string }) {
@@ -131,6 +132,21 @@ export function PartnerPortal({ lang, dict }: { lang: string; dict: Dict }) {
               </div>
             </div>
           </div>
+
+          {d.brand && (d.brand.primary_color || d.brand.domain) && (
+            <div className="mt-4 rounded-xl border border-line p-5">
+              <p className="text-xs uppercase tracking-wide text-muted">{dict.cobrandLabel}</p>
+              <div className="mt-2 flex items-center gap-3 text-sm text-muted">
+                {d.brand.primary_color && (
+                  <span className="inline-block h-6 w-6 rounded-full border border-line" style={{ backgroundColor: d.brand.primary_color }} />
+                )}
+                {d.brand.secondary_color && (
+                  <span className="inline-block h-6 w-6 rounded-full border border-line" style={{ backgroundColor: d.brand.secondary_color }} />
+                )}
+                {d.brand.domain && <span>{d.brand.domain}</span>}
+              </div>
+            </div>
+          )}
 
           <h2 className="mt-8 text-lg font-bold text-navy">{dict.referralsTitle}</h2>
           {referrals.length === 0 ? (

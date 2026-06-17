@@ -13,6 +13,7 @@ type Labels = {
   logout: string;
   invoices: string;
   paymentMethod: string;
+  partner: string;
 };
 
 // Auth-aware header cluster. Signed out (and on the server / first client paint, since
@@ -60,6 +61,7 @@ export function HeaderAccount({ lang, labels }: { lang: string; labels: Labels }
     { label: labels.account, href: `/${lang}/account` },
     { label: labels.invoices, href: `/${lang}/account#invoices` },
     { label: labels.paymentMethod, href: `/${lang}/account#payment` },
+    { label: labels.partner, href: `/${lang}/partner` },
   ];
 
   return (

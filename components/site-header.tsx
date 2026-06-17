@@ -20,6 +20,7 @@ type NavDict = {
   logout: string;
   invoices: string;
   paymentMethod: string;
+  partner: string;
 };
 
 export function SiteHeader({ lang, dict }: { lang: Locale; dict: NavDict }) {
@@ -56,6 +57,7 @@ export function SiteHeader({ lang, dict }: { lang: Locale; dict: NavDict }) {
               logout: dict.logout,
               invoices: dict.invoices,
               paymentMethod: dict.paymentMethod,
+              partner: dict.partner,
             }}
           />
           <MobileNav
