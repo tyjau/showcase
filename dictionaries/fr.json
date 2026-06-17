@@ -24,7 +24,10 @@
     "partners": "Partenaires",
     "signin": "Se connecter",
     "account": "Mon compte",
-    "startTrial": "Essai gratuit"
+    "startTrial": "Essai gratuit",
+    "logout": "Se déconnecter",
+    "invoices": "Factures",
+    "paymentMethod": "Moyen de paiement"
   },
   "hero": {
     "eyebrow": "Plateforme RH & paie",

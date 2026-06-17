@@ -110,9 +110,11 @@ export function AccountPortal({ lang, dict }: { lang: string; dict: Dict }) {
         </a>
       )}
 
-      <PaymentMethod dict={dict} />
+      <div id="payment" className="scroll-mt-20">
+        <PaymentMethod dict={dict} />
+      </div>
 
-      <h2 className="mt-8 text-lg font-bold text-navy">{dict.invoicesTitle}</h2>
+      <h2 id="invoices" className="mt-8 scroll-mt-20 text-lg font-bold text-navy">{dict.invoicesTitle}</h2>
       {invoices.length === 0 ? (
         <p className="mt-3 text-muted">{dict.empty}</p>
       ) : (

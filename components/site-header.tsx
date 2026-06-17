@@ -4,6 +4,7 @@ import { LocaleSwitcher } from "./locale-switcher";
 import { CurrencySwitcher } from "./currency-switcher";
 import { MobileNav } from "./mobile-nav";
 import { HeaderAuthLink } from "./header-auth-link";
+import { HeaderAccount } from "./header-account";
 import type { Locale } from "@/lib/i18n";
 
 type NavDict = {
@@ -16,6 +17,9 @@ type NavDict = {
   signin: string;
   account: string;
   startTrial: string;
+  logout: string;
+  invoices: string;
+  paymentMethod: string;
 };
 
 export function SiteHeader({ lang, dict }: { lang: Locale; dict: NavDict }) {
@@ -43,18 +47,17 @@ export function SiteHeader({ lang, dict }: { lang: Locale; dict: NavDict }) {
         <div className="flex items-center gap-3 text-sm">
           <CurrencySwitcher className="hidden sm:inline-flex" />
           <LocaleSwitcher current={lang} />
-          <HeaderAuthLink
+          <HeaderAccount
             lang={lang}
-            signinLabel={dict.signin}
-            accountLabel={dict.account}
-            className="hidden text-navy hover:text-sky sm:inline"
+            labels={{
+              signin: dict.signin,
+              account: dict.account,
+              startTrial: dict.startTrial,
+              logout: dict.logout,
+              invoices: dict.invoices,
+              paymentMethod: dict.paymentMethod,
+            }}
           />
-          <Link
-            href={`/${lang}/signup`}
-            className="rounded-full bg-sky px-4 py-2 font-semibold text-white transition-colors hover:bg-[#0d8bbd]"
-          >
-            {dict.startTrial}
-          </Link>
           <MobileNav
             items={nav}
             authLink={

@@ -24,7 +24,10 @@
     "partners": "Partners",
     "signin": "Sign in",
     "account": "My account",
-    "startTrial": "Start free trial"
+    "startTrial": "Start free trial",
+    "logout": "Sign out",
+    "invoices": "Invoices",
+    "paymentMethod": "Payment method"
   },
   "hero": {
     "eyebrow": "HR & payroll platform",
