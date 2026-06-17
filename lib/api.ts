@@ -79,7 +79,10 @@ export async function apiLogin(
     const res = await fetch(`${apiUrl("login")}&company=${encodeURIComponent(workspace)}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+      // scope=billing: the portal only needs a session for invoices + checkout, so a
+      // pending pay_first tenant can authenticate to pay (the HR module gate is skipped
+      // server-side; HR access stays gated on order_status).
+      body: JSON.stringify({ email, password, scope: "billing" }),
     });
     const json = (await res.json().catch(() => ({}))) as {
       meta?: { code?: number };
