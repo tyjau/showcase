@@ -12,7 +12,7 @@
 // No-op locally (GITHUB_ENV unset) and when no snapshot is present (keeps the dev defaults,
 // e.g. saas.test) — a production CD without a snapshot just logs a warning.
 //   Local: `RELEASE_SNAPSHOT='{...}' node scripts/forge-config.mjs`
-import { appendFileSync } from "node:fs";
+import { appendFileSync, readFileSync } from "node:fs";
 
 const repo = process.env.FORGE_REPO || "tyjau/showcase";
 let snap = {};
@@ -24,6 +24,19 @@ try {
 }
 
 const cfg = snap?.products?.[repo]?.config ?? {};
+
+// Garde-fou complétude (rempart dur au deploy) : si une config produit est fournie — déploiement
+// RÉEL, pas le mode mock à config vide — elle doit porter TOUTES les clés du contrat
+// deploy/config-keys.json, sinon le bundle partirait avec des valeurs vides. Config vide → exempt.
+if (Object.keys(cfg).length > 0) {
+  let contract = [];
+  try { contract = JSON.parse(readFileSync("deploy/config-keys.json", "utf8")).keys ?? []; } catch { /* contrat absent → on ne bloque pas */ }
+  const missing = contract.filter((k) => cfg[k] == null || cfg[k] === "");
+  if (missing.length) {
+    console.error(`forge: config_json incomplet vs contrat — clés requises manquantes : ${missing.join(", ")}`);
+    process.exit(1);
+  }
+}
 const apiBase = cfg.api_base_url ?? cfg.apiBaseUrl ?? process.env.NEXT_PUBLIC_API_BASE ?? "";
 // Catalog fetch target defaults to the same backend as the public API.
 const guardianUrl = cfg.guardian_url ?? cfg.guardianUrl ?? apiBase;
