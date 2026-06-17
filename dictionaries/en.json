@@ -289,6 +289,8 @@
     "tabReferrals": "Referrals",
     "tabSettings": "Settings",
     "invDownload": "Download",
+    "invPay": "Pay",
+    "invPayTitle": "Pay invoice",
     "consSeats": "Billed seats",
     "consModules": "Active modules",
     "consProjected": "Period total",

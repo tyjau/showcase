@@ -9,6 +9,7 @@ import { OrderCheckout } from "@/components/order-checkout";
 import { ConsumptionSection } from "@/components/consumption-section";
 import { ReferralsSection } from "@/components/referrals-section";
 import { SettingsSection } from "@/components/settings-section";
+import { InvoicePayBox } from "@/components/invoice-pay-box";
 
 type Dict = Record<string, string>;
 const APP_DOMAIN = process.env.NEXT_PUBLIC_APP_DOMAIN ?? "skyrh.app";
@@ -47,8 +48,10 @@ function InvoicesTab({ dict }: { dict: Dict }) {
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [state, setState] = useState<"loading" | "error" | "ready">("loading");
   const [downloading, setDownloading] = useState<number | null>(null);
+  const [paying, setPaying] = useState<{ id: number; secret: string; pub: string } | null>(null);
+  const [payErr, setPayErr] = useState<string | null>(null);
 
-  useEffect(() => {
+  function load() {
     apiAuthed("my_invoices").then((res) => {
       if (!res.ok) {
         setState("error");
@@ -57,7 +60,21 @@ function InvoicesTab({ dict }: { dict: Dict }) {
       setInvoices((res.data?.invoices as Invoice[]) ?? []);
       setState("ready");
     });
+  }
+  useEffect(() => {
+    load();
   }, []);
+
+  async function pay(id: number) {
+    setPayErr(null);
+    const res = await apiAuthed("pay_invoice", { invoice_id: id });
+    const d = res.data || {};
+    if (!res.ok || !d.client_secret || !d.publishable_key) {
+      setPayErr(dict.payError);
+      return;
+    }
+    setPaying({ id, secret: d.client_secret as string, pub: d.publishable_key as string });
+  }
 
   async function download(id: number) {
     setDownloading(id);
@@ -83,6 +100,7 @@ function InvoicesTab({ dict }: { dict: Dict }) {
   if (invoices.length === 0) return <p className="text-muted">{dict.empty}</p>;
 
   return (
+    <>
     <div className="overflow-x-auto rounded-xl border border-line">
       <table className="w-full text-sm">
         <thead className="bg-mist text-left text-xs uppercase text-muted">
@@ -108,19 +126,44 @@ function InvoicesTab({ dict }: { dict: Dict }) {
                 <StatusChip status={inv.status} />
               </td>
               <td className="px-4 py-2.5 text-right">
-                <button
-                  onClick={() => download(inv.id)}
-                  disabled={downloading === inv.id}
-                  className="font-semibold text-sky hover:underline disabled:opacity-50"
-                >
-                  {downloading === inv.id ? dict.paySaving : dict.invDownload}
-                </button>
+                <div className="flex justify-end gap-3">
+                  {inv.outstanding > 0 && (
+                    <button onClick={() => pay(inv.id)} className="font-semibold text-sky hover:underline">
+                      {dict.invPay}
+                    </button>
+                  )}
+                  <button
+                    onClick={() => download(inv.id)}
+                    disabled={downloading === inv.id}
+                    className="font-semibold text-sky hover:underline disabled:opacity-50"
+                  >
+                    {downloading === inv.id ? dict.paySaving : dict.invDownload}
+                  </button>
+                </div>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
+    {payErr && <p className="mt-3 text-sm text-[#b4441f]">{payErr}</p>}
+    {paying && (
+      <div className="mt-4 rounded-xl border border-[#f0d9a8] bg-[#fdf6e7] p-5">
+        <p className="font-semibold text-navy">
+          {dict.invPayTitle} #{paying.id}
+        </p>
+        <InvoicePayBox
+          dict={dict}
+          clientSecret={paying.secret}
+          publishableKey={paying.pub}
+          onPaid={() => {
+            setPaying(null);
+            load();
+          }}
+        />
+      </div>
+    )}
+    </>
   );
 }
 
