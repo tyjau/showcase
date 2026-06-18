@@ -143,6 +143,36 @@
       "privacy": "Privacy Policy",
       "cookies": "Cookie Policy",
       "security": "Security"
+    },
+    "content": {
+      "terms": [
+        { "h": "1. Purpose", "p": "These terms govern access to and use of the SkyRH platform (SaaS HR and payroll management) by the customer and the users it authorizes." },
+        { "h": "2. Account and access", "p": "The customer is responsible for keeping its credentials confidential and for the actions taken from its workspace. Access is per-user and limited by each user's assigned rights." },
+        { "h": "3. Subscription and billing", "p": "The service is billed per active employee according to the chosen plan, prorated and in the selected currency. Non-payment may lead to module suspension and then account closure." },
+        { "h": "4. Availability and support", "p": "SkyRH uses reasonable efforts to keep the service available, without guaranteeing uninterrupted access. Support is provided at the level set by the subscribed plan." },
+        { "h": "5. Data and privacy", "p": "The processing of personal data is described in the Privacy Policy. The customer remains the data controller for its own employees' data." },
+        { "h": "6. Termination", "p": "The customer may request account closure from its workspace. Access is kept until the end of the current period, after which data is erased in line with the retention policy." },
+        { "h": "7. Governing law", "p": "These terms are governed by the law of SkyRH's place of establishment, and any dispute falls under the competent courts of that jurisdiction." }
+      ],
+      "privacy": [
+        { "h": "1. Data we collect", "p": "Account data (identity, email, company), service usage data and, on the customer's behalf, the HR and payroll data of its employees." },
+        { "h": "2. Purposes and legal basis", "p": "Providing and improving the service, billing, support and meeting legal obligations. Legal bases: performance of the contract, legitimate interest and legal obligations." },
+        { "h": "3. Retention", "p": "Data is kept for the duration of the contractual relationship, then for a limited retention period, before erasure or anonymization." },
+        { "h": "4. Processors", "p": "Processors (hosting, payment, email) may process data on our behalf under compliant agreements ensuring an adequate level of protection." },
+        { "h": "5. Your rights", "p": "Under the GDPR and applicable laws, you have rights of access, rectification, erasure, restriction, portability and objection." },
+        { "h": "6. Contact", "p": "To exercise your rights or for any question about your personal data, write to privacy@skyrh.com." }
+      ],
+      "cookies": [
+        { "h": "1. What is a cookie", "p": "A cookie is a small file placed on your device to let the site work and, where relevant, to measure how it is used." },
+        { "h": "2. Cookies we use", "p": "Strictly necessary cookies (session, security, language and currency preferences) and, subject to your consent, audience-measurement cookies." },
+        { "h": "3. Managing consent", "p": "Non-essential cookies are only set with your consent, which you can withdraw at any time from your browser settings." }
+      ],
+      "security": [
+        { "h": "1. Hosting and encryption", "p": "Data is hosted on secure infrastructure. Traffic is encrypted in transit (TLS) and sensitive secrets are protected at rest." },
+        { "h": "2. Access control", "p": "Access is governed by roles (RBAC) and isolated per company (multi-tenant). Sensitive actions are recorded in an audit log." },
+        { "h": "3. Backups and continuity", "p": "Regular backups are taken, and restore and business-continuity procedures are maintained." },
+        { "h": "4. Incident handling", "p": "In the event of a data breach, a notification procedure compliant with applicable legal obligations is applied." }
+      ]
     }
   },
   "platformPage": {

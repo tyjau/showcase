@@ -27,11 +27,12 @@ export default async function ResourcesPage({
   const t = await getDictionary(params.lang);
   const lang = params.lang;
   const r = t.resourcesPage;
+  // Real destinations (the cards previously linked back to /resources — dead/circular).
   const hrefs = [
-    `/${lang}/resources`,
-    `/${lang}/resources`,
+    `/${lang}/features`,
+    `/${lang}/company#contact`,
     `/${lang}/legal/security`,
-    `/${lang}/resources`,
+    `/${lang}/company#contact`,
   ];
 
   return (

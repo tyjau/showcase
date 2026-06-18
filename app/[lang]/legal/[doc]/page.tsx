@@ -36,6 +36,9 @@ export default async function LegalPage({
   const lang = params.lang;
   const docs = t.legalPage.docs as Record<string, string>;
   const title = docs[params.doc] ?? params.doc;
+  const sections =
+    (t.legalPage as { content?: Record<string, { h: string; p: string }[]> })
+      .content?.[params.doc] ?? [];
 
   return (
     <main className="mx-auto max-w-3xl px-5 py-14">
@@ -58,7 +61,18 @@ export default async function LegalPage({
         {t.legalPage.draft}
       </div>
 
-      <p className="mt-6 leading-relaxed text-ink">{t.legalPage.body}</p>
+      <div className="mt-8 space-y-7">
+        {sections.length > 0 ? (
+          sections.map((s, i) => (
+            <section key={i}>
+              <h2 className="text-lg font-bold text-navy">{s.h}</h2>
+              <p className="mt-2 leading-relaxed text-ink">{s.p}</p>
+            </section>
+          ))
+        ) : (
+          <p className="leading-relaxed text-ink">{t.legalPage.body}</p>
+        )}
+      </div>
 
       <nav className="mt-10 flex flex-wrap gap-2 border-t border-line pt-6">
         {DOCS.map((d) => (

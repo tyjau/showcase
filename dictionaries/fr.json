@@ -143,6 +143,36 @@
       "privacy": "Politique de confidentialité",
       "cookies": "Politique des cookies",
       "security": "Sécurité"
+    },
+    "content": {
+      "terms": [
+        { "h": "1. Objet", "p": "Les présentes conditions régissent l'accès et l'usage de la plateforme SkyRH (gestion RH et paie en mode SaaS) par le client et les utilisateurs qu'il habilite." },
+        { "h": "2. Compte et accès", "p": "Le client est responsable de la confidentialité de ses identifiants et des actions réalisées depuis son espace. Les accès sont nominatifs et limités par les droits attribués à chaque utilisateur." },
+        { "h": "3. Abonnement et facturation", "p": "Le service est facturé par employé actif selon le plan souscrit, au prorata et dans la devise choisie. Tout défaut de paiement peut entraîner la suspension des modules puis la fermeture du compte." },
+        { "h": "4. Disponibilité et support", "p": "SkyRH met en œuvre des moyens raisonnables pour assurer la disponibilité du service, sans garantie d'absence d'interruption. Le support est fourni selon le niveau prévu par le plan souscrit." },
+        { "h": "5. Données et confidentialité", "p": "Le traitement des données personnelles est décrit dans la Politique de confidentialité. Le client demeure responsable de traitement pour les données de ses propres employés." },
+        { "h": "6. Résiliation", "p": "Le client peut demander la fermeture de son compte depuis son espace. L'accès est maintenu jusqu'au terme de la période en cours, puis les données sont effacées conformément à la politique de conservation." },
+        { "h": "7. Droit applicable", "p": "Les présentes conditions sont régies par le droit applicable au lieu d'établissement de SkyRH. Tout litige relève des juridictions compétentes de ce ressort." }
+      ],
+      "privacy": [
+        { "h": "1. Données collectées", "p": "Données de compte (identité, e-mail, société), données d'usage du service et, pour le compte du client, les données RH et de paie relatives à ses employés." },
+        { "h": "2. Finalités et base légale", "p": "Fourniture et amélioration du service, facturation, support et respect des obligations légales. Bases légales : exécution du contrat, intérêt légitime et obligations légales." },
+        { "h": "3. Durée de conservation", "p": "Les données sont conservées pendant la durée de la relation contractuelle, puis durant une période de rétention limitée, avant effacement ou anonymisation." },
+        { "h": "4. Sous-traitants", "p": "Des sous-traitants (hébergement, paiement, e-mailing) peuvent traiter des données pour notre compte, dans le cadre d'accords conformes garantissant un niveau de protection adéquat." },
+        { "h": "5. Vos droits", "p": "Conformément au RGPD et aux lois applicables, vous disposez des droits d'accès, de rectification, d'effacement, de limitation, de portabilité et d'opposition." },
+        { "h": "6. Contact", "p": "Pour exercer vos droits ou pour toute question relative à vos données personnelles, écrivez à privacy@skyrh.com." }
+      ],
+      "cookies": [
+        { "h": "1. Qu'est-ce qu'un cookie", "p": "Un cookie est un petit fichier déposé sur votre appareil pour permettre au site de fonctionner et, le cas échéant, d'en mesurer l'usage." },
+        { "h": "2. Cookies utilisés", "p": "Cookies strictement nécessaires (session, sécurité, préférences de langue et de devise) et, sous réserve de votre accord, cookies de mesure d'audience." },
+        { "h": "3. Gestion du consentement", "p": "Les cookies non essentiels ne sont déposés qu'avec votre consentement, que vous pouvez retirer à tout moment depuis les paramètres de votre navigateur." }
+      ],
+      "security": [
+        { "h": "1. Hébergement et chiffrement", "p": "Les données sont hébergées sur une infrastructure sécurisée. Les flux sont chiffrés en transit (TLS) et les secrets sensibles sont protégés au repos." },
+        { "h": "2. Contrôle d'accès", "p": "L'accès est gouverné par des rôles (RBAC) et cloisonné par société (multi-tenant). Les actions sensibles sont tracées dans un journal d'audit." },
+        { "h": "3. Sauvegardes et continuité", "p": "Des sauvegardes régulières sont réalisées et des procédures de restauration et de continuité d'activité sont maintenues." },
+        { "h": "4. Gestion des incidents", "p": "En cas de violation de données, une procédure de notification conforme aux obligations légales applicables est mise en œuvre." }
+      ]
     }
   },
   "platformPage": {

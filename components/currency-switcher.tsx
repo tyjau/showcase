@@ -1,9 +1,13 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { CURRENCIES, useCurrency } from "./currency-provider";
 
 export function CurrencySwitcher({ className = "" }: { className?: string }) {
+  const pathname = usePathname();
   const { currency, setCurrency } = useCurrency();
+  // Currency is irrelevant on auth / portal screens (nothing priced there) — hide it.
+  if (/\/(login|account|partner)(\/|$)/.test(pathname || "")) return null;
 
   return (
     <div
