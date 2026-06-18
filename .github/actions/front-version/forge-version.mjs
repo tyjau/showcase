@@ -1,4 +1,4 @@
-// scripts/forge-version.mjs — écrit <outDir>/version.json dans le bundle déployé pour que la SONDE
+// forge-version.mjs — écrit <outDir>/version.json dans le bundle déployé pour que la SONDE
 // de santé Guardian (SUIVI-HEALTH WI2) lise QUEL build est en ligne : GET <base>/version.json.
 //
 // Sources (CD) : RELEASE_SNAPSHOT (le snapshot du dossier Guardian — porte version + build_sequence)
@@ -6,7 +6,11 @@
 // web-root déployé (argv[2] ou VERSION_OUT_DIR). Repli sur le tag de release (GITHUB_REF_NAME) pour
 // la version. Best-effort : un snapshot absent écrit quand même un marqueur (le liveness 200 reste
 // utile ; aucune valeur secrète n'entre dans version.json).
-//   Local : RELEASE_SNAPSHOT='{"version":"1.2.3","build_sequence":7}' PRODUCT=lex node scripts/forge-version.mjs dist
+//
+// ⚠️ SOURCE CANONIQUE : skyrh-back/deploy/cd/actions/front-version/ — NE PAS éditer dans un front
+//    (copie vendored, régénérée par `composer cd:sync`). Voir deploy/cd/README.md.
+//
+//   Local : RELEASE_SNAPSHOT='{"version":"1.2.3","build_sequence":7}' PRODUCT=lex node forge-version.mjs dist
 import { writeFileSync, readFileSync, mkdirSync, existsSync } from "node:fs";
 import { join } from "node:path";
 

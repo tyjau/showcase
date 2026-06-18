@@ -1,4 +1,4 @@
-// scripts/forge-deploy.mjs — forge les COORDONNÉES de déploiement (non secrètes) depuis le snapshot
+// forge-deploy.mjs — forge les COORDONNÉES de déploiement (non secrètes) depuis le snapshot
 // de release et les expose aux étapes deploy via $GITHUB_ENV. Objectif : « dé-saturer » GitHub —
 // host/port/user/remote_dir/smoke_url voyagent dans le snapshot temporaire (DB → Ignition) au lieu
 // d'être des secrets/vars permanents par repo/env.
@@ -9,7 +9,10 @@
 // FALLBACK : si le snapshot ne porte pas de bloc `deploy` (mode mock / pas encore authored), on
 // retombe sur les valeurs permanentes FB_* (secrets/vars actuels) → comportement INCHANGÉ.
 //
-// Local : `RELEASE_SNAPSHOT='{...}' FB_HOST=... node scripts/forge-deploy.mjs` (GITHUB_ENV absent = no-op fichier).
+// ⚠️ SOURCE CANONIQUE : skyrh-back/deploy/cd/actions/front-deploy/ — NE PAS éditer dans un front
+//    (copie vendored, régénérée par `composer cd:sync`). Voir deploy/cd/README.md.
+//
+// Local : `RELEASE_SNAPSHOT='{...}' FB_HOST=... node forge-deploy.mjs` (GITHUB_ENV absent = no-op fichier).
 import { appendFileSync } from "node:fs";
 
 const repo = process.env.FORGE_REPO || "tyjau/ignition";

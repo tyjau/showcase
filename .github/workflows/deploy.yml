@@ -101,17 +101,16 @@ jobs:
           test -f out/index.html || { echo "❌ build incomplet (pas d'out/index.html)"; exit 1; }
           echo "✓ build OK : $(find out -type f | wc -l) fichiers, $(du -sh out | cut -f1)"
 
-      # ── version.json (SUIVI-HEALTH WI2) : marqueur de build posé à la racine de l'export (voyage
-      #    avec l'artefact out/) pour que la sonde Guardian lise QUEL build est en ligne.
-      - name: 🏷️ Forge version.json (snapshot → out/)
-        env:
-          SNAP_STAGING: ${{ secrets.RELEASE_SNAPSHOT_STAGING }}
-          SNAP_PROD: ${{ secrets.RELEASE_SNAPSHOT_PROD }}
-          ENV_NAME: ${{ needs.setup.outputs.env_name }}
-          PRODUCT: showcase
-        run: |
-          if [ "$ENV_NAME" = "production" ]; then export RELEASE_SNAPSHOT="$SNAP_PROD"; else export RELEASE_SNAPSHOT="$SNAP_STAGING"; fi
-          node scripts/forge-version.mjs out
+      # ── version.json (SUIVI-HEALTH WI2) — action composite VENDORED (source : skyrh-back/deploy/cd ;
+      #    régénérée par `composer cd:sync`, ne pas éditer ici).
+      - name: 🏷️ version.json (sonde Guardian)
+        uses: ./.github/actions/front-version
+        with:
+          product: showcase
+          dist_dir: out
+          env_name: ${{ needs.setup.outputs.env_name }}
+          snapshot_staging: ${{ secrets.RELEASE_SNAPSHOT_STAGING }}
+          snapshot_prod: ${{ secrets.RELEASE_SNAPSHOT_PROD }}
 
       - name: ⬆️ Upload artifact (out/)
         uses: actions/upload-artifact@v4
@@ -137,127 +136,29 @@ jobs:
           name: showcase-out
           path: out
 
-      # ── Forge des COORDONNÉES de deploy depuis le snapshot (host/port/user/remote_dir/smoke_url)
-      #    → $GITHUB_ENV (SSH_HOST/PORT/USER/REMOTE_DIR/SMOKE_URL). « Dé-sature » GitHub : ces valeurs
-      #    voyagent dans le snapshot temporaire au lieu d'être des secrets/vars permanents par repo/env.
-      #    La CLÉ PRIVÉE SSH reste un secret permanent (non routée dans le snapshot). Fallback sur les
-      #    FRONT_SSH_*/vars permanents tant que rien n'est authored en DB → comportement INCHANGÉ.
-      - name: 🔧 Forge deploy coords (snapshot → env ; fallback secrets permanents)
-        env:
-          SNAP_STAGING: ${{ secrets.RELEASE_SNAPSHOT_STAGING }}
-          SNAP_PROD: ${{ secrets.RELEASE_SNAPSHOT_PROD }}
-          ENV_NAME: ${{ needs.setup.outputs.env_name }}
-          FORGE_REPO: ${{ github.repository }}
-          FB_HOST: ${{ secrets.FRONT_SSH_HOST }}
-          FB_PORT: ${{ secrets.FRONT_SSH_PORT }}
-          FB_USER: ${{ secrets.FRONT_SSH_USER }}
-          FB_REMOTE_DIR: ${{ vars.FRONT_SSH_REMOTE_DIR }}
-          FB_SMOKE_URL: ${{ vars.FRONT_SMOKE_URL }}
-        run: |
-          if [ "$ENV_NAME" = "production" ]; then export RELEASE_SNAPSHOT="$SNAP_PROD"; else export RELEASE_SNAPSHOT="$SNAP_STAGING"; fi
-          node scripts/forge-deploy.mjs
-
-      # ── Déploiement PRIMAIRE : rsync-over-SSH (transfert DELTA incrémental), calqué sur le
-      #    back. Bien plus rapide + fiable que le FTPS cPanel. FALLBACK FTPS à l'étape suivante
-      #    (si rsync échoue OU si les secrets SSH ne sont pas encore posés). Secrets requis sur
-      #    l'Environment : FRONT_SSH_KEY / FRONT_SSH_HOST / FRONT_SSH_PORT / FRONT_SSH_USER
-      #    + variable FRONT_SSH_REMOTE_DIR (chemin SSH RÉEL du dossier — PAS le FRONT_REMOTE_DIR
-      #    relatif au chroot FTP). ──
-      - name: 🚀 Déploiement rsync-over-SSH (primaire)
-        id: rsync
-        continue-on-error: true
-        env:
-          SSH_KEY: ${{ secrets.FRONT_SSH_KEY }} # clé privée = SEUL secret permanent (deploy key, posée une fois)
-          FTP_DELETE: ${{ vars.FRONT_FTP_DELETE }}
-          # SSH_HOST / SSH_PORT / SSH_USER / SSH_REMOTE_DIR : forgés depuis le snapshot ($GITHUB_ENV ci-dessus)
-        run: |
-          if [ -z "$SSH_KEY" ] || [ -z "$SSH_HOST" ] || [ -z "$SSH_USER" ] || [ -z "$SSH_REMOTE_DIR" ]; then
-            echo "ℹ️ Secrets SSH absents (FRONT_SSH_KEY/HOST/USER + var FRONT_SSH_REMOTE_DIR) — saut du rsync → fallback FTPS"; exit 1
-          fi
-          DELETE_FLAG=""
-          if [ "$FTP_DELETE" = "true" ]; then DELETE_FLAG="--delete"; echo "⚠️ miroir STRICT (--delete) actif"; else echo "ℹ️ miroir additif (sans --delete)"; fi
-          # tr -d '\r' : une clé posée depuis Windows peut contenir des CRLF que le ssh Linux du
-          # runner rejette (« connection closed / code 255 ») alors que Windows les tolère.
-          printf '%s\n' "$SSH_KEY" | tr -d '\r' > /tmp/deploy_key && chmod 600 /tmp/deploy_key
-          ssh-keygen -l -f /tmp/deploy_key 2>&1 | sed 's/^/clé chargée: /' || echo "⚠️ clé /tmp/deploy_key illisible"
-          SSH="ssh -i /tmp/deploy_key -p ${SSH_PORT:-22} -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=20"
-          # PRÉ-VOL CONNECTIVITÉ — le runner doit joindre l'hôte. Échec ICI = host/port/clé/user
-          # (FRONT_SSH_*) erronés ou injoignables. Sur échec on dump le -v (l'IP résolue n'est pas
-          # masquée, contrairement au host secret) pour voir DNS / refus / timeout.
-          if ! $SSH "${SSH_USER}@${SSH_HOST}" 'echo connected' >/dev/null 2>&1; then
-            echo "❌ Connexion SSH KO (FRONT_SSH_HOST/PORT/USER/KEY erronés ou injoignables). Détail :"
-            $SSH -v "${SSH_USER}@${SSH_HOST}" 'echo connected' 2>&1 | tail -25 || true
-            rm -f /tmp/deploy_key
-            echo "Abort → fallback FTPS"; exit 1
-          fi
-          echo "✓ pré-vol OK : SSH joignable"
-          find out -type l -print -delete   # cPanel rejette les symlinks
-          # Exclusions : protègent un éventuel back 'guardian'/'api' + dossiers hôte d'un --delete
-          # (rsync ne supprime jamais un chemin exclu côté serveur). No-op si ces dossiers n'existent pas.
-          rsync -az ${DELETE_FLAG} \
-            --exclude='/guardian' --exclude='/api' --exclude='/.well-known' --exclude='/cgi-bin' --exclude='.git' \
-            -e "$SSH" \
-            out/ "${SSH_USER}@${SSH_HOST}:${SSH_REMOTE_DIR}" \
-            || { rm -f /tmp/deploy_key; echo "❌ rsync échoué → fallback FTPS"; exit 1; }
-          rm -f /tmp/deploy_key
-          echo "✅ rsync-over-SSH terminé → ${SSH_REMOTE_DIR}"
-
-      # ── FALLBACK FTPS — UNIQUEMENT si le rsync ci-dessus a échoué (ou secrets SSH absents).
-      #    Exclut 'guardian' et 'api' (si un back voisin partage le docroot) sinon --delete
-      #    l'écraserait. --delete est OPT-IN (FRONT_FTP_DELETE='true') : par défaut additif. ──
-      # Opt-in : tant que FRONT_FTP_* n'est pas validé, marteler des auth FTP ratées (530) fait
-      # bannir l'IP du runner par le fail2ban du host (→ rsync tombe en timeout). Poser la var
-      # FRONT_FTP_ENABLED=true une fois les creds FTP confirmés.
-      - name: 🚀 Fallback FTPS (si rsync échoue)
-        if: steps.rsync.outcome == 'failure' && vars.FRONT_FTP_ENABLED == 'true'
-        env:
-          FTP_HOST: ${{ secrets.FRONT_FTP_HOST }}
-          FTP_USER: ${{ secrets.FRONT_FTP_USER }}
-          FTP_PASS: ${{ secrets.FRONT_FTP_PASS }}
-          REMOTE_DIR: ${{ vars.FRONT_REMOTE_DIR }}
-          FTP_DELETE: ${{ vars.FRONT_FTP_DELETE }}
-        run: |
-          if [ -z "$FTP_HOST" ] || [ -z "$FTP_USER" ] || [ -z "$FTP_PASS" ] || [ -z "$REMOTE_DIR" ]; then
-            echo "::error::FRONT_FTP_HOST/USER/PASS ou variable FRONT_REMOTE_DIR manquants"; exit 1
-          fi
-          sudo apt-get update -qq && sudo apt-get install -y lftp >/dev/null
-          DELETE_FLAG=""
-          if [ "$FTP_DELETE" = "true" ]; then DELETE_FLAG="--delete"; echo "⚠️ miroir STRICT (--delete) actif"; else echo "ℹ️ miroir additif (sans --delete)"; fi
-          # cPanel rejette SITE SYMLINK (500) → drop les symlinks avant le miroir.
-          find out -type l -print -delete
-          cd out
-          lftp -u "$FTP_USER","$FTP_PASS" "$FTP_HOST" <<EOF
-          set ftp:ssl-allow yes
-          set ftp:ssl-force true
-          set ssl:verify-certificate no
-          set mirror:use-pget-n 5
-          mirror -R --only-newer --parallel=2 ${DELETE_FLAG} \
-            -x '(^|/)guardian(/|\$)' \
-            -x '(^|/)api(/|\$)' \
-            -x '(^|/)\.well-known(/|\$)' \
-            -x '(^|/)cgi-bin(/|\$)' \
-            -x '(^|/)\.git(/|\$)' \
-            . ${REMOTE_DIR}
-          quit
-          EOF
-          echo "✅ Upload FTPS terminé → ${REMOTE_DIR}"
-
-      # ── Smoke post-deploy : l'index Next doit être servi (200 + markup Next/HTML). ──
-      #    SMOKE_URL forgé depuis le snapshot ($GITHUB_ENV ; fallback var permanente). Vide → sauté.
-      - name: 🩺 Smoke test (showcase)
-        run: |
-          if [ -z "${SMOKE_URL:-}" ]; then echo "ℹ️ SMOKE_URL non défini — smoke ignoré (optionnel)"; exit 0; fi
-          echo "→ $SMOKE_URL"
-          # Retry : l'hôte peut throttler/ralentir l'IP du runner (faux négatif sur un deploy OK).
-          ok=0; code=000
-          for i in 1 2 3 4 5; do
-            code=$(curl -s -o /tmp/idx.html -w '%{http_code}' --max-time 20 "$SMOKE_URL" || echo 000)
-            echo "tentative $i: HTTP $code"
-            if printf '%s' "$code" | grep -q '^2' && grep -qiE '__next|<!doctype html|<html' /tmp/idx.html; then ok=1; break; fi
-            sleep 10
-          done
-          if [ "$ok" = "1" ]; then
-            echo "✅ site servi (index Next)"
-          else
-            echo "❌ smoke KO après 5 tentatives (dernier HTTP $code, ou index Next absent)"; sed -n '1,20p' /tmp/idx.html; exit 1
-          fi
+      # ── Déploiement (rsync-SSH primaire → FTPS fallback) + smoke — action composite VENDORED
+      #    (source : skyrh-back/deploy/cd ; régénérée par `composer cd:sync`, ne pas éditer ici).
+      #    showcase = docroot potentiellement standalone (pas de garde guardian/) ; FTPS gated par
+      #    FRONT_FTP_ENABLED (anti-ban fail2ban tant que les creds FTP ne sont pas validés).
+      - name: 🚀 Déploiement + smoke
+        uses: ./.github/actions/front-deploy
+        with:
+          product: showcase
+          dist_dir: out
+          smoke_grep: '__next|<!doctype html|<html'
+          check_guardian_sibling: 'false'
+          ftp_gate: ${{ vars.FRONT_FTP_ENABLED }}
+          env_name: ${{ needs.setup.outputs.env_name }}
+          snapshot_staging: ${{ secrets.RELEASE_SNAPSHOT_STAGING }}
+          snapshot_prod: ${{ secrets.RELEASE_SNAPSHOT_PROD }}
+          ssh_key: ${{ secrets.FRONT_SSH_KEY }}
+          fb_ssh_host: ${{ secrets.FRONT_SSH_HOST }}
+          fb_ssh_port: ${{ secrets.FRONT_SSH_PORT }}
+          fb_ssh_user: ${{ secrets.FRONT_SSH_USER }}
+          fb_ssh_remote_dir: ${{ vars.FRONT_SSH_REMOTE_DIR }}
+          fb_smoke_url: ${{ vars.FRONT_SMOKE_URL }}
+          ftp_host: ${{ secrets.FRONT_FTP_HOST }}
+          ftp_user: ${{ secrets.FRONT_FTP_USER }}
+          ftp_pass: ${{ secrets.FRONT_FTP_PASS }}
+          remote_dir: ${{ vars.FRONT_REMOTE_DIR }}
+          ftp_delete: ${{ vars.FRONT_FTP_DELETE }}

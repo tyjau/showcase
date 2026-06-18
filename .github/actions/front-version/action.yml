@@ -1,0 +1,24 @@
+name: "Front version marker"
+description: >
+  Écrit public/version.json {product,version,build_sequence,built_at} à la racine du bundle pour que
+  la sonde Guardian (SUIVI-HEALTH WI2) lise QUEL build est en ligne. Action composite VENDORED depuis
+  skyrh-back/deploy/cd — régénérée par `composer cd:sync`, ne pas éditer dans un front.
+inputs:
+  product:          { required: true,  description: "slug produit (skyrh|harmony|showcase|lex)" }
+  dist_dir:         { required: true,  description: "dossier web-root du bundle (dist | out | dist/saas/browser)" }
+  env_name:         { required: true,  description: "production | staging" }
+  snapshot_staging: { required: false, description: "secrets.RELEASE_SNAPSHOT_STAGING" }
+  snapshot_prod:    { required: false, description: "secrets.RELEASE_SNAPSHOT_PROD" }
+runs:
+  using: composite
+  steps:
+    - name: 🏷️ version.json (snapshot → bundle)
+      shell: bash
+      env:
+        SNAP_STAGING: ${{ inputs.snapshot_staging }}
+        SNAP_PROD: ${{ inputs.snapshot_prod }}
+        ENV_NAME: ${{ inputs.env_name }}
+        PRODUCT: ${{ inputs.product }}
+      run: |
+        if [ "$ENV_NAME" = "production" ]; then export RELEASE_SNAPSHOT="$SNAP_PROD"; else export RELEASE_SNAPSHOT="$SNAP_STAGING"; fi
+        node "${{ github.action_path }}/forge-version.mjs" "${{ inputs.dist_dir }}"
