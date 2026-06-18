@@ -42,6 +42,7 @@ GUARDIAN_URL=https://saas.test:8443         # backend (le cert local doit être 
 NEXT_PUBLIC_API_BASE=https://saas.test:8443 # défaut si absent
 NEXT_PUBLIC_APP_DOMAIN=skyrh.app            # sous-domaine workspace (lien « Ouvrir mon espace RH »)
 NEXT_PUBLIC_OAUTH_MOCK=1                    # DEV : affiche + active le login social mock (jamais en prod)
+NEXT_PUBLIC_DEFAULT_CURRENCY=EUR            # devise par défaut (EUR|USD|XAF) ; défaut EUR si absent
 CATALOG_API_KEY=…                           # clé publiable scopée (catalogue tarifs)
 ```
 
