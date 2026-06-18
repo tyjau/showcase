@@ -143,6 +143,22 @@
       { "title": "Status", "desc": "Live service availability." }
     ]
   },
+  "helpPage": {
+    "eyebrow": "Help center",
+    "title": "How can we help?",
+    "lead": "Guides and answers to get the most out of SkyRH.",
+    "categories": {
+      "getting-started": "Getting started",
+      "billing": "Billing & account",
+      "security": "Security"
+    },
+    "modulesTitle": "Per-module guides",
+    "modulesDesc": "See in detail what each module does.",
+    "back": "Help center",
+    "contactTitle": "Can't find your answer?",
+    "contactLead": "Our team is here to help.",
+    "contactCta": "Contact us"
+  },
   "legalPage": {
     "draft": "Draft — to be finalized with legal counsel before launch.",
     "back": "Back to home",

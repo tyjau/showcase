@@ -143,6 +143,22 @@
       { "title": "Statut", "desc": "Disponibilité du service en temps réel." }
     ]
   },
+  "helpPage": {
+    "eyebrow": "Centre d'aide",
+    "title": "Comment pouvons-nous vous aider ?",
+    "lead": "Guides et réponses pour tirer le meilleur de SkyRH.",
+    "categories": {
+      "getting-started": "Démarrage",
+      "billing": "Facturation & compte",
+      "security": "Sécurité"
+    },
+    "modulesTitle": "Guides par module",
+    "modulesDesc": "Découvrez en détail ce que fait chaque module.",
+    "back": "Centre d'aide",
+    "contactTitle": "Vous ne trouvez pas votre réponse ?",
+    "contactLead": "Notre équipe est là pour vous aider.",
+    "contactCta": "Nous contacter"
+  },
   "legalPage": {
     "draft": "Brouillon — à finaliser avec un conseil juridique avant le lancement.",
     "back": "Retour à l'accueil",

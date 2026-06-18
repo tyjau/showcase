@@ -30,7 +30,7 @@ export default async function ResourcesPage({
   // Real destinations (the cards previously linked back to /resources — dead/circular).
   const hrefs = [
     `/${lang}/features`,
-    `/${lang}/company#contact`,
+    `/${lang}/help`,
     `/${lang}/legal/security`,
     `/${lang}/company#contact`,
   ];
