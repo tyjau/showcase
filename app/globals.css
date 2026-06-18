@@ -128,3 +128,10 @@ textarea::placeholder {
 .dark {
   color-scheme: dark;
 }
+
+/* Keyboard focus ring — token-based, visible in both themes. Only :focus-visible
+   (keyboard navigation) shows it; mouse focus is unaffected. */
+:focus-visible {
+  outline: 2px solid var(--brand-sky);
+  outline-offset: 2px;
+}

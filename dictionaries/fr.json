@@ -28,7 +28,8 @@
     "logout": "Se déconnecter",
     "invoices": "Factures",
     "paymentMethod": "Moyen de paiement",
-    "partner": "Espace partenaire"
+    "partner": "Espace partenaire",
+    "skipToContent": "Aller au contenu"
   },
   "theme": {
     "label": "Thème",
@@ -85,6 +86,7 @@
   },
   "pricingPage": {
     "heading": "Tarifs simples, par employé",
+    "plansTitle": "Nos formules",
     "sub": "Chaque plan inclut 14 jours d'essai. Facturé par employé actif, au prorata.",
     "employees": "Employés",
     "monthly": "Mensuel",
@@ -294,6 +296,9 @@
       "mismatch": "Les mots de passe ne correspondent pas.",
       "weak": "Le mot de passe doit faire 8+ caractères avec majuscule, minuscule, chiffre et symbole.",
       "noToken": "Lien d'activation invalide ou manquant.",
+      "invalidTitle": "Lien invalide ou expiré",
+      "invalidBody": "Ce lien de confirmation n'est plus valide. Recommencez votre inscription pour recevoir un nouveau lien.",
+      "invalidCta": "Recommencer l'inscription",
       "successTitle": "Votre espace est prêt",
       "successBody": "Vous pouvez maintenant vous connecter et inviter votre équipe.",
       "successCta": "Se connecter"

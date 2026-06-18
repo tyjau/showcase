@@ -86,9 +86,9 @@ export function SiteFooter({
           <FooterCol
             title={dict.resources}
             links={[
-              [dict.guides, `/${lang}/resources`],
+              [dict.guides, `/${lang}/help`],
               [dict.security, `/${lang}/legal/security`],
-              [dict.status, `/${lang}/resources`],
+              [dict.status, `/${lang}/help`],
             ]}
           />
         </div>

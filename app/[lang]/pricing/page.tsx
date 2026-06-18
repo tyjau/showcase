@@ -37,6 +37,28 @@ export default async function PricingPage({
           </p>
         </div>
       </section>
+      {catalog.packages.length > 0 && (
+        <section className="border-b border-line bg-mist">
+          <div className="mx-auto max-w-6xl px-5 py-10">
+            <h2 className="text-center text-2xl font-bold text-heading">
+              {t.pricingPage.plansTitle}
+            </h2>
+            <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {catalog.packages.map((pkg) => (
+                <div
+                  key={pkg.code}
+                  className="rounded-xl border border-line bg-surface p-5"
+                >
+                  <h3 className="font-bold text-heading">{pkg.name}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted">
+                    {pkg.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
       <div className="mx-auto max-w-6xl px-5 py-12">
         <PricingCalculator
           catalog={catalog}

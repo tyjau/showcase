@@ -7,6 +7,7 @@ import { getDictionary } from "@/lib/dictionaries";
 import { fetchCatalog, moduleText, type CatalogModule } from "@/lib/catalog";
 import { moduleContent } from "@/lib/module-content";
 import { ModuleIcon } from "@/components/module-icon";
+import { MediaFrame } from "@/components/media-frame";
 import { Price } from "@/components/price";
 
 export const dynamicParams = false;
@@ -90,6 +91,9 @@ export default async function ModulePage({
       </section>
 
       <div className="mx-auto max-w-5xl px-5 py-12">
+        {m.cover && (
+          <MediaFrame src={m.cover} alt={txt.headline} className="mb-8" />
+        )}
         <p className="max-w-3xl text-lg leading-relaxed text-ink">
           {txt.description}
         </p>

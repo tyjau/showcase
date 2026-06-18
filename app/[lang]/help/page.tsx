@@ -81,7 +81,12 @@ export default async function HelpPage({
                         href={`/${lang}/help/${a.slug}`}
                         className="group flex items-center justify-between gap-3 rounded-xl border border-line bg-surface p-4 transition hover:-translate-y-0.5 hover:shadow-sm"
                       >
-                        <span className="font-medium text-ink">{at.title}</span>
+                        <span className="min-w-0">
+                          <span className="block font-medium text-ink">{at.title}</span>
+                          <span className="mt-0.5 block truncate text-xs text-muted">
+                            {at.sections[0]?.p}
+                          </span>
+                        </span>
                         <ArrowRight
                           size={16}
                           className="shrink-0 text-sky transition group-hover:translate-x-0.5"
