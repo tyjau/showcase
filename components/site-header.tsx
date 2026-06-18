@@ -3,6 +3,7 @@ import { BrandLogo } from "./brand-logo";
 import { LocaleSwitcher } from "./locale-switcher";
 import { CurrencySwitcher } from "./currency-switcher";
 import { MobileNav } from "./mobile-nav";
+import { PrimaryNav } from "./primary-nav";
 import { HeaderAuthLink } from "./header-auth-link";
 import { HeaderAccount } from "./header-account";
 import type { Locale } from "@/lib/i18n";
@@ -38,13 +39,7 @@ export function SiteHeader({ lang, dict }: { lang: Locale; dict: NavDict }) {
         <Link href={`/${lang}`}>
           <BrandLogo />
         </Link>
-        <nav className="hidden items-center gap-6 text-sm text-ink md:flex">
-          {nav.map((n) => (
-            <Link key={n.label} href={n.href} className="hover:text-sky">
-              {n.label}
-            </Link>
-          ))}
-        </nav>
+        <PrimaryNav items={nav} />
         <div className="flex items-center gap-3 text-sm">
           <CurrencySwitcher className="hidden sm:inline-flex" />
           <LocaleSwitcher current={lang} />

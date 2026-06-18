@@ -1,11 +1,14 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import type { ReactNode } from "react";
 
 type NavItem = { label: string; href: string };
 
-// Native <details> disclosure — no client JS / hydration needed, which suits a
-// static export and avoids a fragile client component for a simple menu.
+// <details> disclosure for the marketing menu. Hidden on portal screens
+// (/account, /partner), where the account dropdown is the primary navigation.
 export function MobileNav({
   items,
   authLink,
@@ -15,6 +18,8 @@ export function MobileNav({
   authLink: ReactNode;
   className?: string;
 }) {
+  const pathname = usePathname();
+  if (/\/(account|partner)(\/|$)/.test(pathname || "")) return null;
   return (
     <details className={`relative ${className}`}>
       <summary
