@@ -44,7 +44,7 @@ export function HeaderAccount({ lang, labels }: { lang: string; labels: Labels }
   if (!authed) {
     return (
       <>
-        <Link href={`/${lang}/login`} className="hidden text-navy hover:text-sky sm:inline">
+        <Link href={`/${lang}/login`} className="hidden text-heading hover:text-sky sm:inline">
           {labels.signin}
         </Link>
         <Link
@@ -66,11 +66,11 @@ export function HeaderAccount({ lang, labels }: { lang: string; labels: Labels }
 
   return (
     <details className="relative [&[open]>summary>svg]:rotate-180">
-      <summary className="flex cursor-pointer list-none select-none items-center gap-1.5 rounded-full border border-line px-3 py-1.5 text-navy hover:border-sky [&::-webkit-details-marker]:hidden">
+      <summary className="flex cursor-pointer list-none select-none items-center gap-1.5 rounded-full border border-line px-3 py-1.5 text-heading hover:border-sky [&::-webkit-details-marker]:hidden">
         <span className="max-w-[10rem] truncate">{labels.account}</span>
         <ChevronDown size={15} className="transition-transform" aria-hidden="true" />
       </summary>
-      <div className="absolute right-0 top-11 z-40 w-56 rounded-lg border border-line bg-white py-2 shadow-md">
+      <div className="absolute right-0 top-11 z-40 w-56 rounded-lg border border-line bg-surface py-2 shadow-md">
         {workspace && (
           <p className="truncate px-4 pb-2 text-xs text-muted">{workspace}.skyrh.app</p>
         )}

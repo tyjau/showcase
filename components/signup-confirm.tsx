@@ -71,11 +71,11 @@ export function SignupConfirm({
 
   if (done !== null) {
     return (
-      <div className="rounded-2xl border border-line p-8 text-center">
-        <div className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#e6f5ec] text-[#2e7d4f]">
+      <div className="rounded-2xl border border-line bg-surface p-8 text-center">
+        <div className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-full bg-ok-bg text-ok-fg">
           <Check size={28} />
         </div>
-        <h1 className="mt-4 text-2xl font-bold text-navy">
+        <h1 className="mt-4 text-2xl font-bold text-heading">
           {dict.successTitle}
         </h1>
         <p className="mx-auto mt-2 max-w-md text-muted">{dict.successBody}</p>
@@ -97,11 +97,11 @@ export function SignupConfirm({
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-navy">{dict.title}</h1>
+      <h1 className="text-2xl font-bold text-heading">{dict.title}</h1>
       <p className="mt-1 text-muted">{dict.lead}</p>
 
       {!token && (
-        <p className="mt-4 rounded-lg border border-[#f0c2b4] bg-[#fdeee9] px-4 py-2.5 text-sm text-[#b4441f]">
+        <p className="mt-4 rounded-lg border border-err-border bg-err-bg px-4 py-2.5 text-sm text-err-fg">
           {dict.noToken}
         </p>
       )}
@@ -133,7 +133,7 @@ export function SignupConfirm({
       </div>
 
       {error && (
-        <p className="mt-4 rounded-lg border border-[#f0c2b4] bg-[#fdeee9] px-4 py-2.5 text-sm text-[#b4441f]">
+        <p className="mt-4 rounded-lg border border-err-border bg-err-bg px-4 py-2.5 text-sm text-err-fg">
           {error}
         </p>
       )}

@@ -27,12 +27,12 @@ export default async function PricingPage({
 
   return (
     <main>
-      <section className="bg-navy text-white">
+      <section className="bg-hero-bg text-hero-fg">
         <div className="mx-auto max-w-3xl px-5 py-12 text-center">
           <h1 className="text-3xl font-bold sm:text-4xl">
             {t.pricingPage.heading}
           </h1>
-          <p className="mx-auto mt-3 max-w-xl text-[#c7d6e3]">
+          <p className="mx-auto mt-3 max-w-xl text-hero-fg-muted">
             {t.pricingPage.sub}
           </p>
         </div>

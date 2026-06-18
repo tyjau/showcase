@@ -51,13 +51,13 @@ export default async function LegalPage({
       </Link>
 
       <div className="mt-6 flex items-center gap-3">
-        <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-[#e7f4fb] text-sky">
+        <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-tint-sky text-sky">
           <FileText size={22} />
         </div>
-        <h1 className="text-3xl font-bold text-navy">{title}</h1>
+        <h1 className="text-3xl font-bold text-heading">{title}</h1>
       </div>
 
-      <div className="mt-6 rounded-lg border border-[#f0d9a8] bg-[#fdf6e6] px-4 py-3 text-sm text-[#8a6d1f]">
+      <div className="mt-6 rounded-lg border border-warn-border bg-warn-bg px-4 py-3 text-sm text-warn-fg">
         {t.legalPage.draft}
       </div>
 
@@ -65,7 +65,7 @@ export default async function LegalPage({
         {sections.length > 0 ? (
           sections.map((s, i) => (
             <section key={i}>
-              <h2 className="text-lg font-bold text-navy">{s.h}</h2>
+              <h2 className="text-lg font-bold text-heading">{s.h}</h2>
               <p className="mt-2 leading-relaxed text-ink">{s.p}</p>
             </section>
           ))
@@ -82,7 +82,7 @@ export default async function LegalPage({
             className={`rounded-full px-3 py-1.5 text-sm transition ${
               d === params.doc
                 ? "bg-navy font-semibold text-white"
-                : "border border-line text-muted hover:border-sky hover:text-navy"
+                : "border border-line text-muted hover:border-sky hover:text-heading"
             }`}
           >
             {docs[d] ?? d}

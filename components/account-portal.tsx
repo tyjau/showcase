@@ -33,8 +33,8 @@ function money(n: number, cur: string): string {
 
 function StatusChip({ status }: { status: string }) {
   const cls: Record<string, string> = {
-    paid: "bg-[#e6f5ec] text-[#2e7d4f]",
-    issued: "bg-[#fff4e0] text-[#a96a00]",
+    paid: "bg-ok-bg text-ok-fg",
+    issued: "bg-info-bg text-info-fg",
   };
   return (
     <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${cls[status] ?? "bg-mist text-muted"}`}>
@@ -96,7 +96,7 @@ function InvoicesTab({ dict }: { dict: Dict }) {
   }
 
   if (state === "loading") return <p className="text-muted">{dict.loading}</p>;
-  if (state === "error") return <p className="text-sm text-[#b4441f]">{dict.payError}</p>;
+  if (state === "error") return <p className="text-sm text-err-fg">{dict.payError}</p>;
   if (invoices.length === 0) return <p className="text-muted">{dict.empty}</p>;
 
   return (
@@ -146,10 +146,10 @@ function InvoicesTab({ dict }: { dict: Dict }) {
         </tbody>
       </table>
     </div>
-    {payErr && <p className="mt-3 text-sm text-[#b4441f]">{payErr}</p>}
+    {payErr && <p className="mt-3 text-sm text-err-fg">{payErr}</p>}
     {paying && (
-      <div className="mt-4 rounded-xl border border-[#f0d9a8] bg-[#fdf6e7] p-5">
-        <p className="font-semibold text-navy">
+      <div className="mt-4 rounded-xl border border-warn-border bg-warn-bg p-5">
+        <p className="font-semibold text-heading">
           {dict.invPayTitle} #{paying.id}
         </p>
         <InvoicePayBox
@@ -226,14 +226,14 @@ export function AccountPortal({ lang, dict }: { lang: string; dict: Dict }) {
     <div>
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-navy">{dict.title}</h1>
+          <h1 className="text-2xl font-bold text-heading">{dict.title}</h1>
           <p className="text-muted">{dict.subtitle}</p>
         </div>
         <div className="flex items-center gap-3">
           {workspace && (
             <a
               href={`https://${workspace}.${APP_DOMAIN}`}
-              className="inline-flex rounded-full border border-line px-4 py-2 text-sm font-semibold text-navy hover:border-sky"
+              className="inline-flex rounded-full border border-line px-4 py-2 text-sm font-semibold text-heading hover:border-sky"
             >
               {dict.openWorkspace} →
             </a>
@@ -255,7 +255,7 @@ export function AccountPortal({ lang, dict }: { lang: string; dict: Dict }) {
             key={t.key}
             onClick={() => setTab(t.key)}
             className={`-mb-px border-b-2 px-4 py-2.5 text-sm font-semibold transition-colors ${
-              tab === t.key ? "border-sky text-navy" : "border-transparent text-muted hover:text-ink"
+              tab === t.key ? "border-sky text-heading" : "border-transparent text-muted hover:text-ink"
             }`}
           >
             {tabLabel[t.key]}

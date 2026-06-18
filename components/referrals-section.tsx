@@ -46,7 +46,7 @@ export function ReferralsSection({ dict }: { dict: Dict }) {
   }, []);
 
   if (state === "loading") return <p className="text-muted">{dict.loading}</p>;
-  if (state === "error" || !d) return <p className="text-sm text-[#b4441f]">{dict.payError}</p>;
+  if (state === "error" || !d) return <p className="text-sm text-err-fg">{dict.payError}</p>;
 
   return (
     <div className="space-y-6">
@@ -54,7 +54,7 @@ export function ReferralsSection({ dict }: { dict: Dict }) {
         <>
           <div className="rounded-xl border border-line p-5">
             <p className="text-xs uppercase tracking-wide text-muted">{dict.refCode}</p>
-            <p className="mt-1 font-mono text-lg font-bold text-navy">{d.code}</p>
+            <p className="mt-1 font-mono text-lg font-bold text-heading">{d.code}</p>
             {d.reward_value != null && (
               <p className="mt-2 text-sm text-muted">
                 {dict.refReward}: {offerValue(d.reward_value, d.reward_type === "percent" ? "percent" : "amount", d.currency)}
@@ -63,7 +63,7 @@ export function ReferralsSection({ dict }: { dict: Dict }) {
             )}
           </div>
           <div>
-            <h3 className="text-sm font-bold text-navy">
+            <h3 className="text-sm font-bold text-heading">
               {dict.refReferrals} ({d.referrals.length})
             </h3>
             {d.referrals.length === 0 ? (
@@ -98,7 +98,7 @@ export function ReferralsSection({ dict }: { dict: Dict }) {
 
       {d.applied_offers.length > 0 && (
         <div>
-          <h3 className="text-sm font-bold text-navy">{dict.refOffers}</h3>
+          <h3 className="text-sm font-bold text-heading">{dict.refOffers}</h3>
           <ul className="mt-2 space-y-1 text-sm text-muted">
             {d.applied_offers.map((o, i) => (
               <li key={i}>

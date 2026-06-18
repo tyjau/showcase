@@ -39,13 +39,13 @@ export default async function PlatformPage({
 
   return (
     <main>
-      <section className="bg-navy text-white">
+      <section className="bg-hero-bg text-hero-fg">
         <div className="mx-auto max-w-3xl px-5 py-16 text-center">
           <div className="text-xs font-semibold uppercase tracking-wide text-sky-soft">
             {p.eyebrow}
           </div>
           <h1 className="mt-3 text-3xl font-bold sm:text-4xl">{p.title}</h1>
-          <p className="mx-auto mt-4 max-w-xl text-[#c7d6e3]">{p.lead}</p>
+          <p className="mx-auto mt-4 max-w-xl text-hero-fg-muted">{p.lead}</p>
         </div>
       </section>
 
@@ -56,9 +56,9 @@ export default async function PlatformPage({
             return (
               <div
                 key={pl.title}
-                className="rounded-xl border border-line p-6"
+                className="rounded-xl border border-line bg-surface p-6"
               >
-                <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-[#e7f4fb] text-sky">
+                <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-tint-sky text-sky">
                   <Icon size={22} />
                 </div>
                 <h3 className="mt-4 font-semibold text-ink">{pl.title}</h3>
@@ -74,7 +74,7 @@ export default async function PlatformPage({
       <section className="border-y border-line bg-mist">
         <div className="mx-auto max-w-6xl px-5 py-14">
           <div className="max-w-xl">
-            <h2 className="text-2xl font-bold text-navy">{p.modesTitle}</h2>
+            <h2 className="text-2xl font-bold text-heading">{p.modesTitle}</h2>
             <p className="mt-2 text-muted">{p.modesLead}</p>
           </div>
           <div className="mt-8 grid gap-5 md:grid-cols-3">
@@ -83,7 +83,7 @@ export default async function PlatformPage({
               return (
                 <div
                   key={md.title}
-                  className="rounded-xl border border-line bg-white p-6"
+                  className="rounded-xl border border-line bg-surface p-6"
                 >
                   <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-navy text-white">
                     <Icon size={22} />
@@ -106,7 +106,7 @@ export default async function PlatformPage({
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
             <Link
               href={`/${lang}/company#contact`}
-              className="inline-flex rounded-full bg-white px-6 py-3 text-sm font-semibold text-navy transition hover:bg-mist"
+              className="inline-flex rounded-full bg-white px-6 py-3 text-sm font-semibold text-navy transition hover:bg-white/90"
             >
               {p.ctaPrimary}
             </Link>

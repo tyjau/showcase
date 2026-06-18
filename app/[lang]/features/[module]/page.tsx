@@ -65,7 +65,7 @@ export default async function ModulePage({
               <ModuleIcon name={m.icon} size={28} />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-navy">{txt.headline}</h1>
+              <h1 className="text-3xl font-bold text-heading">{txt.headline}</h1>
               <p className="mt-2 max-w-2xl text-lg text-muted">{txt.tagline}</p>
               <div className="mt-5 flex flex-wrap items-center gap-3">
                 <Link
@@ -102,7 +102,7 @@ export default async function ModulePage({
                 <Link
                   key={p.code}
                   href={`/${lang}/pricing`}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-3 py-1.5 text-sm transition hover:border-sky"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-3 py-1.5 text-sm transition hover:border-sky"
                 >
                   <Check size={14} className="text-sky" /> {p.name}
                 </Link>
@@ -123,9 +123,9 @@ export default async function ModulePage({
                   <Link
                     key={mod.code}
                     href={`/${lang}/features/${mod.code}`}
-                    className="flex items-center gap-3 rounded-xl border border-line p-3 transition hover:-translate-y-0.5 hover:shadow-sm"
+                    className="flex items-center gap-3 rounded-xl border border-line bg-surface p-3 transition hover:-translate-y-0.5 hover:shadow-sm"
                   >
-                    <div className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#e7f4fb] text-sky">
+                    <div className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-tint-sky text-sky">
                       <ModuleIcon name={mod.icon} size={18} />
                     </div>
                     <div className="min-w-0">
@@ -152,7 +152,7 @@ export default async function ModulePage({
           <p className="mx-auto mt-2 max-w-lg text-[#eaf6fd]">{t.ctaBand.sub}</p>
           <Link
             href={`/${lang}/signup`}
-            className="mt-5 inline-block rounded-full bg-white px-6 py-3 font-semibold text-accent"
+            className="mt-5 inline-block rounded-full bg-white px-6 py-3 font-semibold text-[#156082]"
           >
             {t.ctaBand.button}
           </Link>

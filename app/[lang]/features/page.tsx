@@ -34,12 +34,12 @@ export default async function FeaturesPage({
 
   return (
     <main>
-      <section className="bg-navy text-white">
+      <section className="bg-hero-bg text-hero-fg">
         <div className="mx-auto max-w-3xl px-5 py-14 text-center">
           <h1 className="text-3xl font-bold sm:text-4xl">
             {t.modulesPage.heading}
           </h1>
-          <p className="mx-auto mt-3 max-w-xl text-[#c7d6e3]">
+          <p className="mx-auto mt-3 max-w-xl text-hero-fg-muted">
             {t.modulesPage.sub}
           </p>
         </div>
@@ -58,10 +58,10 @@ export default async function FeaturesPage({
                   <Link
                     key={m.code}
                     href={`/${lang}/features/${m.code}`}
-                    className="group rounded-xl border border-line p-5 transition hover:-translate-y-1 hover:shadow-sm"
+                    className="group rounded-xl border border-line bg-surface p-5 transition hover:-translate-y-1 hover:shadow-sm"
                   >
                     <div className="mb-3 flex items-center justify-between">
-                      <div className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-[#e7f4fb] text-sky">
+                      <div className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-tint-sky text-sky">
                         <ModuleIcon name={m.icon} size={20} />
                       </div>
                       {m.isAddon && (

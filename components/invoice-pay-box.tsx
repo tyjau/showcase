@@ -36,7 +36,7 @@ function PayForm({ dict, onPaid }: { dict: Dict; onPaid: () => void }) {
   return (
     <div className="mt-3">
       <PaymentElement />
-      {error && <p className="mt-2 text-sm text-[#b4441f]">{error}</p>}
+      {error && <p className="mt-2 text-sm text-err-fg">{error}</p>}
       <button
         type="button"
         onClick={submit}

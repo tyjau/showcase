@@ -32,13 +32,13 @@ function FooterCol({
 }) {
   return (
     <div>
-      <h4 className="mb-3 text-sm font-semibold uppercase tracking-wide text-white">
+      <h4 className="mb-3 text-sm font-semibold uppercase tracking-wide text-hero-fg">
         {title}
       </h4>
       <ul className="space-y-2 text-sm">
         {links.map(([label, href]) => (
           <li key={label}>
-            <Link href={href} className="hover:text-white">
+            <Link href={href} className="hover:text-hero-fg">
               {label}
             </Link>
           </li>
@@ -58,7 +58,7 @@ export function SiteFooter({
   legal: LegalDict;
 }) {
   return (
-    <footer className="bg-navy text-[#a9bccd]">
+    <footer className="bg-hero-bg text-hero-fg-muted">
       <div className="mx-auto max-w-6xl px-5 py-14">
         <div className="grid gap-8 md:grid-cols-4">
           <div>
@@ -95,13 +95,13 @@ export function SiteFooter({
         <div className="mt-10 flex flex-wrap items-center justify-between gap-2 border-t border-white/10 pt-6 text-sm">
           <span>© {new Date().getFullYear()} SkyRH. {dict.rights}</span>
           <span className="flex flex-wrap gap-x-3 gap-y-1">
-            <Link href={`/${lang}/legal/terms`} className="hover:text-white">
+            <Link href={`/${lang}/legal/terms`} className="hover:text-hero-fg">
               {legal.terms}
             </Link>
-            <Link href={`/${lang}/legal/privacy`} className="hover:text-white">
+            <Link href={`/${lang}/legal/privacy`} className="hover:text-hero-fg">
               {legal.privacy}
             </Link>
-            <Link href={`/${lang}/legal/cookies`} className="hover:text-white">
+            <Link href={`/${lang}/legal/cookies`} className="hover:text-hero-fg">
               {legal.cookies}
             </Link>
           </span>

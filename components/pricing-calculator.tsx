@@ -104,17 +104,17 @@ export function PricingCalculator({
           <button
             type="button"
             onClick={() => setAnnual(false)}
-            className={`px-3 py-1.5 transition ${!annual ? "bg-sky font-semibold text-white" : "text-muted hover:text-navy"}`}
+            className={`px-3 py-1.5 transition ${!annual ? "bg-sky font-semibold text-white" : "text-muted hover:text-heading"}`}
           >
             {dict.monthly}
           </button>
           <button
             type="button"
             onClick={() => setAnnual(true)}
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 transition ${annual ? "bg-sky font-semibold text-white" : "text-muted hover:text-navy"}`}
+            className={`inline-flex items-center gap-1.5 px-3 py-1.5 transition ${annual ? "bg-sky font-semibold text-white" : "text-muted hover:text-heading"}`}
           >
             {dict.annual}
-            <span className="rounded-full bg-[#e6f5ec] px-1.5 text-[11px] text-[#2e7d4f]">
+            <span className="rounded-full bg-ok-bg px-1.5 text-[11px] text-ok-fg">
               {dict.annualSave}
             </span>
           </button>
@@ -139,14 +139,14 @@ export function PricingCalculator({
           <button
             type="button"
             onClick={() => setMode("packages")}
-            className={`px-4 py-2 transition ${mode === "packages" ? "bg-navy font-semibold text-white" : "text-muted hover:text-navy"}`}
+            className={`px-4 py-2 transition ${mode === "packages" ? "bg-navy font-semibold text-white" : "text-muted hover:text-heading"}`}
           >
             {dict.tabPackages}
           </button>
           <button
             type="button"
             onClick={() => setMode("custom")}
-            className={`px-4 py-2 transition ${mode === "custom" ? "bg-navy font-semibold text-white" : "text-muted hover:text-navy"}`}
+            className={`px-4 py-2 transition ${mode === "custom" ? "bg-navy font-semibold text-white" : "text-muted hover:text-heading"}`}
           >
             {dict.tabCustom}
           </button>
@@ -171,22 +171,22 @@ export function PricingCalculator({
             return (
               <div
                 key={p.code}
-                className={`flex flex-col rounded-xl p-5 ${popular ? "border-2 border-sky" : "border border-line"}`}
+                className={`flex flex-col rounded-xl bg-surface p-5 ${popular ? "border-2 border-sky" : "border border-line"}`}
               >
                 {popular && (
-                  <div className="mb-2 inline-block self-start rounded-full bg-[#e7f4fb] px-2 py-0.5 text-[11px] font-semibold text-sky">
+                  <div className="mb-2 inline-block self-start rounded-full bg-tint-sky px-2 py-0.5 text-[11px] font-semibold text-sky">
                     {dict.popular}
                   </div>
                 )}
                 <div className="text-sm font-semibold text-ink">{p.name}</div>
                 <div className="mt-2">
                   {isFree ? (
-                    <span className="text-2xl font-bold text-navy">
+                    <span className="text-2xl font-bold text-heading">
                       {dict.free}
                     </span>
                   ) : (
                     <>
-                      <span className="text-2xl font-bold text-navy">
+                      <span className="text-2xl font-bold text-heading">
                         {fmtRate(rate, currency)}
                       </span>
                       <span className="text-xs text-muted"> {dict.perEmployee}</span>
@@ -236,7 +236,7 @@ export function PricingCalculator({
                       onClick={() =>
                         setOptionsOpen(optionsOpen === p.code ? null : p.code)
                       }
-                      className="flex w-full items-center justify-between text-xs font-semibold text-navy"
+                      className="flex w-full items-center justify-between text-xs font-semibold text-heading"
                     >
                       <span>
                         {dict.addOptions}
@@ -279,7 +279,7 @@ export function PricingCalculator({
                 )}
                 <Link
                   href={`/${lang}/signup?plan=${p.code}${sel.size ? `&addons=${Array.from(sel).join(",")}` : ""}`}
-                  className={`mt-4 block rounded-full px-4 py-2 text-center text-sm font-semibold ${popular ? "bg-sky text-white" : "border border-line text-navy"}`}
+                  className={`mt-4 block rounded-full px-4 py-2 text-center text-sm font-semibold ${popular ? "bg-sky text-white" : "border border-line text-heading hover:border-sky"}`}
                 >
                   {p.code === "ENTERPRISE" ? dict.contact : dict.startTrial}
                 </Link>
@@ -304,10 +304,10 @@ export function PricingCalculator({
                   onClick={() => toggleModule(m.code)}
                   className={`flex items-center gap-3 rounded-xl border p-3 text-left transition ${
                     checked
-                      ? "border-sky bg-[#f4fbfe]"
+                      ? "border-sky bg-tint-sky-strong"
                       : auto
                         ? "border-line bg-mist"
-                        : "border-line hover:border-sky"
+                        : "border-line bg-surface hover:border-sky"
                   }`}
                 >
                   <span
@@ -334,11 +334,11 @@ export function PricingCalculator({
               );
             })}
           </div>
-          <div className="mx-auto mt-6 max-w-sm rounded-xl border border-line bg-white p-5 text-center">
+          <div className="mx-auto mt-6 max-w-sm rounded-xl border border-line bg-surface p-5 text-center">
             <div className="text-xs uppercase tracking-wide text-muted">
               {dict.estTotal}
             </div>
-            <div className="mt-1 text-3xl font-bold text-navy">
+            <div className="mt-1 text-3xl font-bold text-heading">
               {fmtMoney(periodTotal(customRate), currency)}
               <span className="text-sm font-normal text-muted"> {periodLabel}</span>
             </div>

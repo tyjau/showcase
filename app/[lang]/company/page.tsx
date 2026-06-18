@@ -38,13 +38,13 @@ export default async function CompanyPage({
 
   return (
     <main>
-      <section className="bg-navy text-white">
+      <section className="bg-hero-bg text-hero-fg">
         <div className="mx-auto max-w-3xl px-5 py-16 text-center">
           <div className="text-xs font-semibold uppercase tracking-wide text-sky-soft">
             {c.eyebrow}
           </div>
           <h1 className="mt-3 text-3xl font-bold sm:text-4xl">{c.title}</h1>
-          <p className="mx-auto mt-4 max-w-xl text-[#c7d6e3]">{c.lead}</p>
+          <p className="mx-auto mt-4 max-w-xl text-hero-fg-muted">{c.lead}</p>
         </div>
       </section>
 
@@ -57,7 +57,7 @@ export default async function CompanyPage({
 
       <section className="border-y border-line bg-mist">
         <div className="mx-auto max-w-6xl px-5 py-14">
-          <h2 className="mb-8 text-center text-2xl font-bold text-navy">
+          <h2 className="mb-8 text-center text-2xl font-bold text-heading">
             {c.valuesTitle}
           </h2>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -66,9 +66,9 @@ export default async function CompanyPage({
               return (
                 <div
                   key={v.title}
-                  className="rounded-xl border border-line bg-white p-5"
+                  className="rounded-xl border border-line bg-surface p-5"
                 >
-                  <div className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-[#e7f4fb] text-sky">
+                  <div className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-tint-sky text-sky">
                     <Icon size={20} />
                   </div>
                   <h3 className="mt-3 font-semibold text-ink">{v.title}</h3>
@@ -84,15 +84,15 @@ export default async function CompanyPage({
 
       <section className="mx-auto max-w-6xl px-5 py-14">
         <div className="max-w-xl">
-          <h2 className="text-2xl font-bold text-navy">{c.ecosystemTitle}</h2>
+          <h2 className="text-2xl font-bold text-heading">{c.ecosystemTitle}</h2>
           <p className="mt-2 text-muted">{c.ecosystemLead}</p>
         </div>
         <div className="mt-8 grid gap-5 sm:grid-cols-2">
           <Link
             href={`/${lang}/platform`}
-            className="group rounded-xl border border-line p-6 transition hover:-translate-y-1 hover:shadow-sm"
+            className="group rounded-xl border border-line bg-surface p-6 transition hover:-translate-y-1 hover:shadow-sm"
           >
-            <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-[#e7f4fb] text-sky">
+            <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-tint-sky text-sky">
               <Layers size={22} />
             </div>
             <h3 className="mt-4 flex items-center gap-1.5 font-semibold text-ink">
@@ -108,9 +108,9 @@ export default async function CompanyPage({
           </Link>
           <Link
             href={`/${lang}/partners`}
-            className="group rounded-xl border border-line p-6 transition hover:-translate-y-1 hover:shadow-sm"
+            className="group rounded-xl border border-line bg-surface p-6 transition hover:-translate-y-1 hover:shadow-sm"
           >
-            <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-[#e7f4fb] text-sky">
+            <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-tint-sky text-sky">
               <Handshake size={22} />
             </div>
             <h3 className="mt-4 flex items-center gap-1.5 font-semibold text-ink">
@@ -134,7 +134,7 @@ export default async function CompanyPage({
         <p className="mt-3 text-lg leading-relaxed text-ink">{c.careersBody}</p>
         <Link
           href={`/${lang}/signup`}
-          className="mt-5 inline-flex rounded-full border border-line px-5 py-2.5 text-sm font-semibold text-navy transition hover:border-sky"
+          className="mt-5 inline-flex rounded-full border border-line px-5 py-2.5 text-sm font-semibold text-heading transition hover:border-sky"
         >
           {c.careersCta}
         </Link>
@@ -149,7 +149,7 @@ export default async function CompanyPage({
           <p className="mx-auto mt-3 max-w-lg text-white/90">{c.contactBody}</p>
           <Link
             href={`/${lang}/signup`}
-            className="mt-6 inline-flex rounded-full bg-white px-6 py-3 text-sm font-semibold text-navy transition hover:bg-mist"
+            className="mt-6 inline-flex rounded-full bg-white px-6 py-3 text-sm font-semibold text-navy transition hover:bg-white/90"
           >
             {c.contactCta}
           </Link>

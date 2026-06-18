@@ -6,6 +6,7 @@ import { MobileNav } from "./mobile-nav";
 import { PrimaryNav } from "./primary-nav";
 import { HeaderAuthLink } from "./header-auth-link";
 import { HeaderAccount } from "./header-account";
+import { ThemeToggle } from "./theme-toggle";
 import type { Locale } from "@/lib/i18n";
 
 type NavDict = {
@@ -24,7 +25,17 @@ type NavDict = {
   partner: string;
 };
 
-export function SiteHeader({ lang, dict }: { lang: Locale; dict: NavDict }) {
+type ThemeDict = { toggle: string; light: string; dark: string; system: string };
+
+export function SiteHeader({
+  lang,
+  dict,
+  theme,
+}: {
+  lang: Locale;
+  dict: NavDict;
+  theme: ThemeDict;
+}) {
   const nav = [
     { label: dict.features, href: `/${lang}/features` },
     { label: dict.pricing, href: `/${lang}/pricing` },
@@ -34,7 +45,7 @@ export function SiteHeader({ lang, dict }: { lang: Locale; dict: NavDict }) {
   ];
 
   return (
-    <header className="sticky top-0 z-50 border-b border-line bg-white/90 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-line bg-header backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
         <Link href={`/${lang}`}>
           <BrandLogo />
@@ -42,6 +53,7 @@ export function SiteHeader({ lang, dict }: { lang: Locale; dict: NavDict }) {
         <PrimaryNav items={nav} />
         <div className="flex items-center gap-3 text-sm">
           <CurrencySwitcher className="hidden sm:inline-flex" />
+          <ThemeToggle labels={theme} className="hidden sm:inline-flex" />
           <LocaleSwitcher current={lang} />
           <HeaderAccount
             lang={lang}
@@ -62,9 +74,10 @@ export function SiteHeader({ lang, dict }: { lang: Locale; dict: NavDict }) {
                 lang={lang}
                 signinLabel={dict.signin}
                 accountLabel={dict.account}
-                className="mt-1 border-t border-line px-4 pb-1 pt-3 text-navy"
+                className="mt-1 border-t border-line px-4 pb-1 pt-3 text-heading"
               />
             }
+            themeToggle={<ThemeToggle labels={theme} />}
             className="md:hidden"
           />
         </div>

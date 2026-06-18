@@ -30,6 +30,13 @@
     "paymentMethod": "Moyen de paiement",
     "partner": "Espace partenaire"
   },
+  "theme": {
+    "label": "Thème",
+    "toggle": "Changer de thème",
+    "light": "Clair",
+    "dark": "Sombre",
+    "system": "Système"
+  },
   "hero": {
     "eyebrow": "Plateforme RH & paie",
     "title": "La RH et la paie modernes, pour les équipes du monde entier",

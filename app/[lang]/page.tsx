@@ -45,7 +45,7 @@ export default async function Home({
 
   return (
     <main>
-      <section className="bg-navy text-white">
+      <section className="bg-hero-bg text-hero-fg">
         <div className="mx-auto max-w-3xl px-5 py-16 text-center">
           <span className="text-sm font-semibold tracking-wide text-sky-soft">
             {t.hero.eyebrow}
@@ -53,7 +53,7 @@ export default async function Home({
           <h1 className="mx-auto mt-3 max-w-2xl text-3xl font-bold leading-tight sm:text-4xl">
             {t.hero.title}
           </h1>
-          <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-[#c7d6e3]">
+          <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-hero-fg-muted">
             {t.hero.lead}
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
@@ -70,14 +70,14 @@ export default async function Home({
               <Play size={16} /> {t.hero.ctaDemo}
             </Link>
           </div>
-          <p className="mt-3 inline-flex items-center gap-1.5 text-xs text-[#9fb4c6]">
+          <p className="mt-3 inline-flex items-center gap-1.5 text-xs text-hero-fg-faint">
             <Check size={14} className="text-sky-soft" /> {t.hero.trustNote}
           </p>
 
-          <div className="mx-auto mt-8 max-w-md rounded-xl bg-white p-3.5 text-left text-ink">
+          <div className="mx-auto mt-8 max-w-md rounded-xl bg-surface p-3.5 text-left text-ink shadow-sm">
             <div className="mb-3 flex items-center justify-between">
               <span className="text-sm font-semibold">{t.preview.title}</span>
-              <span className="rounded-full bg-[#e6f5ec] px-2 py-0.5 text-[11px] text-[#2e7d4f]">
+              <span className="rounded-full bg-ok-bg px-2 py-0.5 text-[11px] text-ok-fg">
                 {t.preview.status}
               </span>
             </div>
@@ -89,7 +89,7 @@ export default async function Home({
               ].map(([k, v]) => (
                 <div key={k} className="rounded-lg bg-mist p-2">
                   <div className="text-[11px] text-muted">{k}</div>
-                  <div className="text-base font-bold text-navy">{v}</div>
+                  <div className="text-base font-bold text-heading">{v}</div>
                 </div>
               ))}
             </div>
@@ -109,7 +109,7 @@ export default async function Home({
         </div>
       </section>
 
-      <div className="border-b border-line bg-white">
+      <div className="border-b border-line bg-page">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-6 gap-y-2 px-5 py-3 text-xs text-accent">
           {t.trust.map((item) => (
             <span key={item} className="inline-flex items-center gap-1.5">
@@ -124,7 +124,7 @@ export default async function Home({
 
       <section id="product" className="mx-auto max-w-6xl px-5 py-14">
         <div className="mb-8 text-center">
-          <h2 className="text-2xl font-bold text-navy">{t.features.heading}</h2>
+          <h2 className="text-2xl font-bold text-heading">{t.features.heading}</h2>
           <p className="mx-auto mt-2 max-w-xl text-muted">{t.features.sub}</p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -133,9 +133,9 @@ export default async function Home({
             return (
               <div
                 key={key}
-                className="rounded-xl border border-line p-5 transition hover:-translate-y-1 hover:shadow-sm"
+                className="rounded-xl border border-line bg-surface p-5 transition hover:-translate-y-1 hover:shadow-sm"
               >
-                <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-lg bg-[#e7f4fb] text-sky">
+                <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-lg bg-tint-sky text-sky">
                   <Icon size={19} />
                 </div>
                 <h3 className="font-semibold text-ink">{item.title}</h3>
@@ -154,7 +154,7 @@ export default async function Home({
           <p className="mx-auto mt-2 max-w-lg text-[#eaf6fd]">{t.ctaBand.sub}</p>
           <Link
             href={`/${lang}/signup`}
-            className="mt-5 inline-block rounded-full bg-white px-6 py-3 font-semibold text-accent"
+            className="mt-5 inline-block rounded-full bg-white px-6 py-3 font-semibold text-[#156082]"
           >
             {t.ctaBand.button}
           </Link>

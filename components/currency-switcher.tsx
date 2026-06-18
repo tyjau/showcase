@@ -24,7 +24,7 @@ export function CurrencySwitcher({ className = "" }: { className?: string }) {
           className={`px-2 py-1 transition ${
             currency === c
               ? "bg-navy font-semibold text-white"
-              : "text-muted hover:text-navy"
+              : "text-muted hover:text-heading"
           }`}
         >
           {c}

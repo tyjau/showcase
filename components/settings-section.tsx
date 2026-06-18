@@ -43,8 +43,8 @@ export function SettingsSection({ dict }: { dict: Dict }) {
   if (scheduled === null) return <p className="text-muted">{dict.loading}</p>;
 
   return (
-    <div className="rounded-xl border border-[#f0c2b4] bg-[#fdeee9] p-5">
-      <h3 className="text-lg font-bold text-navy">{dict.delTitle}</h3>
+    <div className="rounded-xl border border-err-border bg-err-bg p-5">
+      <h3 className="text-lg font-bold text-heading">{dict.delTitle}</h3>
       {scheduled ? (
         <>
           <p className="mt-2 text-sm text-ink">
@@ -64,7 +64,7 @@ export function SettingsSection({ dict }: { dict: Dict }) {
           {!confirming ? (
             <button
               onClick={() => setConfirming(true)}
-              className="mt-4 rounded-full border border-[#b4441f] px-6 py-2.5 text-sm font-semibold text-[#b4441f] hover:bg-[#fbe3da]"
+              className="mt-4 rounded-full border border-err-fg px-6 py-2.5 text-sm font-semibold text-err-fg hover:bg-err-bg"
             >
               {dict.delButton}
             </button>

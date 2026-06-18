@@ -30,6 +30,13 @@
     "paymentMethod": "Payment method",
     "partner": "Partner area"
   },
+  "theme": {
+    "label": "Theme",
+    "toggle": "Toggle theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
   "hero": {
     "eyebrow": "HR & payroll platform",
     "title": "Modern HR and payroll for teams everywhere",

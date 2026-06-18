@@ -51,7 +51,7 @@ function PayForm({ dict, onPaid }: { dict: Dict; onPaid: () => void }) {
   return (
     <div className="mt-4">
       <PaymentElement />
-      {error && <p className="mt-3 text-sm text-[#b4441f]">{error}</p>}
+      {error && <p className="mt-3 text-sm text-err-fg">{error}</p>}
       <button
         type="button"
         onClick={submit}
@@ -94,15 +94,15 @@ export function OrderCheckout({ dict, onActivated }: { dict: Dict; onActivated?:
 
   if (state === "paid") {
     return (
-      <section className="mb-8 rounded-xl border border-[#cdebd8] bg-[#eafaf0] p-5">
-        <p className="font-semibold text-[#2e7d4f]">{dict.payThanks}</p>
+      <section className="mb-8 rounded-xl border border-ok-border bg-ok-bg p-5">
+        <p className="font-semibold text-ok-fg">{dict.payThanks}</p>
       </section>
     );
   }
 
   return (
-    <section className="mb-8 rounded-xl border border-[#f0d9a8] bg-[#fdf6e7] p-5">
-      <h2 className="text-lg font-bold text-navy">{dict.orderPendingTitle}</h2>
+    <section className="mb-8 rounded-xl border border-warn-border bg-warn-bg p-5">
+      <h2 className="text-lg font-bold text-heading">{dict.orderPendingTitle}</h2>
       <p className="mt-1 text-sm text-muted">{dict.orderPendingLead}</p>
       {invoice && (
         <p className="mt-2 text-sm font-semibold text-ink">

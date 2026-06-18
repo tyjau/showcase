@@ -59,7 +59,7 @@ export function PortalLogin({ lang, dict }: { lang: string; dict: Dict }) {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-navy">{dict.title}</h1>
+      <h1 className="text-2xl font-bold text-heading">{dict.title}</h1>
       <p className="mt-1 text-muted">{dict.lead}</p>
 
       <div className="mt-6 space-y-4">
@@ -101,7 +101,7 @@ export function PortalLogin({ lang, dict }: { lang: string; dict: Dict }) {
       </div>
 
       {error && (
-        <p className="mt-4 rounded-lg border border-[#f0c2b4] bg-[#fdeee9] px-4 py-2.5 text-sm text-[#b4441f]">
+        <p className="mt-4 rounded-lg border border-err-border bg-err-bg px-4 py-2.5 text-sm text-err-fg">
           {error}
         </p>
       )}
@@ -129,7 +129,7 @@ export function PortalLogin({ lang, dict }: { lang: string; dict: Dict }) {
               type="button"
               onClick={() => social("google")}
               disabled={!slug || !email.trim() || submitting}
-              className="w-full rounded-full border border-line px-6 py-2.5 text-sm font-semibold text-navy hover:border-sky disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-full rounded-full border border-line px-6 py-2.5 text-sm font-semibold text-heading hover:border-sky disabled:cursor-not-allowed disabled:opacity-50"
             >
               {dict.socialGoogle}
             </button>
@@ -137,7 +137,7 @@ export function PortalLogin({ lang, dict }: { lang: string; dict: Dict }) {
               type="button"
               onClick={() => social("microsoft")}
               disabled={!slug || !email.trim() || submitting}
-              className="w-full rounded-full border border-line px-6 py-2.5 text-sm font-semibold text-navy hover:border-sky disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-full rounded-full border border-line px-6 py-2.5 text-sm font-semibold text-heading hover:border-sky disabled:cursor-not-allowed disabled:opacity-50"
             >
               {dict.socialMicrosoft}
             </button>

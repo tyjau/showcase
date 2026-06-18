@@ -12,10 +12,12 @@ type NavItem = { label: string; href: string };
 export function MobileNav({
   items,
   authLink,
+  themeToggle,
   className = "",
 }: {
   items: NavItem[];
   authLink: ReactNode;
+  themeToggle?: ReactNode;
   className?: string;
 }) {
   const pathname = usePathname();
@@ -24,11 +26,11 @@ export function MobileNav({
     <details className={`relative ${className}`}>
       <summary
         aria-label="Menu"
-        className="flex h-9 w-9 cursor-pointer list-none select-none items-center justify-center rounded-md text-navy hover:bg-mist [&::-webkit-details-marker]:hidden"
+        className="flex h-9 w-9 cursor-pointer list-none select-none items-center justify-center rounded-md text-heading hover:bg-mist [&::-webkit-details-marker]:hidden"
       >
         <Menu size={22} aria-hidden="true" />
       </summary>
-      <div className="absolute right-0 top-11 z-40 w-56 rounded-lg border border-line bg-white py-2 shadow-md">
+      <div className="absolute right-0 top-11 z-40 w-56 rounded-lg border border-line bg-surface py-2 shadow-md">
         <nav className="flex flex-col text-sm">
           {items.map((n) => (
             <Link
@@ -40,6 +42,11 @@ export function MobileNav({
             </Link>
           ))}
           {authLink}
+          {themeToggle && (
+            <div className="mt-1 border-t border-line px-4 pb-1 pt-3">
+              {themeToggle}
+            </div>
+          )}
         </nav>
       </div>
     </details>

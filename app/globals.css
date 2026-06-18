@@ -2,12 +2,96 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * Semantic colour tokens. Light values live in :root; the `.dark` selector flips
+ * them. The Tailwind config maps the neutral colour names (ink/muted/line/mist/
+ * accent) and the page background/surface utilities to these vars, so the bulk of
+ * the UI re-themes automatically.
+ *
+ * --brand-navy / --brand-sky are the BRAND colours and are overridden at runtime
+ * per partner (see partner-provider). They are intentionally NOT flipped by dark
+ * mode — co-branding must keep working in either theme.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #13212e;
-  /* Brand colours — overridden at runtime per partner (see partner-provider). */
+  /* Brand — partner-overridable, theme-independent. */
   --brand-navy: #0e2841;
   --brand-sky: #0f9ed5;
+
+  /* Neutrals / surfaces (light). */
+  --bg: #ffffff; /* page background */
+  --surface: #ffffff; /* cards, dropdowns, panels */
+  --surface-2: #f4f8fb; /* subtle fills (mist): table heads, chips, range track */
+  --fg: #13212e; /* primary text (ink) */
+  --fg-muted: #5a6b7b; /* secondary text (muted) */
+  --hairline: #e2e8ee; /* borders (line) */
+  --accent: #156082; /* decorative eyebrow / gradient anchor */
+  --heading: var(--brand-navy); /* section headings — brand navy on light */
+
+  /* Soft tinted surfaces + their foregrounds (icon chips, status, banners). */
+  --tint-sky-bg: #e7f4fb;
+  --tint-sky-strong-bg: #f4fbfe; /* selected card fill */
+  --ok-bg: #e6f5ec;
+  --ok-fg: #2e7d4f;
+  --ok-border: #cdebd8;
+  --warn-bg: #fdf6e7;
+  --warn-border: #f0d9a8;
+  --warn-fg: #8a6d1f;
+  --err-bg: #fdeee9;
+  --err-border: #f0c2b4;
+  --err-fg: #b4441f;
+  --info-bg: #fff4e0;
+  --info-fg: #a96a00;
+
+  /* Sticky header — translucent page surface (Tailwind alpha can't apply to a
+     var-based colour, so the translucency is baked into the token). */
+  --header-bg: rgba(255, 255, 255, 0.9);
+
+  /* Hero band (navy section). Kept brand-navy in light. */
+  --hero-bg: var(--brand-navy);
+  --hero-fg: #ffffff;
+  --hero-fg-muted: #c7d6e3;
+  --hero-fg-faint: #9fb4c6;
+
+  /* Compatibility aliases used by Next.js defaults. */
+  --background: var(--bg);
+  --foreground: var(--fg);
+}
+
+.dark {
+  /* Neutrals / surfaces (dark). A near-black slate base with layered surfaces. */
+  --bg: #0b1622;
+  --surface: #14212f;
+  --surface-2: #1c2b3a;
+  --fg: #e6edf3;
+  --fg-muted: #9fb1c1;
+  --hairline: #2a3947;
+  --accent: #5cc0e8; /* lightened so eyebrow text stays legible on dark */
+  --heading: #f1f6fa; /* headings go near-white in dark (NOT brand navy) */
+
+  /* Soft tinted surfaces — desaturated, dark-friendly with light foregrounds. */
+  --tint-sky-bg: rgba(15, 158, 213, 0.16);
+  --tint-sky-strong-bg: rgba(15, 158, 213, 0.12);
+  --ok-bg: rgba(46, 125, 79, 0.22);
+  --ok-fg: #7fd6a0;
+  --ok-border: rgba(46, 125, 79, 0.35);
+  --warn-bg: rgba(180, 130, 30, 0.18);
+  --warn-border: rgba(240, 217, 168, 0.28);
+  --warn-fg: #e6c879;
+  --err-bg: rgba(180, 68, 31, 0.2);
+  --err-border: rgba(240, 194, 180, 0.3);
+  --err-fg: #f0a18d;
+  --info-bg: rgba(169, 106, 0, 0.2);
+  --info-fg: #e6b96a;
+
+  /* Translucent header on the dark page base. */
+  --header-bg: rgba(11, 22, 34, 0.85);
+
+  /* Hero band in dark: a deep slate so it sits a touch above the page bg without
+     a jarring bright-navy block. */
+  --hero-bg: #0e1b29;
+  --hero-fg: #f1f6fa;
+  --hero-fg-muted: #b6c6d6;
+  --hero-fg-faint: #8295a7;
 }
 
 html {
@@ -15,6 +99,32 @@ html {
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
+  color: var(--fg);
+  background: var(--bg);
+}
+
+/*
+ * Form controls. Tailwind's preflight resets these to the browser default
+ * (white bg / black text), which is invisible on a dark surface. Tie them to the
+ * surface tokens so text inputs, textareas and selects re-theme everywhere
+ * without per-field dark: classes. Buttons are excluded (brand-coloured).
+ */
+input,
+textarea,
+select {
+  background-color: var(--surface);
+  color: var(--fg);
+  border-color: var(--hairline);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--fg-muted);
+  opacity: 1;
+}
+
+/* color-scheme hint so native widgets (autofill, date pickers, scrollbars,
+   default checkbox/radio) match the active theme. */
+.dark {
+  color-scheme: dark;
 }

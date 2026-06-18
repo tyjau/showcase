@@ -50,7 +50,7 @@ function CardForm({ dict, onSaved, onCancel }: { dict: Dict; onSaved: (c: Card) 
   return (
     <div>
       <PaymentElement />
-      {error && <p className="mt-3 text-sm text-[#b4441f]">{error}</p>}
+      {error && <p className="mt-3 text-sm text-err-fg">{error}</p>}
       <div className="mt-4 flex gap-3">
         <button
           type="button"
@@ -122,7 +122,7 @@ export function PaymentMethod({ dict }: { dict: Dict }) {
 
   return (
     <section className="mt-8">
-      <h2 className="text-lg font-bold text-navy">{dict.payTitle}</h2>
+      <h2 className="text-lg font-bold text-heading">{dict.payTitle}</h2>
 
       {card?.last4 ? (
         <div className="mt-3 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-line px-4 py-3">
@@ -142,13 +142,13 @@ export function PaymentMethod({ dict }: { dict: Dict }) {
           type="button"
           onClick={startAdd}
           disabled={starting}
-          className="mt-4 inline-flex rounded-full border border-line px-4 py-2 text-sm font-semibold text-navy hover:border-sky disabled:opacity-60"
+          className="mt-4 inline-flex rounded-full border border-line px-4 py-2 text-sm font-semibold text-heading hover:border-sky disabled:opacity-60"
         >
           {starting ? "…" : card?.last4 ? dict.payUpdate : dict.payAdd}
         </button>
       )}
 
-      {error && <p className="mt-3 text-sm text-[#b4441f]">{error}</p>}
+      {error && <p className="mt-3 text-sm text-err-fg">{error}</p>}
 
       {adding && (
         <div className="mt-4 rounded-xl border border-line p-4">

@@ -53,11 +53,29 @@ export default async function LangLayout({
 }: Readonly<{ children: React.ReactNode; params: { lang: Locale } }>) {
   const dict = await getDictionary(params.lang);
   return (
-    <html lang={params.lang} className={mulish.variable}>
-      <body className="font-sans bg-white text-ink antialiased flex min-h-screen flex-col">
+    <html
+      lang={params.lang}
+      className={mulish.variable}
+      suppressHydrationWarning
+    >
+      <head>
+        {/*
+          No-flash theme boot. Runs before paint on the static export: reads the
+          persisted choice (skyrh.theme) or falls back to prefers-color-scheme and
+          sets the `.dark` class on <html> synchronously, so there is no flash of
+          the wrong theme and no hydration mismatch (server markup is neutral).
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){try{var t=localStorage.getItem('skyrh.theme');var d=t==='dark'||((!t||t==='system')&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',d);}catch(e){}})();",
+          }}
+        />
+      </head>
+      <body className="font-sans bg-page text-ink antialiased flex min-h-screen flex-col">
         <PartnerProvider>
           <CurrencyProvider>
-            <SiteHeader lang={params.lang} dict={dict.nav} />
+            <SiteHeader lang={params.lang} dict={dict.nav} theme={dict.theme} />
             <div className="flex-1">{children}</div>
             <SiteFooter
               lang={params.lang}

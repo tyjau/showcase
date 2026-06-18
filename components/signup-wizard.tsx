@@ -213,11 +213,11 @@ export function SignupWizard({
 
   if (done) {
     return (
-      <div className="rounded-2xl border border-line p-8 text-center">
-        <div className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#e6f5ec] text-[#2e7d4f]">
+      <div className="rounded-2xl border border-line bg-surface p-8 text-center">
+        <div className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-full bg-ok-bg text-ok-fg">
           <Check size={28} />
         </div>
-        <h1 className="mt-4 text-2xl font-bold text-navy">
+        <h1 className="mt-4 text-2xl font-bold text-heading">
           {dict.successTitle}
         </h1>
         <p className="mx-auto mt-2 max-w-md text-muted">{dict.successBody}</p>
@@ -251,7 +251,7 @@ export function SignupWizard({
               {i < step ? <Check size={14} /> : i + 1}
             </span>
             <span
-              className={`ml-2 hidden text-sm sm:inline ${i === step ? "font-semibold text-navy" : "text-muted"}`}
+              className={`ml-2 hidden text-sm sm:inline ${i === step ? "font-semibold text-heading" : "text-muted"}`}
             >
               {dict.steps[k]}
             </span>
@@ -264,7 +264,7 @@ export function SignupWizard({
 
       {step === 0 && (
         <div>
-          <h1 className="text-2xl font-bold text-navy">{dict.planTitle}</h1>
+          <h1 className="text-2xl font-bold text-heading">{dict.planTitle}</h1>
           <p className="mt-1 text-muted">{dict.planLead}</p>
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             {catalog.packages.map((p) => {
@@ -276,12 +276,12 @@ export function SignupWizard({
                   key={p.code}
                   type="button"
                   onClick={() => setPlanCode(p.code)}
-                  className={`rounded-xl p-4 text-left transition ${active ? "border-2 border-sky bg-[#f4fbfe]" : "border border-line hover:border-sky"}`}
+                  className={`rounded-xl p-4 text-left transition ${active ? "border-2 border-sky bg-tint-sky-strong" : "border border-line bg-surface hover:border-sky"}`}
                 >
                   <div className="flex items-center justify-between">
                     <span className="font-semibold text-ink">{p.name}</span>
                     {pop && (
-                      <span className="rounded-full bg-[#e7f4fb] px-2 py-0.5 text-[11px] font-semibold text-sky">
+                      <span className="rounded-full bg-tint-sky px-2 py-0.5 text-[11px] font-semibold text-sky">
                         {dict.popular}
                       </span>
                     )}
@@ -291,7 +291,7 @@ export function SignupWizard({
                       dict.free
                     ) : (
                       <>
-                        <span className="font-semibold text-navy">
+                        <span className="font-semibold text-heading">
                           {fmtRate(pBase, currency)}
                         </span>{" "}
                         {dict.perEmployee}
@@ -331,7 +331,7 @@ export function SignupWizard({
                       key={m.code}
                       type="button"
                       onClick={() => toggleAddon(m.code)}
-                      className={`flex items-center gap-2 rounded-lg border p-2.5 text-left text-sm transition ${on ? "border-sky bg-[#f4fbfe]" : "border-line hover:border-sky"}`}
+                      className={`flex items-center gap-2 rounded-lg border p-2.5 text-left text-sm transition ${on ? "border-sky bg-tint-sky-strong" : "border-line bg-surface hover:border-sky"}`}
                     >
                       <span
                         className={`flex h-4 w-4 shrink-0 items-center justify-center rounded ${on ? "bg-sky text-white" : "border border-line"}`}
@@ -355,7 +355,7 @@ export function SignupWizard({
             <span className="text-xs uppercase tracking-wide text-muted">
               {dict.estTotal}
             </span>
-            <div className="mt-1 text-2xl font-bold text-navy">
+            <div className="mt-1 text-2xl font-bold text-heading">
               {isFree ? (
                 dict.free
               ) : (
@@ -374,7 +374,7 @@ export function SignupWizard({
 
       {step === 1 && (
         <div>
-          <h1 className="text-2xl font-bold text-navy">
+          <h1 className="text-2xl font-bold text-heading">
             {dict.workspaceTitle}
           </h1>
           <p className="mt-1 text-muted">{dict.workspaceLead}</p>
@@ -400,7 +400,7 @@ export function SignupWizard({
                 <span className="px-3 text-sm text-muted">.{domainBase}</span>
               </div>
               {subdomain.length > 0 && !subOk && (
-                <p className="mt-1 text-xs text-[#b4441f]">
+                <p className="mt-1 text-xs text-err-fg">
                   {dict.subdomainTaken}
                 </p>
               )}
@@ -419,7 +419,7 @@ export function SignupWizard({
 
       {step === 2 && (
         <div>
-          <h1 className="text-2xl font-bold text-navy">{dict.accountTitle}</h1>
+          <h1 className="text-2xl font-bold text-heading">{dict.accountTitle}</h1>
           <p className="mt-1 text-muted">{dict.accountLead}</p>
           <div className="mt-6 space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
@@ -453,7 +453,7 @@ export function SignupWizard({
 
       {step === 3 && (
         <div>
-          <h1 className="text-2xl font-bold text-navy">{dict.reviewTitle}</h1>
+          <h1 className="text-2xl font-bold text-heading">{dict.reviewTitle}</h1>
           <p className="mt-1 text-muted">{dict.reviewLead}</p>
           <dl className="mt-6 divide-y divide-line rounded-xl border border-line">
             <Row
@@ -505,7 +505,7 @@ export function SignupWizard({
       )}
 
       {error && (
-        <p className="mt-6 rounded-lg border border-[#f0c2b4] bg-[#fdeee9] px-4 py-2.5 text-sm text-[#b4441f]">
+        <p className="mt-6 rounded-lg border border-err-border bg-err-bg px-4 py-2.5 text-sm text-err-fg">
           {error}
         </p>
       )}
@@ -515,7 +515,7 @@ export function SignupWizard({
           <button
             type="button"
             onClick={() => setStep(step - 1)}
-            className="inline-flex items-center gap-1 rounded-full border border-line px-5 py-2.5 text-sm font-semibold text-navy transition hover:border-sky"
+            className="inline-flex items-center gap-1 rounded-full border border-line px-5 py-2.5 text-sm font-semibold text-heading transition hover:border-sky"
           >
             <ChevronLeft size={16} /> {dict.back}
           </button>

@@ -37,13 +37,13 @@ export default async function ResourcesPage({
 
   return (
     <main>
-      <section className="bg-navy text-white">
+      <section className="bg-hero-bg text-hero-fg">
         <div className="mx-auto max-w-3xl px-5 py-16 text-center">
           <div className="text-xs font-semibold uppercase tracking-wide text-sky-soft">
             {r.eyebrow}
           </div>
           <h1 className="mt-3 text-3xl font-bold sm:text-4xl">{r.title}</h1>
-          <p className="mx-auto mt-4 max-w-xl text-[#c7d6e3]">{r.lead}</p>
+          <p className="mx-auto mt-4 max-w-xl text-hero-fg-muted">{r.lead}</p>
         </div>
       </section>
 
@@ -55,9 +55,9 @@ export default async function ResourcesPage({
               <Link
                 key={it.title}
                 href={hrefs[i] ?? `/${lang}/resources`}
-                className="group flex items-start gap-4 rounded-xl border border-line p-5 transition hover:-translate-y-1 hover:shadow-sm"
+                className="group flex items-start gap-4 rounded-xl border border-line bg-surface p-5 transition hover:-translate-y-1 hover:shadow-sm"
               >
-                <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-[#e7f4fb] text-sky">
+                <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-tint-sky text-sky">
                   <Icon size={22} />
                 </div>
                 <div className="min-w-0">

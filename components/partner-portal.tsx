@@ -29,7 +29,7 @@ function Metric({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-xl border border-line p-4">
       <p className="text-xs uppercase tracking-wide text-muted">{label}</p>
-      <p className="mt-1 text-2xl font-bold text-navy">{value}</p>
+      <p className="mt-1 text-2xl font-bold text-heading">{value}</p>
     </div>
   );
 }
@@ -83,7 +83,7 @@ export function PartnerPortal({ lang, dict }: { lang: string; dict: Dict }) {
     <div>
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-navy">{dict.title}</h1>
+          <h1 className="text-2xl font-bold text-heading">{dict.title}</h1>
           <p className="text-muted">{dict.subtitle}</p>
         </div>
         <button onClick={logout} className="shrink-0 text-sm text-muted hover:text-ink">
@@ -108,7 +108,7 @@ export function PartnerPortal({ lang, dict }: { lang: string; dict: Dict }) {
 
           <div className="mt-6 rounded-xl border border-line p-5">
             <p className="text-xs uppercase tracking-wide text-muted">{dict.codeLabel}</p>
-            <p className="mt-1 font-mono text-lg font-bold text-navy">{d.code}</p>
+            <p className="mt-1 font-mono text-lg font-bold text-heading">{d.code}</p>
             {d.reward_value != null && (
               <p className="mt-2 text-sm text-muted">
                 {dict.rewardLabel}: {d.reward_value}
@@ -148,7 +148,7 @@ export function PartnerPortal({ lang, dict }: { lang: string; dict: Dict }) {
             </div>
           )}
 
-          <h2 className="mt-8 text-lg font-bold text-navy">{dict.referralsTitle}</h2>
+          <h2 className="mt-8 text-lg font-bold text-heading">{dict.referralsTitle}</h2>
           {referrals.length === 0 ? (
             <p className="mt-3 text-muted">{dict.noReferrals}</p>
           ) : (

@@ -22,8 +22,8 @@ export function LocaleSwitcher({ current }: { current: Locale }) {
           aria-current={loc === current ? "true" : undefined}
           className={`rounded px-1.5 py-0.5 uppercase ${
             loc === current
-              ? "bg-mist font-semibold text-navy"
-              : "text-muted hover:text-navy"
+              ? "bg-mist font-semibold text-heading"
+              : "text-muted hover:text-heading"
           }`}
         >
           {loc}

@@ -30,7 +30,7 @@ function Metric({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-xl border border-line p-4">
       <p className="text-xs uppercase tracking-wide text-muted">{label}</p>
-      <p className="mt-1 text-2xl font-bold text-navy">{value}</p>
+      <p className="mt-1 text-2xl font-bold text-heading">{value}</p>
     </div>
   );
 }
@@ -58,7 +58,7 @@ export function ConsumptionSection({ dict }: { dict: Dict }) {
   }, []);
 
   if (state === "loading") return <p className="text-muted">{dict.loading}</p>;
-  if (state === "error") return <p className="text-sm text-[#b4441f]">{dict.payError}</p>;
+  if (state === "error") return <p className="text-sm text-err-fg">{dict.payError}</p>;
   if (state === "none" || !data) return <p className="text-muted">{dict.empty}</p>;
 
   const cur = data.currency || "USD";
@@ -74,7 +74,7 @@ export function ConsumptionSection({ dict }: { dict: Dict }) {
         {data.billing_unit === "per_company" ? dict.consFlat : dict.consPerSeat}
       </p>
 
-      <h3 className="mt-6 text-sm font-bold text-navy">{dict.consBreakdown}</h3>
+      <h3 className="mt-6 text-sm font-bold text-heading">{dict.consBreakdown}</h3>
       <div className="mt-2 overflow-x-auto rounded-xl border border-line">
         <table className="w-full text-sm">
           <thead className="bg-mist text-left text-xs uppercase text-muted">
@@ -96,11 +96,11 @@ export function ConsumptionSection({ dict }: { dict: Dict }) {
             ))}
           </tbody>
           <tfoot>
-            <tr className="border-t-2 border-line bg-mist/40">
+            <tr className="border-t-2 border-line bg-mist">
               <td className="px-4 py-2.5 font-semibold" colSpan={3}>
                 {dict.consTotal}
               </td>
-              <td className="px-4 py-2.5 text-right font-bold text-navy">{money(data.total ?? 0, cur)}</td>
+              <td className="px-4 py-2.5 text-right font-bold text-heading">{money(data.total ?? 0, cur)}</td>
             </tr>
           </tfoot>
         </table>
