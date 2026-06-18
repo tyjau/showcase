@@ -9,6 +9,7 @@ import { OrderCheckout } from "@/components/order-checkout";
 import { ConsumptionSection } from "@/components/consumption-section";
 import { ReferralsSection } from "@/components/referrals-section";
 import { SettingsSection } from "@/components/settings-section";
+import { SupportSection } from "@/components/support-section";
 import { InvoicePayBox } from "@/components/invoice-pay-box";
 
 type Dict = Record<string, string>;
@@ -172,6 +173,7 @@ const TABS = [
   { key: "invoices", anchor: "invoices" },
   { key: "payment", anchor: "payment" },
   { key: "referrals", anchor: "referrals" },
+  { key: "support", anchor: "support" },
   { key: "settings", anchor: "settings" },
 ];
 
@@ -219,6 +221,7 @@ export function AccountPortal({ lang, dict }: { lang: string; dict: Dict }) {
     invoices: dict.invoicesTitle,
     payment: dict.payTitle,
     referrals: dict.tabReferrals,
+    support: dict.tabSupport,
     settings: dict.tabSettings,
   };
 
@@ -268,6 +271,7 @@ export function AccountPortal({ lang, dict }: { lang: string; dict: Dict }) {
         {tab === "invoices" && <InvoicesTab dict={dict} />}
         {tab === "payment" && <PaymentMethod dict={dict} />}
         {tab === "referrals" && <ReferralsSection dict={dict} />}
+        {tab === "support" && <SupportSection dict={dict} />}
         {tab === "settings" && <SettingsSection dict={dict} />}
       </div>
     </div>
