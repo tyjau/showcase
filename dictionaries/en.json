@@ -420,6 +420,22 @@
     "sub": "Start a 14-day free trial — set up your workspace in minutes.",
     "button": "Start free trial"
   },
+  "socialProof": {
+    "stats": [
+      { "value": "200+", "label": "companies" },
+      { "value": "40,000+", "label": "payslips / month" },
+      { "value": "10", "label": "countries (CEMAC & OHADA)" },
+      { "value": "99.9%", "label": "uptime" }
+    ],
+    "logosTitle": "Trusted by teams at",
+    "logos": ["Atlantique Finance", "Sahel Télécom", "Groupe Mandela", "Kivu Logistics", "Banque Équatoriale", "Café des Volcans"],
+    "testimonialsTitle": "What our customers say",
+    "testimonials": [
+      { "quote": "SkyRH made our monthly payroll close three times faster.", "author": "Awa Diallo", "role": "Head of HR, Atlantique Finance" },
+      { "quote": "Finally CEMAC-compliant payroll without wrestling spreadsheets.", "author": "Jean-Marc Obiang", "role": "Administrative Director, Sahel Télécom" },
+      { "quote": "Employee self-service killed 80% of our HR email requests.", "author": "Fatou N'Diaye", "role": "HR Manager, Groupe Mandela" }
+    ]
+  },
   "footer": {
     "tagline": "Modern HR & payroll, on one platform, with compliance localized to your country.",
     "product": "Product",

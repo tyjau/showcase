@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { getDictionary } from "@/lib/dictionaries";
 import { i18n, type Locale } from "@/lib/i18n";
+import { SocialProof } from "@/components/social-proof";
 
 export function generateStaticParams() {
   return i18n.locales.map((lang) => ({ lang }));
@@ -147,6 +148,8 @@ export default async function Home({
           })}
         </div>
       </section>
+
+      <SocialProof dict={t.socialProof} />
 
       <section className="px-5 pb-16">
         <div className="mx-auto max-w-6xl rounded-2xl bg-gradient-to-r from-sky to-accent px-6 py-14 text-center text-white">

@@ -420,6 +420,22 @@
     "sub": "Démarrez un essai gratuit de 14 jours — configurez votre espace en quelques minutes.",
     "button": "Démarrer l'essai gratuit"
   },
+  "socialProof": {
+    "stats": [
+      { "value": "200+", "label": "entreprises" },
+      { "value": "40 000+", "label": "bulletins / mois" },
+      { "value": "10", "label": "pays (CEMAC & OHADA)" },
+      { "value": "99,9 %", "label": "de disponibilité" }
+    ],
+    "logosTitle": "Ils nous font confiance",
+    "logos": ["Atlantique Finance", "Sahel Télécom", "Groupe Mandela", "Kivu Logistics", "Banque Équatoriale", "Café des Volcans"],
+    "testimonialsTitle": "Ce qu'en disent nos clients",
+    "testimonials": [
+      { "quote": "SkyRH a divisé par trois le temps de notre clôture de paie.", "author": "Awa Diallo", "role": "DRH, Atlantique Finance" },
+      { "quote": "Enfin une paie conforme CEMAC sans jongler avec des tableurs.", "author": "Jean-Marc Obiang", "role": "Directeur administratif, Sahel Télécom" },
+      { "quote": "Le self-service employé a supprimé 80 % des demandes RH par e-mail.", "author": "Fatou N'Diaye", "role": "Responsable RH, Groupe Mandela" }
+    ]
+  },
   "footer": {
     "tagline": "RH & paie modernes, sur une seule plateforme, avec une conformité localisée selon votre pays.",
     "product": "Produit",
