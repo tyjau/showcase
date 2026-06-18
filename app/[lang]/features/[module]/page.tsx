@@ -5,6 +5,7 @@ import { ArrowLeft, Check } from "lucide-react";
 import { i18n, type Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
 import { fetchCatalog, moduleText, type CatalogModule } from "@/lib/catalog";
+import { moduleContent } from "@/lib/module-content";
 import { ModuleIcon } from "@/components/module-icon";
 import { Price } from "@/components/price";
 
@@ -41,6 +42,7 @@ export default async function ModulePage({
   const t = await getDictionary(params.lang);
   const lang = params.lang;
   const txt = moduleText(m, lang);
+  const content = moduleContent(m.code, lang);
   const hasPrice = m.prices.some((p) => p.cycle === "monthly");
   const inPackages = catalog.packages.filter((p) => p.modules.includes(m.code));
   const requires = m.requires
@@ -91,6 +93,42 @@ export default async function ModulePage({
         <p className="max-w-3xl text-lg leading-relaxed text-ink">
           {txt.description}
         </p>
+
+        {content && (
+          <>
+            <div className="mt-10">
+              <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-accent">
+                {t.modulePage.capabilities}
+              </h2>
+              <div className="grid gap-x-6 gap-y-3 sm:grid-cols-2">
+                {content.capabilities.map((cap) => (
+                  <div key={cap} className="flex items-start gap-2.5">
+                    <Check size={18} className="mt-0.5 shrink-0 text-sky" />
+                    <span className="text-ink">{cap}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {content.useCases.length > 0 && (
+              <div className="mt-10">
+                <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-accent">
+                  {t.modulePage.useCases}
+                </h2>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {content.useCases.map((uc) => (
+                    <div
+                      key={uc}
+                      className="rounded-xl border border-line bg-surface p-4 text-sm leading-relaxed text-muted"
+                    >
+                      {uc}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </>
+        )}
 
         {inPackages.length > 0 && (
           <div className="mt-8">

@@ -79,7 +79,9 @@
     "perEmployee": "/ employé / mois",
     "worksWith": "Fonctionne avec",
     "required": "Requis",
-    "recommended": "Recommandé"
+    "recommended": "Recommandé",
+    "capabilities": "Capacités clés",
+    "useCases": "Cas d'usage"
   },
   "pricingPage": {
     "heading": "Tarifs simples, par employé",

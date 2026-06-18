@@ -79,7 +79,9 @@
     "perEmployee": "/ employee / month",
     "worksWith": "Works with",
     "required": "Required",
-    "recommended": "Recommended"
+    "recommended": "Recommended",
+    "capabilities": "Key capabilities",
+    "useCases": "Use cases"
   },
   "pricingPage": {
     "heading": "Simple pricing, per employee",
