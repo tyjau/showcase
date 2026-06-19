@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { apiLoginPartner, getToken } from "@/lib/api";
+import { apiLoginPartner, tokenScope } from "@/lib/api";
 
 type Dict = Record<string, string>;
 
@@ -19,9 +19,11 @@ export function PartnerLogin({ lang, dict }: { lang: string; dict: Dict }) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Already signed in → straight to /partner (don't show the form pointlessly).
+  // Already signed in AS A PARTNER → straight to /partner (don't show the form pointlessly).
+  // Gate on scope, not mere token presence: the slot is shared with the tenant portal, so a
+  // leftover tenant token must NOT bounce a partner applicant off this login.
   useEffect(() => {
-    if (getToken()) router.replace(`/${lang}/partner`);
+    if (tokenScope() === "partner") router.replace(`/${lang}/partner`);
   }, [lang, router]);
 
   const canSubmit = !!email.trim() && !!password;

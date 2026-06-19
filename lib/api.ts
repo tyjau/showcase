@@ -55,6 +55,25 @@ export function getToken(): string | null {
   }
 }
 
+/**
+ * Decode the `scope` claim from the current access token (e.g. "partner"), or null.
+ * The tenant portal and the partner area SHARE this token slot, so partner-specific
+ * callers (e.g. the partner-login redirect) must gate on scope, not mere token presence —
+ * otherwise a leftover tenant token bounces a partner applicant off the login form.
+ * Best-effort, base64url-safe; any decode failure yields null (treated as "not partner").
+ */
+export function tokenScope(): string | null {
+  const t = getToken();
+  if (!t) return null;
+  try {
+    const seg = (t.split(".")[1] || "").replace(/-/g, "+").replace(/_/g, "/");
+    const payload = JSON.parse(atob(seg)) as { scope?: string };
+    return payload?.scope ?? null;
+  } catch {
+    return null;
+  }
+}
+
 export function getWorkspace(): string | null {
   if (typeof window === "undefined") return null;
   try {
