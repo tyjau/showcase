@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { apiAuthed } from "@/lib/api";
+import { usePathname } from "next/navigation";
 
 type Dict = Record<string, string>;
 
@@ -40,6 +41,11 @@ export function SupportSection({ dict }: { dict: Dict }) {
   const [formErr, setFormErr] = useState<string | null>(null);
   const [reply, setReply] = useState("");
   const [replying, setReplying] = useState(false);
+
+  // KB deflection: link to the help center (locale-aware) before a ticket is opened.
+  const pathname = usePathname();
+  const lang = pathname?.split("/")[1] || "fr";
+  const helpHref = `/${lang}/help`;
 
   function load() {
     apiAuthed("my_support_tickets").then((res) => {
@@ -189,6 +195,13 @@ export function SupportSection({ dict }: { dict: Dict }) {
 
   return (
     <div>
+      <a
+        href={helpHref}
+        className="mb-4 flex items-center gap-2 rounded-xl border border-line bg-tint-sky px-4 py-3 text-sm text-ink transition hover:bg-mist"
+      >
+        <span>💡 {dict.supDeflect}</span>
+        <span className="ml-auto shrink-0 font-semibold text-sky">{dict.supHelpLink} →</span>
+      </a>
       <div className="mb-4 flex items-center justify-between gap-3">
         <p className="text-sm text-muted">{dict.supIntro}</p>
         <button

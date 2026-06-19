@@ -441,6 +441,8 @@
     "tabSettings": "Paramètres",
     "tabSupport": "Support",
     "supIntro": "Une question ? Ouvrez un ticket, notre équipe vous répond.",
+    "supDeflect": "Une réponse rapide ? Notre centre d'aide la contient peut-être déjà.",
+    "supHelpLink": "Centre d'aide",
     "supNew": "Nouveau ticket",
     "supEmpty": "Aucun ticket pour l'instant.",
     "supUnavailable": "Le support en ligne sera bientôt disponible.",
