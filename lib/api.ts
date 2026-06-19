@@ -40,6 +40,11 @@ export async function apiPost(
 const TOKEN_KEY = "skyrh.portal.token";
 const REFRESH_KEY = "skyrh.portal.refresh";
 const WORKSPACE_KEY = "skyrh.portal.workspace";
+// A partner (referrer) session reuses the SAME token slots as the billing portal —
+// the partner JWT (scope=partner) is the Bearer for my_referrals + update_referrer_cobrand,
+// so /partner reads it via getToken() exactly like /account. We additionally cache the
+// referrer payload returned by login so the co-brand editor can prefill without a round-trip.
+const REFERRER_KEY = "skyrh.partner.referrer";
 
 export function getToken(): string | null {
   if (typeof window === "undefined") return null;
@@ -64,6 +69,7 @@ export function clearSession(): void {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(REFRESH_KEY);
     localStorage.removeItem(WORKSPACE_KEY);
+    localStorage.removeItem(REFERRER_KEY);
   } catch {
     /* storage unavailable */
   }
@@ -230,4 +236,117 @@ export async function apiAuthed(
   } catch {
     return { ok: false, error: "Network error — please try again." };
   }
+}
+
+// ── Partner (referrer) lifecycle ───────────────────────────────────────────────
+// A "partner" is a users row linked to a referrer via referrers.owner_user_id. It has
+// NO company tenant / active modules (login scope=partner ~ scope=billing + allowEmptyModules).
+// The partner JWT carries scope=partner and is the Bearer for my_referrals +
+// update_referrer_cobrand; the router guard blocks it from any tenant/billing endpoint.
+
+export type Referrer = {
+  code: string;
+  brand_name: string | null;
+  logo_url: string | null;
+  primary_color: string | null;
+  secondary_color: string | null;
+  domain: string | null;
+  reward_type: string | null;
+  reward_value: number | null;
+  currency: string | null;
+  status: string | null;
+};
+
+/** Cached referrer payload from the last partner login — lets the co-brand editor
+ * prefill its fields without waiting for a fetch. Returns null if absent/corrupt. */
+export function getReferrer(): Referrer | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = localStorage.getItem(REFERRER_KEY);
+    return raw ? (JSON.parse(raw) as Referrer) : null;
+  } catch {
+    return null;
+  }
+}
+
+function storeReferrer(ref: Referrer | null | undefined): void {
+  if (!ref) return;
+  try {
+    localStorage.setItem(REFERRER_KEY, JSON.stringify(ref));
+  } catch {
+    /* storage unavailable */
+  }
+}
+
+/**
+ * Partner login. Unlike apiLogin (tenant-scoped, ?company=<workspace>), a partner has no
+ * workspace: we authenticate the user behind the referrer with scope=partner and keep the
+ * partner JWT in the shared token slot so /partner (my_referrals) works like /account. The
+ * returned referrer is cached for the co-brand editor. Returns it so callers can branch.
+ */
+export async function apiLoginPartner(
+  email: string,
+  password: string,
+): Promise<{ ok: boolean; referrer?: Referrer; error?: string }> {
+  try {
+    const res = await fetch(apiUrl("login"), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password, scope: "partner" }),
+    });
+    const json = (await res.json().catch(() => ({}))) as {
+      meta?: { code?: number };
+      data?: { access_token?: string; refresh_token?: string; referrer?: Referrer };
+      error?: string;
+    };
+    const code = json?.meta?.code ?? res.status;
+    if (!res.ok || code >= 400) return { ok: false, error: json?.error || `Error ${code}` };
+    const token = json?.data?.access_token;
+    if (!token) return { ok: false, error: "No token returned" };
+    try {
+      localStorage.setItem(TOKEN_KEY, token);
+      if (json?.data?.refresh_token) localStorage.setItem(REFRESH_KEY, json.data.refresh_token);
+      // A partner has no workspace slug; clear any stale tenant workspace from a prior session.
+      localStorage.removeItem(WORKSPACE_KEY);
+    } catch {
+      /* storage unavailable */
+    }
+    storeReferrer(json?.data?.referrer);
+    return { ok: true, referrer: json?.data?.referrer };
+  } catch {
+    return { ok: false, error: "Network error — please try again." };
+  }
+}
+
+/** Update the caller's OWN referrer co-brand (resolved server-side from the JWT
+ * owner_user_id). JWT-scoped (scope=partner) via apiAuthed → inherits the 401-refresh.
+ * Re-caches the returned referrer so the editor + preview stay in sync after a save. */
+export async function apiUpdateCobrand(fields: {
+  brand_name: string;
+  logo_url: string;
+  primary_color: string;
+  secondary_color: string;
+  domain: string;
+}): Promise<{ ok: boolean; referrer?: Referrer; error?: string }> {
+  const res = await apiAuthed("update_referrer_cobrand", fields);
+  if (!res.ok) return { ok: false, error: res.error };
+  const referrer = res.data?.referrer as Referrer | undefined;
+  storeReferrer(referrer);
+  return { ok: true, referrer };
+}
+
+/** Self-service "become a partner" request. PUBLIC + rate-limited (like signup_request):
+ * creates a referrers row status=pending + provisions a user with a magic link. Reward
+ * terms are left NULL (the operator sets them on approval). 409 if the code is taken. */
+export async function apiRequestPartner(fields: {
+  email: string;
+  name: string;
+  code: string;
+  logo_url?: string;
+  primary_color?: string;
+  secondary_color?: string;
+}): Promise<{ ok: boolean; message?: string; error?: string }> {
+  const res = await apiPost("request_partner", fields);
+  if (!res.ok) return { ok: false, error: res.error };
+  return { ok: true, message: res.data?.message as string | undefined };
 }
