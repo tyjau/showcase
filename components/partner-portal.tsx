@@ -253,7 +253,7 @@ export function PartnerPortal({ lang, dict }: { lang: string; dict: Dict }) {
 
   function logout() {
     clearSession();
-    router.push(`/${lang}/login`);
+    router.push(`/${lang}/partner/login`);
   }
 
   if (state === "loading") return <p className="text-muted">{dict.loading}</p>;
@@ -261,7 +261,7 @@ export function PartnerPortal({ lang, dict }: { lang: string; dict: Dict }) {
     return (
       <div>
         <p className="text-muted">{dict.signedOut}</p>
-        <Link href={`/${lang}/login`} className="mt-4 inline-flex rounded-full bg-sky px-6 py-3 text-sm font-semibold text-white">
+        <Link href={`/${lang}/partner/login`} className="mt-4 inline-flex rounded-full bg-sky px-6 py-3 text-sm font-semibold text-white">
           {dict.signin}
         </Link>
       </div>
