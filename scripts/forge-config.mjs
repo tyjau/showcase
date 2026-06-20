@@ -48,6 +48,14 @@ const apiBase = cfg.api_base_url ?? cfg.apiBaseUrl ?? process.env.NEXT_PUBLIC_AP
 const guardianUrl = cfg.guardian_url ?? cfg.guardianUrl ?? apiBase;
 const catalogKey = cfg.catalog_api_key ?? cfg.catalogApiKey ?? "";
 
+// 🔒 The catalog key is a SECRET promoted into $GITHUB_ENV below. GitHub only auto-masks
+// `secrets.*`, NOT values we inject — so register a mask explicitly, else any later env dump
+// during the build leaks it in plaintext. `::add-mask::` redacts the value across the rest of
+// the job log (defence-in-depth, independent of which step prints it).
+if (catalogKey && process.env.GITHUB_ACTIONS) {
+  console.log(`::add-mask::${catalogKey}`);
+}
+
 const lines = [];
 if (apiBase) lines.push(`NEXT_PUBLIC_API_BASE=${apiBase}`);
 if (guardianUrl) lines.push(`GUARDIAN_URL=${guardianUrl}`);
