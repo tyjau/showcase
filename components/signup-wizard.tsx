@@ -312,6 +312,8 @@ export function SignupWizard({
               step={1}
               value={employees}
               onChange={(e) => setEmployees(Number(e.target.value))}
+              aria-label={dict.employees}
+              aria-valuenow={employees}
               className="w-48 accent-sky"
             />
             <span className="w-10 font-semibold text-ink">{employees}</span>

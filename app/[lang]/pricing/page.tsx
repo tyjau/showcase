@@ -3,6 +3,7 @@ import { i18n, type Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
 import { fetchCatalog } from "@/lib/catalog";
 import { PricingCalculator } from "@/components/pricing-calculator";
+import { ParallaxTriangles } from "@/components/parallax-triangles";
 
 export function generateStaticParams() {
   return i18n.locales.map((lang) => ({ lang }));
@@ -27,9 +28,10 @@ export default async function PricingPage({
 
   return (
     <main>
-      <section className="bg-hero-bg text-hero-fg">
-        <div className="mx-auto max-w-3xl px-5 py-12 text-center">
-          <h1 className="text-3xl font-bold sm:text-4xl">
+      <section className="relative overflow-hidden bg-hero-bg text-hero-fg">
+        <ParallaxTriangles />
+        <div className="relative mx-auto max-w-3xl px-5 py-16 text-center">
+          <h1 className="text-3xl font-extrabold tracking-tight text-balance sm:text-4xl">
             {t.pricingPage.heading}
           </h1>
           <p className="mx-auto mt-3 max-w-xl text-hero-fg-muted">
@@ -37,33 +39,12 @@ export default async function PricingPage({
           </p>
         </div>
       </section>
-      {catalog.packages.length > 0 && (
-        <section className="border-b border-line bg-mist">
-          <div className="mx-auto max-w-6xl px-5 py-10">
-            <h2 className="text-center text-2xl font-bold text-heading">
-              {t.pricingPage.plansTitle}
-            </h2>
-            <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {catalog.packages.map((pkg) => (
-                <div
-                  key={pkg.code}
-                  className="rounded-xl border border-line bg-surface p-5"
-                >
-                  <h3 className="font-bold text-heading">{pkg.name}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted">
-                    {pkg.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
       <div className="mx-auto max-w-6xl px-5 py-12">
         <PricingCalculator
           catalog={catalog}
           lang={params.lang}
-          dict={t.pricingPage as Record<string, string>}
+          dict={t.pricingPage as unknown as Record<string, string>}
+          packages={t.packages}
         />
       </div>
     </main>

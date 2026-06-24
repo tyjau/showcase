@@ -8,6 +8,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      // Handoff header breakpoint: below 1123px the desktop nav + controls collapse
+      // into the burger ("Essai gratuit" stays visible). Footer 880/600 thresholds
+      // use arbitrary min-[] variants inline.
+      screens: { nav: "1123px" },
       colors: {
         // Brand — partner-overridable CSS vars, theme-independent.
         navy: { DEFAULT: "var(--brand-navy, #0E2841)", deep: "#0a1f33" },

@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import { fetchPartnerConfig, type PartnerConfig } from "@/lib/partner";
+import { isHexColor } from "@/lib/cobrand";
 
 export type Utm = {
   source: string | null;
@@ -58,9 +59,10 @@ export function PartnerProvider({ children }: { children: React.ReactNode }) {
   // Partner brand colours → CSS variables (themes every bg-sky / text-navy …).
   useEffect(() => {
     const root = document.documentElement;
-    if (partner?.primary_color)
+    // Validate before applying — never trust a network value (defense-in-depth).
+    if (isHexColor(partner?.primary_color))
       root.style.setProperty("--brand-sky", partner.primary_color);
-    if (partner?.secondary_color)
+    if (isHexColor(partner?.secondary_color))
       root.style.setProperty("--brand-navy", partner.secondary_color);
     return () => {
       root.style.removeProperty("--brand-sky");

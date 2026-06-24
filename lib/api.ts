@@ -5,6 +5,12 @@
 const API_BASE =
   process.env.NEXT_PUBLIC_API_BASE || "https://saas.test:8443";
 
+// A partner has no tenant workspace, but guardian's `login` action requires a `company`
+// (it resolves the tenant for the request). Partners live on the operator/platform
+// company, so partner login passes that company. Configurable per deployment.
+const PARTNER_COMPANY =
+  process.env.NEXT_PUBLIC_PARTNER_COMPANY || "skyrh";
+
 export function apiUrl(action: string): string {
   return `${API_BASE}/auth.php?c=${action}`;
 }
@@ -308,7 +314,7 @@ export async function apiLoginPartner(
   password: string,
 ): Promise<{ ok: boolean; referrer?: Referrer; error?: string }> {
   try {
-    const res = await fetch(apiUrl("login"), {
+    const res = await fetch(`${apiUrl("login")}&company=${encodeURIComponent(PARTNER_COMPANY)}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password, scope: "partner" }),
@@ -352,6 +358,20 @@ export async function apiUpdateCobrand(fields: {
   const referrer = res.data?.referrer as Referrer | undefined;
   storeReferrer(referrer);
   return { ok: true, referrer };
+}
+
+/** Public contact / demo request (the /contact form). PUBLIC + rate-limited server-side
+ * (like signup_request). Captures a sales lead; returns a confirmation message. */
+export async function apiRequestDemo(fields: {
+  email: string;
+  message: string;
+  name?: string;
+  company?: string;
+  subject?: string;
+}): Promise<{ ok: boolean; message?: string; error?: string }> {
+  const res = await apiPost("request_demo", fields);
+  if (!res.ok) return { ok: false, error: res.error };
+  return { ok: true, message: res.data?.message as string | undefined };
 }
 
 /** Self-service "become a partner" request. PUBLIC + rate-limited (like signup_request):

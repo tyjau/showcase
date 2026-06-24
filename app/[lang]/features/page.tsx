@@ -5,6 +5,7 @@ import { i18n, type Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
 import { fetchCatalog, modulesByCategory, moduleText } from "@/lib/catalog";
 import { ModuleIcon } from "@/components/module-icon";
+import { ParallaxTriangles } from "@/components/parallax-triangles";
 
 export function generateStaticParams() {
   return i18n.locales.map((lang) => ({ lang }));
@@ -34,9 +35,10 @@ export default async function FeaturesPage({
 
   return (
     <main>
-      <section className="bg-hero-bg text-hero-fg">
-        <div className="mx-auto max-w-3xl px-5 py-14 text-center">
-          <h1 className="text-3xl font-bold sm:text-4xl">
+      <section className="relative overflow-hidden bg-hero-bg text-hero-fg">
+        <ParallaxTriangles />
+        <div className="relative mx-auto max-w-3xl px-5 py-16 text-center">
+          <h1 className="text-3xl font-extrabold tracking-tight text-balance sm:text-4xl">
             {t.modulesPage.heading}
           </h1>
           <p className="mx-auto mt-3 max-w-xl text-hero-fg-muted">

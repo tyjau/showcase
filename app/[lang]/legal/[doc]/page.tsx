@@ -57,6 +57,24 @@ export default async function LegalPage({
         <h1 className="text-3xl font-bold text-heading">{title}</h1>
       </div>
 
+      {/* Document selector — at the top so it reads as a table of contents. */}
+      <nav data-testid="legal-tabs" className="mt-6 flex flex-wrap gap-2">
+        {DOCS.map((d) => (
+          <Link
+            key={d}
+            href={`/${lang}/legal/${d}`}
+            aria-current={d === params.doc ? "page" : undefined}
+            className={`rounded-full px-3 py-1.5 text-sm transition ${
+              d === params.doc
+                ? "bg-navy font-semibold text-white"
+                : "border border-line text-muted hover:border-sky hover:text-heading"
+            }`}
+          >
+            {docs[d] ?? d}
+          </Link>
+        ))}
+      </nav>
+
       <div className="mt-6 rounded-lg border border-warn-border bg-warn-bg px-4 py-3 text-sm text-warn-fg">
         {t.legalPage.draft}
       </div>
@@ -73,22 +91,6 @@ export default async function LegalPage({
           <p className="leading-relaxed text-ink">{t.legalPage.body}</p>
         )}
       </div>
-
-      <nav className="mt-10 flex flex-wrap gap-2 border-t border-line pt-6">
-        {DOCS.map((d) => (
-          <Link
-            key={d}
-            href={`/${lang}/legal/${d}`}
-            className={`rounded-full px-3 py-1.5 text-sm transition ${
-              d === params.doc
-                ? "bg-navy font-semibold text-white"
-                : "border border-line text-muted hover:border-sky hover:text-heading"
-            }`}
-          >
-            {docs[d] ?? d}
-          </Link>
-        ))}
-      </nav>
     </main>
   );
 }

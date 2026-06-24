@@ -48,9 +48,11 @@
   },
   "preview": {
     "title": "Paie · juin 2026",
+    "subtitle": "248 employés · 3 sociétés",
     "status": "Clôturée",
     "employees": "Employés",
     "netPayroll": "Net à payer",
+    "charges": "Charges",
     "payslips": "Bulletins"
   },
   "trust": [
@@ -93,7 +95,9 @@
     "annual": "Annuel",
     "annualSave": "−20%",
     "tabPackages": "Packages",
+    "tabCompare": "Comparatif",
     "tabCustom": "À la carte",
+    "compareModule": "Fonctionnalité",
     "perEmployee": "par employé / mois",
     "estTotal": "Total estimé",
     "monthlyTotal": "/ mois",
@@ -107,6 +111,12 @@
     "showAll": "Tout voir",
     "showLess": "Réduire",
     "addOptions": "Ajouter des options"
+  },
+  "packages": {
+    "FREE": { "name": "Free", "description": "RH en self-service pour les petites équipes. Sans paie." },
+    "STARTER": { "name": "Starter", "description": "Paie et RH essentielles pour démarrer." },
+    "BUSINESS": { "name": "Business", "description": "Recrutez, développez et pilotez vos équipes." },
+    "ENTERPRISE": { "name": "Enterprise", "description": "Conformité et passage à l'échelle, tous les modules." }
   },
   "companyPage": {
     "eyebrow": "L'entreprise",
@@ -202,6 +212,85 @@
       ]
     }
   },
+  "contactPage": {
+    "eyebrow": "Contact",
+    "title": "Parlons-en",
+    "lead": "Dites-nous en plus sur votre équipe et votre besoin — nous revenons vers vous sous un jour ouvré.",
+    "subjects": { "demo": "Réserver une démo", "produit": "Question produit", "devis": "Demander un devis" },
+    "fName": "Nom",
+    "fEmail": "E-mail",
+    "fCompany": "Société",
+    "fSubject": "Sujet",
+    "fMessage": "Message",
+    "send": "Envoyer le message",
+    "sending": "Envoi…",
+    "errEmail": "Veuillez saisir un e-mail valide.",
+    "errMessage": "Veuillez saisir un message.",
+    "errGeneric": "Une erreur est survenue. Réessayez.",
+    "sentTitle": "Message envoyé",
+    "sentBody": "Merci — notre équipe revient vers vous sous un jour ouvré.",
+    "asideTitle": "Ce à quoi vous attendre",
+    "asidePoints": ["Une réponse sous un jour ouvré", "Une démo sur mesure, pas un pitch générique", "Sans engagement"]
+  },
+  "statusPage": {
+    "eyebrow": "Statut",
+    "title": "Tous les systèmes opérationnels",
+    "titleDegraded": "Service partiellement dégradé",
+    "lead": "État en direct des services SkyRH et historique récent des incidents.",
+    "operational": "Opérationnel",
+    "degraded": "Dégradé",
+    "incident": "Incident",
+    "uptimeLabel": "Disponibilité 90 j",
+    "subscribe": "S'abonner aux mises à jour",
+    "services": [
+      { "name": "Application web", "status": "operational", "uptime": "99,98 %" },
+      { "name": "Moteur de paie", "status": "operational", "uptime": "99,95 %" },
+      { "name": "API publique", "status": "operational", "uptime": "99,99 %" },
+      { "name": "Authentification", "status": "operational", "uptime": "100 %" },
+      { "name": "Notifications & e-mail", "status": "degraded", "uptime": "99,72 %" },
+      { "name": "Stockage de fichiers", "status": "operational", "uptime": "99,97 %" }
+    ]
+  },
+  "careersPage": {
+    "eyebrow": "Carrières",
+    "title": "Construisez le futur de la RH & paie",
+    "lead": "Rejoignez une équipe qui livre le logiciel sur lequel des entreprises du monde entier gèrent leurs collaborateurs.",
+    "openings": "Postes ouverts",
+    "allTeams": "Toutes les équipes",
+    "apply": "Postuler",
+    "noJobs": "Aucun poste ouvert dans cette équipe pour le moment.",
+    "jobs": [
+      { "title": "Ingénieur·e Backend Senior", "team": "Engineering", "location": "Télétravail · UE", "type": "CDI" },
+      { "title": "Ingénieur·e Frontend", "team": "Engineering", "location": "Paris", "type": "CDI" },
+      { "title": "Product Designer", "team": "Product", "location": "Télétravail · UE", "type": "CDI" },
+      { "title": "Account Executive", "team": "Sales", "location": "Paris", "type": "CDI" },
+      { "title": "Customer Success Manager", "team": "Customer", "location": "Télétravail · UE", "type": "CDI" },
+      { "title": "Spécialiste conformité paie", "team": "Product", "location": "Télétravail · FR", "type": "Freelance" }
+    ]
+  },
+  "enterprisePage": {
+    "eyebrow": "Entreprise",
+    "title": "SkyRH pour les grandes organisations et secteurs régulés",
+    "lead": "Déployez selon vos règles, avec conformité avancée, sécurité et une équipe dédiée — un tarif à votre échelle.",
+    "priceLabel": "Sur devis",
+    "priceNote": "Adapté à votre effectif, votre mode de déploiement et vos SLA.",
+    "deployTitle": "Déployez à votre manière",
+    "modes": [
+      { "title": "Cloud", "desc": "Nous l'hébergeons et l'exploitons — opérationnel en minutes, mises à jour incluses." },
+      { "title": "Sur site", "desc": "Tourne sur vos propres serveurs ou cloud privé, derrière votre pare-feu." },
+      { "title": "Autonome", "desc": "Un paquet autonome pour les environnements hors-ligne ou air-gapped." }
+    ],
+    "benefitsTitle": "Pensé pour l'entreprise",
+    "benefits": [
+      { "title": "Conformité & audit avancés", "desc": "Cadres légaux localisés, journal d'audit complet et rapports exportables." },
+      { "title": "SSO & SLA", "desc": "Authentification unique SAML/OIDC, accès par rôles et garanties de disponibilité contractuelles." },
+      { "title": "Accompagnement dédié", "desc": "Un contact nommé, une aide à l'onboarding et une réponse prioritaire." }
+    ],
+    "ctaTitle": "Cadrons votre déploiement",
+    "ctaBody": "Parlez-nous de votre organisation et de vos contraintes — nous bâtissons une proposition sur mesure.",
+    "ctaPrimary": "Demander un devis",
+    "ctaSecondary": "À propos de SkyRH"
+  },
   "platformPage": {
     "eyebrow": "La plateforme",
     "title": "Conçue pour tourner partout, à grande échelle, en confiance",
@@ -247,6 +336,8 @@
   },
   "signupPage": {
     "title": "Créez votre espace",
+    "haveAccount": "Vous avez déjà un espace ?",
+    "signin": "Se connecter",
     "steps": { "plan": "Offre", "workspace": "Espace", "account": "Compte", "review": "Récapitulatif" },
     "planTitle": "Choisissez votre offre",
     "planLead": "Modifiable à tout moment. Facturé par employé actif.",
@@ -410,6 +501,23 @@
   "accountPage": {
     "title": "Mon compte",
     "subtitle": "Abonnement & facturation",
+    "groupSubscription": "Abonnement",
+    "groupAccount": "Compte",
+    "tabPlan": "Offre & abonnement",
+    "planOffer": "Offre actuelle",
+    "planAddTitle": "Ajouter des modules",
+    "planUnsaved": "Modifications non enregistrées",
+    "planSave": "Enregistrer",
+    "planCancel": "Annuler",
+    "planSaved": "Modifications enregistrées",
+    "planNewTotal": "Nouveau total",
+    "planPerMonth": "/ mois",
+    "planSeats": "sièges",
+    "statePreview": "Aperçu état du compte · démo",
+    "stActive": "Actif",
+    "stTrial": "Essai",
+    "stGrace": "Période de grâce",
+    "stDowngraded": "Rétrogradé",
     "invoicesTitle": "Factures",
     "empty": "Aucune facture pour le moment.",
     "colPeriod": "Période",
@@ -417,7 +525,7 @@
     "colPaid": "Payé",
     "colDue": "Reste dû",
     "colStatus": "Statut",
-    "openWorkspace": "Ouvrir mon espace RH",
+    "openWorkspace": "Mon espace Harmony",
     "logout": "Se déconnecter",
     "loading": "Chargement…",
     "signedOut": "Vous n'êtes pas connecté.",
@@ -492,6 +600,8 @@
   "features": {
     "heading": "Tout ce dont votre équipe RH a besoin",
     "sub": "De l'embauche à la retraite — modulaire, et connecté de bout en bout.",
+    "more": "En savoir plus",
+    "lateralAlt": "Une équipe RH qui collabore",
     "items": {
       "payroll": {
         "title": "Paie & bulletins",
@@ -522,7 +632,47 @@
   "ctaBand": {
     "title": "Prêt à moderniser votre RH ?",
     "sub": "Démarrez un essai gratuit de 14 jours — configurez votre espace en quelques minutes.",
-    "button": "Démarrer l'essai gratuit"
+    "button": "Démarrer l'essai gratuit",
+    "reassurances": ["Sans carte bancaire", "Installation en minutes", "Annulable à tout moment"]
+  },
+  "modulesShowcase": {
+    "eyebrow": "Modules à la une",
+    "title": "Découvrez la plateforme, module par module",
+    "prev": "Précédent",
+    "next": "Suivant",
+    "more": "Découvrir le module",
+    "slides": [
+      {
+        "chip": "Paie & bulletins",
+        "title": "Une clôture de paie en quelques minutes",
+        "desc": "Cycle mensuel complet, conformité localisée par pays et génération automatique des bulletins. Validez, clôturez, exportez — sans tableur.",
+        "bullets": ["Conformité localisée par pays", "Bulletins générés automatiquement", "Multi-sociétés & multi-devises"]
+      },
+      {
+        "chip": "Congés & présences",
+        "title": "Congés et plannings, sous contrôle",
+        "desc": "Absences, plannings, jours fériés et calendrier d'équipe partagé — approuvés en un clic, répercutés partout.",
+        "bullets": ["Approbations en un clic", "Calendrier & plannings d'équipe", "Jours fériés par pays"]
+      },
+      {
+        "chip": "Recrutement",
+        "title": "Du besoin à l'embauche",
+        "desc": "Publiez vos offres, suivez les candidats dans votre pipeline et constituez une CVthèque réutilisable.",
+        "bullets": ["Pipeline de candidatures", "CVthèque réutilisable", "Recrutement collaboratif"]
+      }
+    ]
+  },
+  "homePacks": {
+    "eyebrow": "Des formules simples",
+    "title": "Des formules simples, par employé",
+    "sub": "Chaque formule inclut 14 jours d'essai. Facturé par employé actif, au prorata.",
+    "popular": "Le plus populaire",
+    "perMonth": "par employé / mois",
+    "plans": [
+      { "code": "FREE", "name": "Free", "fallback": "Gratuit", "desc": "RH en self-service pour les petites équipes. Sans paie.", "items": ["Dossier du personnel", "Congés & présences", "Self-service employé"], "cta": "Commencer" },
+      { "code": "STARTER", "name": "Starter", "fallback": "€4", "desc": "Paie et RH essentielles pour démarrer.", "items": ["Tout Free", "Paie & bulletins", "Conformité localisée"], "cta": "Démarrer l'essai" },
+      { "code": "BUSINESS", "name": "Business", "fallback": "€7", "desc": "Recrutez, développez et pilotez vos équipes.", "items": ["Tout Starter", "Recrutement & CVthèque", "Performance & carrière"], "cta": "Démarrer l'essai", "popular": true }
+    ]
   },
   "socialProof": {
     "stats": [

@@ -60,15 +60,16 @@ export default async function LangLayout({
     >
       <head>
         {/*
-          No-flash theme boot. Runs before paint on the static export: reads the
-          persisted choice (skyrh.theme) or falls back to prefers-color-scheme and
-          sets the `.dark` class on <html> synchronously, so there is no flash of
-          the wrong theme and no hydration mismatch (server markup is neutral).
+          No-flash theme boot. Runs before paint on the static export and sets the
+          `.dark` class on <html> synchronously (no flash, no hydration mismatch —
+          server markup is neutral). Default is DARK (handoff: dark-by-default): a
+          first-time visitor with no stored choice gets dark; an explicit 'light'
+          stays light; 'system' follows the OS.
         */}
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "(function(){try{var t=localStorage.getItem('skyrh.theme');var d=t==='dark'||((!t||t==='system')&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',d);}catch(e){}})();",
+              "(function(){try{var t=localStorage.getItem('skyrh.theme');var d=t==='dark'||!t||(t==='system'&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',d);}catch(e){}})();",
           }}
         />
       </head>

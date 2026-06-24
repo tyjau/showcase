@@ -44,7 +44,7 @@ export function HeaderAccount({ lang, labels }: { lang: string; labels: Labels }
   if (!authed) {
     return (
       <>
-        <Link href={`/${lang}/login`} className="hidden text-heading hover:text-sky sm:inline">
+        <Link href={`/${lang}/login`} className="hidden text-heading hover:text-sky nav:inline">
           {labels.signin}
         </Link>
         <Link

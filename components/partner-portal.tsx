@@ -4,6 +4,7 @@ import { type CSSProperties, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { apiAuthed, apiUpdateCobrand, getToken, clearSession } from "@/lib/api";
+import { isHexColor } from "@/lib/cobrand";
 
 type Dict = Record<string, string>;
 type Referral = {
@@ -35,7 +36,6 @@ function Metric({ label, value }: { label: string; value: string }) {
 }
 
 const COBRAND_INPUT = "w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink outline-none focus:border-sky";
-const HEX = /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/;
 
 type Brand = { logo_url: string | null; primary_color: string | null; secondary_color: string | null; domain: string | null };
 
@@ -69,7 +69,7 @@ function CobrandEditor({
       setError(dict.cbErrLogo);
       return;
     }
-    if ((primary && !HEX.test(primary)) || (secondary && !HEX.test(secondary))) {
+    if ((primary && !isHexColor(primary)) || (secondary && !isHexColor(secondary))) {
       setError(dict.cbErrColor);
       return;
     }
@@ -92,8 +92,8 @@ function CobrandEditor({
 
   // Scoped CSS vars → exactly the contract partner-provider injects globally (--brand-sky / --brand-navy).
   const previewVars = {
-    ...(HEX.test(primary) ? { ["--brand-sky" as string]: primary } : {}),
-    ...(HEX.test(secondary) ? { ["--brand-navy" as string]: secondary } : {}),
+    ...(isHexColor(primary) ? { ["--brand-sky" as string]: primary } : {}),
+    ...(isHexColor(secondary) ? { ["--brand-navy" as string]: secondary } : {}),
   } as CSSProperties;
 
   return (
@@ -110,10 +110,10 @@ function CobrandEditor({
       {/* Collapsed: the current co-brand at a glance (swatches + domain). */}
       {!open && (
         <div className="mt-2 flex items-center gap-3 text-sm text-muted">
-          {HEX.test(primary) && (
+          {isHexColor(primary) && (
             <span className="inline-block h-6 w-6 rounded-full border border-line" style={{ backgroundColor: primary }} />
           )}
-          {HEX.test(secondary) && (
+          {isHexColor(secondary) && (
             <span className="inline-block h-6 w-6 rounded-full border border-line" style={{ backgroundColor: secondary }} />
           )}
           {domain ? <span>{domain}</span> : <span className="italic">{dict.cbEmpty}</span>}
@@ -143,7 +143,7 @@ function CobrandEditor({
                 <div className="flex items-stretch gap-2">
                   <input
                     type="color"
-                    value={HEX.test(primary) ? primary : "#2563eb"}
+                    value={isHexColor(primary) ? primary : "#2563eb"}
                     onChange={(e) => setPrimary(e.target.value)}
                     className="h-9 w-11 shrink-0 cursor-pointer rounded-lg border border-line bg-surface p-1"
                     aria-label={dict.cbPrimary}
@@ -156,7 +156,7 @@ function CobrandEditor({
                 <div className="flex items-stretch gap-2">
                   <input
                     type="color"
-                    value={HEX.test(secondary) ? secondary : "#0f172a"}
+                    value={isHexColor(secondary) ? secondary : "#0f172a"}
                     onChange={(e) => setSecondary(e.target.value)}
                     className="h-9 w-11 shrink-0 cursor-pointer rounded-lg border border-line bg-surface p-1"
                     aria-label={dict.cbSecondary}

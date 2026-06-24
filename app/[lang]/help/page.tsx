@@ -16,6 +16,7 @@ import {
   HELP_CATEGORIES,
   type HelpCategory,
 } from "@/lib/help";
+import { ParallaxTriangles } from "@/components/parallax-triangles";
 
 export function generateStaticParams() {
   return i18n.locales.map((lang) => ({ lang }));
@@ -48,12 +49,13 @@ export default async function HelpPage({
 
   return (
     <main>
-      <section className="bg-hero-bg text-hero-fg">
-        <div className="mx-auto max-w-3xl px-5 py-16 text-center">
+      <section className="relative overflow-hidden bg-hero-bg text-hero-fg">
+        <ParallaxTriangles />
+        <div className="relative mx-auto max-w-3xl px-5 py-16 text-center">
           <div className="text-xs font-semibold uppercase tracking-wide text-sky-soft">
             {h.eyebrow}
           </div>
-          <h1 className="mt-3 text-3xl font-bold sm:text-4xl">{h.title}</h1>
+          <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-balance sm:text-4xl">{h.title}</h1>
           <p className="mx-auto mt-4 max-w-xl text-hero-fg-muted">{h.lead}</p>
         </div>
       </section>
@@ -79,9 +81,9 @@ export default async function HelpPage({
                       <Link
                         key={a.slug}
                         href={`/${lang}/help/${a.slug}`}
-                        className="group flex items-center justify-between gap-3 rounded-xl border border-line bg-surface p-4 transition hover:-translate-y-0.5 hover:shadow-sm"
+                        className="group flex min-w-0 items-center justify-between gap-3 rounded-xl border border-line bg-surface p-4 transition hover:-translate-y-0.5 hover:shadow-sm"
                       >
-                        <span className="min-w-0">
+                        <span className="block min-w-0 flex-1">
                           <span className="block font-medium text-ink">{at.title}</span>
                           <span className="mt-0.5 block truncate text-xs text-muted">
                             {at.sections[0]?.p}
@@ -125,7 +127,7 @@ export default async function HelpPage({
             {h.contactLead}
           </p>
           <Link
-            href={`/${lang}/company#contact`}
+            href={`/${lang}/contact`}
             className="mt-4 inline-block rounded-full bg-sky px-5 py-2.5 font-semibold text-white transition-colors hover:bg-[#0d8bbd]"
           >
             {h.contactCta}

@@ -9,8 +9,19 @@ import { moduleContent } from "@/lib/module-content";
 import { ModuleIcon } from "@/components/module-icon";
 import { MediaFrame } from "@/components/media-frame";
 import { Price } from "@/components/price";
+import { ParallaxTriangles } from "@/components/parallax-triangles";
 
 export const dynamicParams = false;
+
+// Real product screenshots per module (the handoff ships payroll captures; this is the
+// "patron" other modules decline into). Keyed by catalogue code.
+const MODULE_SHOTS: Record<string, { heroPhoto?: string; dashboard: string; gallery: string[] }> = {
+  "WAGE-GEN00": {
+    heroPhoto: "/img/hero-photo.png",
+    dashboard: "/img/modules/paie-dashboard.png",
+    gallery: ["/img/modules/paie-sessions.png", "/img/modules/paie-elements.png", "/img/modules/paie-compliance.png"],
+  },
+};
 
 export async function generateStaticParams() {
   const catalog = await fetchCatalog();
@@ -44,6 +55,7 @@ export default async function ModulePage({
   const lang = params.lang;
   const txt = moduleText(m, lang);
   const content = moduleContent(m.code, lang);
+  const shots = MODULE_SHOTS[m.code];
   const hasPrice = m.prices.some((p) => p.cycle === "monthly");
   const inPackages = catalog.packages.filter((p) => p.modules.includes(m.code));
   const requires = m.requires
@@ -55,11 +67,24 @@ export default async function ModulePage({
 
   return (
     <main>
-      <section className="border-b border-line bg-mist">
-        <div className="mx-auto max-w-5xl px-5 py-12">
+      <section className="relative overflow-hidden bg-hero-bg text-hero-fg">
+        {shots?.heroPhoto && (
+          <>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={shots.heroPhoto}
+              alt=""
+              aria-hidden="true"
+              className="absolute inset-0 h-full w-full object-cover opacity-[0.4]"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-hero-bg via-hero-bg/85 to-hero-bg/40" />
+          </>
+        )}
+        <ParallaxTriangles />
+        <div className="relative mx-auto max-w-5xl px-5 py-16">
           <Link
             href={`/${lang}/features`}
-            className="inline-flex items-center gap-1 text-sm text-muted hover:text-sky"
+            className="inline-flex items-center gap-1 text-sm text-hero-fg-muted hover:text-white"
           >
             <ArrowLeft size={15} /> {t.modulePage.back}
           </Link>
@@ -68,8 +93,8 @@ export default async function ModulePage({
               <ModuleIcon name={m.icon} size={28} />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-heading">{txt.headline}</h1>
-              <p className="mt-2 max-w-2xl text-lg text-muted">{txt.tagline}</p>
+              <h1 className="text-3xl font-extrabold tracking-tight text-balance sm:text-4xl">{txt.headline}</h1>
+              <p className="mt-2 max-w-2xl text-lg text-hero-fg-muted">{txt.tagline}</p>
               <div className="mt-5 flex flex-wrap items-center gap-3">
                 <Link
                   href={`/${lang}/signup`}
@@ -78,9 +103,9 @@ export default async function ModulePage({
                   {t.nav.startTrial}
                 </Link>
                 {hasPrice && (
-                  <span className="text-sm text-muted">
+                  <span className="text-sm text-hero-fg-muted">
                     {t.modulePage.orFrom}{" "}
-                    <Price prices={m.prices} className="font-semibold text-ink" />{" "}
+                    <Price prices={m.prices} className="font-semibold text-white" />{" "}
                     {t.modulePage.perEmployee}
                   </span>
                 )}
@@ -91,12 +116,20 @@ export default async function ModulePage({
       </section>
 
       <div className="mx-auto max-w-5xl px-5 py-12">
-        {m.cover && (
-          <MediaFrame src={m.cover} alt={txt.headline} className="mb-8" />
+        {(shots?.dashboard || m.cover) && (
+          <MediaFrame src={shots?.dashboard ?? m.cover!} alt={txt.headline} className="mb-8" />
         )}
         <p className="max-w-3xl text-lg leading-relaxed text-ink">
           {txt.description}
         </p>
+
+        {shots?.gallery && shots.gallery.length > 0 && (
+          <div className="mt-8 grid gap-4 sm:grid-cols-3">
+            {shots.gallery.map((img) => (
+              <MediaFrame key={img} src={img} alt={txt.headline} />
+            ))}
+          </div>
+        )}
 
         {content && (
           <>

@@ -58,6 +58,26 @@ export async function fetchCatalog(): Promise<Catalog> {
   return json.data;
 }
 
+export type PackageText = { name: string; description: string };
+
+/**
+ * Resolve a package's display name/description with a front-side i18n fallback.
+ * The catalogue ships package `name`/`description` untranslated (English only), so
+ * components pass a per-locale map (keyed by package code) and we prefer it, falling
+ * back field-by-field to the catalogue values when a translation is missing.
+ */
+export function packageText(
+  code: string,
+  i18n: Record<string, Partial<PackageText>> | undefined,
+  fallback: PackageText,
+): PackageText {
+  const t = i18n?.[code];
+  return {
+    name: t?.name || fallback.name,
+    description: t?.description || fallback.description,
+  };
+}
+
 export function moduleText(m: CatalogModule, lang: string): ModuleText {
   return (
     m.text[lang] ??

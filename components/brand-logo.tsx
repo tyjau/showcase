@@ -1,6 +1,7 @@
 "use client";
 
 import { usePartner } from "./partner-provider";
+import { isHttpUrl } from "@/lib/cobrand";
 
 /**
  * Brand mark — co-branded when a partner config is loaded (partner logo, or the
@@ -10,7 +11,7 @@ import { usePartner } from "./partner-provider";
 export function BrandLogo({ className = "" }: { className?: string }) {
   const { partner } = usePartner();
 
-  if (partner?.logo_url) {
+  if (isHttpUrl(partner?.logo_url)) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
       <img
@@ -23,7 +24,7 @@ export function BrandLogo({ className = "" }: { className?: string }) {
 
   return (
     <span
-      className={`inline-flex items-center gap-2 font-bold text-navy ${className}`}
+      className={`inline-flex items-center gap-2 font-bold text-heading ${className}`}
     >
       <svg viewBox="0 0 132 116" width="22" height="20" aria-hidden="true">
         <polygon points="6,8 126,8 66,108" fill="var(--brand-sky, #0F9ED5)" />

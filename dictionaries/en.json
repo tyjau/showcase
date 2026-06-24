@@ -48,9 +48,11 @@
   },
   "preview": {
     "title": "Payroll · June 2026",
+    "subtitle": "248 employees · 3 companies",
     "status": "Closed",
     "employees": "Employees",
     "netPayroll": "Net payroll",
+    "charges": "Contributions",
     "payslips": "Payslips"
   },
   "trust": [
@@ -93,7 +95,9 @@
     "annual": "Annual",
     "annualSave": "Save 20%",
     "tabPackages": "Packages",
+    "tabCompare": "Compare",
     "tabCustom": "Build your own",
+    "compareModule": "Feature",
     "perEmployee": "per employee / month",
     "estTotal": "Estimated total",
     "monthlyTotal": "/ month",
@@ -107,6 +111,12 @@
     "showAll": "See all",
     "showLess": "Show less",
     "addOptions": "Add options"
+  },
+  "packages": {
+    "FREE": { "name": "Free", "description": "Self-serve HR for small teams. No payroll." },
+    "STARTER": { "name": "Starter", "description": "Essential payroll and HR to get started." },
+    "BUSINESS": { "name": "Business", "description": "Hire, develop and steer your teams." },
+    "ENTERPRISE": { "name": "Enterprise", "description": "Compliance and scale, all modules." }
   },
   "companyPage": {
     "eyebrow": "Our company",
@@ -202,6 +212,85 @@
       ]
     }
   },
+  "contactPage": {
+    "eyebrow": "Contact",
+    "title": "Let's talk",
+    "lead": "Tell us about your team and what you need — we'll get back within one business day.",
+    "subjects": { "demo": "Book a demo", "produit": "Product question", "devis": "Request a quote" },
+    "fName": "Name",
+    "fEmail": "Email",
+    "fCompany": "Company",
+    "fSubject": "Subject",
+    "fMessage": "Message",
+    "send": "Send message",
+    "sending": "Sending…",
+    "errEmail": "Please enter a valid email.",
+    "errMessage": "Please enter a message.",
+    "errGeneric": "Something went wrong. Please try again.",
+    "sentTitle": "Message sent",
+    "sentBody": "Thanks — our team will get back to you within one business day.",
+    "asideTitle": "What to expect",
+    "asidePoints": ["A reply within one business day", "A tailored demo, not a generic pitch", "No commitment"]
+  },
+  "statusPage": {
+    "eyebrow": "Status",
+    "title": "All systems operational",
+    "titleDegraded": "Partial service degradation",
+    "lead": "Live status of SkyRH services and recent incident history.",
+    "operational": "Operational",
+    "degraded": "Degraded",
+    "incident": "Incident",
+    "uptimeLabel": "90-day uptime",
+    "subscribe": "Subscribe to updates",
+    "services": [
+      { "name": "Web application", "status": "operational", "uptime": "99.98%" },
+      { "name": "Payroll engine", "status": "operational", "uptime": "99.95%" },
+      { "name": "Public API", "status": "operational", "uptime": "99.99%" },
+      { "name": "Authentication", "status": "operational", "uptime": "100%" },
+      { "name": "Notifications & email", "status": "degraded", "uptime": "99.72%" },
+      { "name": "File storage", "status": "operational", "uptime": "99.97%" }
+    ]
+  },
+  "careersPage": {
+    "eyebrow": "Careers",
+    "title": "Build the future of HR & payroll",
+    "lead": "Join a team shipping software that companies across the world run their people on.",
+    "openings": "Open positions",
+    "allTeams": "All teams",
+    "apply": "Apply",
+    "noJobs": "No openings for this team right now.",
+    "jobs": [
+      { "title": "Senior Backend Engineer", "team": "Engineering", "location": "Remote · EU", "type": "Full-time" },
+      { "title": "Frontend Engineer", "team": "Engineering", "location": "Paris", "type": "Full-time" },
+      { "title": "Product Designer", "team": "Product", "location": "Remote · EU", "type": "Full-time" },
+      { "title": "Account Executive", "team": "Sales", "location": "Paris", "type": "Full-time" },
+      { "title": "Customer Success Manager", "team": "Customer", "location": "Remote · EU", "type": "Full-time" },
+      { "title": "Payroll Compliance Specialist", "team": "Product", "location": "Remote · FR", "type": "Contract" }
+    ]
+  },
+  "enterprisePage": {
+    "eyebrow": "Enterprise",
+    "title": "SkyRH for large and regulated organizations",
+    "lead": "Deploy the way your rules require, with advanced compliance, security and a dedicated team — priced to your scale.",
+    "priceLabel": "Custom pricing",
+    "priceNote": "Tailored to your headcount, deployment and SLAs.",
+    "deployTitle": "Deploy your way",
+    "modes": [
+      { "title": "Cloud", "desc": "We host and operate it — up and running in minutes, updates included." },
+      { "title": "On-premise", "desc": "Runs on your own servers or private cloud, behind your firewall." },
+      { "title": "Standalone", "desc": "A self-contained package for fully offline or air-gapped environments." }
+    ],
+    "benefitsTitle": "Built for the enterprise",
+    "benefits": [
+      { "title": "Advanced compliance & audit", "desc": "Localized legal frameworks, a complete audit trail and exportable reports." },
+      { "title": "SSO & SLA", "desc": "SAML/OIDC single sign-on, role-based access and contractual uptime guarantees." },
+      { "title": "Dedicated support", "desc": "A named contact, onboarding assistance and priority response." }
+    ],
+    "ctaTitle": "Let's scope your deployment",
+    "ctaBody": "Tell us about your organization and constraints — we'll put together a tailored proposal.",
+    "ctaPrimary": "Request a quote",
+    "ctaSecondary": "About SkyRH"
+  },
   "platformPage": {
     "eyebrow": "The platform",
     "title": "Built to run anywhere, at scale, with confidence",
@@ -247,6 +336,8 @@
   },
   "signupPage": {
     "title": "Create your workspace",
+    "haveAccount": "Already have a workspace?",
+    "signin": "Sign in",
     "steps": { "plan": "Plan", "workspace": "Workspace", "account": "Account", "review": "Review" },
     "planTitle": "Choose your plan",
     "planLead": "You can change this anytime. Billed per active employee.",
@@ -410,6 +501,23 @@
   "accountPage": {
     "title": "My account",
     "subtitle": "Subscription & billing",
+    "groupSubscription": "Subscription",
+    "groupAccount": "Account",
+    "tabPlan": "Plan & subscription",
+    "planOffer": "Current offer",
+    "planAddTitle": "Add modules",
+    "planUnsaved": "Unsaved changes",
+    "planSave": "Save",
+    "planCancel": "Cancel",
+    "planSaved": "Changes saved",
+    "planNewTotal": "New total",
+    "planPerMonth": "/ month",
+    "planSeats": "seats",
+    "statePreview": "Account state preview · demo",
+    "stActive": "Active",
+    "stTrial": "Trial",
+    "stGrace": "Grace period",
+    "stDowngraded": "Downgraded",
     "invoicesTitle": "Invoices",
     "empty": "No invoices yet.",
     "colPeriod": "Period",
@@ -417,7 +525,7 @@
     "colPaid": "Paid",
     "colDue": "Outstanding",
     "colStatus": "Status",
-    "openWorkspace": "Open my HR workspace",
+    "openWorkspace": "My Harmony workspace",
     "logout": "Sign out",
     "loading": "Loading…",
     "signedOut": "You're not signed in.",
@@ -492,6 +600,8 @@
   "features": {
     "heading": "Everything your HR team needs",
     "sub": "From hire to retire — modular, and connected end to end.",
+    "more": "Learn more",
+    "lateralAlt": "An HR team collaborating",
     "items": {
       "payroll": {
         "title": "Payroll & payslips",
@@ -522,7 +632,47 @@
   "ctaBand": {
     "title": "Ready to modernize your HR?",
     "sub": "Start a 14-day free trial — set up your workspace in minutes.",
-    "button": "Start free trial"
+    "button": "Start free trial",
+    "reassurances": ["No credit card", "Set up in minutes", "Cancel anytime"]
+  },
+  "modulesShowcase": {
+    "eyebrow": "Featured modules",
+    "title": "Explore the platform, module by module",
+    "prev": "Previous",
+    "next": "Next",
+    "more": "Explore the module",
+    "slides": [
+      {
+        "chip": "Payroll & payslips",
+        "title": "Close payroll in minutes",
+        "desc": "A full monthly cycle, country-localized compliance and automatic payslip generation. Validate, close, export — no spreadsheets.",
+        "bullets": ["Country-localized compliance", "Payslips generated automatically", "Multi-company & multi-currency"]
+      },
+      {
+        "chip": "Time off & attendance",
+        "title": "Leave and schedules, under control",
+        "desc": "Absences, schedules, public holidays and a shared team calendar — approved in a click, reflected everywhere.",
+        "bullets": ["One-click approvals", "Team calendar & schedules", "Holidays per country"]
+      },
+      {
+        "chip": "Recruitment",
+        "title": "From open role to hire",
+        "desc": "Publish roles, track candidates through your pipeline and build a reusable talent pool.",
+        "bullets": ["Applicant pipeline", "Reusable talent pool", "Collaborative hiring"]
+      }
+    ]
+  },
+  "homePacks": {
+    "eyebrow": "Simple plans",
+    "title": "Simple plans, per employee",
+    "sub": "Each plan includes a 14-day trial. Billed per active employee, prorated.",
+    "popular": "Most popular",
+    "perMonth": "per employee / month",
+    "plans": [
+      { "code": "FREE", "name": "Free", "fallback": "Free", "desc": "Self-serve HR for small teams. No payroll.", "items": ["Employee records", "Time off & attendance", "Employee self-service"], "cta": "Get started" },
+      { "code": "STARTER", "name": "Starter", "fallback": "€4", "desc": "Essential payroll and HR to get started.", "items": ["Everything in Free", "Payroll & payslips", "Localized compliance"], "cta": "Start free trial" },
+      { "code": "BUSINESS", "name": "Business", "fallback": "€7", "desc": "Hire, develop and steer your teams.", "items": ["Everything in Starter", "Recruitment & talent pool", "Performance & career"], "cta": "Start free trial", "popular": true }
+    ]
   },
   "socialProof": {
     "stats": [

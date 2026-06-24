@@ -3,7 +3,13 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { Check, ChevronDown } from "lucide-react";
-import { type Catalog, type Money, moduleText } from "@/lib/catalog";
+import {
+  type Catalog,
+  type Money,
+  type PackageText,
+  moduleText,
+  packageText,
+} from "@/lib/catalog";
 import { ModuleIcon } from "./module-icon";
 import { useCurrency } from "./currency-provider";
 
@@ -30,15 +36,19 @@ export function PricingCalculator({
   catalog,
   lang,
   dict,
+  packages,
 }: {
   catalog: Catalog;
   lang: string;
   dict: Dict;
+  packages?: Record<string, Partial<PackageText>>;
 }) {
   const { currency } = useCurrency();
   const [annual, setAnnual] = useState(false);
   const [employees, setEmployees] = useState(25);
-  const [mode, setMode] = useState<"packages" | "custom">("packages");
+  const [mode, setMode] = useState<"packages" | "compare" | "custom">("packages");
+  const pkgName = (code: string, fallbackName: string) =>
+    packageText(code, packages, { name: fallbackName, description: "" }).name;
   const [expanded, setExpanded] = useState<string | null>(null);
   const [optionsOpen, setOptionsOpen] = useState<string | null>(null);
   const [packAddons, setPackAddons] = useState<Record<string, Set<string>>>({});
@@ -78,6 +88,18 @@ export function PricingCalculator({
     }
     return sum * factor;
   }, [resolved, currency, factor, catalog]);
+
+  // Union of every module appearing in any package, ordered by the module sort — the
+  // rows of the comparison matrix.
+  const compareModuleCodes = useMemo(() => {
+    const codes = new Set<string>();
+    for (const p of catalog.packages) for (const c of p.modules) codes.add(c);
+    return Array.from(codes).sort((a, b) => {
+      const sa = catalog.modules.find((m) => m.code === a)?.sort ?? 0;
+      const sb = catalog.modules.find((m) => m.code === b)?.sort ?? 0;
+      return sa - sb;
+    });
+  }, [catalog]);
 
   function toggleModule(code: string) {
     setSelected((prev) => {
@@ -128,7 +150,9 @@ export function PricingCalculator({
             step={1}
             value={employees}
             onChange={(e) => setEmployees(Number(e.target.value))}
-            className="w-40 accent-sky"
+            aria-label={dict.employees}
+            aria-valuenow={employees}
+            className="w-28 accent-sky sm:w-44"
           />
           <span className="w-10 font-semibold text-ink">{employees}</span>
         </div>
@@ -142,6 +166,13 @@ export function PricingCalculator({
             className={`px-4 py-2 transition ${mode === "packages" ? "bg-navy font-semibold text-white" : "text-muted hover:text-heading"}`}
           >
             {dict.tabPackages}
+          </button>
+          <button
+            type="button"
+            onClick={() => setMode("compare")}
+            className={`px-4 py-2 transition ${mode === "compare" ? "bg-navy font-semibold text-white" : "text-muted hover:text-heading"}`}
+          >
+            {dict.tabCompare}
           </button>
           <button
             type="button"
@@ -178,7 +209,7 @@ export function PricingCalculator({
                     {dict.popular}
                   </div>
                 )}
-                <div className="text-sm font-semibold text-ink">{p.name}</div>
+                <div className="text-sm font-semibold text-ink">{pkgName(p.code, p.name)}</div>
                 <div className="mt-2">
                   {isFree ? (
                     <span className="text-2xl font-bold text-heading">
@@ -286,6 +317,61 @@ export function PricingCalculator({
               </div>
             );
           })}
+        </div>
+      ) : mode === "compare" ? (
+        <div className="mt-8 overflow-x-auto">
+          <table className="w-full min-w-[640px] border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-line">
+                <th className="px-3 py-3 text-left font-semibold text-heading">
+                  {dict.compareModule}
+                </th>
+                {catalog.packages.map((p) => (
+                  <th key={p.code} className="px-3 py-3 text-center font-semibold text-heading">
+                    <span className={p.code === "BUSINESS" ? "text-sky" : ""}>
+                      {pkgName(p.code, p.name)}
+                    </span>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {compareModuleCodes.map((code) => {
+                const m = catalog.modules.find((x) => x.code === code);
+                return (
+                  <tr key={code} className="border-b border-line">
+                    <td className="px-3 py-2.5 text-ink">
+                      {m ? moduleText(m, lang).headline : code}
+                    </td>
+                    {catalog.packages.map((p) => (
+                      <td key={p.code} className="px-3 py-2.5 text-center">
+                        {p.modules.includes(code) ? (
+                          <Check size={16} className="mx-auto text-sky" />
+                        ) : (
+                          <span className="text-muted">—</span>
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                );
+              })}
+            </tbody>
+            <tfoot>
+              <tr>
+                <td className="px-3 py-4" />
+                {catalog.packages.map((p) => (
+                  <td key={p.code} className="px-3 py-4 text-center">
+                    <Link
+                      href={`/${lang}/signup?plan=${p.code}`}
+                      className={`inline-block rounded-full px-4 py-2 text-sm font-semibold ${p.code === "BUSINESS" ? "bg-sky text-white" : "border border-line text-heading hover:border-sky"}`}
+                    >
+                      {p.code === "ENTERPRISE" ? dict.contact : dict.startTrial}
+                    </Link>
+                  </td>
+                ))}
+              </tr>
+            </tfoot>
+          </table>
         </div>
       ) : (
         <div className="mt-8">

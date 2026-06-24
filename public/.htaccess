@@ -1,0 +1,36 @@
+# SkyRH showcase — static export (Next.js output:export), served by Apache.
+# Next copies public/ into out/ at build, so this lands at the deployed docroot
+# (same delivery pattern as harmony's public/.htaccess).
+
+Options -Indexes
+
+<IfModule mod_headers.c>
+  # Never cache the HTML so the latest content-hashed assets are always picked up…
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+  </FilesMatch>
+  # …but cache the immutable, content-hashed assets aggressively.
+  <FilesMatch "\.(?:js|css|woff2?|png|jpe?g|gif|svg|ico|webp)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  # Security headers.
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "DENY"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  Header set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+  Header set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+
+  # Content-Security-Policy.
+  # NOTE: a Next static export inlines per-page RSC bootstrap scripts (self.__next_f.push)
+  # that vary and can't be hashed/nonced without a server, so script-src keeps
+  # 'unsafe-inline'. The other directives still harden meaningfully (clickjacking,
+  # object/base/form, and restricted img/style/connect/frame). Stripe is allowed for
+  # checkout; connect-src allows the (deploy-configured) guardian API over https; partner
+  # logos are arbitrary https images.
+  Header set Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data: https:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://js.stripe.com; connect-src 'self' https:; frame-src https://js.stripe.com;"
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml application/xml
+</IfModule>

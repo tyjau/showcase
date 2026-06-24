@@ -40,7 +40,7 @@ export function SiteHeader({
     { label: dict.features, href: `/${lang}/features` },
     { label: dict.pricing, href: `/${lang}/pricing` },
     { label: dict.platform, href: `/${lang}/platform` },
-    { label: dict.company, href: `/${lang}/company` },
+    { label: dict.company, href: `/${lang}/enterprise` },
     { label: dict.resources, href: `/${lang}/help` },
   ];
 
@@ -52,9 +52,14 @@ export function SiteHeader({
         </Link>
         <PrimaryNav items={nav} />
         <div className="flex items-center gap-3 text-sm">
-          <CurrencySwitcher className="hidden sm:inline-flex" />
-          <ThemeToggle labels={theme} className="hidden sm:inline-flex" />
-          <LocaleSwitcher current={lang} />
+          {/* Desktop controls — collapse into the burger below 1123px. */}
+          <CurrencySwitcher className="hidden nav:inline-flex" />
+          <ThemeToggle labels={theme} className="hidden nav:inline-flex" />
+          <span className="hidden nav:inline-flex">
+            <LocaleSwitcher current={lang} />
+          </span>
+          {/* Account cluster: signin link (hidden <1123, lives in the burger) + the
+              always-visible "Essai gratuit" CTA / account dropdown. */}
           <HeaderAccount
             lang={lang}
             labels={{
@@ -77,8 +82,10 @@ export function SiteHeader({
                 className="mt-1 border-t border-line px-4 pb-1 pt-3 text-heading"
               />
             }
+            currencySwitcher={<CurrencySwitcher />}
+            localeSwitcher={<LocaleSwitcher current={lang} />}
             themeToggle={<ThemeToggle labels={theme} />}
-            className="md:hidden"
+            className="nav:hidden"
           />
         </div>
       </div>

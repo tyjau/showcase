@@ -11,8 +11,11 @@ import { ReferralsSection } from "@/components/referrals-section";
 import { SettingsSection } from "@/components/settings-section";
 import { SupportSection } from "@/components/support-section";
 import { InvoicePayBox } from "@/components/invoice-pay-box";
+import { PlanManagement } from "@/components/plan-management";
+import { type Money } from "@/lib/catalog";
 
 type Dict = Record<string, string>;
+type AddonOpt = { code: string; label: string; prices: Money[] };
 const APP_DOMAIN = process.env.NEXT_PUBLIC_APP_DOMAIN ?? "skyrh.app";
 
 type Invoice = {
@@ -169,6 +172,7 @@ function InvoicesTab({ dict }: { dict: Dict }) {
 }
 
 const TABS = [
+  { key: "plan", anchor: "plan" },
   { key: "consumption", anchor: "consumption" },
   { key: "invoices", anchor: "invoices" },
   { key: "payment", anchor: "payment" },
@@ -177,11 +181,11 @@ const TABS = [
   { key: "settings", anchor: "settings" },
 ];
 
-export function AccountPortal({ lang, dict }: { lang: string; dict: Dict }) {
+export function AccountPortal({ lang, dict, addons = [] }: { lang: string; dict: Dict; addons?: AddonOpt[] }) {
   const router = useRouter();
   const [state, setState] = useState<"loading" | "out" | "ready">("loading");
   const [workspace, setWorkspace] = useState<string | null>(null);
-  const [tab, setTab] = useState("consumption");
+  const [tab, setTab] = useState("plan");
 
   useEffect(() => {
     setWorkspace(getWorkspace());
@@ -216,27 +220,41 @@ export function AccountPortal({ lang, dict }: { lang: string; dict: Dict }) {
     );
   }
 
-  const tabLabel: Record<string, string> = {
-    consumption: dict.tabConsumption,
-    invoices: dict.invoicesTitle,
-    payment: dict.payTitle,
-    referrals: dict.tabReferrals,
-    support: dict.tabSupport,
-    settings: dict.tabSettings,
-  };
+  const NAV = [
+    {
+      group: dict.groupSubscription,
+      items: [
+        { key: "plan", label: dict.tabPlan },
+        { key: "consumption", label: dict.tabConsumption },
+        { key: "invoices", label: dict.invoicesTitle },
+        { key: "payment", label: dict.payTitle },
+      ],
+    },
+    {
+      group: dict.groupAccount,
+      items: [
+        { key: "referrals", label: dict.tabReferrals },
+        { key: "support", label: dict.tabSupport },
+        { key: "settings", label: dict.tabSettings },
+      ],
+    },
+  ];
 
   return (
     <div>
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-heading">{dict.title}</h1>
-          <p className="text-muted">{dict.subtitle}</p>
+          <p className="text-muted">
+            {dict.subtitle}
+            {workspace ? ` · ${workspace}.${APP_DOMAIN}` : ""}
+          </p>
         </div>
         <div className="flex items-center gap-3">
           {workspace && (
             <a
               href={`https://${workspace}.${APP_DOMAIN}`}
-              className="inline-flex rounded-full border border-line px-4 py-2 text-sm font-semibold text-heading hover:border-sky"
+              className="inline-flex items-center gap-1.5 rounded-full bg-sky px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#0d8bbd]"
             >
               {dict.openWorkspace} →
             </a>
@@ -247,32 +265,42 @@ export function AccountPortal({ lang, dict }: { lang: string; dict: Dict }) {
         </div>
       </div>
 
-      {/* pay_first banner — always visible while the order is pending */}
+      {/* pay_first / dunning banner — always visible while the order is pending */}
       <div className="mt-6">
         <OrderCheckout dict={dict} />
       </div>
 
-      <nav className="mt-6 flex flex-wrap gap-1 border-b border-line">
-        {TABS.map((t) => (
-          <button
-            key={t.key}
-            onClick={() => setTab(t.key)}
-            className={`-mb-px border-b-2 px-4 py-2.5 text-sm font-semibold transition-colors ${
-              tab === t.key ? "border-sky text-heading" : "border-transparent text-muted hover:text-ink"
-            }`}
-          >
-            {tabLabel[t.key]}
-          </button>
-        ))}
-      </nav>
+      <div className="mt-6 grid gap-8 md:grid-cols-[210px_1fr]">
+        <aside>
+          {NAV.map((g) => (
+            <div key={g.group} className="mb-5">
+              <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wide text-muted">{g.group}</p>
+              <nav className="flex flex-col gap-0.5">
+                {g.items.map((it) => (
+                  <button
+                    key={it.key}
+                    onClick={() => setTab(it.key)}
+                    className={`rounded-lg px-3 py-2 text-left text-sm transition ${
+                      tab === it.key ? "bg-tint-sky font-semibold text-sky" : "text-ink hover:bg-mist"
+                    }`}
+                  >
+                    {it.label}
+                  </button>
+                ))}
+              </nav>
+            </div>
+          ))}
+        </aside>
 
-      <div className="mt-6">
-        {tab === "consumption" && <ConsumptionSection dict={dict} />}
-        {tab === "invoices" && <InvoicesTab dict={dict} />}
-        {tab === "payment" && <PaymentMethod dict={dict} />}
-        {tab === "referrals" && <ReferralsSection dict={dict} />}
-        {tab === "support" && <SupportSection dict={dict} />}
-        {tab === "settings" && <SettingsSection dict={dict} />}
+        <div className="min-w-0">
+          {tab === "plan" && <PlanManagement dict={dict} addons={addons} />}
+          {tab === "consumption" && <ConsumptionSection dict={dict} />}
+          {tab === "invoices" && <InvoicesTab dict={dict} />}
+          {tab === "payment" && <PaymentMethod dict={dict} />}
+          {tab === "referrals" && <ReferralsSection dict={dict} />}
+          {tab === "support" && <SupportSection dict={dict} />}
+          {tab === "settings" && <SettingsSection dict={dict} />}
+        </div>
       </div>
     </div>
   );

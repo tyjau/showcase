@@ -12,11 +12,15 @@ type NavItem = { label: string; href: string };
 export function MobileNav({
   items,
   authLink,
+  currencySwitcher,
+  localeSwitcher,
   themeToggle,
   className = "",
 }: {
   items: NavItem[];
   authLink: ReactNode;
+  currencySwitcher?: ReactNode;
+  localeSwitcher?: ReactNode;
   themeToggle?: ReactNode;
   className?: string;
 }) {
@@ -26,6 +30,7 @@ export function MobileNav({
     <details className={`relative ${className}`}>
       <summary
         aria-label="Menu"
+        data-testid="burger"
         className="flex h-9 w-9 cursor-pointer list-none select-none items-center justify-center rounded-md text-heading hover:bg-mist [&::-webkit-details-marker]:hidden"
       >
         <Menu size={22} aria-hidden="true" />
@@ -41,12 +46,16 @@ export function MobileNav({
               {n.label}
             </Link>
           ))}
-          {authLink}
-          {themeToggle && (
-            <div className="mt-1 border-t border-line px-4 pb-1 pt-3">
+          {/* Controls that live in the desktop bar move here below 1123px:
+              Devise · Langue · Thème · Se connecter (handoff order). */}
+          {(currencySwitcher || localeSwitcher || themeToggle) && (
+            <div className="mt-1 flex flex-wrap items-center gap-2 border-t border-line px-4 pb-1 pt-3">
+              {currencySwitcher}
+              {localeSwitcher}
               {themeToggle}
             </div>
           )}
+          {authLink}
         </nav>
       </div>
     </details>

@@ -97,7 +97,7 @@ export default async function PartnersPage({
           <h2 className="text-2xl font-bold sm:text-3xl">{p.ctaTitle}</h2>
           <p className="mx-auto mt-3 max-w-lg text-white/90">{p.ctaBody}</p>
           <Link
-            href={`/${lang}/company#contact`}
+            href={`/${lang}/become-partner`}
             className="mt-6 inline-flex rounded-full bg-white px-6 py-3 text-sm font-semibold text-navy transition hover:bg-white/90"
           >
             {p.ctaPrimary}

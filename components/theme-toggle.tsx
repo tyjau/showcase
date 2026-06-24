@@ -52,7 +52,9 @@ export function ThemeToggle({
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const stored = (localStorage.getItem(STORAGE_KEY) as Theme) || "system";
+    // Default to "dark" when nothing is stored — mirrors the layout's dark-by-default
+    // boot so the toggle's pressed state matches what the page actually shows.
+    const stored = (localStorage.getItem(STORAGE_KEY) as Theme) || "dark";
     setTheme(stored);
     setMounted(true);
   }, []);
