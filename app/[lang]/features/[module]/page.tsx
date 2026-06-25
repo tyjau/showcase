@@ -46,7 +46,7 @@ const MODULE_SHOTS: Record<string, { heroPhoto?: string; dashboard: string; gall
   "RECR00": {
     heroPhoto: HERO,
     dashboard: "/img/modules/recruit-dashboard.png",
-    gallery: ["/img/modules/recruit-1.png", "/img/modules/recruit-2.png", "/img/modules/recruit-3.png"],
+    gallery: ["/img/modules/recruit-1.png", "/img/modules/recruit-2.png"],
   },
   "CARE00": {
     heroPhoto: HERO,
@@ -66,12 +66,12 @@ const MODULE_SHOTS: Record<string, { heroPhoto?: string; dashboard: string; gall
   "SOC00": {
     heroPhoto: HERO,
     dashboard: "/img/modules/social-dashboard.png",
-    gallery: ["/img/modules/social-1.png", "/img/modules/social-2.png", "/img/modules/social-3.png"],
+    gallery: ["/img/modules/social-1.png", "/img/modules/social-2.png"],
   },
   "SOC-SST-INC00": {
     heroPhoto: HERO,
     dashboard: "/img/modules/sst-dashboard.png",
-    gallery: ["/img/modules/sst-1.png", "/img/modules/sst-2.png", "/img/modules/sst-3.png"],
+    gallery: ["/img/modules/sst-1.png", "/img/modules/sst-2.png"],
   },
 };
 
