@@ -323,29 +323,37 @@
   },
   "careersPage": {
     "eyebrow": "Carrières",
-    "title": "Construisez le futur de la RH & paie",
-    "lead": "Rejoignez une équipe qui livre le logiciel sur lequel des entreprises du monde entier gèrent leurs collaborateurs.",
+    "title": "Construisons l'avenir du travail, ensemble",
+    "lead": "Rejoignez une équipe qui simplifie la paie et le RH pour des milliers d'entreprises, en France et en Afrique.",
+    "stats": [
+      { "v": "85+", "l": "collaborateurs" },
+      { "v": "3", "l": "pays" },
+      { "v": "4,7/5", "l": "note Glassdoor" }
+    ],
     "openings": "Postes ouverts",
-    "allTeams": "Toutes les équipes",
+    "rolesNote": "postes · mis à jour cette semaine",
+    "allTeams": "Tous",
     "apply": "Postuler",
     "valuesTitle": "Ce qui nous fait avancer",
+    "valuesSubtitle": "Quatre principes qui guident nos décisions au quotidien.",
     "values": [
-      { "title": "Responsabilité", "desc": "Des équipes réduites, une vraie autonomie, et la confiance pour livrer." },
-      { "title": "Obsession client", "desc": "Nous construisons avec les équipes RH et paie, sur le terrain." },
-      { "title": "Exigence", "desc": "Qualité, performance et clarté — dans le code comme dans le produit." },
-      { "title": "Impact sans frontières", "desc": "Ce que nous bâtissons change la gestion des entreprises, dans plusieurs pays." }
+      { "title": "Le client d'abord", "desc": "Chaque décision part d'un besoin réel des équipes RH et paie." },
+      { "title": "Rigueur & confiance", "desc": "La paie ne tolère pas l'à-peu-près. La sécurité et la précision priment." },
+      { "title": "Impact local", "desc": "Une conformité pensée pour la France et l'Afrique francophone." },
+      { "title": "Apprendre vite", "desc": "On teste, on mesure, on itère — sans ego et avec curiosité." }
     ],
     "perksTitle": "Pas de poste qui vous correspond ?",
-    "perksBody": "Nous sommes toujours ravis de rencontrer de belles personnes. Dites-nous comment vous auriez de l'impact.",
-    "perksCta": "Envoyer une candidature spontanée",
+    "perksBody": "Envoyez-nous une candidature spontanée — nous gardons toujours un œil ouvert pour les bons profils.",
+    "perksCta": "Candidature spontanée",
     "noJobs": "Aucun poste ouvert dans cette équipe pour le moment.",
     "jobs": [
-      { "title": "Ingénieur·e Backend Senior", "team": "Engineering", "location": "Télétravail · UE", "type": "CDI" },
-      { "title": "Ingénieur·e Frontend", "team": "Engineering", "location": "Paris", "type": "CDI" },
-      { "title": "Product Designer", "team": "Product", "location": "Télétravail · UE", "type": "CDI" },
-      { "title": "Account Executive", "team": "Sales", "location": "Paris", "type": "CDI" },
-      { "title": "Customer Success Manager", "team": "Customer", "location": "Télétravail · UE", "type": "CDI" },
-      { "title": "Spécialiste conformité paie", "team": "Product", "location": "Télétravail · FR", "type": "Freelance" }
+      { "title": "Ingénieur·e Frontend Senior", "team": "Ingénierie", "location": "Paris / Remote", "type": "CDI" },
+      { "title": "Ingénieur·e Backend (Paie)", "team": "Ingénierie", "location": "Remote", "type": "CDI" },
+      { "title": "Product Designer", "team": "Produit", "location": "Paris", "type": "CDI" },
+      { "title": "Customer Success Manager", "team": "Client", "location": "Dakar", "type": "CDI" },
+      { "title": "Account Executive", "team": "Commercial", "location": "Abidjan", "type": "CDI" },
+      { "title": "Expert·e conformité paie (Afrique)", "team": "Produit", "location": "Remote", "type": "CDI" },
+      { "title": "Alternance — Data Analyst", "team": "Ingénierie", "location": "Paris", "type": "Alternance" }
     ]
   },
   "enterprisePage": {

@@ -323,29 +323,37 @@
   },
   "careersPage": {
     "eyebrow": "Careers",
-    "title": "Build the future of HR & payroll",
-    "lead": "Join a team shipping software that companies across the world run their people on.",
-    "openings": "Open positions",
-    "allTeams": "All teams",
+    "title": "Let's build the future of work, together",
+    "lead": "Join a team simplifying payroll and HR for thousands of companies, across France and Africa.",
+    "stats": [
+      { "v": "85+", "l": "team members" },
+      { "v": "3", "l": "countries" },
+      { "v": "4.7/5", "l": "Glassdoor rating" }
+    ],
+    "openings": "Open roles",
+    "rolesNote": "roles · updated this week",
+    "allTeams": "All",
     "apply": "Apply",
     "valuesTitle": "What drives us",
+    "valuesSubtitle": "Four principles that guide our daily decisions.",
     "values": [
-      { "title": "Ownership", "desc": "Small teams, real autonomy, and the trust to ship." },
-      { "title": "Customer obsession", "desc": "We build with HR and payroll teams, in the field." },
-      { "title": "Craft", "desc": "Quality, performance and clarity — in code and in product." },
-      { "title": "Impact across borders", "desc": "What we build changes how companies run, in many countries." }
+      { "title": "Customer first", "desc": "Every decision starts from a real need of HR and payroll teams." },
+      { "title": "Rigor & trust", "desc": "Payroll tolerates no guesswork. Security and precision come first." },
+      { "title": "Local impact", "desc": "Compliance built for France and French-speaking Africa." },
+      { "title": "Learn fast", "desc": "We test, measure and iterate — egoless and curious." }
     ],
     "perksTitle": "No role that fits?",
-    "perksBody": "We're always glad to meet great people. Tell us how you'd make an impact.",
-    "perksCta": "Send a spontaneous application",
+    "perksBody": "Send us a spontaneous application — we always keep an eye out for great people.",
+    "perksCta": "Spontaneous application",
     "noJobs": "No openings for this team right now.",
     "jobs": [
-      { "title": "Senior Backend Engineer", "team": "Engineering", "location": "Remote · EU", "type": "Full-time" },
-      { "title": "Frontend Engineer", "team": "Engineering", "location": "Paris", "type": "Full-time" },
-      { "title": "Product Designer", "team": "Product", "location": "Remote · EU", "type": "Full-time" },
-      { "title": "Account Executive", "team": "Sales", "location": "Paris", "type": "Full-time" },
-      { "title": "Customer Success Manager", "team": "Customer", "location": "Remote · EU", "type": "Full-time" },
-      { "title": "Payroll Compliance Specialist", "team": "Product", "location": "Remote · FR", "type": "Contract" }
+      { "title": "Senior Frontend Engineer", "team": "Engineering", "location": "Paris / Remote", "type": "Permanent" },
+      { "title": "Backend Engineer (Payroll)", "team": "Engineering", "location": "Remote", "type": "Permanent" },
+      { "title": "Product Designer", "team": "Product", "location": "Paris", "type": "Permanent" },
+      { "title": "Customer Success Manager", "team": "Customer", "location": "Dakar", "type": "Permanent" },
+      { "title": "Account Executive", "team": "Sales", "location": "Abidjan", "type": "Permanent" },
+      { "title": "Payroll compliance expert (Africa)", "team": "Product", "location": "Remote", "type": "Permanent" },
+      { "title": "Apprenticeship — Data Analyst", "team": "Engineering", "location": "Paris", "type": "Apprenticeship" }
     ]
   },
   "enterprisePage": {
