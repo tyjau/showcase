@@ -311,7 +311,7 @@ export function PricingCalculator({
                   </div>
                 )}
                 <Link
-                  href={`/${lang}/signup?plan=${p.code}${sel.size ? `&addons=${Array.from(sel).join(",")}` : ""}`}
+                  href={p.code === "ENTERPRISE" ? `/${lang}/enterprise` : `/${lang}/signup?plan=${p.code}${sel.size ? `&addons=${Array.from(sel).join(",")}` : ""}`}
                   className={`mt-4 block rounded-full px-4 py-2 text-center text-sm font-semibold ${popular ? "bg-sky-strong text-white" : "border border-line text-heading hover:border-sky"}`}
                 >
                   {p.code === "ENTERPRISE" ? dict.contact : dict.startTrial}
@@ -364,7 +364,7 @@ export function PricingCalculator({
                 {catalog.packages.map((p) => (
                   <td key={p.code} className="px-3 py-4 text-center">
                     <Link
-                      href={`/${lang}/signup?plan=${p.code}`}
+                      href={p.code === "ENTERPRISE" ? `/${lang}/enterprise` : `/${lang}/signup?plan=${p.code}`}
                       className={`inline-block rounded-full px-4 py-2 text-sm font-semibold ${p.code === "BUSINESS" ? "bg-sky-strong text-white" : "border border-line text-heading hover:border-sky"}`}
                     >
                       {p.code === "ENTERPRISE" ? dict.contact : dict.startTrial}

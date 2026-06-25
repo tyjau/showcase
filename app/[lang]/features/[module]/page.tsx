@@ -5,7 +5,7 @@ import { ArrowLeft, Check } from "lucide-react";
 import { i18n, type Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
 import { fetchCatalog, moduleText, type CatalogModule } from "@/lib/catalog";
-import { moduleContent } from "@/lib/module-content";
+import { moduleContent, moduleExtras } from "@/lib/module-content";
 import { ModuleIcon } from "@/components/module-icon";
 import { MediaFrame } from "@/components/media-frame";
 import { Price } from "@/components/price";
@@ -109,6 +109,7 @@ export default async function ModulePage(
   const lang = params.lang;
   const txt = moduleText(m, lang);
   const content = moduleContent(m.code, lang);
+  const extras = moduleExtras(m.code, lang);
   const shots = MODULE_SHOTS[m.code];
   const hasPrice = m.prices.some((p) => p.cycle === "monthly");
   const inPackages = catalog.packages.filter((p) => p.modules.includes(m.code));
@@ -177,16 +178,50 @@ export default async function ModulePage(
           {txt.description}
         </p>
 
-        {shots?.gallery && shots.gallery.length > 0 && (
-          <div className="mt-8 grid gap-4 sm:grid-cols-3">
-            {shots.gallery.map((img) => (
-              <MediaFrame key={img} src={img} alt={txt.headline} />
+        {/* Key figures */}
+        {extras && extras.keyFigures.length > 0 && (
+          <div className="mt-8 grid grid-cols-1 gap-4 rounded-2xl border border-line bg-surface p-6 sm:grid-cols-3">
+            {extras.keyFigures.map((kf) => (
+              <div key={kf} className="flex items-center gap-2.5">
+                <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-sky-strong text-white">
+                  <Check size={15} strokeWidth={3} />
+                </span>
+                <span className="font-semibold text-ink">{kf}</span>
+              </div>
             ))}
           </div>
         )}
 
-        {content && (
-          <>
+        {/* Alternating feature blocks: screenshot + highlight + capability bullets.
+            Falls back to a flat capabilities checklist if no gallery/extras exist. */}
+        {content && shots?.gallery && shots.gallery.length > 0 && extras ? (
+          <div className="mt-12 flex flex-col gap-12">
+            {shots.gallery.map((img, i) => {
+              const per = Math.ceil(content.capabilities.length / shots.gallery!.length);
+              const bullets = content.capabilities.slice(i * per, (i + 1) * per);
+              const flip = i % 2 === 1;
+              return (
+                <div key={img} className="grid items-center gap-8 md:grid-cols-2">
+                  <div className={flip ? "md:order-2" : ""}>
+                    <MediaFrame src={img} alt={txt.headline} />
+                  </div>
+                  <div className={flip ? "md:order-1" : ""}>
+                    <h3 className="text-xl font-bold text-heading">{extras.highlights[i] ?? txt.headline}</h3>
+                    <ul className="mt-4 flex flex-col gap-2.5">
+                      {bullets.map((b) => (
+                        <li key={b} className="flex items-start gap-2.5">
+                          <Check size={18} className="mt-0.5 shrink-0 text-sky-text" />
+                          <span className="text-ink">{b}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          content && (
             <div className="mt-10">
               <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-accent">
                 {t.modulePage.capabilities}
@@ -200,25 +235,25 @@ export default async function ModulePage(
                 ))}
               </div>
             </div>
+          )
+        )}
 
-            {content.useCases.length > 0 && (
-              <div className="mt-10">
-                <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-accent">
-                  {t.modulePage.useCases}
-                </h2>
-                <div className="grid gap-4 sm:grid-cols-2">
-                  {content.useCases.map((uc) => (
-                    <div
-                      key={uc}
-                      className="rounded-xl border border-line bg-surface p-4 text-sm leading-relaxed text-muted"
-                    >
-                      {uc}
-                    </div>
-                  ))}
+        {content && content.useCases.length > 0 && (
+          <div className="mt-12">
+            <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-accent">
+              {t.modulePage.useCases}
+            </h2>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {content.useCases.map((uc) => (
+                <div
+                  key={uc}
+                  className="rounded-xl border border-line bg-surface p-4 text-sm leading-relaxed text-muted"
+                >
+                  {uc}
                 </div>
-              </div>
-            )}
-          </>
+              ))}
+            </div>
+          </div>
         )}
 
         {inPackages.length > 0 && (

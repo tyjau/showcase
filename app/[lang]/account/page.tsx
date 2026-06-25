@@ -42,7 +42,7 @@ export default async function AccountPage(
     <main className="mx-auto max-w-6xl px-5 py-14">
       <AccountPortal
         lang={params.lang}
-        dict={t.accountPage as Record<string, string>}
+        dict={t.accountPage as unknown as Record<string, string>}
         addons={addons}
       />
     </main>

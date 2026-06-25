@@ -1,9 +1,29 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { apiAuthed } from "@/lib/api";
+import { ShieldCheck, KeyRound, Bell, UserRound } from "lucide-react";
+import { apiAuthed, getWorkspace } from "@/lib/api";
 
 type Dict = Record<string, string>;
+
+const APP_DOMAIN = process.env.NEXT_PUBLIC_APP_DOMAIN ?? "skyrh.app";
+
+// Presentational toggle (profile/security/notifications are managed in the Harmony
+// product; the billing portal mirrors the controls and links out for real changes).
+function Toggle({ on, onClick, label }: { on: boolean; onClick: () => void; label: string }) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={on}
+      aria-label={label}
+      onClick={onClick}
+      className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${on ? "bg-sky-strong" : "bg-line"}`}
+    >
+      <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white transition-all ${on ? "left-[22px]" : "left-0.5"}`} />
+    </button>
+  );
+}
 
 // Settings (#5) — reversible account closure. request_account_deletion flags the
 // subscription non-renewing (access until term end, NO immediate hard delete); the customer
@@ -13,8 +33,14 @@ export function SettingsSection({ dict }: { dict: Dict }) {
   const [accessUntil, setAccessUntil] = useState<string>("");
   const [confirming, setConfirming] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [workspace, setWorkspace] = useState<string | null>(null);
+  const [twoFa, setTwoFa] = useState(true);
+  const notifLabels = (dict.setNotif as unknown as string[]) ?? [];
+  const [notif, setNotif] = useState<boolean[]>(() => notifLabels.map(() => true));
+  const harmonyUrl = workspace ? `https://${workspace}.${APP_DOMAIN}` : "#";
 
   useEffect(() => {
+    setWorkspace(getWorkspace());
     apiAuthed("my_consumption").then((res) => {
       const d = res.data || {};
       setScheduled(!!d.cancellation_scheduled);
@@ -43,7 +69,62 @@ export function SettingsSection({ dict }: { dict: Dict }) {
   if (scheduled === null) return <p className="text-muted">{dict.loading}</p>;
 
   return (
-    <div className="rounded-xl border border-err-border bg-err-bg p-5">
+    <div className="flex flex-col gap-6">
+      {/* Profile */}
+      <div className="rounded-xl border border-line bg-surface p-5">
+        <h3 className="flex items-center gap-2 text-lg font-bold text-heading">
+          <UserRound size={18} className="text-sky-text" /> {dict.setProfileTitle}
+        </h3>
+        <div className="mt-3 flex items-center justify-between gap-4 border-b border-line pb-3">
+          <span className="text-sm text-muted">{dict.setWorkspaceLabel}</span>
+          <span className="text-sm font-medium text-ink">{workspace ? `${workspace}.${APP_DOMAIN}` : "—"}</span>
+        </div>
+        <p className="mt-3 text-sm text-muted">{dict.setManaged}</p>
+        <a href={harmonyUrl} className="mt-3 inline-flex text-sm font-semibold text-sky-text hover:underline">
+          {dict.setManageLink} →
+        </a>
+      </div>
+
+      {/* Security */}
+      <div className="rounded-xl border border-line bg-surface p-5">
+        <h3 className="flex items-center gap-2 text-lg font-bold text-heading">
+          <ShieldCheck size={18} className="text-sky-text" /> {dict.setSecurityTitle}
+        </h3>
+        <div className="mt-3 flex items-center justify-between gap-4 border-b border-line pb-3">
+          <span className="inline-flex items-center gap-2 text-sm text-ink">
+            <KeyRound size={15} className="text-muted" /> {dict.setPassword} <span className="text-muted">••••••••</span>
+          </span>
+          <a href={harmonyUrl} className="text-sm font-semibold text-sky-text hover:underline">{dict.setChange}</a>
+        </div>
+        <div className="mt-3 flex items-center justify-between gap-4">
+          <span className="text-sm text-ink">
+            {dict.set2fa} {twoFa && <span className="ml-1 text-xs text-ok-fg">· {dict.setEnabled}</span>}
+          </span>
+          <Toggle on={twoFa} onClick={() => setTwoFa((v) => !v)} label={dict.set2fa} />
+        </div>
+      </div>
+
+      {/* Notifications */}
+      <div className="rounded-xl border border-line bg-surface p-5">
+        <h3 className="flex items-center gap-2 text-lg font-bold text-heading">
+          <Bell size={18} className="text-sky-text" /> {dict.setNotifTitle}
+        </h3>
+        <div className="mt-3 divide-y divide-line">
+          {notifLabels.map((label, i) => (
+            <div key={label} className="flex items-center justify-between gap-4 py-3">
+              <span className="text-sm text-ink">{label}</span>
+              <Toggle
+                on={notif[i]}
+                onClick={() => setNotif((arr) => arr.map((v, j) => (j === i ? !v : v)))}
+                label={label}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Danger zone */}
+      <div className="rounded-xl border border-err-border bg-err-bg p-5">
       <h3 className="text-lg font-bold text-heading">{dict.delTitle}</h3>
       {scheduled ? (
         <>
@@ -87,6 +168,7 @@ export function SettingsSection({ dict }: { dict: Dict }) {
           )}
         </>
       )}
+      </div>
     </div>
   );
 }
