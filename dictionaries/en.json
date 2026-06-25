@@ -75,8 +75,14 @@
     ]
   },
   "modulesPage": {
+    "eyebrow": "Features",
     "heading": "Modules built for HR teams",
     "sub": "Modular by design — start with what you need, add the rest as you grow.",
+    "ctaPrimary": "Start the free trial",
+    "ctaSecondary": "See pricing",
+    "modulesCount": "modules",
+    "ctaTitle": "Compose your HR platform",
+    "ctaLead": "Pick your modules, add the rest as you grow. 14-day trial, no card.",
     "addon": "Add-on",
     "worksWith": "Works with",
     "learnMore": "Learn more",

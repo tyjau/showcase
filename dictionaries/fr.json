@@ -75,8 +75,14 @@
     ]
   },
   "modulesPage": {
+    "eyebrow": "Fonctionnalités",
     "heading": "Des modules pensés pour les RH",
     "sub": "Modulaire par conception — commencez par l'essentiel, ajoutez le reste en grandissant.",
+    "ctaPrimary": "Démarrer l'essai gratuit",
+    "ctaSecondary": "Voir les tarifs",
+    "modulesCount": "modules",
+    "ctaTitle": "Composez votre plateforme RH",
+    "ctaLead": "Choisissez vos modules, ajoutez le reste en grandissant. 14 jours d'essai, sans carte.",
     "addon": "Option",
     "worksWith": "Fonctionne avec",
     "learnMore": "En savoir plus",
