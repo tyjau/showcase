@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Check } from "lucide-react";
 import { apiAuthed } from "@/lib/api";
 import { type Money } from "@/lib/catalog";
 import { stagedTotal, stagedDelta, type Addon } from "@/lib/plan-staging";
@@ -102,44 +101,67 @@ export function PlanManagement({ dict, addons }: { dict: Dict; addons: AddonOpt[
       </div>
 
       {/* Current offer */}
-      <div className="rounded-xl border border-line bg-surface p-5">
-        <p className="text-xs font-semibold uppercase tracking-wide text-muted">{dict.planOffer}</p>
-        <div className="mt-1 flex flex-wrap items-baseline justify-between gap-2">
-          <h3 className="text-xl font-bold text-heading">{cur.plan || "—"}</h3>
+      <div className="rounded-2xl border border-line bg-surface p-6">
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-wide text-sky-text">{dict.planOffer}</p>
+            <h3 className="mt-1 text-2xl font-extrabold text-heading">{cur.plan || "—"}</h3>
+          </div>
           <div className="text-right">
-            <span className="text-2xl font-extrabold text-heading">{money(newTotal, cur.currency)}</span>
+            <span className="text-[34px] font-extrabold text-heading">{money(newTotal, cur.currency)}</span>
             <span className="text-sm text-muted"> {dict.planPerMonth}</span>
           </div>
         </div>
-        <p className="mt-1 text-sm text-muted">
-          {cur.seats} {dict.planSeats}
-        </p>
+        <div className="mt-5 grid grid-cols-3 gap-3 border-t border-line pt-4">
+          <div>
+            <div className="text-[11px] uppercase tracking-wide text-muted">{dict.planSeats}</div>
+            <div className="mt-0.5 text-lg font-extrabold text-heading">{cur.seats}</div>
+          </div>
+          <div>
+            <div className="text-[11px] uppercase tracking-wide text-muted">{dict.planActiveModules}</div>
+            <div className="mt-0.5 text-lg font-extrabold text-heading">{selected.size}</div>
+          </div>
+          <div>
+            <div className="text-[11px] uppercase tracking-wide text-muted">{dict.planCostPerSeat}</div>
+            <div className="mt-0.5 text-lg font-extrabold text-sky-text">
+              {money(cur.seats > 0 ? newTotal / cur.seats : 0, cur.currency)}
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Add-on staging */}
+      {/* Module add-ons — stacked rows with pill toggles */}
       {resolvedAddons.length > 0 && (
         <div>
           <p className="mb-3 text-sm font-semibold text-heading">{dict.planAddTitle}</p>
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="flex flex-col gap-2">
             {resolvedAddons.map((a) => {
               const on = selected.has(a.code);
               return (
-                <button
+                <div
                   key={a.code}
-                  type="button"
-                  onClick={() => toggle(a.code)}
-                  className={`flex items-center justify-between gap-3 rounded-xl border p-4 text-left transition ${
-                    on ? "border-sky bg-tint-sky-strong" : "border-line bg-surface hover:border-sky"
-                  }`}
+                  className="flex items-center justify-between gap-3 rounded-xl border border-line bg-surface p-4"
                 >
-                  <span className="flex items-center gap-3">
-                    <span className={`flex h-5 w-5 items-center justify-center rounded ${on ? "bg-sky-strong text-white" : "border border-line"}`}>
-                      {on && <Check size={13} />}
-                    </span>
-                    <span className="text-sm font-medium text-ink">{a.label}</span>
-                  </span>
-                  <span className="text-sm text-muted">+{money(a.rate, cur.currency)}</span>
-                </button>
+                  <div className="min-w-0">
+                    <div className="text-sm font-semibold text-ink">{a.label}</div>
+                    <div className="mt-0.5 text-xs text-muted">
+                      +{money(a.rate, cur.currency)} {dict.planPerSeat} ·{" "}
+                      {money(a.rate * cur.seats, cur.currency)} {dict.planPerMonth}
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    role="switch"
+                    aria-checked={on}
+                    aria-label={a.label}
+                    onClick={() => toggle(a.code)}
+                    className={`relative h-6 w-11 flex-none rounded-full transition-colors ${on ? "bg-sky-strong" : "bg-line"}`}
+                  >
+                    <span
+                      className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-all ${on ? "left-[22px]" : "left-0.5"}`}
+                    />
+                  </button>
+                </div>
               );
             })}
           </div>
@@ -150,7 +172,7 @@ export function PlanManagement({ dict, addons }: { dict: Dict; addons: AddonOpt[
 
       {/* Persistent unsaved-changes bar */}
       {dirty && (
-        <div className="sticky bottom-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-warn-border bg-warn-bg px-5 py-3">
+        <div className="sticky bottom-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-sky bg-tint-sky px-5 py-3">
           <div className="text-sm">
             <span className="font-semibold text-heading">{dict.planUnsaved}</span>
             <span className="ml-2 text-muted">

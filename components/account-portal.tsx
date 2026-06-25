@@ -3,6 +3,17 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import {
+  Package,
+  BarChart3,
+  FileText,
+  CreditCard,
+  Gift,
+  LifeBuoy,
+  Settings,
+  ExternalLink,
+  type LucideIcon,
+} from "lucide-react";
 import { apiAuthed, getToken, getWorkspace, clearSession } from "@/lib/api";
 import { PaymentMethod } from "@/components/payment-method";
 import { OrderCheckout } from "@/components/order-checkout";
@@ -220,22 +231,22 @@ export function AccountPortal({ lang, dict, addons = [] }: { lang: string; dict:
     );
   }
 
-  const NAV = [
+  const NAV: { group: string; items: { key: string; label: string; icon: LucideIcon }[] }[] = [
     {
       group: dict.groupSubscription,
       items: [
-        { key: "plan", label: dict.tabPlan },
-        { key: "consumption", label: dict.tabConsumption },
-        { key: "invoices", label: dict.invoicesTitle },
-        { key: "payment", label: dict.payTitle },
+        { key: "plan", label: dict.tabPlan, icon: Package },
+        { key: "consumption", label: dict.tabConsumption, icon: BarChart3 },
+        { key: "invoices", label: dict.invoicesTitle, icon: FileText },
+        { key: "payment", label: dict.payTitle, icon: CreditCard },
       ],
     },
     {
       group: dict.groupAccount,
       items: [
-        { key: "referrals", label: dict.tabReferrals },
-        { key: "support", label: dict.tabSupport },
-        { key: "settings", label: dict.tabSettings },
+        { key: "referrals", label: dict.tabReferrals, icon: Gift },
+        { key: "support", label: dict.tabSupport, icon: LifeBuoy },
+        { key: "settings", label: dict.tabSettings, icon: Settings },
       ],
     },
   ];
@@ -244,24 +255,31 @@ export function AccountPortal({ lang, dict, addons = [] }: { lang: string; dict:
     <div>
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-heading">{dict.title}</h1>
-          <p className="text-muted">
+          <h1 className="text-[28px] font-extrabold tracking-tight text-heading">{dict.title}</h1>
+          <p className="mt-1 text-[15px] text-muted">
             {dict.subtitle}
-            {workspace ? ` · ${workspace}.${APP_DOMAIN}` : ""}
+            {workspace ? (
+              <>
+                {" · "}
+                <span className="font-semibold text-ink">{workspace}</span>.{APP_DOMAIN}
+              </>
+            ) : (
+              ""
+            )}
           </p>
         </div>
         <div className="flex items-center gap-3">
+          <button onClick={logout} className="text-sm text-muted hover:text-ink">
+            {dict.logout}
+          </button>
           {workspace && (
             <a
               href={`https://${workspace}.${APP_DOMAIN}`}
               className="inline-flex items-center gap-1.5 rounded-full bg-sky-strong px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#08607f]"
             >
-              {dict.openWorkspace} →
+              <ExternalLink size={15} /> {dict.openWorkspace}
             </a>
           )}
-          <button onClick={logout} className="text-sm text-muted hover:text-ink">
-            {dict.logout}
-          </button>
         </div>
       </div>
 
@@ -270,23 +288,28 @@ export function AccountPortal({ lang, dict, addons = [] }: { lang: string; dict:
         <OrderCheckout dict={dict} />
       </div>
 
-      <div className="mt-6 grid gap-8 md:grid-cols-[210px_1fr]">
-        <aside>
+      <div className="mt-6 grid gap-[30px] md:grid-cols-[228px_1fr]">
+        <aside className="md:sticky md:top-[84px] md:self-start">
           {NAV.map((g) => (
             <div key={g.group} className="mb-5">
-              <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wide text-muted">{g.group}</p>
+              <p className="mb-2 px-3 text-[11px] font-extrabold uppercase tracking-wide text-muted">{g.group}</p>
               <nav className="flex flex-col gap-0.5">
-                {g.items.map((it) => (
-                  <button
-                    key={it.key}
-                    onClick={() => setTab(it.key)}
-                    className={`rounded-lg px-3 py-2 text-left text-sm transition ${
-                      tab === it.key ? "bg-tint-sky font-semibold text-sky-text" : "text-ink hover:bg-mist"
-                    }`}
-                  >
-                    {it.label}
-                  </button>
-                ))}
+                {g.items.map((it) => {
+                  const Icon = it.icon;
+                  const active = tab === it.key;
+                  return (
+                    <button
+                      key={it.key}
+                      onClick={() => setTab(it.key)}
+                      className={`flex items-center gap-2.5 rounded-[10px] px-3 py-2.5 text-left text-sm transition ${
+                        active ? "bg-tint-sky font-extrabold text-sky-text" : "text-ink hover:bg-mist"
+                      }`}
+                    >
+                      <Icon size={17} className="flex-none" />
+                      {it.label}
+                    </button>
+                  );
+                })}
               </nav>
             </div>
           ))}
