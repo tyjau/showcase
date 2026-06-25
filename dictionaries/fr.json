@@ -445,28 +445,33 @@
     }
   },
   "partnersPage": {
-    "eyebrow": "Partenaires & revendeurs",
+    "eyebrow": "Partenaires",
     "title": "Développez votre activité avec SkyRH",
-    "lead": "Revendez, intégrez ou recommandez une RH & paie moderne — et pilotez tous vos clients depuis une seule console opérateur.",
-    "typesTitle": "Façons de devenir partenaire",
+    "lead": "Intégrateurs, revendeurs, experts-comptables, éditeurs — construisons ensemble une offre RH de référence.",
+    "heroPrimary": "Devenir partenaire",
+    "heroSecondary": "Voir les programmes",
+    "typesTitle": "Un programme pour chaque métier",
+    "typesSubtitle": "Choisissez la voie qui correspond à votre activité.",
     "types": [
-      { "title": "Revendeur", "desc": "Vendez SkyRH sous votre marque, fixez votre marge et gardez la relation client." },
-      { "title": "Intégrateur", "desc": "Déployez, localisez et configurez SkyRH pour les pays et règles de vos clients." },
-      { "title": "Apporteur d'affaires", "desc": "Recommandez-nous et touchez une commission sur chaque compte apporté." }
+      { "title": "Intégrateurs", "desc": "Déployez et configurez SkyRH chez vos clients, du paramétrage paie à la reprise de données.", "points": ["Formation & certification", "Environnements de test dédiés", "Support technique prioritaire"] },
+      { "title": "Revendeurs", "desc": "Commercialisez SkyRH sous votre marque ou en co-branding, avec une marge attractive.", "points": ["Marges récurrentes", "Co-branding de la plateforme", "Outils commerciaux & démos"] },
+      { "title": "Experts-comptables", "desc": "Gérez la paie de vos clients depuis un espace multi-dossiers unique.", "points": ["Vue multi-entreprises", "Exports comptables", "Tarifs cabinet dédiés"] },
+      { "title": "Partenaires technologiques", "desc": "Connectez votre solution à SkyRH via notre API et enrichissez l'écosystème.", "points": ["API & webhooks documentés", "Référencement marketplace", "Accompagnement intégration"] }
     ],
-    "consoleTitle": "Une console pour piloter tous vos clients",
-    "consoleBody": "Harmony, la console opérateur, offre aux partenaires un seul endroit pour gérer chaque client servi.",
-    "consolePoints": [
-      "Créer et gérer les espaces clients",
-      "Affecter plans et modules, suivre facturation & MRR",
-      "Droits fins multi-sociétés",
-      "Vue d'ensemble multi-société en un coup d'œil"
+    "benefitsTitle": "Les avantages du programme",
+    "benefits": [
+      { "title": "Revenus récurrents", "desc": "Commissions sur chaque abonnement actif." },
+      { "title": "Certification", "desc": "Formez vos équipes et affichez votre expertise." },
+      { "title": "Co-marketing", "desc": "Campagnes, événements et contenus partagés." },
+      { "title": "Support dédié", "desc": "Un interlocuteur partenaire pour vous accompagner." },
+      { "title": "Accès anticipé", "desc": "Découvrez les nouveautés avant tout le monde." },
+      { "title": "Marketplace", "desc": "Soyez visible auprès de milliers de clients SkyRH." }
     ],
-    "logosTitle": "Des partenaires qui grandissent déjà avec SkyRH",
-    "logos": ["Atlantique Conseil", "Sahel Digital", "Mandela Group", "Kivu Systems", "Équatorial Tech", "Volcans Partners"],
-    "ctaTitle": "Devenir partenaire",
-    "ctaBody": "Rejoignez notre réseau de revendeurs et d'intégrateurs — on vous accompagne.",
-    "ctaPrimary": "Nous contacter"
+    "logosTitle": "Ils sont déjà partenaires",
+    "logos": ["Novalink", "Comptalia", "Fluxio", "Cleryon", "Gridwork", "Atlasoft"],
+    "ctaTitle": "Prêt à devenir partenaire ?",
+    "ctaBody": "Parlez-nous de votre activité — notre équipe partenariats vous recontacte sous 48 h.",
+    "ctaPrimary": "Postuler au programme"
   },
   "signupPage": {
     "title": "Créez votre espace",

@@ -445,28 +445,33 @@
     }
   },
   "partnersPage": {
-    "eyebrow": "Partners & resellers",
+    "eyebrow": "Partners",
     "title": "Grow your business with SkyRH",
-    "lead": "Resell, implement or refer modern HR & payroll — and manage all your clients from one operator console.",
-    "typesTitle": "Ways to partner",
+    "lead": "Integrators, resellers, accountants, software vendors — let's build a benchmark HR offering together.",
+    "heroPrimary": "Become a partner",
+    "heroSecondary": "See the programs",
+    "typesTitle": "A program for every trade",
+    "typesSubtitle": "Choose the path that fits your business.",
     "types": [
-      { "title": "Reseller", "desc": "Sell SkyRH under your own brand, set your margin and own the relationship." },
-      { "title": "Implementation partner", "desc": "Deploy, localize and configure SkyRH for your clients' countries and rules." },
-      { "title": "Referral", "desc": "Send us business and earn a commission on every account you bring." }
+      { "title": "Integrators", "desc": "Deploy and configure SkyRH for your clients — from payroll setup to data migration.", "points": ["Training & certification", "Dedicated test environments", "Priority technical support"] },
+      { "title": "Resellers", "desc": "Sell SkyRH under your own brand or co-branded, with an attractive margin.", "points": ["Recurring margins", "Platform co-branding", "Sales tools & demos"] },
+      { "title": "Accountants", "desc": "Run your clients' payroll from a single multi-file workspace.", "points": ["Multi-company view", "Accounting exports", "Dedicated firm pricing"] },
+      { "title": "Technology partners", "desc": "Connect your solution to SkyRH via our API and enrich the ecosystem.", "points": ["Documented API & webhooks", "Marketplace listing", "Integration support"] }
     ],
-    "consoleTitle": "One console to run all your clients",
-    "consoleBody": "Harmony, the operator console, gives partners a single place to manage every tenant they serve.",
-    "consolePoints": [
-      "Create and manage client workspaces",
-      "Assign plans and modules, track billing & MRR",
-      "Fine-grained roles across companies",
-      "Multi-company overview at a glance"
+    "benefitsTitle": "Program benefits",
+    "benefits": [
+      { "title": "Recurring revenue", "desc": "Commission on every active subscription." },
+      { "title": "Certification", "desc": "Train your teams and showcase your expertise." },
+      { "title": "Co-marketing", "desc": "Shared campaigns, events and content." },
+      { "title": "Dedicated support", "desc": "A partner contact to support you." },
+      { "title": "Early access", "desc": "Discover new features before everyone else." },
+      { "title": "Marketplace", "desc": "Get visible to thousands of SkyRH customers." }
     ],
-    "logosTitle": "Partners already growing with SkyRH",
-    "logos": ["Atlantique Conseil", "Sahel Digital", "Mandela Group", "Kivu Systems", "Équatorial Tech", "Volcans Partners"],
-    "ctaTitle": "Become a partner",
-    "ctaBody": "Join our reseller and implementation network — we'll get you set up.",
-    "ctaPrimary": "Get in touch"
+    "logosTitle": "Already partners",
+    "logos": ["Novalink", "Comptalia", "Fluxio", "Cleryon", "Gridwork", "Atlasoft"],
+    "ctaTitle": "Ready to become a partner?",
+    "ctaBody": "Tell us about your business — our partnerships team gets back to you within 48 h.",
+    "ctaPrimary": "Apply to the program"
   },
   "signupPage": {
     "title": "Create your workspace",
