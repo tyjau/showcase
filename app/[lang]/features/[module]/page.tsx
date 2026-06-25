@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { ArrowLeft, Check } from "lucide-react";
+import { ArrowLeft, Check, Clock, Globe, FileText, Zap } from "lucide-react";
 import { i18n, type Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
 import { fetchCatalog, moduleText, type CatalogModule } from "@/lib/catalog";
@@ -120,6 +120,11 @@ export default async function ModulePage(
     }))
     .filter((r) => r.mod) as { kind: string; mod: CatalogModule }[];
 
+  const catLabel =
+    (t.modulesPage.categories as Record<string, string>)[m.category] ?? "";
+  const appSlug = (m.category || "app").replace(/[^a-z0-9]+/gi, "-");
+  const appUrl = `app.skyrh.com/${appSlug}/tableau-de-bord`;
+
   return (
     <main>
       <section className="relative overflow-hidden bg-hero-bg text-hero-fg">
@@ -136,24 +141,29 @@ export default async function ModulePage(
           </>
         )}
         <ParallaxTriangles />
-        <div className="relative mx-auto max-w-5xl px-5 py-16">
+        <div className="relative mx-auto max-w-6xl px-5 py-16">
           <Link
             href={`/${lang}/features`}
             className="inline-flex items-center gap-1 text-sm text-hero-fg-muted hover:text-white"
           >
             <ArrowLeft size={15} /> {t.modulePage.back}
           </Link>
-          <div className="mt-5 flex flex-col gap-5 sm:flex-row sm:items-start">
-            <div className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-sky-strong text-white">
-              <ModuleIcon name={m.icon} size={28} />
-            </div>
+          <div className="mt-6 grid items-center gap-10 lg:grid-cols-2">
             <div>
-              <h1 className="text-3xl font-extrabold tracking-tight text-balance sm:text-4xl">{txt.headline}</h1>
-              <p className="mt-2 max-w-2xl text-lg text-hero-fg-muted">{txt.tagline}</p>
-              <div className="mt-5 flex flex-wrap items-center gap-3">
+              <div className="mb-4 inline-flex items-center gap-2.5">
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-[11px] bg-sky-strong/20 text-sky-soft">
+                  <ModuleIcon name={m.icon} size={22} />
+                </span>
+                {catLabel && <span className="text-sm font-bold text-sky-soft">{catLabel}</span>}
+              </div>
+              <h1 className="text-4xl font-extrabold leading-[1.1] tracking-tight text-balance sm:text-[42px]">
+                {txt.headline}
+              </h1>
+              <p className="mt-3 max-w-xl text-lg leading-relaxed text-hero-fg-muted">{txt.tagline}</p>
+              <div className="mt-6 flex flex-wrap items-center gap-3">
                 <Link
                   href={`/${lang}/signup`}
-                  className="rounded-full bg-sky-strong px-5 py-2.5 font-semibold text-white transition-colors hover:bg-[#08607f]"
+                  className="rounded-full bg-sky-strong px-6 py-3 font-semibold text-white transition-colors hover:bg-[#08607f]"
                 >
                   {t.nav.startTrial}
                 </Link>
@@ -166,31 +176,42 @@ export default async function ModulePage(
                 )}
               </div>
             </div>
+            {(shots?.dashboard || m.cover) && (
+              <MediaFrame
+                src={shots?.dashboard ?? m.cover!}
+                alt={txt.headline}
+                chrome="dark"
+                url={appUrl}
+              />
+            )}
           </div>
         </div>
       </section>
 
+      {/* KEY FIGURES — full-bleed band */}
+      {extras && extras.keyFigures.length > 0 && (
+        <div className="border-y border-line bg-surface">
+          <div className="mx-auto grid max-w-6xl gap-6 px-5 py-8 sm:grid-cols-3">
+            {extras.keyFigures.map((kf, i) => {
+              const FIG_ICONS = [Clock, Globe, FileText];
+              const Icon = FIG_ICONS[i % FIG_ICONS.length];
+              return (
+                <div key={kf} className="flex items-center gap-3">
+                  <span className="inline-flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-tint-sky text-sky-text">
+                    <Icon size={20} />
+                  </span>
+                  <span className="font-bold text-ink">{kf}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       <div className="mx-auto max-w-5xl px-5 py-12">
-        {(shots?.dashboard || m.cover) && (
-          <MediaFrame src={shots?.dashboard ?? m.cover!} alt={txt.headline} className="mb-8" />
-        )}
         <p className="max-w-3xl text-lg leading-relaxed text-ink">
           {txt.description}
         </p>
-
-        {/* Key figures */}
-        {extras && extras.keyFigures.length > 0 && (
-          <div className="mt-8 grid grid-cols-1 gap-4 rounded-2xl border border-line bg-surface p-6 sm:grid-cols-3">
-            {extras.keyFigures.map((kf) => (
-              <div key={kf} className="flex items-center gap-2.5">
-                <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-sky-strong text-white">
-                  <Check size={15} strokeWidth={3} />
-                </span>
-                <span className="font-semibold text-ink">{kf}</span>
-              </div>
-            ))}
-          </div>
-        )}
 
         {/* Alternating feature blocks: screenshot + highlight + capability bullets.
             Falls back to a flat capabilities checklist if no gallery/extras exist. */}
@@ -203,7 +224,7 @@ export default async function ModulePage(
               return (
                 <div key={img} className="grid items-center gap-8 md:grid-cols-2">
                   <div className={flip ? "md:order-2" : ""}>
-                    <MediaFrame src={img} alt={txt.headline} />
+                    <MediaFrame src={img} alt={txt.headline} chrome="light" />
                   </div>
                   <div className={flip ? "md:order-1" : ""}>
                     <h3 className="text-xl font-bold text-heading">{extras.highlights[i] ?? txt.headline}</h3>
@@ -239,19 +260,26 @@ export default async function ModulePage(
         )}
 
         {content && content.useCases.length > 0 && (
-          <div className="mt-12">
-            <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-accent">
-              {t.modulePage.useCases}
-            </h2>
-            <div className="grid gap-4 sm:grid-cols-2">
-              {content.useCases.map((uc) => (
-                <div
-                  key={uc}
-                  className="rounded-xl border border-line bg-surface p-4 text-sm leading-relaxed text-muted"
-                >
-                  {uc}
-                </div>
-              ))}
+          <div className="relative mt-12 overflow-hidden rounded-3xl bg-hero-bg px-6 py-9 text-hero-fg sm:px-9">
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(600px_240px_at_85%_-10%,rgba(15,158,213,0.18),transparent_70%)]" />
+            <div className="relative">
+              <p className="text-[13px] font-bold uppercase tracking-[0.04em] text-sky-soft">
+                {t.modulePage.useCases}
+              </p>
+              <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                {content.useCases.map((uc, i) => {
+                  const UC_ICONS = [Zap, Clock, Check, Globe];
+                  const Icon = UC_ICONS[i % UC_ICONS.length];
+                  return (
+                    <div key={uc} className="flex items-start gap-3">
+                      <span className="inline-flex h-10 w-10 flex-none items-center justify-center rounded-[11px] bg-sky-strong/20 text-sky-soft">
+                        <Icon size={18} />
+                      </span>
+                      <p className="text-[14.5px] leading-relaxed text-hero-fg-muted">{uc}</p>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         )}

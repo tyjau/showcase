@@ -2,11 +2,12 @@ import { ImageIcon } from "lucide-react";
 
 /**
  * Product-screenshot slot. Renders the image when `src` is set, else a labelled
- * placeholder (used in dev to see where a visual goes). Callers that want zero
- * clutter pre-launch should gate on the src (e.g. `{m.cover && <MediaFrame …/>}`).
+ * placeholder (used in dev to see where a visual goes).
  *
- * To populate: drop a file in `public/…` (or host it on the backend) and point the
- * source at it — module pages read the catalog `cover` field; set it to that path.
+ * `chrome` wraps the screenshot in a browser frame so flat captures read as real
+ * product UI: "dark" (navy bar + traffic lights + URL, for dark sections) or
+ * "light" (mist bar, for light sections). Pass `url` to show an address.
+ *
  * Static export ⇒ a plain <img> (unoptimized), not next/image.
  */
 export function MediaFrame({
@@ -14,12 +15,43 @@ export function MediaFrame({
   alt,
   caption,
   className = "",
+  chrome,
+  url,
 }: {
   src?: string | null;
   alt: string;
   caption?: string;
   className?: string;
+  chrome?: "dark" | "light";
+  url?: string;
 }) {
+  if (src && chrome) {
+    const dark = chrome === "dark";
+    return (
+      <div
+        className={`overflow-hidden rounded-xl border shadow-[0_30px_70px_-28px_rgba(0,0,0,0.5)] ${
+          dark ? "border-white/10" : "border-line"
+        } ${className}`}
+      >
+        <div
+          className={`flex items-center gap-1.5 px-3 py-2.5 ${
+            dark ? "bg-[#0a1f33]" : "border-b border-line bg-mist"
+          }`}
+        >
+          <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+          <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+          <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
+          {url && (
+            <span className={`ml-2.5 truncate text-[11px] ${dark ? "text-[#7d93a6]" : "text-muted"}`}>
+              {url}
+            </span>
+          )}
+        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={src} alt={alt} className="block w-full" />
+      </div>
+    );
+  }
   if (src) {
     // eslint-disable-next-line @next/next/no-img-element
     return (
