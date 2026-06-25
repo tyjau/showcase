@@ -60,24 +60,6 @@ export default async function LegalPage(
       </section>
 
       <div className="mx-auto max-w-3xl px-5 py-12">
-      {/* Document selector — at the top so it reads as a table of contents. */}
-      <nav data-testid="legal-tabs" className="flex flex-wrap gap-2">
-        {DOCS.map((d) => (
-          <Link
-            key={d}
-            href={`/${lang}/legal/${d}`}
-            aria-current={d === params.doc ? "page" : undefined}
-            className={`rounded-full px-3 py-1.5 text-sm transition ${
-              d === params.doc
-                ? "bg-navy font-semibold text-white"
-                : "border border-line text-muted hover:border-sky hover:text-heading"
-            }`}
-          >
-            {docs[d] ?? d}
-          </Link>
-        ))}
-      </nav>
-
       {/* Internal "draft — finalize with counsel" warning. Shown in dev only so it
           never reaches visitors on the production build, while still reminding the
           team (and reviewers) that the legal copy is not yet final. */}
@@ -99,6 +81,24 @@ export default async function LegalPage(
           <p className="leading-relaxed text-ink">{t.legalPage.body}</p>
         )}
       </div>
+
+      {/* Document selector — at the foot of the content (mockup parity). */}
+      <nav data-testid="legal-tabs" className="mt-10 flex flex-wrap gap-2 border-t border-line pt-6">
+        {DOCS.map((d) => (
+          <Link
+            key={d}
+            href={`/${lang}/legal/${d}`}
+            aria-current={d === params.doc ? "page" : undefined}
+            className={`rounded-full px-3 py-1.5 text-sm transition ${
+              d === params.doc
+                ? "bg-navy font-semibold text-white"
+                : "border border-line text-muted hover:border-sky hover:text-heading"
+            }`}
+          >
+            {docs[d] ?? d}
+          </Link>
+        ))}
+      </nav>
       </div>
     </main>
   );

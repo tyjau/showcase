@@ -33,7 +33,14 @@ export function CareersList({
   dict: Dict;
 }) {
   const [team, setTeam] = useState<string | null>(null);
-  const teams = teamsOf(jobs);
+  // Mockup chip order: Ingénierie · Produit · Commercial · Client (Commercial before
+  // Client), independent of the jobs declaration order. Covers FR + EN team labels.
+  const TEAM_ORDER = ["Ingénierie", "Produit", "Commercial", "Client", "Engineering", "Product", "Sales", "Customer"];
+  const teams = teamsOf(jobs).slice().sort((a, b) => {
+    const ia = TEAM_ORDER.indexOf(a);
+    const ib = TEAM_ORDER.indexOf(b);
+    return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
+  });
   const shown = filterJobs(jobs, team);
   const chip = (active: boolean) =>
     `rounded-full border px-4 py-2 text-sm font-bold transition ${

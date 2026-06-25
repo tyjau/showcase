@@ -488,6 +488,11 @@
       { "title": "On-premise", "desc": "Runs on your own servers or private cloud, behind your firewall." },
       { "title": "Standalone", "desc": "A self-contained package for fully offline or air-gapped environments." }
     ],
+    "topology": [
+      { "from": "Cloud", "to": "Your teams" },
+      { "from": "Your servers", "to": "Your teams" },
+      { "from": "SkyRH package", "to": "Isolated" }
+    ],
     "securityTitle": "Security & compliance by design",
     "securityLead": "Your HR and payroll data is among the most sensitive there is. SkyRH protects it at every layer — access, transport, storage and traceability.",
     "security": [

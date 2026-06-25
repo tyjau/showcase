@@ -48,7 +48,7 @@ export function HomePacks({
         <p className="mx-auto mt-2 max-w-xl text-muted">{dict.sub}</p>
       </div>
 
-      <div className="grid gap-5 md:grid-cols-3">
+      <div className="mx-auto grid max-w-[920px] gap-5 md:grid-cols-3">
         {plans.map((p) => {
           const isFree = p.code === "FREE";
           const hasPrice = p.prices.length > 0;
@@ -60,7 +60,7 @@ export function HomePacks({
               }`}
             >
               {p.popular && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-sky-strong px-3 py-1 text-xs font-bold text-white">
+                <span className="absolute -top-3 left-[22px] rounded-full bg-sky-strong px-3 py-1 text-xs font-bold text-white">
                   {dict.popular}
                 </span>
               )}

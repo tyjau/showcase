@@ -17,7 +17,7 @@ import {
 import { i18n, type Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
 import { ParallaxTriangles } from "@/components/parallax-triangles";
-import { ClientLogos } from "@/components/client-logos";
+import { ColoredLogos } from "@/components/colored-logos";
 
 export function generateStaticParams() {
   return i18n.locales.map((lang) => ({ lang }));
@@ -130,7 +130,7 @@ export default async function PartnersPage(
       {/* LOGOS */}
       <section className="mx-auto max-w-6xl px-5 pb-4 pt-12 text-center">
         <p className="text-[13px] font-bold uppercase tracking-[0.06em] text-muted">{p.logosTitle}</p>
-        <ClientLogos names={p.logos} className="mt-6" />
+        <ColoredLogos names={p.logos} className="mt-6" />
       </section>
 
       {/* CTA — navy rounded card */}

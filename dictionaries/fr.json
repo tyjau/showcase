@@ -488,6 +488,11 @@
       { "title": "Sur site", "desc": "Sur vos propres serveurs ou cloud privé, derrière votre pare-feu." },
       { "title": "Autonome", "desc": "Un paquet autonome pour les environnements hors-ligne ou isolés." }
     ],
+    "topology": [
+      { "from": "Cloud", "to": "Vos équipes" },
+      { "from": "Vos serveurs", "to": "Vos équipes" },
+      { "from": "Paquet SkyRH", "to": "Isolé" }
+    ],
     "securityTitle": "Sécurité & conformité par conception",
     "securityLead": "Vos données RH et de paie sont parmi les plus sensibles. SkyRH les protège à chaque couche — accès, transport, stockage et traçabilité.",
     "security": [

@@ -261,13 +261,13 @@ export default async function PlatformPage(
                   </div>
                   <p className="mt-3 flex-1 text-sm leading-relaxed text-muted">{m.desc}</p>
                   <div className="mt-[18px] flex min-h-24 items-center justify-center gap-2.5 rounded-xl border border-line bg-mist p-4">
-                    <Node icon={tp.from} label={m.title} accent />
+                    <Node icon={tp.from} label={p.topology?.[i]?.from ?? m.title} accent />
                     {tp.dashed ? (
                       <span className="w-7 border-t-2 border-dashed border-line" />
                     ) : (
                       <ArrowRight size={16} className="text-muted" />
                     )}
-                    <Node icon={tp.to} label={i === 2 ? st.modes[2] : "•"} />
+                    <Node icon={tp.to} label={p.topology?.[i]?.to ?? "•"} />
                   </div>
                 </div>
               );
