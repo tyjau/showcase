@@ -8,6 +8,16 @@ import {
   Building2,
   Package,
   ArrowRight,
+  Cpu,
+  RefreshCw,
+  TrendingUp,
+  BadgeCheck,
+  KeyRound,
+  ScrollText,
+  Lock,
+  DatabaseBackup,
+  AlertTriangle,
+  type LucideIcon,
 } from "lucide-react";
 import { i18n, type Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
@@ -28,6 +38,8 @@ export async function generateMetadata(
 
 const PILLAR_ICONS = [Server, Zap, ShieldCheck];
 const MODE_ICONS = [Cloud, Building2, Package];
+const ENGINE_ICONS: LucideIcon[] = [Cpu, RefreshCw, TrendingUp, BadgeCheck];
+const SECURITY_ICONS: LucideIcon[] = [KeyRound, ScrollText, Lock, Building2, DatabaseBackup, AlertTriangle];
 
 export default async function PlatformPage(
   props: {
@@ -73,6 +85,29 @@ export default async function PlatformPage(
         </div>
       </section>
 
+      <section className="bg-hero-bg text-hero-fg">
+        <div className="mx-auto max-w-6xl px-5 py-16">
+          <div className="max-w-2xl">
+            <span className="text-sm font-bold uppercase tracking-wide text-sky-soft">{p.engineEyebrow}</span>
+            <h2 className="mt-2.5 text-2xl font-extrabold tracking-tight text-balance sm:text-3xl">{p.engineTitle}</h2>
+          </div>
+          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {p.engine.map((e: { title: string; desc: string }, i: number) => {
+              const Icon = ENGINE_ICONS[i] ?? Zap;
+              return (
+                <div key={e.title} className="rounded-xl border border-white/10 bg-white/[0.04] p-5">
+                  <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-sky-strong/20 text-sky-soft">
+                    <Icon size={22} />
+                  </div>
+                  <h3 className="mt-4 font-semibold">{e.title}</h3>
+                  <p className="mt-1.5 text-sm leading-relaxed text-hero-fg-muted">{e.desc}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
       <section className="border-y border-line bg-mist">
         <div className="mx-auto max-w-6xl px-5 py-14">
           <div className="max-w-xl">
@@ -98,6 +133,26 @@ export default async function PlatformPage(
               );
             })}
           </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-5 py-14">
+        <h2 className="text-2xl font-bold text-heading">{p.securityTitle}</h2>
+        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {p.security.map((s: { title: string; desc: string }, i: number) => {
+            const Icon = SECURITY_ICONS[i] ?? ShieldCheck;
+            return (
+              <div key={s.title} className="flex gap-4 rounded-xl border border-line bg-surface p-5">
+                <div className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-tint-sky text-sky-text">
+                  <Icon size={20} />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-ink">{s.title}</h3>
+                  <p className="mt-1 text-sm leading-relaxed text-muted">{s.desc}</p>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </section>
 

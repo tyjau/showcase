@@ -216,6 +216,24 @@ export default async function Home(
         </div>
       </div>
 
+      <section className="mx-auto max-w-6xl px-5 pt-16">
+        <div className="mx-auto max-w-3xl text-center">
+          <span className="text-sm font-bold uppercase tracking-wide text-sky-text">{t.homeValue.eyebrow}</span>
+          <h2 className="mt-2.5 text-2xl font-extrabold tracking-tight text-balance text-heading sm:text-3xl">
+            {t.homeValue.title}
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl leading-relaxed text-muted">{t.homeValue.lead}</p>
+        </div>
+        <div className="mt-10 grid gap-6 md:grid-cols-3">
+          {t.homeValue.blocks.map((b: { title: string; desc: string }) => (
+            <div key={b.title} className="text-center md:text-left">
+              <h3 className="text-lg font-bold text-heading">{b.title}</h3>
+              <p className="mt-1.5 leading-relaxed text-muted">{b.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       <section id="product" className="mx-auto max-w-6xl px-5 py-16">
         <div className="mb-8 text-center">
           <h2 className="text-2xl font-bold text-heading sm:text-3xl">{t.features.heading}</h2>

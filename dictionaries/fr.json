@@ -64,6 +64,16 @@
     "Portail self-service",
     "Conformité localisée"
   ],
+  "homeValue": {
+    "eyebrow": "Le SIRH tout-en-un",
+    "title": "Le logiciel de gestion RH et de paie qui réunit tout votre capital humain",
+    "lead": "De l'embauche à la paie — en passant par les congés, la performance et la conformité locale — SkyRH réunit tout le cycle RH sur une seule plateforme, pour les équipes qui opèrent dans plusieurs pays.",
+    "blocks": [
+      { "title": "Paie automatisée et fiable", "desc": "Un moteur conforme à votre pays calcule cotisations, impôts et bulletins au centime près, en quelques minutes." },
+      { "title": "Conformité toujours à jour", "desc": "Les règles locales — CNPS, DIPE, barèmes, déclarations — sont intégrées au produit et maintenues, pas en option." },
+      { "title": "Équipes engagées", "desc": "Un portail self-service qui réduit de 80 % les demandes RH par e-mail." }
+    ]
+  },
   "modulesPage": {
     "heading": "Des modules pensés pour les RH",
     "sub": "Modulaire par conception — commencez par l'essentiel, ajoutez le reste en grandissant.",
@@ -325,12 +335,29 @@
       { "title": "Performance à l'échelle", "desc": "Un moteur de paie parallélisé calcule des milliers de bulletins en quelques minutes, pas en heures." },
       { "title": "Sécurité & traçabilité", "desc": "Droits fins, journal d'audit complet et observabilité de chaque action." }
     ],
+    "engineEyebrow": "SkyEngine",
+    "engineTitle": "Le moteur qui transforme des heures de paie en minutes",
+    "engine": [
+      { "title": "Calcul massivement parallèle", "desc": "Des milliers de bulletins traités simultanément, au lieu d'un fichier parcouru ligne par ligne." },
+      { "title": "Recalcul en temps réel", "desc": "Changez une prime, un taux ou une variable : tout se recalcule instantanément, sans relancer le cycle." },
+      { "title": "Scalabilité linéaire", "desc": "De 10 à 100 000 employés, les performances suivent — aucun ralentissement à la montée en charge." },
+      { "title": "Résultats reproductibles", "desc": "Chaque clôture est déterministe, traçable et auditable au centime près." }
+    ],
     "modesTitle": "Déployez à votre manière",
     "modesLead": "Le même produit, livré comme votre organisation en a besoin.",
     "modes": [
       { "title": "Cloud", "desc": "Nous l'hébergeons et l'exploitons. Opérationnel en quelques minutes, mises à jour incluses." },
       { "title": "Sur site", "desc": "Sur vos propres serveurs ou cloud privé, derrière votre pare-feu." },
       { "title": "Autonome", "desc": "Un paquet autonome pour les environnements hors-ligne ou isolés." }
+    ],
+    "securityTitle": "Sécurité & conformité par conception",
+    "security": [
+      { "title": "Contrôle d'accès (RBAC)", "desc": "Rôles et droits fins, cloisonnés par société (multi-tenant)." },
+      { "title": "Journal d'audit", "desc": "Chaque action est tracée : qui, quoi, quand." },
+      { "title": "Chiffrement", "desc": "Flux chiffrés en transit (TLS) et secrets protégés au repos." },
+      { "title": "Multi-tenant", "desc": "Isolation stricte des données entre sociétés." },
+      { "title": "Sauvegardes & continuité", "desc": "Sauvegardes régulières et procédures de restauration." },
+      { "title": "Gestion des incidents", "desc": "Procédure de notification conforme aux obligations légales." }
     ],
     "ctaTitle": "Trouvons votre configuration",
     "ctaBody": "Dites-nous comment vos équipes travaillent et où vos données doivent résider.",

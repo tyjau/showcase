@@ -64,6 +64,16 @@
     "Self-service portal",
     "Localized compliance"
   ],
+  "homeValue": {
+    "eyebrow": "The all-in-one HRIS",
+    "title": "The HR & payroll software that brings your whole workforce together",
+    "lead": "From hiring to payroll — through leave, performance and local compliance — SkyRH unifies the entire people cycle on one platform, for teams operating across several countries.",
+    "blocks": [
+      { "title": "Automated, reliable payroll", "desc": "A country-compliant engine computes contributions, taxes and payslips to the cent, in minutes." },
+      { "title": "Compliance always up to date", "desc": "Local rules — social security, tax bands, statutory reports — are built into the product and maintained, not bolted on." },
+      { "title": "Engaged teams", "desc": "A self-service portal that cuts HR email requests by 80%." }
+    ]
+  },
   "modulesPage": {
     "heading": "Modules built for HR teams",
     "sub": "Modular by design — start with what you need, add the rest as you grow.",
@@ -325,12 +335,29 @@
       { "title": "Performance at scale", "desc": "A parallelized payroll engine computes thousands of payslips in minutes, not hours." },
       { "title": "Security & traceability", "desc": "Fine-grained access, a complete audit trail and observability over every action." }
     ],
+    "engineEyebrow": "SkyEngine",
+    "engineTitle": "The engine that turns hours of payroll into minutes",
+    "engine": [
+      { "title": "Massively parallel compute", "desc": "Thousands of payslips processed at once, instead of a file read line by line." },
+      { "title": "Real-time recompute", "desc": "Change a bonus, a rate or a variable: everything recomputes instantly, without re-running the cycle." },
+      { "title": "Linear scalability", "desc": "From 10 to 100,000 employees, performance keeps up — no slowdown under load." },
+      { "title": "Reproducible results", "desc": "Every close is deterministic, traceable and auditable to the cent." }
+    ],
     "modesTitle": "Deploy your way",
     "modesLead": "The same product, delivered the way your organization needs it.",
     "modes": [
       { "title": "Cloud", "desc": "We host and operate it. Up and running in minutes, updates included." },
       { "title": "On-premise", "desc": "Runs on your own servers or private cloud, behind your firewall." },
       { "title": "Standalone", "desc": "A self-contained package for fully offline or air-gapped environments." }
+    ],
+    "securityTitle": "Security & compliance by design",
+    "security": [
+      { "title": "Access control (RBAC)", "desc": "Fine-grained roles and rights, partitioned per company (multi-tenant)." },
+      { "title": "Audit log", "desc": "Every action is traced: who, what, when." },
+      { "title": "Encryption", "desc": "Traffic encrypted in transit (TLS) and secrets protected at rest." },
+      { "title": "Multi-tenant", "desc": "Strict data isolation between companies." },
+      { "title": "Backups & continuity", "desc": "Regular backups and restore procedures." },
+      { "title": "Incident management", "desc": "A notification procedure compliant with legal obligations." }
     ],
     "ctaTitle": "Let's find your fit",
     "ctaBody": "Tell us how your teams work and where your data needs to live.",
