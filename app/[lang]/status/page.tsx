@@ -1,6 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CheckCircle2 } from "lucide-react";
+import {
+  Check,
+  Activity,
+  Monitor,
+  Code2,
+  FileText,
+  Lock,
+  Bell,
+  Folder,
+  ArrowRight,
+  type LucideIcon,
+} from "lucide-react";
 import { getDictionary } from "@/lib/dictionaries";
 import { i18n, type Locale } from "@/lib/i18n";
 
@@ -16,101 +27,136 @@ export async function generateMetadata(
   return { title: t.seo.pages.status };
 }
 
-const STATUS_STYLE: Record<string, { dot: string; text: string; bg: string }> = {
-  operational: { dot: "bg-ok-fg", text: "text-ok-fg", bg: "bg-ok-bg" },
-  degraded: { dot: "bg-warn-fg", text: "text-warn-fg", bg: "bg-warn-bg" },
-  incident: { dot: "bg-err-fg", text: "text-err-fg", bg: "bg-err-bg" },
-};
+const SVC_ICONS: LucideIcon[] = [Monitor, Code2, FileText, Lock, Bell, Folder];
+
+// Deterministic 30-day uptime sparkline: mostly healthy with a single amber dip,
+// mirroring the mockup's per-service bar strip (hidden on narrow screens).
+const SPARK = Array.from({ length: 30 }, (_, i) => ({
+  warn: i === 21,
+  h: i === 21 ? 9 : 14 + ((i * 7 + 5) % 11),
+}));
+
+function Sparkbar() {
+  return (
+    <div className="hidden h-6 items-end gap-[2px] min-[700px]:flex" aria-hidden="true">
+      {SPARK.map((b, i) => (
+        <span
+          key={i}
+          className="w-[3px] rounded-sm"
+          style={{
+            height: `${b.h}px`,
+            background: b.warn ? "var(--warn-fg)" : "var(--ok-fg)",
+            opacity: b.warn ? 1 : 0.85,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
 
 export default async function StatusPage(props: { params: Promise<{ lang: string }> }) {
   const params = await props.params;
-  const t = await getDictionary(params.lang);
+  const lang = params.lang;
+  const t = await getDictionary(lang);
   const p = t.statusPage;
-  const label: Record<string, string> = {
-    operational: p.operational,
-    degraded: p.degraded,
-    incident: p.incident,
-  };
-  const allOk = p.services.every((s) => s.status === "operational");
 
   return (
-    <main>
-      <section className="bg-hero-bg text-hero-fg">
-        <div className="mx-auto max-w-3xl px-5 py-16 text-center">
-          <span className="text-sm font-semibold uppercase tracking-wide text-sky-soft">{p.eyebrow}</span>
-          <h1 className="mx-auto mt-3 max-w-2xl text-3xl font-extrabold tracking-tight text-balance sm:text-4xl">
-            {allOk ? p.title : p.titleDegraded}
-          </h1>
-          <p className="mx-auto mt-4 max-w-xl text-hero-fg-muted">{p.lead}</p>
+    <main className="pb-16">
+      {/* HEADER + BANNER */}
+      <section className="mx-auto max-w-[920px] px-5 pb-2 pt-12">
+        <div className="mb-5 flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-extrabold tracking-tight text-heading">{p.title}</h1>
+            <p className="mt-1 text-sm text-muted">{p.lastUpdate}</p>
+          </div>
+          <Link
+            href={`/${lang}/contact?sujet=support`}
+            className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-4 py-2.5 text-[13.5px] font-bold text-ink transition hover:border-sky"
+          >
+            <Activity size={15} /> {p.subscribe}
+          </Link>
+        </div>
+        <div className="flex items-center gap-3.5 rounded-2xl border border-ok-border bg-ok-bg px-[22px] py-5">
+          <span
+            className="inline-flex h-11 w-11 flex-none items-center justify-center rounded-full text-white"
+            style={{ background: "var(--ok-fg)" }}
+          >
+            <Check size={24} strokeWidth={2.6} />
+          </span>
+          <div>
+            <div className="text-[19px] font-extrabold text-ok-fg">{p.bannerTitle}</div>
+            <div className="mt-0.5 text-sm text-muted">{p.bannerSub}</div>
+          </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-3xl px-5 py-12">
-        {allOk && (
-          <div className="mb-6 flex items-center gap-3 rounded-xl border border-ok-border bg-ok-bg px-5 py-4 text-ok-fg">
-            <CheckCircle2 size={20} />
-            <span className="font-semibold">{p.title}</span>
-          </div>
-        )}
-        <div className="overflow-hidden rounded-xl border border-line">
-          {p.services.map((s) => {
-            const st = STATUS_STYLE[s.status] ?? STATUS_STYLE.operational;
+      {/* SERVICES */}
+      <section className="mx-auto max-w-[920px] px-5 pb-2 pt-7">
+        <div className="overflow-hidden rounded-2xl border border-line bg-surface">
+          {p.services.map((s: { name: string; desc: string; uptime: string }, i: number) => {
+            const Icon = SVC_ICONS[i] ?? Monitor;
             return (
-              <div
-                key={s.name}
-                className="flex items-center justify-between gap-4 border-b border-line px-5 py-4 last:border-b-0"
-              >
-                <span className="font-medium text-ink">{s.name}</span>
-                <div className="flex items-center gap-4">
-                  <span className="hidden text-xs text-muted sm:inline">
-                    {s.uptime} · {p.uptimeLabel}
-                  </span>
-                  <span
-                    className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${st.bg} ${st.text}`}
-                  >
-                    <span className={`h-2 w-2 rounded-full ${st.dot}`} />
-                    {label[s.status] ?? s.status}
-                  </span>
+              <div key={s.name} className="flex items-center gap-3.5 border-b border-line px-5 py-4 last:border-b-0">
+                <span className="inline-flex h-[34px] w-[34px] flex-none items-center justify-center rounded-[9px] bg-tint-sky text-sky-text">
+                  <Icon size={17} />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <div className="text-[15px] font-bold text-ink">{s.name}</div>
+                  <div className="mt-0.5 text-[12.5px] text-muted">{s.desc}</div>
                 </div>
+                <Sparkbar />
+                <span className="inline-flex items-center gap-1.5 whitespace-nowrap text-[13px] font-bold text-ok-fg">
+                  <span className="h-2 w-2 rounded-full" style={{ background: "var(--ok-fg)" }} />
+                  {s.uptime}
+                </span>
               </div>
             );
           })}
         </div>
-        {/* Metrics */}
-        <div className="mt-10 grid grid-cols-2 gap-4 rounded-xl border border-line bg-surface p-6 sm:grid-cols-4">
-          {p.metrics.map((m: { value: string; label: string }) => (
-            <div key={m.label} className="text-center">
-              <div className="text-2xl font-extrabold text-heading">{m.value}</div>
-              <div className="mt-1 text-xs text-muted">{m.label}</div>
+      </section>
+
+      {/* METRICS */}
+      <section className="mx-auto max-w-[920px] px-5 pb-2 pt-6">
+        <div className="grid gap-3.5 sm:grid-cols-3">
+          {p.metrics.map((m: { label: string; value: string; note: string }) => (
+            <div key={m.label} className="rounded-2xl border border-line bg-surface p-[18px]">
+              <div className="text-[12.5px] font-bold uppercase tracking-[0.04em] text-muted">{m.label}</div>
+              <div className="mt-2 text-[26px] font-extrabold text-heading">{m.value}</div>
+              <div className="mt-0.5 text-[12.5px] font-bold text-ok-fg">{m.note}</div>
             </div>
           ))}
         </div>
+      </section>
 
-        {/* Incident history */}
-        <div className="mt-10">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-accent">{p.historyTitle}</h2>
-          <ul className="mt-4 space-y-4">
-            {p.incidents.map((it: { date: string; tag: string; title: string; desc: string }) => (
-              <li key={it.title} className="rounded-xl border border-line bg-surface p-5">
-                <div className="flex flex-wrap items-center gap-3">
-                  <span className="text-xs text-muted">{it.date}</span>
-                  <span className="rounded-full bg-mist px-2 py-0.5 text-xs font-semibold text-muted">{it.tag}</span>
+      {/* INCIDENTS */}
+      <section className="mx-auto max-w-[920px] px-5 pt-8">
+        <h2 className="mb-4 text-xl font-extrabold tracking-tight text-heading">{p.historyTitle}</h2>
+        <div className="flex flex-col gap-3.5">
+          {p.incidents.map(
+            (it: { title: string; date: string; body: string; duration: string; impact: string }) => (
+              <div key={it.title} className="rounded-2xl border border-line bg-surface p-5">
+                <div className="flex flex-wrap items-center gap-2.5">
+                  <span className="rounded-full bg-ok-bg px-2.5 py-1 text-[11px] font-extrabold uppercase tracking-[0.04em] text-ok-fg">
+                    {p.resolved}
+                  </span>
+                  <span className="text-[15px] font-bold text-ink">{it.title}</span>
+                  <span className="ml-auto text-[12.5px] text-muted">{it.date}</span>
                 </div>
-                <h3 className="mt-2 font-semibold text-ink">{it.title}</h3>
-                <p className="mt-1 text-sm leading-relaxed text-muted">{it.desc}</p>
-              </li>
-            ))}
-          </ul>
+                <p className="mt-2 text-[13.5px] leading-relaxed text-muted">{it.body}</p>
+                <div className="mt-2 text-[12.5px] text-muted">
+                  <span className="font-bold text-ink">{p.durationLabel} :</span> {it.duration} ·{" "}
+                  <span className="font-bold text-ink">{p.impactLabel} :</span> {it.impact}
+                </div>
+              </div>
+            )
+          )}
         </div>
-
-        <div className="mt-10 text-center">
-          <Link
-            href={`/${params.lang}/contact?sujet=produit`}
-            className="inline-flex rounded-full border border-line px-5 py-2.5 text-sm font-semibold text-heading hover:border-sky"
-          >
-            {p.subscribe}
+        <p className="mt-5 text-center text-[13.5px] text-muted">
+          {p.closing}{" "}
+          <Link href={`/${lang}/legal/security`} className="inline-flex items-center gap-1 font-bold text-sky-text hover:underline">
+            {p.closingLink} <ArrowRight size={13} />
           </Link>
-        </div>
+        </p>
       </section>
     </main>
   );

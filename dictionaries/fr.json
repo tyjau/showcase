@@ -307,36 +307,35 @@
     "demoCta": "Réserver un créneau"
   },
   "statusPage": {
-    "eyebrow": "Statut",
-    "title": "Tous les systèmes opérationnels",
-    "titleDegraded": "Service partiellement dégradé",
-    "lead": "État en direct des services SkyRH et historique récent des incidents.",
-    "operational": "Opérationnel",
-    "degraded": "Dégradé",
-    "incident": "Incident",
-    "uptimeLabel": "Disponibilité 90 j",
-    "subscribe": "S'abonner aux mises à jour",
-    "metricsTitle": "90 derniers jours",
+    "title": "État des services SkyRH",
+    "lastUpdate": "Dernière mise à jour : aujourd'hui à 09:42 (UTC+1)",
+    "subscribe": "S'abonner aux alertes",
+    "bannerTitle": "Tous les systèmes sont opérationnels",
+    "bannerSub": "Disponibilité globale 99,98 % sur les 90 derniers jours.",
+    "services": [
+      { "name": "Application web & portail self-service", "desc": "app.skyrh.com", "uptime": "99,99 %" },
+      { "name": "API & intégrations", "desc": "api.skyrh.com", "uptime": "99,98 %" },
+      { "name": "Moteur de paie & bulletins", "desc": "Calcul, clôture, déclarations", "uptime": "100 %" },
+      { "name": "Authentification & SSO", "desc": "auth.skyrh.com", "uptime": "99,99 %" },
+      { "name": "Notifications (e-mail & SMS)", "desc": "Alertes, relances, validations", "uptime": "99,95 %" },
+      { "name": "Stockage des documents", "desc": "Contrats, justificatifs, exports", "uptime": "100 %" }
+    ],
     "metrics": [
-      { "value": "99,95 %", "label": "Disponibilité" },
-      { "value": "180 ms", "label": "Latence API médiane" },
-      { "value": "12", "label": "Incidents résolus" },
-      { "value": "< 15 min", "label": "Temps de réponse moyen" }
+      { "label": "Disponibilité 90 j", "value": "99,98 %", "note": "au-dessus de la cible" },
+      { "label": "Temps de réponse API", "value": "182 ms", "note": "médiane stable" },
+      { "label": "Incidents (30 j)", "value": "0", "note": "aucun en cours" }
     ],
     "historyTitle": "Historique des incidents",
+    "resolved": "Résolu",
+    "durationLabel": "Durée",
+    "impactLabel": "Impact",
     "incidents": [
-      { "date": "18 juin 2026", "tag": "Résolu", "title": "Latence élevée sur les notifications e-mail", "desc": "Service e-mail dégradé pendant 42 min. Cause : un worker saturé. Résolu par une mise à l'échelle." },
-      { "date": "30 mai 2026", "tag": "Maintenance", "title": "Maintenance planifiée du moteur de paie", "desc": "Fenêtre de maintenance de 20 min, sans impact sur les données." },
-      { "date": "12 mai 2026", "tag": "Résolu", "title": "Interruption partielle de l'API publique", "desc": "Erreurs 5xx intermittentes pendant 15 min. Correctif déployé." }
+      { "title": "Latence élevée sur les notifications e-mail", "date": "14 févr. 2026", "body": "Un pic de trafic a ralenti l'envoi des e-mails pendant la matinée. Capacité augmentée et file d'attente vidée.", "duration": "38 min", "impact": "Notifications retardées" },
+      { "title": "Maintenance planifiée — moteur de paie", "date": "2 févr. 2026", "body": "Mise à jour du moteur de calcul déployée hors heures ouvrées. Aucune interruption de service côté utilisateurs.", "duration": "1 h 10", "impact": "Aucun (maintenance)" },
+      { "title": "Erreurs intermittentes sur l'API", "date": "21 janv. 2026", "body": "Un déploiement a provoqué des erreurs 5xx ponctuelles. Rollback effectué et correctif redéployé.", "duration": "22 min", "impact": "API partiellement dégradée" }
     ],
-    "services": [
-      { "name": "Application web", "status": "operational", "uptime": "99,98 %" },
-      { "name": "Moteur de paie", "status": "operational", "uptime": "99,95 %" },
-      { "name": "API publique", "status": "operational", "uptime": "99,99 %" },
-      { "name": "Authentification", "status": "operational", "uptime": "100 %" },
-      { "name": "Notifications & e-mail", "status": "degraded", "uptime": "99,72 %" },
-      { "name": "Stockage de fichiers", "status": "operational", "uptime": "99,97 %" }
-    ]
+    "closing": "Aucun incident en cours.",
+    "closingLink": "Voir notre engagement sécurité"
   },
   "careersPage": {
     "eyebrow": "Carrières",

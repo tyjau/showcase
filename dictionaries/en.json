@@ -307,36 +307,35 @@
     "demoCta": "Book a slot"
   },
   "statusPage": {
-    "eyebrow": "Status",
-    "title": "All systems operational",
-    "titleDegraded": "Partial service degradation",
-    "lead": "Live status of SkyRH services and recent incident history.",
-    "operational": "Operational",
-    "degraded": "Degraded",
-    "incident": "Incident",
-    "uptimeLabel": "90-day uptime",
-    "subscribe": "Subscribe to updates",
-    "metricsTitle": "Last 90 days",
+    "title": "SkyRH service status",
+    "lastUpdate": "Last updated: today at 09:42 (UTC+1)",
+    "subscribe": "Subscribe to alerts",
+    "bannerTitle": "All systems operational",
+    "bannerSub": "Global uptime 99.98% over the last 90 days.",
+    "services": [
+      { "name": "Web app & self-service portal", "desc": "app.skyrh.com", "uptime": "99.99%" },
+      { "name": "API & integrations", "desc": "api.skyrh.com", "uptime": "99.98%" },
+      { "name": "Payroll engine & payslips", "desc": "Calculation, closing, filings", "uptime": "100%" },
+      { "name": "Authentication & SSO", "desc": "auth.skyrh.com", "uptime": "99.99%" },
+      { "name": "Notifications (email & SMS)", "desc": "Alerts, reminders, approvals", "uptime": "99.95%" },
+      { "name": "Document storage", "desc": "Contracts, receipts, exports", "uptime": "100%" }
+    ],
     "metrics": [
-      { "value": "99.95%", "label": "Uptime" },
-      { "value": "180 ms", "label": "Median API latency" },
-      { "value": "12", "label": "Incidents resolved" },
-      { "value": "< 15 min", "label": "Avg. response time" }
+      { "label": "90-day uptime", "value": "99.98%", "note": "above target" },
+      { "label": "API response time", "value": "182 ms", "note": "stable median" },
+      { "label": "Incidents (30d)", "value": "0", "note": "none ongoing" }
     ],
     "historyTitle": "Incident history",
+    "resolved": "Resolved",
+    "durationLabel": "Duration",
+    "impactLabel": "Impact",
     "incidents": [
-      { "date": "Jun 18, 2026", "tag": "Resolved", "title": "Elevated latency on email notifications", "desc": "Email delivery was degraded for 42 min. Cause: a saturated worker. Resolved by scaling out." },
-      { "date": "May 30, 2026", "tag": "Maintenance", "title": "Scheduled payroll-engine maintenance", "desc": "A 20-minute maintenance window, with no impact on data." },
-      { "date": "May 12, 2026", "tag": "Resolved", "title": "Partial public-API disruption", "desc": "Intermittent 5xx errors for 15 min. Fix deployed." }
+      { "title": "Elevated latency on email notifications", "date": "Feb 14, 2026", "body": "A traffic spike slowed email delivery during the morning. Capacity scaled up and the queue drained.", "duration": "38 min", "impact": "Delayed notifications" },
+      { "title": "Scheduled maintenance — payroll engine", "date": "Feb 2, 2026", "body": "A calculation-engine update was rolled out outside business hours. No user-facing downtime.", "duration": "1 h 10", "impact": "None (maintenance)" },
+      { "title": "Intermittent API errors", "date": "Jan 21, 2026", "body": "A deployment caused occasional 5xx errors. Rolled back and the fix was redeployed.", "duration": "22 min", "impact": "API partially degraded" }
     ],
-    "services": [
-      { "name": "Web application", "status": "operational", "uptime": "99.98%" },
-      { "name": "Payroll engine", "status": "operational", "uptime": "99.95%" },
-      { "name": "Public API", "status": "operational", "uptime": "99.99%" },
-      { "name": "Authentication", "status": "operational", "uptime": "100%" },
-      { "name": "Notifications & email", "status": "degraded", "uptime": "99.72%" },
-      { "name": "File storage", "status": "operational", "uptime": "99.97%" }
-    ]
+    "closing": "No incident in progress.",
+    "closingLink": "See our security commitment"
   },
   "careersPage": {
     "eyebrow": "Careers",
