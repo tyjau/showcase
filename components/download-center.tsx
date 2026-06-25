@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { FileText, FileSpreadsheet, FileType, Download, type LucideIcon } from "lucide-react";
 
 type Template = {
@@ -27,8 +26,15 @@ const FORMAT_TINT: Record<string, string> = {
   DOCX: "bg-tint-sky text-sky-text",
   XLSX: "bg-[#e6f5ec] text-[#2e7d4f]",
 };
+// Self-hosted placeholder sample files (real, valid documents) so downloads always
+// work in the demo. Swap for the real per-template signed URLs when assets ship.
+const FORMAT_FILE: Record<string, string> = {
+  PDF: "/templates/sample.pdf",
+  DOCX: "/templates/sample.docx",
+  XLSX: "/templates/sample.xlsx",
+};
 
-export function DownloadCenter({ lang, dict }: { lang: string; dict: Dict }) {
+export function DownloadCenter({ dict }: { lang: string; dict: Dict }) {
   const cats = dict.categories ?? [];
   const [cat, setCat] = useState(cats[0] ?? "");
   const all = cat === cats[0];
@@ -70,13 +76,13 @@ export function DownloadCenter({ lang, dict }: { lang: string; dict: Dict }) {
               </div>
               <h3 className="mt-4 font-extrabold text-heading">{tpl.title}</h3>
               <p className="mt-1.5 flex-1 text-sm leading-relaxed text-muted">{tpl.desc}</p>
-              {/* Placeholder destination — swap for the real signed file URL when assets ship. */}
-              <Link
-                href={`/${lang}/contact?sujet=produit`}
+              <a
+                href={FORMAT_FILE[tpl.format] ?? "/templates/sample.pdf"}
+                download={`${tpl.title}.${tpl.format.toLowerCase()}`}
                 className="mt-4 inline-flex items-center justify-center gap-2 rounded-full border border-line py-2.5 text-sm font-bold text-heading transition hover:border-sky hover:text-sky-text"
               >
                 <Download size={16} /> {dict.download}
-              </Link>
+              </a>
             </div>
           );
         })}
