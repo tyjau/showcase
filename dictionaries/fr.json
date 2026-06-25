@@ -11,7 +11,10 @@
       "company": "Entreprise",
       "resources": "Ressources",
       "signup": "Essai gratuit",
-      "login": "Connexion"
+      "login": "Connexion",
+      "contact": "Contact",
+      "status": "Statut",
+      "careers": "Carrières"
     }
   },
   "nav": {
@@ -403,6 +406,7 @@
     "email": "Email",
     "emailPh": "vous@entreprise.com",
     "password": "Mot de passe",
+    "forgotPassword": "Mot de passe oublié ?",
     "cta": "Se connecter",
     "error": "Identifiants ou espace invalides.",
     "noWorkspace": "Pas encore d'espace ?",

@@ -11,7 +11,10 @@
       "company": "Company",
       "resources": "Resources",
       "signup": "Start free trial",
-      "login": "Sign in"
+      "login": "Sign in",
+      "contact": "Contact",
+      "status": "Status",
+      "careers": "Careers"
     }
   },
   "nav": {
@@ -403,6 +406,7 @@
     "email": "Email",
     "emailPh": "you@company.com",
     "password": "Password",
+    "forgotPassword": "Forgot your password?",
     "cta": "Sign in",
     "error": "Invalid credentials or workspace.",
     "noWorkspace": "No workspace yet?",

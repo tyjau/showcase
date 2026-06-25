@@ -1,8 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import Link from "next/link";
 import { getToken } from "@/lib/api";
+
+// Sync before paint on the client (no signed-out flash), useEffect on the server.
+const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 // Session-aware nav link. Shows the "account" entry when a portal token is present,
 // "sign in" otherwise. Renders the signed-out variant on the server and the first
@@ -21,7 +24,7 @@ export function HeaderAuthLink({
 }) {
   const [authed, setAuthed] = useState(false);
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const sync = () => setAuthed(!!getToken());
     sync();
     window.addEventListener("storage", sync);

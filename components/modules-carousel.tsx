@@ -29,7 +29,7 @@ const AUTOPLAY_MS = 6000;
 
 // Visual half of a slide. The recruitment slide (index 2) uses the real product
 // screenshot; the others use a light branded mock card.
-function SlideVisual({ index, Icon }: { index: number; Icon: LucideIcon }) {
+function SlideVisual({ index, Icon, label }: { index: number; Icon: LucideIcon; label: string }) {
   if (index === 2) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
@@ -47,7 +47,7 @@ function SlideVisual({ index, Icon }: { index: number; Icon: LucideIcon }) {
         <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-tint-sky text-sky-text">
           <Icon size={16} />
         </span>
-        <div className="h-2.5 w-32 rounded bg-mist" />
+        <span className="text-sm font-semibold text-heading">{label}</span>
       </div>
       <div className="space-y-3 p-5">
         <div className="grid grid-cols-3 gap-2.5">
@@ -163,7 +163,7 @@ export function ModulesCarousel({ lang, dict }: { lang: string; dict: Dict }) {
                         {dict.more} <ArrowRight size={15} />
                       </Link>
                     </div>
-                    <SlideVisual index={i} Icon={Icon} />
+                    <SlideVisual index={i} Icon={Icon} label={s.chip} />
                   </div>
                 </div>
               );

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle2 } from "lucide-react";
 import { getDictionary } from "@/lib/dictionaries";
@@ -5,6 +6,14 @@ import { i18n, type Locale } from "@/lib/i18n";
 
 export function generateStaticParams() {
   return i18n.locales.map((lang) => ({ lang }));
+}
+
+export async function generateMetadata(
+  props: { params: Promise<{ lang: string }> }
+): Promise<Metadata> {
+  const params = await props.params;
+  const t = await getDictionary(params.lang);
+  return { title: t.seo.pages.status };
 }
 
 const STATUS_STYLE: Record<string, { dot: string; text: string; bg: string }> = {

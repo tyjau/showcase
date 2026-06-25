@@ -24,7 +24,7 @@ export async function generateMetadata(
   const t = await getDictionary(params.lang);
   return {
     metadataBase: new URL(
-      process.env.NEXT_PUBLIC_SITE_URL ?? "https://get.ikwhat.com",
+      process.env.NEXT_PUBLIC_SITE_URL ?? "https://skyrh.app",
     ),
     title: { default: t.seo.defaultTitle, template: t.seo.titleTemplate },
     description: t.seo.description,

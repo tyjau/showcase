@@ -72,6 +72,8 @@ export function SiteHeader({
               partner: dict.partner,
             }}
           />
+          {/* The switchers are reconciled as a list inside MobileNav's burger menu, so
+              React wants a key on each at its creation site here (not inside MobileNav). */}
           <MobileNav
             items={nav}
             authLink={
@@ -82,9 +84,9 @@ export function SiteHeader({
                 className="mt-1 border-t border-line px-4 pb-1 pt-3 text-heading"
               />
             }
-            currencySwitcher={<CurrencySwitcher />}
-            localeSwitcher={<LocaleSwitcher current={lang} />}
-            themeToggle={<ThemeToggle labels={theme} />}
+            currencySwitcher={<CurrencySwitcher key="currency" />}
+            localeSwitcher={<LocaleSwitcher key="locale" current={lang} />}
+            themeToggle={<ThemeToggle key="theme" labels={theme} />}
             className="nav:hidden"
           />
         </div>

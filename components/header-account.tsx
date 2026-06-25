@@ -1,10 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import { getToken, getWorkspace, clearSession } from "@/lib/api";
+
+// Run the session sync BEFORE the browser paints on the client (so a returning,
+// signed-in visitor never sees the signed-out CTA flash), while falling back to a
+// no-op effect during SSR where useLayoutEffect would warn.
+const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 type Labels = {
   signin: string;
@@ -25,7 +30,7 @@ export function HeaderAccount({ lang, labels }: { lang: string; labels: Labels }
   const [authed, setAuthed] = useState(false);
   const [workspace, setWorkspace] = useState<string | null>(null);
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const sync = () => {
       setAuthed(!!getToken());
       setWorkspace(getWorkspace());

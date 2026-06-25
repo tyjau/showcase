@@ -27,7 +27,9 @@ function fmtMoney(amount: number, currency: string): string {
 function fmtRate(amount: number, currency: string): string {
   const v = Math.round(amount * 100) / 100;
   if (currency === "XAF") return `${v.toLocaleString("en-US")} XAF`;
-  return `${currency === "EUR" ? "€" : "$"}${v}`;
+  // Whole rates stay clean (€4); fractional rates carry both decimals (€3.20, not €3.2).
+  const str = Number.isInteger(v) ? String(v) : v.toFixed(2);
+  return `${currency === "EUR" ? "€" : "$"}${str}`;
 }
 
 type Dict = Record<string, string>;

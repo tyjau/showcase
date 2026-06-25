@@ -98,6 +98,16 @@ export function PortalLogin({ lang, dict }: { lang: string; dict: Dict }) {
             className={INPUT}
           />
         </label>
+        {dict.forgotPassword && (
+          <p className="text-right text-sm">
+            <Link
+              href={`/${lang}/help/securite-acces`}
+              className="text-muted hover:text-sky-text hover:underline"
+            >
+              {dict.forgotPassword}
+            </Link>
+          </p>
+        )}
       </div>
 
       {error && (
