@@ -207,6 +207,48 @@
       { "title": "Statut", "desc": "Disponibilité du service en temps réel." }
     ]
   },
+  "webinarsPage": {
+    "eyebrow": "Webinaires & démos",
+    "title": "La vidéothèque SkyRH",
+    "lead": "Sessions live, démos produit et replays — pour prendre en main chaque module à votre rythme.",
+    "categories": ["Tous", "Démos produit", "Paie & conformité", "RH & talents", "Onboarding"],
+    "liveBadge": "En direct",
+    "replayBadge": "Replay",
+    "watch": "Regarder",
+    "register": "S'inscrire",
+    "minutes": "min",
+    "ctaTitle": "Une prochaine session live vous intéresse ?",
+    "ctaLead": "Inscrivez-vous et recevez le lien — ou demandez une démo privée pour votre équipe.",
+    "ctaButton": "Demander une démo",
+    "videos": [
+      { "title": "Clôturer la paie en 4 minutes avec SkyEngine", "category": "Paie & conformité", "duration": 28, "date": "12 juin 2026", "presenter": "Awa Diallo · Product", "live": true },
+      { "title": "Tour produit complet : de l'embauche à la paie", "category": "Démos produit", "duration": 42, "date": "4 juin 2026", "presenter": "Marc Rossi · Solutions", "live": false },
+      { "title": "Conformité CEMAC & OHADA : ce qui change en 2026", "category": "Paie & conformité", "duration": 35, "date": "28 mai 2026", "presenter": "Fatou N'Diaye · Conformité", "live": false },
+      { "title": "Recrutement & CVthèque : du besoin à la signature", "category": "RH & talents", "duration": 24, "date": "21 mai 2026", "presenter": "Jean-Marc Obiang · Talent", "live": false },
+      { "title": "Configurer votre espace en 15 minutes", "category": "Onboarding", "duration": 16, "date": "14 mai 2026", "presenter": "Sofia Almeida · Onboarding", "live": false },
+      { "title": "Self-service employé : réduire 80 % des tickets RH", "category": "RH & talents", "duration": 19, "date": "7 mai 2026", "presenter": "Daniel Brandt · Customer", "live": false }
+    ]
+  },
+  "templatesPage": {
+    "eyebrow": "Modèles RH",
+    "title": "Centre de téléchargement",
+    "lead": "Contrats, lettres, tableaux et check-lists prêts à l'emploi — conformes et personnalisables.",
+    "categories": ["Tous", "Contrats", "Lettres", "Paie", "Tableaux", "Onboarding"],
+    "download": "Télécharger",
+    "ctaTitle": "Besoin d'un modèle sur mesure ?",
+    "ctaLead": "Dites-nous votre besoin — nous adaptons un modèle à votre convention et votre pays.",
+    "ctaButton": "Nous contacter",
+    "templates": [
+      { "title": "Contrat de travail CDI", "desc": "Modèle conforme, clauses essentielles et variables à compléter.", "category": "Contrats", "format": "DOCX", "size": "48 Ko" },
+      { "title": "Contrat CDD", "desc": "Durée déterminée, motif et renouvellement encadrés.", "category": "Contrats", "format": "DOCX", "size": "44 Ko" },
+      { "title": "Lettre de promesse d'embauche", "desc": "Officialisez une offre avant la signature du contrat.", "category": "Lettres", "format": "DOCX", "size": "22 Ko" },
+      { "title": "Attestation de travail", "desc": "Justificatif employeur prêt à signer.", "category": "Lettres", "format": "PDF", "size": "18 Ko" },
+      { "title": "Bulletin de paie — exemple commenté", "desc": "Lecture ligne par ligne : brut, cotisations, net.", "category": "Paie", "format": "PDF", "size": "120 Ko" },
+      { "title": "Tableau de suivi des congés", "desc": "Soldes, demandes et compteurs par employé.", "category": "Tableaux", "format": "XLSX", "size": "36 Ko" },
+      { "title": "Registre du personnel", "desc": "Tenez à jour les entrées et sorties, conforme.", "category": "Tableaux", "format": "XLSX", "size": "52 Ko" },
+      { "title": "Check-list d'onboarding", "desc": "Toutes les étapes pour accueillir une nouvelle recrue.", "category": "Onboarding", "format": "PDF", "size": "26 Ko" }
+    ]
+  },
   "helpPage": {
     "eyebrow": "Centre d'aide",
     "title": "Comment pouvons-nous vous aider ?",
@@ -570,10 +612,10 @@
     "browseHelp": "Parcourir le centre d'aide",
     "searchPlaceholder": "Rechercher un guide, un module, une réponse…",
     "cards": [
-      { "icon": "video", "title": "Webinaires & démos", "desc": "Sessions live et replays pour prendre en main chaque module.", "cta": "Voir les sessions", "href": "contact?sujet=demo" },
+      { "icon": "video", "title": "Webinaires & démos", "desc": "Sessions live et replays pour prendre en main chaque module.", "cta": "Voir les sessions", "href": "resources/webinars" },
       { "icon": "help", "title": "Centre d'aide", "desc": "Réponses, tutoriels et dépannage.", "cta": "Obtenir de l'aide", "href": "help" },
       { "icon": "shield", "title": "Sécurité", "desc": "Comment nous protégeons vos données.", "cta": "En savoir plus", "href": "legal/security" },
-      { "icon": "download", "title": "Modèles RH", "desc": "Contrats, lettres et tableaux prêts à l'emploi.", "cta": "Télécharger", "href": "contact?sujet=produit" }
+      { "icon": "download", "title": "Modèles RH", "desc": "Contrats, lettres et tableaux prêts à l'emploi.", "cta": "Télécharger", "href": "resources/templates" }
     ],
     "guidesTitle": "Guides par module",
     "guidesSub": "Découvrez en détail ce que fait chaque module.",

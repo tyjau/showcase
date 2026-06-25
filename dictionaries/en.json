@@ -207,6 +207,48 @@
       { "title": "Status", "desc": "Live service availability." }
     ]
   },
+  "webinarsPage": {
+    "eyebrow": "Webinars & demos",
+    "title": "The SkyRH video library",
+    "lead": "Live sessions, product demos and replays — learn each module at your own pace.",
+    "categories": ["All", "Product demos", "Payroll & compliance", "HR & talent", "Onboarding"],
+    "liveBadge": "Live",
+    "replayBadge": "Replay",
+    "watch": "Watch",
+    "register": "Register",
+    "minutes": "min",
+    "ctaTitle": "Interested in an upcoming live session?",
+    "ctaLead": "Register to get the link — or request a private demo for your team.",
+    "ctaButton": "Request a demo",
+    "videos": [
+      { "title": "Close payroll in 4 minutes with SkyEngine", "category": "Payroll & compliance", "duration": 28, "date": "Jun 12, 2026", "presenter": "Awa Diallo · Product", "live": true },
+      { "title": "Full product tour: from hire to payroll", "category": "Product demos", "duration": 42, "date": "Jun 4, 2026", "presenter": "Marc Rossi · Solutions", "live": false },
+      { "title": "CEMAC & OHADA compliance: what changes in 2026", "category": "Payroll & compliance", "duration": 35, "date": "May 28, 2026", "presenter": "Fatou N'Diaye · Compliance", "live": false },
+      { "title": "Recruitment & CV pool: from need to signature", "category": "HR & talent", "duration": 24, "date": "May 21, 2026", "presenter": "Jean-Marc Obiang · Talent", "live": false },
+      { "title": "Set up your workspace in 15 minutes", "category": "Onboarding", "duration": 16, "date": "May 14, 2026", "presenter": "Sofia Almeida · Onboarding", "live": false },
+      { "title": "Employee self-service: cut 80% of HR tickets", "category": "HR & talent", "duration": 19, "date": "May 7, 2026", "presenter": "Daniel Brandt · Customer", "live": false }
+    ]
+  },
+  "templatesPage": {
+    "eyebrow": "HR templates",
+    "title": "Download center",
+    "lead": "Ready-to-use contracts, letters, spreadsheets and checklists — compliant and customizable.",
+    "categories": ["All", "Contracts", "Letters", "Payroll", "Spreadsheets", "Onboarding"],
+    "download": "Download",
+    "ctaTitle": "Need a custom template?",
+    "ctaLead": "Tell us what you need — we'll tailor a template to your agreement and country.",
+    "ctaButton": "Contact us",
+    "templates": [
+      { "title": "Permanent employment contract", "desc": "Compliant template with essential clauses and fill-in variables.", "category": "Contracts", "format": "DOCX", "size": "48 KB" },
+      { "title": "Fixed-term contract", "desc": "Fixed term, reason and renewal properly framed.", "category": "Contracts", "format": "DOCX", "size": "44 KB" },
+      { "title": "Job offer letter", "desc": "Make an offer official before the contract is signed.", "category": "Letters", "format": "DOCX", "size": "22 KB" },
+      { "title": "Certificate of employment", "desc": "Employer proof, ready to sign.", "category": "Letters", "format": "PDF", "size": "18 KB" },
+      { "title": "Payslip — annotated example", "desc": "Line-by-line reading: gross, contributions, net.", "category": "Payroll", "format": "PDF", "size": "120 KB" },
+      { "title": "Leave tracking spreadsheet", "desc": "Balances, requests and counters per employee.", "category": "Spreadsheets", "format": "XLSX", "size": "36 KB" },
+      { "title": "Personnel register", "desc": "Keep entries and exits up to date, compliant.", "category": "Spreadsheets", "format": "XLSX", "size": "52 KB" },
+      { "title": "Onboarding checklist", "desc": "Every step to welcome a new hire.", "category": "Onboarding", "format": "PDF", "size": "26 KB" }
+    ]
+  },
   "helpPage": {
     "eyebrow": "Help center",
     "title": "How can we help?",
@@ -570,10 +612,10 @@
     "browseHelp": "Browse the help center",
     "searchPlaceholder": "Search a guide, a module, an answer…",
     "cards": [
-      { "icon": "video", "title": "Webinars & demos", "desc": "Live sessions and replays to get hands-on with every module.", "cta": "See sessions", "href": "contact?subject=demo" },
+      { "icon": "video", "title": "Webinars & demos", "desc": "Live sessions and replays to get hands-on with every module.", "cta": "See sessions", "href": "resources/webinars" },
       { "icon": "help", "title": "Help center", "desc": "Answers, tutorials and troubleshooting.", "cta": "Get help", "href": "help" },
       { "icon": "shield", "title": "Security", "desc": "How we protect your data.", "cta": "Learn more", "href": "legal/security" },
-      { "icon": "download", "title": "HR templates", "desc": "Contracts, letters and sheets ready to use.", "cta": "Download", "href": "contact?subject=product" }
+      { "icon": "download", "title": "HR templates", "desc": "Contracts, letters and sheets ready to use.", "cta": "Download", "href": "resources/templates" }
     ],
     "guidesTitle": "Guides by module",
     "guidesSub": "Explore in detail what each module does.",
