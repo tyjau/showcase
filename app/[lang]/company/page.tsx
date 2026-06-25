@@ -8,9 +8,13 @@ import {
   Layers,
   Handshake,
   ArrowRight,
+  Briefcase,
+  Check,
 } from "lucide-react";
 import { i18n, type Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
+import { ParallaxTriangles } from "@/components/parallax-triangles";
+import { ContactForm } from "@/components/contact-form";
 
 export function generateStaticParams() {
   return i18n.locales.map((lang) => ({ lang }));
@@ -40,21 +44,58 @@ export default async function CompanyPage(
 
   return (
     <main>
-      <section className="bg-hero-bg text-hero-fg">
-        <div className="mx-auto max-w-3xl px-5 py-16 text-center">
+      <section className="relative overflow-hidden bg-hero-bg text-hero-fg">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/img/hero-photo.png"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover opacity-[0.35]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-hero-bg/70 via-hero-bg/85 to-hero-bg" />
+        <ParallaxTriangles />
+        <div className="relative mx-auto max-w-3xl px-5 py-16 text-center">
           <div className="text-xs font-semibold uppercase tracking-wide text-sky-soft">
             {c.eyebrow}
           </div>
           <h1 className="mt-3 text-3xl font-bold sm:text-4xl">{c.title}</h1>
           <p className="mx-auto mt-4 max-w-xl text-hero-fg-muted">{c.lead}</p>
+          <div className="mt-7 flex flex-wrap justify-center gap-3">
+            <Link
+              href={`/${lang}/contact?sujet=demo`}
+              className="rounded-full bg-sky-strong px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#08607f]"
+            >
+              {c.heroDemo}
+            </Link>
+            <Link
+              href={`/${lang}/careers`}
+              className="rounded-full border border-white/30 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10"
+            >
+              {c.heroJoin}
+            </Link>
+          </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-3xl px-5 py-14">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-accent">
-          {c.missionTitle}
-        </h2>
-        <p className="mt-3 text-lg leading-relaxed text-ink">{c.missionBody}</p>
+      <section className="border-b border-line">
+        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-5 py-12 sm:grid-cols-4">
+          {c.stats.map((s: { value: string; label: string }) => (
+            <div key={s.label} className="text-center">
+              <div className="text-3xl font-extrabold text-heading sm:text-4xl">{s.value}</div>
+              <div className="mt-1 text-sm text-muted">{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto grid max-w-6xl gap-8 px-5 py-14 md:grid-cols-2">
+        <div>
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-accent">
+            {c.missionTitle}
+          </h2>
+          <p className="mt-3 text-2xl font-bold leading-snug text-heading">{c.lead}</p>
+        </div>
+        <p className="self-center text-lg leading-relaxed text-ink">{c.missionBody}</p>
       </section>
 
       <section className="border-y border-line bg-mist">
@@ -129,32 +170,43 @@ export default async function CompanyPage(
         </div>
       </section>
 
-      <section id="careers" className="mx-auto max-w-3xl px-5 py-14">
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-accent">
-          {c.careersTitle}
-        </h2>
-        <p className="mt-3 text-lg leading-relaxed text-ink">{c.careersBody}</p>
-        <Link
-          href={`/${lang}/signup`}
-          className="mt-5 inline-flex rounded-full border border-line px-5 py-2.5 text-sm font-semibold text-heading transition hover:border-sky"
-        >
-          {c.careersCta}
-        </Link>
-      </section>
+      <section className="border-t border-line bg-mist">
+        <div className="mx-auto grid max-w-6xl gap-8 px-5 py-14 lg:grid-cols-2">
+          {/* Careers */}
+          <div id="careers" className="rounded-2xl border border-line bg-surface p-6 sm:p-8">
+            <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-tint-sky text-sky-text">
+              <Briefcase size={22} />
+            </div>
+            <h2 className="mt-4 text-2xl font-bold text-heading">{c.careersTitle}</h2>
+            <p className="mt-2 leading-relaxed text-muted">{c.careersBody}</p>
+            <ul className="mt-5 flex flex-col gap-2.5">
+              {c.careersItems.map((it: string) => (
+                <li key={it} className="flex items-center gap-2.5 text-sm text-ink">
+                  <span className="inline-flex h-5 w-5 flex-none items-center justify-center rounded-full bg-sky-strong text-white">
+                    <Check size={12} strokeWidth={3.5} />
+                  </span>
+                  {it}
+                </li>
+              ))}
+            </ul>
+            <Link
+              href={`/${lang}/careers`}
+              className="mt-6 inline-flex rounded-full border border-line px-5 py-2.5 text-sm font-semibold text-heading transition hover:border-sky"
+            >
+              {c.careersCta}
+            </Link>
+          </div>
 
-      <section
-        id="contact"
-        className="bg-gradient-to-r from-sky to-accent text-white"
-      >
-        <div className="mx-auto max-w-3xl px-5 py-14 text-center">
-          <h2 className="text-2xl font-bold sm:text-3xl">{c.contactTitle}</h2>
-          <p className="mx-auto mt-3 max-w-lg text-white/90">{c.contactBody}</p>
-          <Link
-            href={`/${lang}/signup`}
-            className="mt-6 inline-flex rounded-full bg-white px-6 py-3 text-sm font-semibold text-navy transition hover:bg-white/90"
-          >
-            {c.contactCta}
-          </Link>
+          {/* Talk to an expert */}
+          <div id="contact" className="rounded-2xl border border-line bg-surface p-6 sm:p-8">
+            <span className="text-sm font-semibold uppercase tracking-wide text-accent">
+              {c.expertEyebrow}
+            </span>
+            <h2 className="mt-2 text-2xl font-bold text-heading">{c.expertTitle}</h2>
+            <div className="mt-5">
+              <ContactForm dict={t.contactPage} />
+            </div>
+          </div>
         </div>
       </section>
     </main>

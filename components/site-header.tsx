@@ -40,8 +40,8 @@ export function SiteHeader({
     { label: dict.features, href: `/${lang}/features` },
     { label: dict.pricing, href: `/${lang}/pricing` },
     { label: dict.platform, href: `/${lang}/platform` },
-    { label: dict.company, href: `/${lang}/enterprise` },
-    { label: dict.resources, href: `/${lang}/help` },
+    { label: dict.company, href: `/${lang}/company` },
+    { label: dict.resources, href: `/${lang}/resources` },
   ];
 
   return (

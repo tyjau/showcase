@@ -125,6 +125,14 @@
     "eyebrow": "L'entreprise",
     "title": "Une RH qui fonctionne partout",
     "lead": "SkyRH rend la RH et la paie modernes et conformes accessibles à toutes les entreprises — où qu'elles opèrent.",
+    "heroDemo": "Réserver une démo",
+    "heroJoin": "Nous rejoindre",
+    "stats": [
+      { "value": "1 200+", "label": "entreprises" },
+      { "value": "50+", "label": "pays couverts" },
+      { "value": "300 000+", "label": "employés gérés" },
+      { "value": "99,9 %", "label": "de disponibilité" }
+    ],
     "missionTitle": "Notre mission",
     "missionBody": "Trop d'équipes jonglent encore entre tableurs et règles propres à chaque pays. Nous réunissons tout le cycle RH sur une seule plateforme et y intégrons la conformité — pour que les RH se concentrent sur l'humain, pas sur la paperasse.",
     "valuesTitle": "Ce qui nous guide",
@@ -135,8 +143,15 @@
       { "title": "Sécurité", "desc": "Droits fins, traçabilité et confidentialité des données sensibles." }
     ],
     "careersTitle": "Carrières",
-    "careersBody": "Nous recrutons des personnes qui veulent un impact réel sur la gestion des équipes — ingénierie, conformité paie, succès client et ventes.",
-    "careersCta": "Nous rejoindre",
+    "careersBody": "Nous recrutons des personnes qui veulent un impact réel sur la gestion des équipes.",
+    "careersItems": [
+      "Ingénierie produit & plateforme",
+      "Conformité & expertise paie",
+      "Succès client & ventes"
+    ],
+    "careersCta": "Voir les postes ouverts",
+    "expertEyebrow": "Parlons-en",
+    "expertTitle": "Parler à un expert",
     "contactTitle": "Parlons-en",
     "contactBody": "Client, partenaire ou futur collègue — écrivez-nous.",
     "contactCta": "Réserver une démo",
@@ -397,6 +412,46 @@
       "successBody": "Vous pouvez maintenant vous connecter et inviter votre équipe.",
       "successCta": "Se connecter"
     }
+  },
+  "resourcesPage": {
+    "eyebrow": "Ressources",
+    "title": "Tout pour démarrer et aller plus loin",
+    "lead": "Documentation, guides et aide — issus du produit lui-même.",
+    "browseHelp": "Parcourir le centre d'aide",
+    "cards": [
+      { "icon": "video", "title": "Webinaires & démos", "desc": "Sessions live et replays pour prendre en main chaque module.", "cta": "Voir les sessions", "href": "contact?sujet=demo" },
+      { "icon": "help", "title": "Centre d'aide", "desc": "Réponses, tutoriels et dépannage.", "cta": "Obtenir de l'aide", "href": "help" },
+      { "icon": "shield", "title": "Sécurité", "desc": "Comment nous protégeons vos données.", "cta": "En savoir plus", "href": "legal/security" },
+      { "icon": "download", "title": "Modèles RH", "desc": "Contrats, lettres et tableaux prêts à l'emploi.", "cta": "Télécharger", "href": "contact?sujet=produit" }
+    ],
+    "guidesTitle": "Guides par module",
+    "guidesSub": "Découvrez en détail ce que fait chaque module.",
+    "guidesAll": "Tout voir",
+    "articles": "articles",
+    "guides": [
+      { "code": "WAGE-GEN00", "title": "Paie & bulletins", "count": 12 },
+      { "code": "ATT00", "title": "Congés & présences", "count": 9 },
+      { "code": "RECR00", "title": "Recrutement", "count": 8 },
+      { "code": "CARE00", "title": "Performance & carrière", "count": 7 },
+      { "code": "MGMT00", "title": "Dossier du personnel", "count": 10 },
+      { "code": "EMPL-SELF00", "title": "Self-service employé", "count": 6 }
+    ],
+    "helpEyebrow": "Centre d'aide",
+    "helpTitle": "Une question ? Commencez ici.",
+    "helpSub": "Guides et réponses pour tirer le meilleur de SkyRH.",
+    "helpCategories": [
+      { "label": "Démarrage", "href": "help" },
+      { "label": "Facturation & compte", "href": "help" },
+      { "label": "Sécurité", "href": "legal/security" }
+    ],
+    "faqTitle": "Questions fréquentes",
+    "faqHref": "help",
+    "faq": [
+      "Comment configurer mon premier run de paie ?",
+      "Comment inviter mes employés au self-service ?",
+      "Comment gérer la facturation et les devises ?",
+      "Comment exporter mes écritures comptables ?"
+    ]
   },
   "loginPage": {
     "title": "Se connecter",

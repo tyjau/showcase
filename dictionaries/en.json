@@ -125,6 +125,14 @@
     "eyebrow": "Our company",
     "title": "Building HR that works everywhere",
     "lead": "SkyRH makes modern, compliant HR & payroll accessible to every company — wherever they operate.",
+    "heroDemo": "Book a demo",
+    "heroJoin": "Join us",
+    "stats": [
+      { "value": "1,200+", "label": "companies" },
+      { "value": "50+", "label": "countries covered" },
+      { "value": "300,000+", "label": "employees managed" },
+      { "value": "99.9%", "label": "uptime" }
+    ],
     "missionTitle": "Our mission",
     "missionBody": "Too many teams still juggle spreadsheets and country-specific rules. We bring the whole people cycle onto one platform and build compliance in — so HR can focus on people, not paperwork.",
     "valuesTitle": "What guides us",
@@ -135,8 +143,15 @@
       { "title": "Security", "desc": "Fine-grained access, audit trails and privacy for sensitive data." }
     ],
     "careersTitle": "Careers",
-    "careersBody": "We hire people who want real impact on how companies manage their teams — engineering, payroll compliance, customer success and sales.",
-    "careersCta": "Join the team",
+    "careersBody": "We hire people who want real impact on how companies manage their teams.",
+    "careersItems": [
+      "Product & platform engineering",
+      "Payroll compliance & expertise",
+      "Customer success & sales"
+    ],
+    "careersCta": "See open roles",
+    "expertEyebrow": "Let's talk",
+    "expertTitle": "Talk to an expert",
     "contactTitle": "Let's talk",
     "contactBody": "Customer, partner or future teammate — we'd love to hear from you.",
     "contactCta": "Book a demo",
@@ -397,6 +412,46 @@
       "successBody": "You can now sign in and invite your team.",
       "successCta": "Sign in"
     }
+  },
+  "resourcesPage": {
+    "eyebrow": "Resources",
+    "title": "Everything to get started and go further",
+    "lead": "Documentation, guides and help — straight from the product itself.",
+    "browseHelp": "Browse the help center",
+    "cards": [
+      { "icon": "video", "title": "Webinars & demos", "desc": "Live sessions and replays to get hands-on with every module.", "cta": "See sessions", "href": "contact?subject=demo" },
+      { "icon": "help", "title": "Help center", "desc": "Answers, tutorials and troubleshooting.", "cta": "Get help", "href": "help" },
+      { "icon": "shield", "title": "Security", "desc": "How we protect your data.", "cta": "Learn more", "href": "legal/security" },
+      { "icon": "download", "title": "HR templates", "desc": "Contracts, letters and sheets ready to use.", "cta": "Download", "href": "contact?subject=product" }
+    ],
+    "guidesTitle": "Guides by module",
+    "guidesSub": "Explore in detail what each module does.",
+    "guidesAll": "See all",
+    "articles": "articles",
+    "guides": [
+      { "code": "WAGE-GEN00", "title": "Payroll & payslips", "count": 12 },
+      { "code": "ATT00", "title": "Time off & attendance", "count": 9 },
+      { "code": "RECR00", "title": "Recruitment", "count": 8 },
+      { "code": "CARE00", "title": "Performance & career", "count": 7 },
+      { "code": "MGMT00", "title": "Personnel records", "count": 10 },
+      { "code": "EMPL-SELF00", "title": "Employee self-service", "count": 6 }
+    ],
+    "helpEyebrow": "Help center",
+    "helpTitle": "A question? Start here.",
+    "helpSub": "Guides and answers to get the most out of SkyRH.",
+    "helpCategories": [
+      { "label": "Getting started", "href": "help" },
+      { "label": "Billing & account", "href": "help" },
+      { "label": "Security", "href": "legal/security" }
+    ],
+    "faqTitle": "Frequently asked",
+    "faqHref": "help",
+    "faq": [
+      "How do I set up my first payroll run?",
+      "How do I invite my employees to self-service?",
+      "How do I manage billing and currencies?",
+      "How do I export my accounting entries?"
+    ]
   },
   "loginPage": {
     "title": "Sign in",

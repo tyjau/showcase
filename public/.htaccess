@@ -14,9 +14,6 @@ Options -Indexes
   RewriteCond %{HTTP:Accept-Language} ^fr [NC]
   RewriteRule ^$ /fr/ [R=302,L]
   RewriteRule ^$ /en/ [R=302,L]
-
-  # /resources was folded into the help centre — keep old links working.
-  RewriteRule ^(en|fr)/resources/?$ /$1/help/ [R=301,L]
 </IfModule>
 
 <IfModule mod_headers.c>
