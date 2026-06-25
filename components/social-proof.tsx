@@ -1,4 +1,5 @@
 import { Quote } from "lucide-react";
+import { ClientLogos } from "./client-logos";
 
 type SocialProofDict = {
   stats: { value: string; label: string }[];
@@ -26,18 +27,12 @@ export function SocialProof({ dict }: { dict: SocialProofDict }) {
           ))}
         </div>
 
-        {/* Logo wall (text logos for the MVP) */}
+        {/* Logo wall — realistic monochrome logo placeholders. */}
         <div className="mt-12 text-center">
           <p className="text-xs font-semibold uppercase tracking-wide text-muted">
             {dict.logosTitle}
           </p>
-          <div className="mt-4 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
-            {dict.logos.map((name) => (
-              <span key={name} className="text-base font-bold text-muted">
-                {name}
-              </span>
-            ))}
-          </div>
+          <ClientLogos names={dict.logos} className="mt-5" />
         </div>
 
         {/* Testimonials */}

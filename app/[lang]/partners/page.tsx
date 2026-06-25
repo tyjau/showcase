@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { i18n, type Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
+import { ClientLogos } from "@/components/client-logos";
 
 export function generateStaticParams() {
   return i18n.locales.map((lang) => ({ lang }));
@@ -97,11 +98,7 @@ export default async function PartnersPage(
       <section className="border-t border-line">
         <div className="mx-auto max-w-6xl px-5 py-12 text-center">
           <p className="text-sm font-semibold uppercase tracking-wide text-muted">{p.logosTitle}</p>
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
-            {p.logos.map((name: string) => (
-              <span key={name} className="text-lg font-bold text-muted/70">{name}</span>
-            ))}
-          </div>
+          <ClientLogos names={p.logos} className="mt-6" />
         </div>
       </section>
 
