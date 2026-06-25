@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { i18n, type Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
-import { fetchCatalog } from "@/lib/catalog";
+import { fetchCatalog, fetchCountries } from "@/lib/catalog";
 import { ParallaxTriangles } from "@/components/parallax-triangles";
 import { SignupWizard } from "@/components/signup-wizard";
 
@@ -27,7 +27,7 @@ export default async function SignupPage(
 ) {
   const params = await props.params;
   const t = await getDictionary(params.lang);
-  const catalog = await fetchCatalog();
+  const [catalog, countries] = await Promise.all([fetchCatalog(), fetchCountries()]);
 
   const s = t.signupPage;
   return (
@@ -48,6 +48,7 @@ export default async function SignupPage(
       <div className="mx-auto max-w-3xl px-5 py-12">
         <SignupWizard
           catalog={catalog}
+          countries={countries}
           lang={params.lang}
           dict={t.signupPage}
           legal={t.legalPage.docs}

@@ -58,6 +58,41 @@ export async function fetchCatalog(): Promise<Catalog> {
   return json.data;
 }
 
+// Fallback if the countries endpoint is unreachable (e.g. an older backend without
+// the action). Mirrors the backend's signed compliance list so the signup picker
+// always renders a correct set. Sorted by FR name.
+const FALLBACK_COUNTRIES = [
+  "Allemagne", "Belgique", "Bénin", "Burkina Faso", "Cameroun", "Centrafrique",
+  "Comores", "Congo-Brazzaville", "Côte d'Ivoire", "Espagne", "France", "Gabon",
+  "Guinée", "Guinée Équatoriale", "Guinée-Bissau", "Italie", "Luxembourg", "Mali",
+  "Niger", "Pays-Bas", "Portugal", "Sénégal", "Suisse", "Togo",
+];
+
+/**
+ * Server-side fetch of the compliance-covered country names (auth.php?c=countries).
+ * The list is the single source of truth on the backend (signed countries); this
+ * keeps the signup picker in sync. Falls back to the static mirror on any error.
+ */
+export async function fetchCountries(): Promise<string[]> {
+  try {
+    if (GUARDIAN_URL.includes("saas.test")) {
+      process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+    }
+    const res = await fetch(`${GUARDIAN_URL}/auth.php?c=countries`, {
+      headers: { "X-API-KEY": CATALOG_API_KEY },
+      cache: "force-cache",
+    });
+    if (!res.ok) throw new Error(String(res.status));
+    const json = (await res.json()) as { data?: { countries?: { name?: string }[] } };
+    const list = (json.data?.countries ?? [])
+      .map((c) => (c?.name ?? "").trim())
+      .filter(Boolean);
+    return list.length ? list : FALLBACK_COUNTRIES;
+  } catch {
+    return FALLBACK_COUNTRIES;
+  }
+}
+
 export type PackageText = { name: string; description: string };
 
 /**

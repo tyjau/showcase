@@ -78,37 +78,6 @@ const INPUT_CLS =
   "w-full rounded-lg border border-line px-3 py-2.5 text-sm outline-none focus:border-sky";
 
 // Curated list — countries where SkyRH compliance is available (France + francophone Africa + core EU).
-// Countries where SkyRH payroll compliance is GO (productionSignoff.signed === true).
-// Mirrors the backend's authoritative source: saas/payroll_compliance/countries/*.json
-// (24 signed). The backend exposes no public endpoint for this list, so it is copied
-// here — keep in sync when a new country is signed off. Sorted by FR name.
-const COUNTRIES = [
-  "Allemagne",
-  "Belgique",
-  "Bénin",
-  "Burkina Faso",
-  "Cameroun",
-  "Centrafrique",
-  "Comores",
-  "Congo-Brazzaville",
-  "Côte d'Ivoire",
-  "Espagne",
-  "France",
-  "Gabon",
-  "Guinée",
-  "Guinée Équatoriale",
-  "Guinée-Bissau",
-  "Italie",
-  "Luxembourg",
-  "Mali",
-  "Niger",
-  "Pays-Bas",
-  "Portugal",
-  "Sénégal",
-  "Suisse",
-  "Togo",
-];
-
 function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
     <label className="block">
@@ -129,11 +98,13 @@ function Row({ label, value }: { label: string; value: string }) {
 
 export function SignupWizard({
   catalog,
+  countries,
   lang,
   dict,
   legal,
 }: {
   catalog: Catalog;
+  countries: string[];
   lang: string;
   dict: Dict;
   legal: { terms: string; privacy: string };
@@ -440,7 +411,7 @@ export function SignupWizard({
                 className={`${INPUT_CLS} cursor-pointer ${country ? "text-ink" : "text-muted"}`}
               >
                 <option value="">{dict.countryDefault}</option>
-                {COUNTRIES.map((c) => (
+                {countries.map((c) => (
                   <option key={c} value={c} className="text-ink">
                     {c}
                   </option>
