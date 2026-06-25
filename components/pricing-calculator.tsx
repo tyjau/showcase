@@ -230,11 +230,13 @@ export function PricingCalculator({
                     </>
                   )}
                 </div>
-                {!isFree && (
+                {p.code === "ENTERPRISE" ? (
+                  <div className="mt-1 text-xs font-semibold text-sky-text">{dict.enterpriseDeploy}</div>
+                ) : !isFree ? (
                   <div className="mt-1 text-xs text-muted">
                     ≈ {fmtMoney(periodTotal(rate), currency)} {periodLabel}
                   </div>
-                )}
+                ) : null}
                 {pkgDesc(p.code) && (
                   <p className="mt-2 min-h-[34px] text-xs leading-relaxed text-muted">{pkgDesc(p.code)}</p>
                 )}
