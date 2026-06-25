@@ -153,7 +153,7 @@
     "heroJoin": "Nous rejoindre",
     "stats": [
       { "value": "1 200+", "label": "entreprises" },
-      { "value": "17", "label": "pays couverts" },
+      { "value": "24", "label": "pays couverts" },
       { "value": "300 000+", "label": "employés gérés" },
       { "value": "99,9 %", "label": "de disponibilité" }
     ],
@@ -949,10 +949,10 @@
     "stats": [
       { "value": "1 200+", "label": "entreprises" },
       { "value": "40 000+", "label": "bulletins / mois" },
-      { "value": "17", "label": "pays (CEMAC & OHADA)" },
+      { "value": "24", "label": "pays couverts" },
       { "value": "99,9 %", "label": "de disponibilité" }
     ],
-    "logosTitle": "Ils nous font confiance — 1 200+ entreprises dans 17 pays",
+    "logosTitle": "Ils nous font confiance — 1 200+ entreprises dans 24 pays",
     "logos": ["Atlantique Finance", "Sahel Télécom", "Groupe Mandela", "Kivu Logistics", "Banque Équatoriale", "Café des Volcans"],
     "testimonialsTitle": "Ce qu'en disent nos clients",
     "prev": "Précédent",

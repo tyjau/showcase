@@ -153,7 +153,7 @@
     "heroJoin": "Join us",
     "stats": [
       { "value": "1,200+", "label": "companies" },
-      { "value": "17", "label": "countries covered" },
+      { "value": "24", "label": "countries covered" },
       { "value": "300,000+", "label": "employees managed" },
       { "value": "99.9%", "label": "uptime" }
     ],
@@ -949,10 +949,10 @@
     "stats": [
       { "value": "1,200+", "label": "companies" },
       { "value": "40,000+", "label": "payslips / month" },
-      { "value": "17", "label": "countries (CEMAC & OHADA)" },
+      { "value": "24", "label": "countries covered" },
       { "value": "99.9%", "label": "uptime" }
     ],
-    "logosTitle": "Trusted by 1,200+ companies across 17 countries",
+    "logosTitle": "Trusted by 1,200+ companies across 24 countries",
     "logos": ["Atlantique Finance", "Sahel Télécom", "Groupe Mandela", "Kivu Logistics", "Banque Équatoriale", "Café des Volcans"],
     "testimonialsTitle": "What our customers say",
     "prev": "Previous",
