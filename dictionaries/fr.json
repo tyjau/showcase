@@ -260,34 +260,51 @@
   },
   "contactPage": {
     "eyebrow": "Contact",
-    "title": "Parlons-en",
-    "lead": "Dites-nous en plus sur votre équipe et votre besoin — nous revenons vers vous sous un jour ouvré.",
-    "subjects": { "demo": "Réserver une démo", "produit": "Question produit", "devis": "Demander un devis" },
-    "fName": "Nom",
-    "fEmail": "E-mail",
-    "fCompany": "Société",
+    "title": "Parlons de votre projet RH",
+    "lead": "Une question, une démo, un devis sur mesure — notre équipe vous répond sous 24 h ouvrées.",
+    "formTitle": "Écrivez-nous",
+    "formNote": "Tous les champs marqués d'un * sont requis.",
+    "subjects": {
+      "demo": "Demande de démo",
+      "devis": "Devis sur mesure",
+      "produit": "Question produit",
+      "support": "Support technique",
+      "candidature": "Candidature (recrutement)",
+      "partenariat": "Partenariat"
+    },
+    "fFirstName": "Prénom",
+    "fLastName": "Nom",
+    "fEmail": "E-mail professionnel",
+    "fCompany": "Entreprise",
     "fSubject": "Sujet",
     "fMessage": "Message",
+    "phFirstName": "Awa",
+    "phLastName": "Diop",
+    "phEmail": "awa@entreprise.com",
+    "phCompany": "Nom de la société",
+    "phMessage": "Parlez-nous de vos besoins, votre effectif et votre échéance…",
     "send": "Envoyer le message",
     "sending": "Envoi…",
     "errEmail": "Veuillez saisir un e-mail valide.",
     "errMessage": "Veuillez saisir un message.",
     "errGeneric": "Une erreur est survenue. Réessayez.",
     "sentTitle": "Message envoyé",
-    "sentBody": "Merci — notre équipe revient vers vous sous un jour ouvré.",
-    "asideTitle": "Ce à quoi vous attendre",
-    "asidePoints": ["Une réponse sous un jour ouvré", "Une démo sur mesure, pas un pitch générique", "Sans engagement"],
+    "sentBody": "Merci ! Un membre de l'équipe SkyRH vous recontacte sous 24 h ouvrées.",
+    "resetCta": "Envoyer un autre message",
     "channelsTitle": "Nous joindre directement",
     "channels": [
-      { "label": "Commercial", "value": "sales@skyrh.app" },
-      { "label": "Support", "value": "support@skyrh.app" },
-      { "label": "Partenariats", "value": "partners@skyrh.app" }
+      { "label": "Commercial", "value": "ventes@skyrh.com" },
+      { "label": "Support client", "value": "support@skyrh.com" },
+      { "label": "Téléphone", "value": "+33 1 84 80 12 00" }
     ],
     "officesTitle": "Nos bureaux",
     "offices": [
-      { "city": "Douala", "lines": ["Bonanjo, Douala", "Cameroun"] },
-      { "city": "Paris", "lines": ["2 rue de la Paix", "75002 Paris, France"] }
-    ]
+      { "city": "Paris", "addr": "12 rue de la Paix, 75002 Paris, France" },
+      { "city": "Dakar", "addr": "Immeuble Eaux Vives, Plateau, Dakar, Sénégal" },
+      { "city": "Abidjan", "addr": "Cocody Riviera, Abidjan, Côte d'Ivoire" }
+    ],
+    "demoTitle": "Préférez une démo en direct ?",
+    "demoCta": "Réserver un créneau"
   },
   "statusPage": {
     "eyebrow": "Statut",

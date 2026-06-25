@@ -260,34 +260,51 @@
   },
   "contactPage": {
     "eyebrow": "Contact",
-    "title": "Let's talk",
-    "lead": "Tell us about your team and what you need — we'll get back within one business day.",
-    "subjects": { "demo": "Book a demo", "produit": "Product question", "devis": "Request a quote" },
-    "fName": "Name",
-    "fEmail": "Email",
+    "title": "Let's talk about your HR project",
+    "lead": "A question, a demo, a tailored quote — our team replies within 24 business hours.",
+    "formTitle": "Write to us",
+    "formNote": "All fields marked with * are required.",
+    "subjects": {
+      "demo": "Demo request",
+      "devis": "Custom quote",
+      "produit": "Product question",
+      "support": "Technical support",
+      "candidature": "Job application",
+      "partenariat": "Partnership"
+    },
+    "fFirstName": "First name",
+    "fLastName": "Last name",
+    "fEmail": "Work email",
     "fCompany": "Company",
     "fSubject": "Subject",
     "fMessage": "Message",
+    "phFirstName": "Awa",
+    "phLastName": "Diop",
+    "phEmail": "awa@company.com",
+    "phCompany": "Company name",
+    "phMessage": "Tell us about your needs, headcount and timeline…",
     "send": "Send message",
     "sending": "Sending…",
     "errEmail": "Please enter a valid email.",
     "errMessage": "Please enter a message.",
     "errGeneric": "Something went wrong. Please try again.",
     "sentTitle": "Message sent",
-    "sentBody": "Thanks — our team will get back to you within one business day.",
-    "asideTitle": "What to expect",
-    "asidePoints": ["A reply within one business day", "A tailored demo, not a generic pitch", "No commitment"],
+    "sentBody": "Thank you! A SkyRH team member will get back to you within 24 business hours.",
+    "resetCta": "Send another message",
     "channelsTitle": "Reach us directly",
     "channels": [
-      { "label": "Sales", "value": "sales@skyrh.app" },
-      { "label": "Support", "value": "support@skyrh.app" },
-      { "label": "Partnerships", "value": "partners@skyrh.app" }
+      { "label": "Sales", "value": "ventes@skyrh.com" },
+      { "label": "Customer support", "value": "support@skyrh.com" },
+      { "label": "Phone", "value": "+33 1 84 80 12 00" }
     ],
     "officesTitle": "Our offices",
     "offices": [
-      { "city": "Douala", "lines": ["Bonanjo, Douala", "Cameroon"] },
-      { "city": "Paris", "lines": ["2 rue de la Paix", "75002 Paris, France"] }
-    ]
+      { "city": "Paris", "addr": "12 rue de la Paix, 75002 Paris, France" },
+      { "city": "Dakar", "addr": "Immeuble Eaux Vives, Plateau, Dakar, Senegal" },
+      { "city": "Abidjan", "addr": "Cocody Riviera, Abidjan, Côte d'Ivoire" }
+    ],
+    "demoTitle": "Prefer a live demo?",
+    "demoCta": "Book a slot"
   },
   "statusPage": {
     "eyebrow": "Status",
