@@ -3,6 +3,9 @@
 import { useState } from "react";
 import { MessageSquare } from "lucide-react";
 import { apiPost } from "@/lib/api";
+import { TurnstileWidget } from "@/components/turnstile-widget";
+
+const TURNSTILE_ON = !!process.env.NEXT_PUBLIC_TURNSTILE_SITEKEY;
 
 type Dict = {
   expertEyebrow: string;
@@ -28,12 +31,14 @@ export function ExpertForm({ dict }: { dict: Dict }) {
   const [email, setEmail] = useState("");
   const [msg, setMsg] = useState("");
   const [hp, setHp] = useState(""); // honeypot — humans never fill this
+  const [captcha, setCaptcha] = useState("");
   const [state, setState] = useState<"idle" | "sending" | "sent">("idle");
 
   async function submit() {
     if (state === "sending") return;
     if (hp) return setState("sent"); // bot filled the honeypot → silently drop
     if (!email.trim() || !msg.trim()) return; // request_demo requires email + message
+    if (TURNSTILE_ON && !captcha) return; // captcha required when configured
     setState("sending");
     const res = await apiPost("request_demo", {
       email: email.trim(),
@@ -41,6 +46,7 @@ export function ExpertForm({ dict }: { dict: Dict }) {
       company: company.trim(),
       message: msg.trim(),
       subject: "demo",
+      turnstile_token: captcha,
     });
     setState(res.ok ? "sent" : "idle");
   }
@@ -110,6 +116,7 @@ export function ExpertForm({ dict }: { dict: Dict }) {
                 className="pointer-events-none absolute -left-[9999px] h-0 w-0"
               />
             </div>
+            <TurnstileWidget onToken={setCaptcha} />
             <button
               type="button"
               onClick={submit}

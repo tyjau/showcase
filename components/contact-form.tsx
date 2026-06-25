@@ -3,6 +3,9 @@
 import { useEffect, useState } from "react";
 import { Check } from "lucide-react";
 import { apiRequestDemo } from "@/lib/api";
+import { TurnstileWidget } from "@/components/turnstile-widget";
+
+const TURNSTILE_ON = !!process.env.NEXT_PUBLIC_TURNSTILE_SITEKEY;
 
 type Dict = {
   formTitle: string;
@@ -23,6 +26,7 @@ type Dict = {
   errEmail: string;
   errMessage: string;
   errGeneric: string;
+  errCaptcha: string;
   sentTitle: string;
   sentBody: string;
   resetCta: string;
@@ -46,6 +50,7 @@ export function ContactForm({ dict }: { dict: Dict }) {
   const [error, setError] = useState<string | null>(null);
   const [sent, setSent] = useState(false);
   const [hp, setHp] = useState(""); // honeypot — humans never fill this
+  const [captcha, setCaptcha] = useState("");
 
   // Prefill subject from ?sujet= and, for a job application, the role from ?poste=
   // (client-only read; no Suspense boundary needed in the static export).
@@ -66,6 +71,7 @@ export function ContactForm({ dict }: { dict: Dict }) {
     if (hp) return setSent(true);
     if (!EMAIL.test(email.trim())) return setError(dict.errEmail);
     if (message.trim().length === 0) return setError(dict.errMessage);
+    if (TURNSTILE_ON && !captcha) return setError(dict.errCaptcha);
     setSubmitting(true);
     const res = await apiRequestDemo({
       email: email.trim(),
@@ -73,6 +79,7 @@ export function ContactForm({ dict }: { dict: Dict }) {
       name: `${firstName} ${lastName}`.trim(),
       company: company.trim(),
       subject,
+      turnstile_token: captcha,
     });
     setSubmitting(false);
     if (!res.ok) return setError(res.error || dict.errGeneric);
@@ -170,6 +177,8 @@ export function ContactForm({ dict }: { dict: Dict }) {
               {error}
             </p>
           )}
+          <TurnstileWidget onToken={setCaptcha} />
+
           <button
             type="button"
             onClick={submit}

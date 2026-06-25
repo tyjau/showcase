@@ -368,6 +368,7 @@ export async function apiRequestDemo(fields: {
   name?: string;
   company?: string;
   subject?: string;
+  turnstile_token?: string;
 }): Promise<{ ok: boolean; message?: string; error?: string }> {
   const res = await apiPost("request_demo", fields);
   if (!res.ok) return { ok: false, error: res.error };

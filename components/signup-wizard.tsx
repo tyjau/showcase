@@ -13,6 +13,9 @@ import { useCurrency } from "./currency-provider";
 import { usePartner } from "./partner-provider";
 import { apiPost } from "@/lib/api";
 import { formatMoney, formatRate } from "@/lib/money";
+import { TurnstileWidget } from "@/components/turnstile-widget";
+
+const TURNSTILE_ON = !!process.env.NEXT_PUBLIC_TURNSTILE_SITEKEY;
 
 type Dict = {
   steps: Record<string, string>;
@@ -126,6 +129,7 @@ export function SignupWizard({
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [agree, setAgree] = useState(false);
+  const [captcha, setCaptcha] = useState("");
   const [done, setDone] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -168,7 +172,7 @@ export function SignupWizard({
         ? company.trim().length > 1 && subOk && country.trim().length > 1
         : step === 2
           ? firstName.trim().length > 0 && lastName.trim().length > 0 && emailOk
-          : agree;
+          : agree && (!TURNSTILE_ON || !!captcha);
 
   function toggleAddon(code: string) {
     setAddons((prev) => {
@@ -194,6 +198,7 @@ export function SignupWizard({
       country,
       currency,
       lang,
+      turnstile_token: captcha,
       // Attribution partenaire (funnels co-brandés) — referrers/referrals (back migr.112)
       ...(refCode ? { referral_code: refCode } : {}),
       ...(utm.source ? { utm_source: utm.source } : {}),
@@ -507,6 +512,7 @@ export function SignupWizard({
               .
             </span>
           </label>
+          <TurnstileWidget onToken={setCaptcha} />
         </div>
       )}
 

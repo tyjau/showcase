@@ -346,6 +346,7 @@
     "sending": "Envoi…",
     "errEmail": "Veuillez saisir un e-mail valide.",
     "errMessage": "Veuillez saisir un message.",
+    "errCaptcha": "Merci de valider le captcha.",
     "errGeneric": "Une erreur est survenue. Réessayez.",
     "sentTitle": "Message envoyé",
     "sentBody": "Merci ! Un membre de l'équipe SkyRH vous recontacte sous 24 h ouvrées.",

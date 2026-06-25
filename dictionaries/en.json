@@ -346,6 +346,7 @@
     "sending": "Sending…",
     "errEmail": "Please enter a valid email.",
     "errMessage": "Please enter a message.",
+    "errCaptcha": "Please complete the captcha.",
     "errGeneric": "Something went wrong. Please try again.",
     "sentTitle": "Message sent",
     "sentBody": "Thank you! A SkyRH team member will get back to you within 24 business hours.",
