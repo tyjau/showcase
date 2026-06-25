@@ -16,11 +16,62 @@ export const dynamicParams = false;
 
 // Real product screenshots per module (the handoff ships payroll captures; this is the
 // "patron" other modules decline into). Keyed by catalogue code.
+const HERO = "/img/hero-photo.png";
 const MODULE_SHOTS: Record<string, { heroPhoto?: string; dashboard: string; gallery: string[] }> = {
   "WAGE-GEN00": {
-    heroPhoto: "/img/hero-photo.png",
+    heroPhoto: HERO,
     dashboard: "/img/modules/paie-dashboard.png",
     gallery: ["/img/modules/paie-sessions.png", "/img/modules/paie-elements.png", "/img/modules/paie-compliance.png"],
+  },
+  "MGMT00": {
+    heroPhoto: HERO,
+    dashboard: "/img/modules/personnel-dashboard.png",
+    gallery: ["/img/modules/personnel-1.png", "/img/modules/personnel-2.png", "/img/modules/personnel-3.png"],
+  },
+  "ATT00": {
+    heroPhoto: HERO,
+    dashboard: "/img/modules/attendance-dashboard.png",
+    gallery: ["/img/modules/attendance-1.png", "/img/modules/attendance-2.png", "/img/modules/attendance-3.png"],
+  },
+  "EMPL-SELF00": {
+    heroPhoto: HERO,
+    dashboard: "/img/modules/selfservice-dashboard.png",
+    gallery: ["/img/modules/selfservice-1.png", "/img/modules/selfservice-2.png", "/img/modules/selfservice-3.png"],
+  },
+  "MGMT-ONB00": {
+    heroPhoto: HERO,
+    dashboard: "/img/modules/onboarding-dashboard.png",
+    gallery: ["/img/modules/onboarding-1.png", "/img/modules/onboarding-2.png"],
+  },
+  "RECR00": {
+    heroPhoto: HERO,
+    dashboard: "/img/modules/recruit-dashboard.png",
+    gallery: ["/img/modules/recruit-1.png", "/img/modules/recruit-2.png", "/img/modules/recruit-3.png"],
+  },
+  "CARE00": {
+    heroPhoto: HERO,
+    dashboard: "/img/modules/career-dashboard.png",
+    gallery: ["/img/modules/career-1.png", "/img/modules/career-2.png", "/img/modules/career-3.png"],
+  },
+  "TRAIN00": {
+    heroPhoto: HERO,
+    dashboard: "/img/modules/training-dashboard.png",
+    gallery: ["/img/modules/training-1.png", "/img/modules/training-2.png", "/img/modules/training-3.png"],
+  },
+  "CARE-COMP-FW00": {
+    heroPhoto: HERO,
+    dashboard: "/img/modules/gpec-dashboard.png",
+    gallery: ["/img/modules/gpec-1.png", "/img/modules/gpec-2.png", "/img/modules/gpec-3.png"],
+  },
+  "SOC00": {
+    heroPhoto: HERO,
+    dashboard: "/img/modules/social-dashboard.png",
+    gallery: ["/img/modules/social-1.png", "/img/modules/social-2.png", "/img/modules/social-3.png"],
+  },
+  "SOC-SST-INC00": {
+    heroPhoto: HERO,
+    dashboard: "/img/modules/sst-dashboard.png",
+    gallery: ["/img/modules/sst-1.png", "/img/modules/sst-2.png", "/img/modules/sst-3.png"],
   },
 };
 
