@@ -1,0 +1,25 @@
+# Normalize line endings so the build forge and CI checks are deterministic on
+# Windows checkouts. `gen-config-keys --check` byte-compares the generated
+# deploy/config-keys.json against a fresh render — a CRLF working copy made it
+# rouge spuriously. Pin all text, and force LF on the formats the toolchain reads.
+* text=auto eol=lf
+
+*.json   text eol=lf
+*.mjs    text eol=lf
+*.cjs    text eol=lf
+*.js     text eol=lf
+*.ts     text eol=lf
+*.tsx    text eol=lf
+*.css    text eol=lf
+*.md     text eol=lf
+*.yml    text eol=lf
+*.yaml   text eol=lf
+
+# Binary assets — never touch.
+*.png    binary
+*.jpg    binary
+*.jpeg   binary
+*.webp   binary
+*.ico    binary
+*.woff   binary
+*.woff2  binary
