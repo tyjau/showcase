@@ -823,6 +823,8 @@
     "sub": "De l'embauche à la retraite — modulaire, et connecté de bout en bout.",
     "more": "En savoir plus",
     "lateralAlt": "Une équipe RH qui collabore",
+    "photoTitle": "Une RH plus humaine",
+    "photoSub": "vos équipes au cœur de la plateforme",
     "items": {
       "payroll": {
         "title": "Paie & bulletins",
@@ -902,13 +904,16 @@
       { "value": "17", "label": "pays (CEMAC & OHADA)" },
       { "value": "99,9 %", "label": "de disponibilité" }
     ],
-    "logosTitle": "Ils nous font confiance",
+    "logosTitle": "Ils nous font confiance — 1 200+ entreprises dans 17 pays",
     "logos": ["Atlantique Finance", "Sahel Télécom", "Groupe Mandela", "Kivu Logistics", "Banque Équatoriale", "Café des Volcans"],
     "testimonialsTitle": "Ce qu'en disent nos clients",
+    "prev": "Précédent",
+    "next": "Suivant",
     "testimonials": [
       { "quote": "SkyRH a divisé par trois le temps de notre clôture de paie.", "author": "Awa Diallo", "role": "DRH, Atlantique Finance" },
       { "quote": "Enfin une paie conforme CEMAC sans jongler avec des tableurs.", "author": "Jean-Marc Obiang", "role": "Directeur administratif, Sahel Télécom" },
-      { "quote": "Le self-service employé a supprimé 80 % des demandes RH par e-mail.", "author": "Fatou N'Diaye", "role": "Responsable RH, Groupe Mandela" }
+      { "quote": "Le self-service employé a supprimé 80 % des demandes RH par e-mail.", "author": "Fatou N'Diaye", "role": "Responsable RH, Groupe Mandela" },
+      { "quote": "Déployé sur 4 pays en deux semaines — l'équipe SkyRH nous a accompagnés de bout en bout.", "author": "Marc Rossi", "role": "COO, Kivu Logistics" }
     ]
   },
   "footer": {

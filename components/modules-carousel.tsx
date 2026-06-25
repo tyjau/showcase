@@ -27,39 +27,48 @@ type Dict = {
 const ICONS: LucideIcon[] = [FileText, CalendarDays, UserSearch];
 const AUTOPLAY_MS = 6000;
 
-// Visual half of a slide. The recruitment slide (index 2) uses the real product
-// screenshot; the others use a light branded mock card.
-function SlideVisual({ index, Icon, label }: { index: number; Icon: LucideIcon; label: string }) {
-  if (index === 2) {
-    return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img
-        src="/img/product-recruitment.png"
-        alt=""
-        aria-hidden="true"
-        className="w-full rounded-2xl border border-white/10 shadow-[0_30px_70px_-28px_rgba(0,0,0,0.6)]"
-      />
-    );
-  }
+const CARD_CLS =
+  "overflow-hidden rounded-2xl border border-white/10 bg-surface text-ink shadow-[0_30px_70px_-28px_rgba(0,0,0,0.6)]";
+
+// Slide 0 — a payroll run dashboard mock (3 KPIs, a 3-step progress, a mini bar chart).
+function PayrollVisual() {
   return (
-    <div className="overflow-hidden rounded-2xl border border-white/10 bg-surface text-ink shadow-[0_30px_70px_-28px_rgba(0,0,0,0.6)]">
-      <div className="flex items-center gap-2.5 border-b border-line px-5 py-4">
-        <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-tint-sky text-sky-text">
-          <Icon size={16} />
-        </span>
-        <span className="text-sm font-semibold text-heading">{label}</span>
+    <div className={CARD_CLS}>
+      <div className="flex items-center justify-between border-b border-line px-[18px] py-4">
+        <div>
+          <div className="text-sm font-bold text-heading">Paie · juin 2026</div>
+          <div className="text-[11px] text-muted">3 sociétés · 248 employés</div>
+        </div>
+        <span className="rounded-full bg-ok-bg px-2.5 py-1 text-[11px] font-bold text-ok-fg">Clôturée</span>
       </div>
-      <div className="space-y-3 p-5">
+      <div className="p-[18px]">
         <div className="grid grid-cols-3 gap-2.5">
-          {[0, 1, 2].map((i) => (
-            <div key={i} className="rounded-[10px] bg-mist px-3 py-3">
-              <div className="h-2 w-10 rounded bg-line" />
-              <div className="mt-2 h-3.5 w-12 rounded bg-sky-strong/40" />
+          {[
+            ["Net à payer", "€182k"],
+            ["Charges", "€61k"],
+            ["Bulletins", "248"],
+          ].map(([k, v]) => (
+            <div key={k} className="rounded-[10px] bg-mist px-3 py-2.5">
+              <div className="text-[11px] text-muted">{k}</div>
+              <div className="text-lg font-extrabold text-heading">{v}</div>
             </div>
           ))}
         </div>
-        <div className="flex h-12 items-end gap-1.5">
-          {[55, 80, 48, 70, 90, 62, 76].map((h, i) => (
+        <div className="mt-[18px] flex items-center gap-1.5">
+          {["Préparation", "Validation", "Clôture"].map((step, i) => (
+            <span key={step} className="contents">
+              <span className="flex items-center gap-1.5 text-[12px] font-bold text-ok-fg">
+                <span className="inline-flex h-[18px] w-[18px] items-center justify-center rounded-full bg-ok-bg">
+                  <Check size={10} strokeWidth={3.5} />
+                </span>
+                {step}
+              </span>
+              {i < 2 && <span className="h-px flex-1 bg-ok-fg/50" />}
+            </span>
+          ))}
+        </div>
+        <div className="mt-4 flex h-[50px] items-end gap-1.5">
+          {[60, 85, 50, 72, 90, 64, 78].map((h, i) => (
             <span
               key={i}
               className="flex-1 rounded-t"
@@ -70,6 +79,90 @@ function SlideVisual({ index, Icon, label }: { index: number; Icon: LucideIcon; 
       </div>
     </div>
   );
+}
+
+// Slide 1 — a team leave calendar mock (week grid + two pending requests).
+const LEAVE_ROWS = [
+  { who: "Awa D.", cells: ["m", "b", "b", "m", "m"] },
+  { who: "Jean-M.", cells: ["m", "m", "w", "w", "m"] },
+  { who: "Fatou N.", cells: ["s", "m", "m", "m", "s"] },
+];
+const CELL_BG: Record<string, string> = {
+  m: "var(--mist)",
+  b: "var(--brand-sky)",
+  s: "#3CAEF2",
+  w: "#f0d9a8",
+};
+const LEAVE_REQ = [
+  { initials: "AD", name: "Awa Diallo", meta: "· Congé payé · 2j", tint: "bg-tint-sky text-accent" },
+  { initials: "JO", name: "Jean-Marc O.", meta: "· RTT · 1j", tint: "bg-warn-bg text-warn-fg" },
+];
+function LeaveVisual() {
+  return (
+    <div className={CARD_CLS}>
+      <div className="flex items-center justify-between border-b border-line px-[18px] py-4">
+        <div className="text-sm font-bold text-heading">Congés · Semaine 24</div>
+        <span className="rounded-full bg-warn-bg px-2.5 py-1 text-[11px] font-bold text-warn-fg">2 en attente</span>
+      </div>
+      <div className="px-[18px] py-4">
+        <div className="mb-2 grid grid-cols-5 gap-1.5 text-center text-[11px] font-bold text-muted">
+          {["Lun", "Mar", "Mer", "Jeu", "Ven"].map((d) => (
+            <span key={d}>{d}</span>
+          ))}
+        </div>
+        <div className="flex flex-col gap-[7px]">
+          {LEAVE_ROWS.map((r) => (
+            <div key={r.who} className="flex items-center gap-2">
+              <span className="w-[54px] flex-none text-[11px] text-muted">{r.who}</span>
+              <div className="grid flex-1 grid-cols-5 gap-1.5">
+                {r.cells.map((c, i) => (
+                  <span key={i} className="h-[18px] rounded-[5px]" style={{ background: CELL_BG[c] }} />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="mt-3.5 flex flex-col gap-2.5 border-t border-line pt-3">
+          {LEAVE_REQ.map((q) => (
+            <div key={q.initials} className="flex items-center gap-2.5">
+              <span className={`inline-flex h-7 w-7 flex-none items-center justify-center rounded-full text-[11px] font-bold ${q.tint}`}>
+                {q.initials}
+              </span>
+              <div className="flex-1 text-[12.5px]">
+                <span className="font-bold text-ink">{q.name}</span>{" "}
+                <span className="text-muted">{q.meta}</span>
+              </div>
+              <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-ok-bg text-ok-fg">
+                <Check size={12} strokeWidth={3} />
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Slide 2 — a browser-chrome frame around the real recruitment screenshot.
+function RecruitVisual() {
+  return (
+    <div className="overflow-hidden rounded-[14px] border border-white/10 shadow-[0_30px_70px_-24px_rgba(0,0,0,0.6)]">
+      <div className="flex items-center gap-1.5 bg-[#0a1f33] px-3 py-2.5">
+        <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+        <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+        <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
+        <span className="ml-2.5 text-[11px] text-[#7d93a6]">app.skyrh.com/recruit/needs</span>
+      </div>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/img/product-recruitment.png" alt="" aria-hidden="true" className="block w-full" />
+    </div>
+  );
+}
+
+function SlideVisual({ index }: { index: number }) {
+  if (index === 0) return <PayrollVisual />;
+  if (index === 1) return <LeaveVisual />;
+  return <RecruitVisual />;
 }
 
 export function ModulesCarousel({ lang, dict }: { lang: string; dict: Dict }) {
@@ -163,7 +256,7 @@ export function ModulesCarousel({ lang, dict }: { lang: string; dict: Dict }) {
                         {dict.more} <ArrowRight size={15} />
                       </Link>
                     </div>
-                    <SlideVisual index={i} Icon={Icon} label={s.chip} />
+                    <SlideVisual index={i} />
                   </div>
                 </div>
               );

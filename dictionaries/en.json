@@ -823,6 +823,8 @@
     "sub": "From hire to retire — modular, and connected end to end.",
     "more": "Learn more",
     "lateralAlt": "An HR team collaborating",
+    "photoTitle": "More human HR",
+    "photoSub": "your people at the heart of the platform",
     "items": {
       "payroll": {
         "title": "Payroll & payslips",
@@ -902,13 +904,16 @@
       { "value": "17", "label": "countries (CEMAC & OHADA)" },
       { "value": "99.9%", "label": "uptime" }
     ],
-    "logosTitle": "Trusted by teams at",
+    "logosTitle": "Trusted by 1,200+ companies across 17 countries",
     "logos": ["Atlantique Finance", "Sahel Télécom", "Groupe Mandela", "Kivu Logistics", "Banque Équatoriale", "Café des Volcans"],
     "testimonialsTitle": "What our customers say",
+    "prev": "Previous",
+    "next": "Next",
     "testimonials": [
       { "quote": "SkyRH made our monthly payroll close three times faster.", "author": "Awa Diallo", "role": "Head of HR, Atlantique Finance" },
       { "quote": "Finally CEMAC-compliant payroll without wrestling spreadsheets.", "author": "Jean-Marc Obiang", "role": "Administrative Director, Sahel Télécom" },
-      { "quote": "Employee self-service killed 80% of our HR email requests.", "author": "Fatou N'Diaye", "role": "HR Manager, Groupe Mandela" }
+      { "quote": "Employee self-service killed 80% of our HR email requests.", "author": "Fatou N'Diaye", "role": "HR Manager, Groupe Mandela" },
+      { "quote": "Rolled out across 4 countries in two weeks — the SkyRH team supported us end to end.", "author": "Marc Rossi", "role": "COO, Kivu Logistics" }
     ]
   },
   "footer": {

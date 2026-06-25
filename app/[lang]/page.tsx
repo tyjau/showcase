@@ -8,6 +8,7 @@ import {
   UserSearch,
   Target,
   Smartphone,
+  ShieldCheck,
   type LucideIcon,
 } from "lucide-react";
 import { getDictionary } from "@/lib/dictionaries";
@@ -104,6 +105,8 @@ function PayrollPreview({ dict }: { dict: PreviewDict }) {
 export function generateStaticParams() {
   return i18n.locales.map((lang) => ({ lang }));
 }
+
+const VALUE_ICONS: LucideIcon[] = [Calculator, ShieldCheck, Users];
 
 const featureMeta: { key: keyof Features; icon: LucideIcon }[] = [
   { key: "payroll", icon: Calculator },
@@ -203,34 +206,30 @@ export default async function Home(
         </div>
       </section>
 
-      <div className="border-b border-line bg-page">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-6 gap-y-2 px-5 py-3 text-xs text-accent">
-          {t.trust.map((item) => (
-            <span key={item} className="inline-flex items-center gap-1.5">
-              <span className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-sky-strong text-white">
-                <Check size={11} />
-              </span>
-              {item}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      <section className="mx-auto max-w-6xl px-5 pt-16">
-        <div className="mx-auto max-w-3xl text-center">
-          <span className="text-sm font-bold uppercase tracking-wide text-sky-text">{t.homeValue.eyebrow}</span>
-          <h2 className="mt-2.5 text-2xl font-extrabold tracking-tight text-balance text-heading sm:text-3xl">
+      {/* VALUE BAND (marketing + SEO) */}
+      <section className="border-b border-line bg-mist">
+        <div className="mx-auto max-w-6xl px-5 py-12 text-center">
+          <p className="text-xs font-bold uppercase tracking-[0.08em] text-accent">{t.homeValue.eyebrow}</p>
+          <h2 className="mx-auto mt-2.5 max-w-3xl text-[26px] font-extrabold tracking-tight text-balance text-heading">
             {t.homeValue.title}
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl leading-relaxed text-muted">{t.homeValue.lead}</p>
-        </div>
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
-          {t.homeValue.blocks.map((b: { title: string; desc: string }) => (
-            <div key={b.title} className="text-center md:text-left">
-              <h3 className="text-lg font-bold text-heading">{b.title}</h3>
-              <p className="mt-1.5 leading-relaxed text-muted">{b.desc}</p>
-            </div>
-          ))}
+          <p className="mx-auto mt-3 max-w-2xl leading-relaxed text-muted">{t.homeValue.lead}</p>
+          <div className="mx-auto mt-8 grid max-w-4xl gap-[18px] text-left sm:grid-cols-3">
+            {t.homeValue.blocks.map((b: { title: string; desc: string }, i: number) => {
+              const Icon = VALUE_ICONS[i] ?? Calculator;
+              return (
+                <div key={b.title} className="flex items-start gap-3">
+                  <span className="inline-flex h-10 w-10 flex-none items-center justify-center rounded-[11px] bg-tint-sky text-sky-text">
+                    <Icon size={20} />
+                  </span>
+                  <div>
+                    <div className="text-[15px] font-extrabold text-heading">{b.title}</div>
+                    <p className="mt-1 text-[13.5px] leading-snug text-muted">{b.desc}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </section>
 
@@ -239,8 +238,8 @@ export default async function Home(
           <h2 className="text-2xl font-bold text-heading sm:text-3xl">{t.features.heading}</h2>
           <p className="mx-auto mt-2 max-w-xl text-muted">{t.features.sub}</p>
         </div>
-        <div className="grid items-center gap-8 min-[895px]:grid-cols-[1fr_300px]">
-          <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid items-stretch gap-[18px] min-[895px]:grid-cols-[1.4fr_1fr]">
+          <div className="grid gap-3.5 sm:grid-cols-2">
             {featureMeta.map(({ key, icon: Icon }) => {
               const item = (t.features.items as Features)[key];
               const href =
@@ -251,26 +250,35 @@ export default async function Home(
                 <Link
                   key={key}
                   href={href}
-                  className="group rounded-xl border border-line bg-surface p-5 transition hover:-translate-y-1 hover:border-sky hover:shadow-sm"
+                  className="group flex items-start gap-3.5 rounded-2xl border border-line bg-surface p-5 transition hover:-translate-y-1 hover:shadow-[0_14px_32px_-18px_rgba(14,40,65,0.45)]"
                 >
-                  <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-lg bg-tint-sky text-sky-text">
-                    <Icon size={19} />
-                  </div>
-                  <h3 className="font-semibold text-ink">{item.title}</h3>
-                  <p className="mt-1 text-sm leading-relaxed text-muted">{item.desc}</p>
-                  <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-sky-text opacity-0 transition-opacity group-hover:opacity-100">
-                    {t.features.more} <ArrowRight size={14} />
+                  <span className="inline-flex h-11 w-11 flex-none items-center justify-center rounded-[11px] bg-tint-sky text-sky-text">
+                    <Icon size={22} />
                   </span>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="flex items-center gap-1.5 text-[16.5px] font-bold text-ink">
+                      {item.title}
+                      <ArrowRight size={14} className="flex-none text-sky-text transition group-hover:translate-x-0.5" />
+                    </h3>
+                    <p className="mt-1.5 text-sm leading-relaxed text-muted">{item.desc}</p>
+                  </div>
                 </Link>
               );
             })}
           </div>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/img/feat-photo-filled.png"
-            alt={t.features.lateralAlt}
-            className="hidden h-full max-h-[460px] w-full rounded-2xl object-cover min-[895px]:block"
-          />
+          {/* Photo tile with caption overlay */}
+          <div
+            className="relative hidden min-h-[300px] overflow-hidden rounded-2xl border border-line bg-cover bg-[center_42%] min-[895px]:block"
+            style={{ backgroundImage: "url('/img/feat-photo-filled.png')" }}
+            role="img"
+            aria-label={t.features.lateralAlt}
+          >
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-hero-bg/60" />
+            <div className="absolute inset-x-5 bottom-[18px] text-white">
+              <div className="text-base font-extrabold">{t.features.photoTitle}</div>
+              <div className="mt-0.5 text-[13px] text-[#dce8f2]">{t.features.photoSub}</div>
+            </div>
+          </div>
         </div>
       </section>
 
