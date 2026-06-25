@@ -32,6 +32,8 @@ type Dict = {
   subdomainTaken: string;
   country: string;
   countryPh: string;
+  countryDefault: string;
+  countryHelp: string;
   accountTitle: string;
   accountLead: string;
   firstName: string;
@@ -85,6 +87,30 @@ function slugify(s: string): string {
 const STEP_KEYS = ["plan", "workspace", "account", "review"] as const;
 const INPUT_CLS =
   "w-full rounded-lg border border-line px-3 py-2.5 text-sm outline-none focus:border-sky";
+
+// Curated list — countries where SkyRH compliance is available (France + francophone Africa + core EU).
+const COUNTRIES = [
+  "France",
+  "Belgique",
+  "Suisse",
+  "Luxembourg",
+  "Sénégal",
+  "Côte d'Ivoire",
+  "Cameroun",
+  "Mali",
+  "Burkina Faso",
+  "Bénin",
+  "Togo",
+  "Niger",
+  "Guinée",
+  "Gabon",
+  "Congo",
+  "RD Congo",
+  "Tchad",
+  "Maroc",
+  "Tunisie",
+  "Madagascar",
+];
 
 function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
@@ -241,7 +267,7 @@ export function SignupWizard({
     .map((m) => moduleText(m, lang).headline);
 
   return (
-    <div>
+    <div className="rounded-2xl border border-line bg-surface p-6 shadow-[0_24px_60px_-40px_rgba(8,24,40,0.5)] sm:p-8">
       <div className="mb-8 flex items-center justify-center">
         {STEP_KEYS.map((k, i) => (
           <div key={k} className="flex items-center">
@@ -266,7 +292,7 @@ export function SignupWizard({
         <div>
           <h1 className="text-2xl font-bold text-heading">{dict.planTitle}</h1>
           <p className="mt-1 text-muted">{dict.planLead}</p>
-          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+          <div className="mt-6 grid gap-3 sm:grid-cols-3">
             {catalog.packages.map((p) => {
               const pBase = unitPrice(p.prices, currency);
               const active = p.code === planCode;
@@ -314,7 +340,7 @@ export function SignupWizard({
               onChange={(e) => setEmployees(Number(e.target.value))}
               aria-label={dict.employees}
               aria-valuenow={employees}
-              className="w-48 accent-sky"
+              className="flex-1 accent-sky"
             />
             <span className="w-10 font-semibold text-ink">{employees}</span>
           </div>
@@ -408,12 +434,19 @@ export function SignupWizard({
               )}
             </Field>
             <Field label={dict.country}>
-              <input
+              <select
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
-                placeholder={dict.countryPh}
-                className={INPUT_CLS}
-              />
+                className={`${INPUT_CLS} cursor-pointer ${country ? "text-ink" : "text-muted"}`}
+              >
+                <option value="">{dict.countryDefault}</option>
+                {COUNTRIES.map((c) => (
+                  <option key={c} value={c} className="text-ink">
+                    {c}
+                  </option>
+                ))}
+              </select>
+              <p className="mt-1.5 text-xs text-muted">{dict.countryHelp}</p>
             </Field>
           </div>
         </div>
