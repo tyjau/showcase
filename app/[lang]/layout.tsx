@@ -5,6 +5,7 @@ import { i18n, type Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { RouteProgress } from "@/components/route-progress";
 import { CurrencyProvider } from "@/components/currency-provider";
 import { PartnerProvider } from "@/components/partner-provider";
 
@@ -86,6 +87,7 @@ export default async function LangLayout(props: Readonly<{ children: React.React
         </a>
         <PartnerProvider>
           <CurrencyProvider>
+            <RouteProgress />
             <SiteHeader lang={params.lang} dict={dict.nav} theme={dict.theme} />
             <div id="content" className="flex-1">{children}</div>
             <SiteFooter

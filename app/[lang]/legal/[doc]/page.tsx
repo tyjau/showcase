@@ -77,9 +77,14 @@ export default async function LegalPage(
         ))}
       </nav>
 
-      <div className="mt-6 rounded-lg border border-warn-border bg-warn-bg px-4 py-3 text-sm text-warn-fg">
-        {t.legalPage.draft}
-      </div>
+      {/* Internal "draft — finalize with counsel" warning. Shown in dev only so it
+          never reaches visitors on the production build, while still reminding the
+          team (and reviewers) that the legal copy is not yet final. */}
+      {process.env.NODE_ENV !== "production" && (
+        <div className="mt-6 rounded-lg border border-warn-border bg-warn-bg px-4 py-3 text-sm text-warn-fg">
+          {t.legalPage.draft}
+        </div>
+      )}
 
       <div className="mt-8 space-y-7">
         {sections.length > 0 ? (

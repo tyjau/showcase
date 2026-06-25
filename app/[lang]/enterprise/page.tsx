@@ -4,6 +4,7 @@ import { Cloud, Server, Package, ShieldCheck, KeyRound, Headphones, type LucideI
 import { getDictionary } from "@/lib/dictionaries";
 import { i18n, type Locale } from "@/lib/i18n";
 import { ParallaxTriangles } from "@/components/parallax-triangles";
+import { CtaBand } from "@/components/cta-band";
 
 export function generateStaticParams() {
   return i18n.locales.map((lang) => ({ lang }));
@@ -93,18 +94,12 @@ export default async function EnterprisePage(props: { params: Promise<{ lang: st
         </div>
       </section>
 
-      <section className="px-5 py-16">
-        <div className="mx-auto max-w-5xl rounded-2xl bg-gradient-to-r from-sky to-accent px-6 py-12 text-center text-white">
-          <h2 className="text-2xl font-bold sm:text-3xl">{p.ctaTitle}</h2>
-          <p className="mx-auto mt-3 max-w-lg text-[#eaf6fd]">{p.ctaBody}</p>
-          <Link
-            href={`/${lang}/contact?sujet=devis`}
-            className="mt-6 inline-flex rounded-full bg-white px-6 py-3 font-semibold text-[#156082]"
-          >
-            {p.ctaPrimary}
-          </Link>
-        </div>
-      </section>
+      <CtaBand
+        href={`/${lang}/contact?sujet=devis`}
+        title={p.ctaTitle}
+        sub={p.ctaBody}
+        button={p.ctaPrimary}
+      />
     </main>
   );
 }

@@ -16,6 +16,7 @@ import { SocialProof } from "@/components/social-proof";
 import { ParallaxTriangles } from "@/components/parallax-triangles";
 import { ModulesCarousel } from "@/components/modules-carousel";
 import { HomePacks } from "@/components/home-packs";
+import { CtaBand } from "@/components/cta-band";
 import { fetchCatalog, type Money } from "@/lib/catalog";
 import { FileText, ArrowRight } from "lucide-react";
 
@@ -261,25 +262,13 @@ export default async function Home(
 
       <SocialProof dict={t.socialProof} />
 
-      <section className="px-5 pb-16">
-        <div className="mx-auto max-w-6xl rounded-2xl bg-gradient-to-r from-sky to-accent px-6 py-14 text-center text-white">
-          <h2 className="text-2xl font-bold">{t.ctaBand.title}</h2>
-          <p className="mx-auto mt-2 max-w-lg text-[#eaf6fd]">{t.ctaBand.sub}</p>
-          <Link
-            href={`/${lang}/signup`}
-            className="mt-5 inline-block rounded-full bg-white px-6 py-3 font-semibold text-[#156082]"
-          >
-            {t.ctaBand.button}
-          </Link>
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-[#eaf6fd]">
-            {t.ctaBand.reassurances.map((r) => (
-              <span key={r} className="inline-flex items-center gap-1.5">
-                <Check size={15} /> {r}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
+      <CtaBand
+        href={`/${lang}/signup`}
+        title={t.ctaBand.title}
+        sub={t.ctaBand.sub}
+        button={t.ctaBand.button}
+        reassurances={t.ctaBand.reassurances}
+      />
     </main>
   );
 }

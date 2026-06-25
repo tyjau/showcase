@@ -9,6 +9,7 @@ import { moduleContent } from "@/lib/module-content";
 import { ModuleIcon } from "@/components/module-icon";
 import { MediaFrame } from "@/components/media-frame";
 import { Price } from "@/components/price";
+import { CtaBand } from "@/components/cta-band";
 import { ParallaxTriangles } from "@/components/parallax-triangles";
 
 export const dynamicParams = false;
@@ -223,18 +224,12 @@ export default async function ModulePage(
         )}
       </div>
 
-      <section className="px-5 pb-16">
-        <div className="mx-auto max-w-5xl rounded-2xl bg-gradient-to-r from-sky to-accent px-6 py-12 text-center text-white">
-          <h2 className="text-2xl font-bold">{t.ctaBand.title}</h2>
-          <p className="mx-auto mt-2 max-w-lg text-[#eaf6fd]">{t.ctaBand.sub}</p>
-          <Link
-            href={`/${lang}/signup`}
-            className="mt-5 inline-block rounded-full bg-white px-6 py-3 font-semibold text-[#156082]"
-          >
-            {t.ctaBand.button}
-          </Link>
-        </div>
-      </section>
+      <CtaBand
+        href={`/${lang}/signup`}
+        title={t.ctaBand.title}
+        sub={t.ctaBand.sub}
+        button={t.ctaBand.button}
+      />
     </main>
   );
 }
