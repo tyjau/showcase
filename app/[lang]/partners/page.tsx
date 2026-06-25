@@ -94,6 +94,17 @@ export default async function PartnersPage(
         </div>
       </section>
 
+      <section className="border-t border-line">
+        <div className="mx-auto max-w-6xl px-5 py-12 text-center">
+          <p className="text-sm font-semibold uppercase tracking-wide text-muted">{p.logosTitle}</p>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
+            {p.logos.map((name: string) => (
+              <span key={name} className="text-lg font-bold text-muted/70">{name}</span>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="bg-gradient-to-r from-sky to-accent text-white">
         <div className="mx-auto max-w-3xl px-5 py-14 text-center">
           <h2 className="text-2xl font-bold sm:text-3xl">{p.ctaTitle}</h2>

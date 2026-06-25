@@ -113,7 +113,14 @@
     "free": "Free",
     "showAll": "See all",
     "showLess": "Show less",
-    "addOptions": "Add options"
+    "addOptions": "Add options",
+    "faqTitle": "Frequently asked",
+    "faq": [
+      { "q": "How does per-employee billing work?", "a": "You're billed monthly for active employees only, prorated — add or remove people anytime and the next invoice adjusts automatically." },
+      { "q": "Can I change plan at any time?", "a": "Yes. Upgrade, downgrade or add modules whenever you like; changes take effect on the next cycle, with no penalty." },
+      { "q": "Does the free trial need a card?", "a": "No. The 14-day trial needs no payment method — you only enter billing details if you decide to subscribe." },
+      { "q": "Is local compliance included?", "a": "Yes. Country rules — contributions, tax bands, statutory reports — are built into every paid plan and kept up to date." }
+    ]
   },
   "packages": {
     "FREE": { "name": "Free", "description": "Self-serve HR for small teams. No payroll." },
@@ -348,6 +355,8 @@
       "Fine-grained roles across companies",
       "Multi-company overview at a glance"
     ],
+    "logosTitle": "Partners already growing with SkyRH",
+    "logos": ["Atlantique Conseil", "Sahel Digital", "Mandela Group", "Kivu Systems", "Équatorial Tech", "Volcans Partners"],
     "ctaTitle": "Become a partner",
     "ctaBody": "Join our reseller and implementation network — we'll get you set up.",
     "ctaPrimary": "Get in touch"

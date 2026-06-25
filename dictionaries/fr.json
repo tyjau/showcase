@@ -113,7 +113,14 @@
     "free": "Gratuit",
     "showAll": "Tout voir",
     "showLess": "Réduire",
-    "addOptions": "Ajouter des options"
+    "addOptions": "Ajouter des options",
+    "faqTitle": "Questions fréquentes",
+    "faq": [
+      { "q": "Comment fonctionne la facturation par employé ?", "a": "Vous êtes facturé chaque mois pour les seuls employés actifs, au prorata — ajoutez ou retirez des personnes à tout moment, la facture suivante s'ajuste automatiquement." },
+      { "q": "Puis-je changer de plan à tout moment ?", "a": "Oui. Montez, descendez de gamme ou ajoutez des modules quand vous voulez ; les changements prennent effet au cycle suivant, sans pénalité." },
+      { "q": "L'essai gratuit nécessite-t-il une carte ?", "a": "Non. L'essai de 14 jours ne demande aucun moyen de paiement — vous ne saisissez vos informations de facturation que si vous décidez de souscrire." },
+      { "q": "La conformité locale est-elle incluse ?", "a": "Oui. Les règles de chaque pays — cotisations, tranches d'impôt, déclarations légales — sont intégrées à chaque plan payant et tenues à jour." }
+    ]
   },
   "packages": {
     "FREE": { "name": "Free", "description": "RH en self-service pour les petites équipes. Sans paie." },
@@ -348,6 +355,8 @@
       "Droits fins multi-sociétés",
       "Vue d'ensemble multi-société en un coup d'œil"
     ],
+    "logosTitle": "Des partenaires qui grandissent déjà avec SkyRH",
+    "logos": ["Atlantique Conseil", "Sahel Digital", "Mandela Group", "Kivu Systems", "Équatorial Tech", "Volcans Partners"],
     "ctaTitle": "Devenir partenaire",
     "ctaBody": "Rejoignez notre réseau de revendeurs et d'intégrateurs — on vous accompagne.",
     "ctaPrimary": "Nous contacter"
