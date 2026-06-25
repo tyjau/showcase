@@ -121,71 +121,74 @@ export function PricingCalculator({
     });
   }
 
+  const tabCls = (on: boolean) =>
+    `px-4 py-2 font-semibold transition ${on ? "bg-white text-[#0E2841]" : "text-hero-fg-muted hover:text-white"}`;
+
   return (
     <div>
-      <div className="flex flex-wrap items-center justify-center gap-3">
-        <div className="inline-flex overflow-hidden rounded-md border border-line text-sm">
-          <button
-            type="button"
-            onClick={() => setAnnual(false)}
-            className={`px-3 py-1.5 transition ${!annual ? "bg-sky-strong font-semibold text-white" : "text-muted hover:text-heading"}`}
-          >
-            {dict.monthly}
-          </button>
-          <button
-            type="button"
-            onClick={() => setAnnual(true)}
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 transition ${annual ? "bg-sky-strong font-semibold text-white" : "text-muted hover:text-heading"}`}
-          >
-            {dict.annual}
-            <span className="rounded-full bg-ok-bg px-1.5 text-[11px] text-ok-fg">
-              {dict.annualSave}
-            </span>
-          </button>
-        </div>
-        <div className="inline-flex items-center gap-2 text-sm">
-          <span className="text-muted">{dict.employees}</span>
-          <input
-            type="range"
-            min={1}
-            max={500}
-            step={1}
-            value={employees}
-            onChange={(e) => setEmployees(Number(e.target.value))}
-            aria-label={dict.employees}
-            aria-valuenow={employees}
-            className="w-28 accent-sky sm:w-44"
-          />
-          <span className="w-10 font-semibold text-ink">{employees}</span>
-        </div>
-      </div>
+      {/* HERO + controls (dark) */}
+      <section className="relative overflow-hidden bg-hero-bg text-hero-fg">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(820px_360px_at_80%_-12%,rgba(15,158,213,0.20),transparent_70%)]" />
+        <div className="relative mx-auto max-w-6xl px-5 py-16 text-center">
+          <h1 className="text-4xl font-extrabold leading-[1.1] tracking-tight text-balance sm:text-[42px]">
+            {dict.heading}
+          </h1>
+          <p className="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-hero-fg-muted">{dict.sub}</p>
 
-      <div className="mt-6 flex justify-center">
-        <div className="inline-flex overflow-hidden rounded-full border border-line text-sm">
-          <button
-            type="button"
-            onClick={() => setMode("packages")}
-            className={`px-4 py-2 transition ${mode === "packages" ? "bg-navy font-semibold text-white" : "text-muted hover:text-heading"}`}
-          >
-            {dict.tabPackages}
-          </button>
-          <button
-            type="button"
-            onClick={() => setMode("compare")}
-            className={`px-4 py-2 transition ${mode === "compare" ? "bg-navy font-semibold text-white" : "text-muted hover:text-heading"}`}
-          >
-            {dict.tabCompare}
-          </button>
-          <button
-            type="button"
-            onClick={() => setMode("custom")}
-            className={`px-4 py-2 transition ${mode === "custom" ? "bg-navy font-semibold text-white" : "text-muted hover:text-heading"}`}
-          >
-            {dict.tabCustom}
-          </button>
-        </div>
-      </div>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <div className="inline-flex overflow-hidden rounded-md border border-white/25 text-sm">
+              <button
+                type="button"
+                onClick={() => setAnnual(false)}
+                className={`px-3 py-1.5 transition ${!annual ? "bg-sky-strong font-semibold text-white" : "text-hero-fg-muted hover:text-white"}`}
+              >
+                {dict.monthly}
+              </button>
+              <button
+                type="button"
+                onClick={() => setAnnual(true)}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 transition ${annual ? "bg-sky-strong font-semibold text-white" : "text-hero-fg-muted hover:text-white"}`}
+              >
+                {dict.annual}
+                <span className="rounded-full bg-ok-bg px-1.5 text-[11px] text-ok-fg">
+                  {dict.annualSave}
+                </span>
+              </button>
+            </div>
+            <div className="inline-flex items-center gap-2 text-sm">
+              <span className="text-hero-fg-muted">{dict.employees}</span>
+              <input
+                type="range"
+                min={1}
+                max={500}
+                step={1}
+                value={employees}
+                onChange={(e) => setEmployees(Number(e.target.value))}
+                aria-label={dict.employees}
+                aria-valuenow={employees}
+                className="w-28 accent-sky sm:w-44"
+              />
+              <span className="w-10 font-semibold text-white">{employees}</span>
+            </div>
+          </div>
 
+          <div className="mt-5 flex justify-center">
+            <div className="inline-flex overflow-hidden rounded-full border border-white/25 text-sm">
+              <button type="button" onClick={() => setMode("packages")} className={tabCls(mode === "packages")}>
+                {dict.tabPackages}
+              </button>
+              <button type="button" onClick={() => setMode("compare")} className={tabCls(mode === "compare")}>
+                {dict.tabCompare}
+              </button>
+              <button type="button" onClick={() => setMode("custom")} className={tabCls(mode === "custom")}>
+                {dict.tabCustom}
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="mx-auto max-w-6xl px-5 py-12">
       {mode === "packages" ? (
         <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {catalog.packages.map((p) => {
@@ -204,22 +207,22 @@ export function PricingCalculator({
             return (
               <div
                 key={p.code}
-                className={`flex flex-col rounded-xl bg-surface p-5 ${popular ? "border-2 border-sky" : "border border-line"}`}
+                className={`relative flex flex-col rounded-xl bg-surface p-5 ${popular ? "border-2 border-sky" : "border border-line"}`}
               >
                 {popular && (
-                  <div className="mb-2 inline-block self-start rounded-full bg-tint-sky px-2 py-0.5 text-[11px] font-semibold text-sky-text">
+                  <span className="absolute -top-3 left-5 rounded-full bg-sky-strong px-3 py-1 text-[11px] font-bold text-white">
                     {dict.popular}
-                  </div>
+                  </span>
                 )}
                 <div className="text-sm font-semibold text-ink">{pkgName(p.code, p.name)}</div>
                 <div className="mt-2">
                   {isFree ? (
-                    <span className="text-2xl font-bold text-heading">
+                    <span className="text-[34px] font-extrabold text-heading">
                       {dict.free}
                     </span>
                   ) : (
                     <>
-                      <span className="text-2xl font-bold text-heading">
+                      <span className="text-[34px] font-extrabold text-heading">
                         {fmtRate(rate, currency)}
                       </span>
                       <span className="text-xs text-muted"> {dict.perEmployee}</span>
@@ -328,13 +331,19 @@ export function PricingCalculator({
                 <th className="px-3 py-3 text-left font-semibold text-heading">
                   {dict.compareModule}
                 </th>
-                {catalog.packages.map((p) => (
-                  <th key={p.code} className="px-3 py-3 text-center font-semibold text-heading">
-                    <span className={p.code === "BUSINESS" ? "text-sky-text" : ""}>
-                      {pkgName(p.code, p.name)}
-                    </span>
-                  </th>
-                ))}
+                {catalog.packages.map((p) => {
+                  const pBase = unitPrice(p.prices, currency);
+                  return (
+                    <th key={p.code} className="px-3 py-3 text-center font-semibold text-heading">
+                      <div className={p.code === "BUSINESS" ? "text-sky-text" : ""}>
+                        {pkgName(p.code, p.name)}
+                      </div>
+                      <div className="mt-0.5 text-xs font-normal text-muted">
+                        {pBase === 0 ? dict.free : `${fmtRate(pBase * factor, currency)} ${dict.perEmployee}`}
+                      </div>
+                    </th>
+                  );
+                })}
               </tr>
             </thead>
             <tbody>
@@ -348,7 +357,9 @@ export function PricingCalculator({
                     {catalog.packages.map((p) => (
                       <td key={p.code} className="px-3 py-2.5 text-center">
                         {p.modules.includes(code) ? (
-                          <Check size={16} className="mx-auto text-sky-text" />
+                          <span className="mx-auto inline-flex h-6 w-6 items-center justify-center rounded-full bg-tint-sky text-sky-text">
+                            <Check size={14} strokeWidth={3} />
+                          </span>
                         ) : (
                           <span className="text-muted">—</span>
                         )}
@@ -377,10 +388,11 @@ export function PricingCalculator({
         </div>
       ) : (
         <div className="mt-8">
-          <p className="mb-4 text-center text-sm text-muted">
+          <p className="mb-4 text-sm text-muted">
             {dict.selectModules}
           </p>
-          <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 lg:grid-cols-[1.6fr_1fr] lg:items-start">
+          <div className="grid gap-3 sm:grid-cols-2">
             {catalog.modules.map((m) => {
               const checked = selected.has(m.code);
               const auto = resolved.has(m.code) && !checked;
@@ -422,11 +434,11 @@ export function PricingCalculator({
               );
             })}
           </div>
-          <div className="mx-auto mt-6 max-w-sm rounded-xl border border-line bg-surface p-5 text-center">
+          <div className="rounded-2xl border border-line bg-surface p-6 text-center lg:sticky lg:top-24">
             <div className="text-xs uppercase tracking-wide text-muted">
               {dict.estTotal}
             </div>
-            <div className="mt-1 text-3xl font-bold text-heading">
+            <div className="mt-1 text-[34px] font-extrabold text-heading">
               {fmtMoney(periodTotal(customRate), currency)}
               <span className="text-sm font-normal text-muted"> {periodLabel}</span>
             </div>
@@ -435,13 +447,15 @@ export function PricingCalculator({
             </div>
             <Link
               href={`/${lang}/signup`}
-              className="mt-4 block rounded-full bg-sky-strong px-4 py-2 text-sm font-semibold text-white"
+              className="mt-4 block rounded-full bg-sky-strong px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#08607f]"
             >
               {dict.startTrial}
             </Link>
           </div>
+          </div>
         </div>
       )}
+      </div>
     </div>
   );
 }
