@@ -526,6 +526,7 @@
     "title": "Everything to get started and go further",
     "lead": "Documentation, guides and help — straight from the product itself.",
     "browseHelp": "Browse the help center",
+    "searchPlaceholder": "Search a guide, a module, an answer…",
     "cards": [
       { "icon": "video", "title": "Webinars & demos", "desc": "Live sessions and replays to get hands-on with every module.", "cta": "See sessions", "href": "contact?subject=demo" },
       { "icon": "help", "title": "Help center", "desc": "Answers, tutorials and troubleshooting.", "cta": "Get help", "href": "help" },

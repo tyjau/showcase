@@ -526,6 +526,7 @@
     "title": "Tout pour démarrer et aller plus loin",
     "lead": "Documentation, guides et aide — issus du produit lui-même.",
     "browseHelp": "Parcourir le centre d'aide",
+    "searchPlaceholder": "Rechercher un guide, un module, une réponse…",
     "cards": [
       { "icon": "video", "title": "Webinaires & démos", "desc": "Sessions live et replays pour prendre en main chaque module.", "cta": "Voir les sessions", "href": "contact?sujet=demo" },
       { "icon": "help", "title": "Centre d'aide", "desc": "Réponses, tutoriels et dépannage.", "cta": "Obtenir de l'aide", "href": "help" },

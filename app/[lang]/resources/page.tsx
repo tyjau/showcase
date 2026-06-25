@@ -7,12 +7,12 @@ import {
   Download,
   BookOpen,
   ArrowRight,
-  Search,
   type LucideIcon,
 } from "lucide-react";
 import { i18n, type Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
 import { ParallaxTriangles } from "@/components/parallax-triangles";
+import { ResourceSearch } from "@/components/resource-search";
 
 export function generateStaticParams() {
   return i18n.locales.map((lang) => ({ lang }));
@@ -52,12 +52,7 @@ export default async function ResourcesPage(
             {p.title}
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-hero-fg-muted">{p.lead}</p>
-          <Link
-            href={href("help")}
-            className="mt-6 inline-flex items-center gap-2 rounded-full bg-sky-strong px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#08607f]"
-          >
-            <Search size={16} /> {p.browseHelp}
-          </Link>
+          <ResourceSearch lang={lang} placeholder={p.searchPlaceholder} />
         </div>
       </section>
 
@@ -116,7 +111,7 @@ export default async function ResourcesPage(
         </div>
 
         {/* Help categories + FAQ */}
-        <div id="aide" className="mt-16 grid gap-10 rounded-2xl border border-line bg-surface p-6 sm:p-8 lg:grid-cols-2">
+        <div id="aide" className="mt-16 grid gap-10 rounded-2xl border border-line bg-mist p-6 sm:p-8 lg:grid-cols-2">
           <div>
             <span className="text-sm font-semibold uppercase tracking-wide text-accent">{p.helpEyebrow}</span>
             <h2 className="mt-2 text-2xl font-extrabold tracking-tight text-heading">{p.helpTitle}</h2>
