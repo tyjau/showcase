@@ -9,7 +9,8 @@ export function generateStaticParams() {
   return i18n.locales.map((lang) => ({ lang }));
 }
 
-export async function generateMetadata({ params }: { params: { lang: Locale } }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<{ lang: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const t = await getDictionary(params.lang);
   return { title: t.enterprisePage.title };
 }
@@ -17,7 +18,8 @@ export async function generateMetadata({ params }: { params: { lang: Locale } })
 const MODE_ICONS: LucideIcon[] = [Cloud, Server, Package];
 const BENEFIT_ICONS: LucideIcon[] = [ShieldCheck, KeyRound, Headphones];
 
-export default async function EnterprisePage({ params }: { params: { lang: Locale } }) {
+export default async function EnterprisePage(props: { params: Promise<{ lang: string }> }) {
+  const params = await props.params;
   const t = await getDictionary(params.lang);
   const p = t.enterprisePage;
   const lang = params.lang;

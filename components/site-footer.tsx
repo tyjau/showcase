@@ -70,7 +70,7 @@ export function SiteFooter({
   dict,
   legal,
 }: {
-  lang: Locale;
+  lang: string;
   dict: FooterDict;
   legal: LegalDict;
 }) {

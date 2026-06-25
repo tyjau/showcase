@@ -14,22 +14,24 @@ export function generateStaticParams() {
   return i18n.locales.map((lang) => ({ lang }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { lang: Locale };
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ lang: string }>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const t = await getDictionary(params.lang);
   return { title: t.seo.pages.partners };
 }
 
 const TYPE_ICONS = [Store, Wrench, Share2];
 
-export default async function PartnersPage({
-  params,
-}: {
-  params: { lang: Locale };
-}) {
+export default async function PartnersPage(
+  props: {
+    params: Promise<{ lang: string }>;
+  }
+) {
+  const params = await props.params;
   const t = await getDictionary(params.lang);
   const lang = params.lang;
   const p = t.partnersPage;

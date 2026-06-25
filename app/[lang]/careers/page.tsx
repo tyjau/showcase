@@ -7,7 +7,8 @@ export function generateStaticParams() {
   return i18n.locales.map((lang) => ({ lang }));
 }
 
-export default async function CareersPage({ params }: { params: { lang: Locale } }) {
+export default async function CareersPage(props: { params: Promise<{ lang: string }> }) {
+  const params = await props.params;
   const t = await getDictionary(params.lang);
   const p = t.careersPage;
   return (

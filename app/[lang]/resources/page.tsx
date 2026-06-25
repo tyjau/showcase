@@ -7,11 +7,12 @@ export function generateStaticParams() {
   return i18n.locales.map((lang) => ({ lang }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { lang: Locale };
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ lang: string }>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const t = await getDictionary(params.lang);
   // Folded into the help center; keep the canonical on /help.
   return { title: t.helpPage.eyebrow, alternates: { canonical: `/${params.lang}/help` } };
@@ -19,11 +20,12 @@ export async function generateMetadata({
 
 // /resources is folded into /help (the knowledge base). Redirect for any old
 // links/bookmarks; the nav + footer now point straight to /help.
-export default async function ResourcesPage({
-  params,
-}: {
-  params: { lang: Locale };
-}) {
+export default async function ResourcesPage(
+  props: {
+    params: Promise<{ lang: string }>;
+  }
+) {
+  const params = await props.params;
   const t = await getDictionary(params.lang);
   return <RedirectTo href={`/${params.lang}/help`} label={t.helpPage.eyebrow} />;
 }

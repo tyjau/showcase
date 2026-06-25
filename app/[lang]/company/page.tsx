@@ -16,22 +16,24 @@ export function generateStaticParams() {
   return i18n.locales.map((lang) => ({ lang }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { lang: Locale };
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ lang: string }>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const t = await getDictionary(params.lang);
   return { title: t.seo.pages.company };
 }
 
 const VALUE_ICONS = [ShieldCheck, HeartHandshake, Sparkles, Lock];
 
-export default async function CompanyPage({
-  params,
-}: {
-  params: { lang: Locale };
-}) {
+export default async function CompanyPage(
+  props: {
+    params: Promise<{ lang: string }>;
+  }
+) {
+  const params = await props.params;
   const t = await getDictionary(params.lang);
   const lang = params.lang;
   const c = t.companyPage;

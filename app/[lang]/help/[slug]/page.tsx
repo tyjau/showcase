@@ -14,21 +14,23 @@ export function generateStaticParams() {
   );
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { lang: Locale; slug: string };
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ lang: string; slug: string }>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const a = helpArticle(params.slug);
   const t = await getDictionary(params.lang);
   return { title: a ? helpText(a, params.lang).title : t.helpPage.eyebrow };
 }
 
-export default async function HelpArticlePage({
-  params,
-}: {
-  params: { lang: Locale; slug: string };
-}) {
+export default async function HelpArticlePage(
+  props: {
+    params: Promise<{ lang: string; slug: string }>;
+  }
+) {
+  const params = await props.params;
   const a = helpArticle(params.slug);
   if (!a) notFound();
   const t = await getDictionary(params.lang);

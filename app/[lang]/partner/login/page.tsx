@@ -7,20 +7,22 @@ export function generateStaticParams() {
   return i18n.locales.map((lang) => ({ lang }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { lang: Locale };
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ lang: string }>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const t = await getDictionary(params.lang);
   return { title: t.partnerLoginPage.title };
 }
 
-export default async function PartnerLoginPage({
-  params,
-}: {
-  params: { lang: Locale };
-}) {
+export default async function PartnerLoginPage(
+  props: {
+    params: Promise<{ lang: string }>;
+  }
+) {
+  const params = await props.params;
   const t = await getDictionary(params.lang);
 
   return (

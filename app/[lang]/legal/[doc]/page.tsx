@@ -15,21 +15,23 @@ export function generateStaticParams() {
   );
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { lang: Locale; doc: string };
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ lang: string; doc: string }>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const t = await getDictionary(params.lang);
   const docs = t.legalPage.docs as Record<string, string>;
   return { title: docs[params.doc] ?? t.seo.pages.company };
 }
 
-export default async function LegalPage({
-  params,
-}: {
-  params: { lang: Locale; doc: string };
-}) {
+export default async function LegalPage(
+  props: {
+    params: Promise<{ lang: string; doc: string }>;
+  }
+) {
+  const params = await props.params;
   if (!DOCS.includes(params.doc)) notFound();
 
   const t = await getDictionary(params.lang);

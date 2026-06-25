@@ -13,7 +13,8 @@ const STATUS_STYLE: Record<string, { dot: string; text: string; bg: string }> = 
   incident: { dot: "bg-err-fg", text: "text-err-fg", bg: "bg-err-bg" },
 };
 
-export default async function StatusPage({ params }: { params: { lang: Locale } }) {
+export default async function StatusPage(props: { params: Promise<{ lang: string }> }) {
+  const params = await props.params;
   const t = await getDictionary(params.lang);
   const p = t.statusPage;
   const label: Record<string, string> = {

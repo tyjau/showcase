@@ -30,11 +30,12 @@ export async function generateStaticParams() {
   );
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { lang: Locale; module: string };
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ lang: string; module: string }>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const catalog = await fetchCatalog();
   const m = catalog.modules.find((x) => x.code === params.module);
   const t = await getDictionary(params.lang);
@@ -43,11 +44,12 @@ export async function generateMetadata({
   };
 }
 
-export default async function ModulePage({
-  params,
-}: {
-  params: { lang: Locale; module: string };
-}) {
+export default async function ModulePage(
+  props: {
+    params: Promise<{ lang: string; module: string }>;
+  }
+) {
+  const params = await props.params;
   const catalog = await fetchCatalog();
   const m = catalog.modules.find((x) => x.code === params.module);
   if (!m) notFound();

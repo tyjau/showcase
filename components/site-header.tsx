@@ -32,7 +32,7 @@ export function SiteHeader({
   dict,
   theme,
 }: {
-  lang: Locale;
+  lang: string;
   dict: NavDict;
   theme: ThemeDict;
 }) {

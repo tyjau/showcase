@@ -22,11 +22,12 @@ export function generateStaticParams() {
   return i18n.locales.map((lang) => ({ lang }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { lang: Locale };
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ lang: string }>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const t = await getDictionary(params.lang);
   return { title: t.helpPage.eyebrow };
 }
@@ -37,11 +38,12 @@ const CAT_ICON: Record<HelpCategory, LucideIcon> = {
   security: ShieldCheck,
 };
 
-export default async function HelpPage({
-  params,
-}: {
-  params: { lang: Locale };
-}) {
+export default async function HelpPage(
+  props: {
+    params: Promise<{ lang: string }>;
+  }
+) {
+  const params = await props.params;
   const t = await getDictionary(params.lang);
   const lang = params.lang;
   const h = t.helpPage;

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { i18n, type Locale } from "@/lib/i18n";
 
-export function LocaleSwitcher({ current }: { current: Locale }) {
+export function LocaleSwitcher({ current }: { current: string }) {
   const pathname = usePathname() || `/${current}`;
 
   const hrefFor = (loc: Locale) => {

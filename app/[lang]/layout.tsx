@@ -15,11 +15,12 @@ const mulish = Mulish({
   display: "swap",
 });
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { lang: Locale };
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ lang: string }>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const t = await getDictionary(params.lang);
   return {
     metadataBase: new URL(
@@ -47,10 +48,13 @@ export function generateStaticParams() {
   return i18n.locales.map((lang) => ({ lang }));
 }
 
-export default async function LangLayout({
-  children,
-  params,
-}: Readonly<{ children: React.ReactNode; params: { lang: Locale } }>) {
+export default async function LangLayout(props: Readonly<{ children: React.ReactNode; params: Promise<{ lang: string }> }>) {
+  const params = await props.params;
+
+  const {
+    children
+  } = props;
+
   const dict = await getDictionary(params.lang);
   return (
     <html

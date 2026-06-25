@@ -122,11 +122,12 @@ type Features = {
   selfservice: { title: string; desc: string };
 };
 
-export default async function Home({
-  params,
-}: {
-  params: { lang: Locale };
-}) {
+export default async function Home(
+  props: {
+    params: Promise<{ lang: string }>;
+  }
+) {
+  const params = await props.params;
   const t = await getDictionary(params.lang);
   const lang = params.lang;
 
