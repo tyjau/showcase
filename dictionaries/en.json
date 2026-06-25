@@ -218,6 +218,8 @@
     "contactCta": "Contact us"
   },
   "legalPage": {
+    "eyebrow": "Legal",
+    "lastUpdate": "Last updated: February 2026",
     "draft": "Draft — to be finalized with legal counsel before launch.",
     "back": "Back to home",
     "body": "This page is a placeholder. The final version will be published here before launch. For any question in the meantime, please reach out via the contact page.",

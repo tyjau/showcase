@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ArrowLeft, FileText } from "lucide-react";
+import { FileText } from "lucide-react";
 import { i18n, type Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
 
@@ -43,24 +43,25 @@ export default async function LegalPage(
       .content?.[params.doc] ?? [];
 
   return (
-    <main className="mx-auto max-w-3xl px-5 py-14">
-      <Link
-        href={`/${lang}`}
-        className="inline-flex items-center gap-1.5 text-sm font-semibold text-sky-text"
-      >
-        <ArrowLeft size={15} />
-        {t.legalPage.back}
-      </Link>
-
-      <div className="mt-6 flex items-center gap-3">
-        <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-tint-sky text-sky-text">
-          <FileText size={22} />
+    <main>
+      {/* HERO band */}
+      <section className="relative overflow-hidden bg-hero-bg text-hero-fg">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(700px_300px_at_85%_-20%,rgba(15,158,213,0.18),transparent_70%)]" />
+        <div className="relative mx-auto max-w-3xl px-5 py-14">
+          <span className="text-sm font-bold uppercase tracking-wide text-sky-soft">{t.legalPage.eyebrow}</span>
+          <div className="mt-3 flex items-center gap-3.5">
+            <span className="inline-flex h-12 w-12 flex-none items-center justify-center rounded-[13px] bg-sky-strong/20 text-sky-soft">
+              <FileText size={24} />
+            </span>
+            <h1 className="text-4xl font-extrabold tracking-tight text-white">{title}</h1>
+          </div>
+          <p className="mt-3 text-sm text-hero-fg-muted">{t.legalPage.lastUpdate}</p>
         </div>
-        <h1 className="text-3xl font-bold text-heading">{title}</h1>
-      </div>
+      </section>
 
+      <div className="mx-auto max-w-3xl px-5 py-12">
       {/* Document selector — at the top so it reads as a table of contents. */}
-      <nav data-testid="legal-tabs" className="mt-6 flex flex-wrap gap-2">
+      <nav data-testid="legal-tabs" className="flex flex-wrap gap-2">
         {DOCS.map((d) => (
           <Link
             key={d}
@@ -97,6 +98,7 @@ export default async function LegalPage(
         ) : (
           <p className="leading-relaxed text-ink">{t.legalPage.body}</p>
         )}
+      </div>
       </div>
     </main>
   );
