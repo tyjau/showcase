@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
+import { formatRate } from "@/lib/money";
 import {
   Package,
   BarChart3,
@@ -40,12 +41,6 @@ type Invoice = {
   status: string;
 };
 
-function money(n: number, cur: string): string {
-  const v = Number(n) || 0;
-  if (cur === "XAF") return `${v.toLocaleString("en-US")} XAF`;
-  return `${cur === "EUR" ? "€" : "$"}${v.toFixed(2)}`;
-}
-
 function StatusChip({ status }: { status: string }) {
   const cls: Record<string, string> = {
     paid: "bg-ok-bg text-ok-fg",
@@ -60,6 +55,8 @@ function StatusChip({ status }: { status: string }) {
 
 // Factures tab — invoice list + per-row PDF download (#6, base64 → Blob → download).
 function InvoicesTab({ dict }: { dict: Dict }) {
+  const lang = (usePathname() || "").split("/")[1] === "en" ? "en" : "fr";
+  const money = (n: number, c: string) => formatRate(n, c, lang);
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [state, setState] = useState<"loading" | "error" | "ready">("loading");
   const [downloading, setDownloading] = useState<number | null>(null);

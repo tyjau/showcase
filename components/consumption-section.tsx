@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { apiAuthed } from "@/lib/api";
+import { formatRate } from "@/lib/money";
 
 type Dict = Record<string, string>;
 type Line = { kind: string; label: string; quantity: number; unit_amount: number; amount: number };
@@ -20,12 +22,6 @@ type Consumption = {
   total?: number;
 };
 
-function money(n: number, cur: string): string {
-  const v = Number(n) || 0;
-  if (cur === "XAF") return `${v.toLocaleString("en-US")} XAF`;
-  return `${cur === "EUR" ? "€" : "$"}${v.toFixed(2)}`;
-}
-
 function Metric({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-xl border border-line p-4">
@@ -38,6 +34,8 @@ function Metric({ label, value }: { label: string; value: string }) {
 // Consumption detail (#7) — current-period projected bill from my_consumption, the same
 // breakdown the billing run produces (plan package + add-ons + discounts).
 export function ConsumptionSection({ dict }: { dict: Dict }) {
+  const lang = (usePathname() || "").split("/")[1] === "en" ? "en" : "fr";
+  const money = (n: number, c: string) => formatRate(n, c, lang);
   const [data, setData] = useState<Consumption | null>(null);
   const [state, setState] = useState<"loading" | "error" | "ready" | "none">("loading");
 

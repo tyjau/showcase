@@ -75,7 +75,7 @@ export default async function FeaturesPage(
               </h2>
               <span className="h-px flex-1 bg-line" />
               <span className="text-xs font-semibold text-muted">
-                {groups[cat].length} {m.modulesCount}
+                {groups[cat].length} {groups[cat].length === 1 ? m.moduleCountOne : m.modulesCount}
               </span>
             </div>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

@@ -12,6 +12,7 @@ import {
 import { useCurrency } from "./currency-provider";
 import { usePartner } from "./partner-provider";
 import { apiPost } from "@/lib/api";
+import { formatMoney, formatRate } from "@/lib/money";
 
 type Dict = {
   steps: Record<string, string>;
@@ -62,18 +63,6 @@ function unitPrice(prices: Money[], currency: string): number {
   return p ? p.amount : 0;
 }
 
-function fmtRate(amount: number, currency: string): string {
-  const v = Math.round(amount * 100) / 100;
-  if (currency === "XAF") return `${v.toLocaleString("en-US")} XAF`;
-  return `${currency === "EUR" ? "€" : "$"}${v}`;
-}
-
-function fmtMoney(amount: number, currency: string): string {
-  const v = Math.round(amount).toLocaleString("en-US");
-  if (currency === "XAF") return `${v} XAF`;
-  return `${currency === "EUR" ? "€" : "$"}${v}`;
-}
-
 function slugify(s: string): string {
   return s
     .toLowerCase()
@@ -89,27 +78,35 @@ const INPUT_CLS =
   "w-full rounded-lg border border-line px-3 py-2.5 text-sm outline-none focus:border-sky";
 
 // Curated list — countries where SkyRH compliance is available (France + francophone Africa + core EU).
+// Countries where SkyRH payroll compliance is GO (productionSignoff.signed === true).
+// Mirrors the backend's authoritative source: saas/payroll_compliance/countries/*.json
+// (24 signed). The backend exposes no public endpoint for this list, so it is copied
+// here — keep in sync when a new country is signed off. Sorted by FR name.
 const COUNTRIES = [
-  "France",
+  "Allemagne",
   "Belgique",
-  "Suisse",
-  "Luxembourg",
-  "Sénégal",
-  "Côte d'Ivoire",
-  "Cameroun",
-  "Mali",
-  "Burkina Faso",
   "Bénin",
-  "Togo",
-  "Niger",
-  "Guinée",
+  "Burkina Faso",
+  "Cameroun",
+  "Centrafrique",
+  "Comores",
+  "Congo-Brazzaville",
+  "Côte d'Ivoire",
+  "Espagne",
+  "France",
   "Gabon",
-  "Congo",
-  "RD Congo",
-  "Tchad",
-  "Maroc",
-  "Tunisie",
-  "Madagascar",
+  "Guinée",
+  "Guinée Équatoriale",
+  "Guinée-Bissau",
+  "Italie",
+  "Luxembourg",
+  "Mali",
+  "Niger",
+  "Pays-Bas",
+  "Portugal",
+  "Sénégal",
+  "Suisse",
+  "Togo",
 ];
 
 function Field({ label, children }: { label: string; children: ReactNode }) {
@@ -142,6 +139,9 @@ export function SignupWizard({
   legal: { terms: string; privacy: string };
 }) {
   const { currency } = useCurrency();
+  // Locale-aware money formatters (FR places the symbol after: "1 234 $US").
+  const fmtRate = (amount: number, cur: string) => formatRate(amount, cur, lang);
+  const fmtMoney = (amount: number, cur: string) => formatMoney(amount, cur, lang);
   const { partner, refCode, utm } = usePartner();
   const [step, setStep] = useState(0);
   const [planCode, setPlanCode] = useState("BUSINESS");

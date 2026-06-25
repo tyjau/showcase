@@ -3,7 +3,9 @@
 import { useEffect, useState } from "react";
 import { loadStripe, type Stripe } from "@stripe/stripe-js";
 import { Elements, PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import { usePathname } from "next/navigation";
 import { apiAuthed } from "@/lib/api";
+import { formatRate } from "@/lib/money";
 
 type Dict = Record<string, string>;
 type Invoice = {
@@ -13,12 +15,6 @@ type Invoice = {
   period_start?: string | null;
   period_end?: string | null;
 };
-
-function money(n: number, cur: string): string {
-  const v = Number(n) || 0;
-  if (cur === "XAF") return `${v.toLocaleString("en-US")} XAF`;
-  return `${cur === "EUR" ? "€" : "$"}${v.toFixed(2)}`;
-}
 
 // Inner form (mounted inside <Elements> with the PaymentIntent client_secret). Confirms
 // the payment with Stripe, then records it server-side (pay_order_confirm) so the order
@@ -71,6 +67,8 @@ function PayForm({ dict, onPaid }: { dict: Dict; onPaid: () => void }) {
 // For trial / already-active orders, pay_order returns already_active and this renders
 // nothing.
 export function OrderCheckout({ dict, onActivated }: { dict: Dict; onActivated?: () => void }) {
+  const lang = (usePathname() || "").split("/")[1] === "en" ? "en" : "fr";
+  const money = (n: number, c: string) => formatRate(n, c, lang);
   const [state, setState] = useState<"loading" | "none" | "due" | "paid">("loading");
   const [invoice, setInvoice] = useState<Invoice | null>(null);
   const [stripePromise, setStripePromise] = useState<Promise<Stripe | null> | null>(null);

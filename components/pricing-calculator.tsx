@@ -12,24 +12,11 @@ import {
 } from "@/lib/catalog";
 import { ModuleIcon } from "./module-icon";
 import { useCurrency } from "./currency-provider";
+import { formatMoney, formatRate } from "@/lib/money";
 
 function unitPrice(prices: Money[], currency: string): number {
   const p = prices.find((x) => x.currency === currency && x.cycle === "monthly");
   return p ? p.amount : 0;
-}
-
-function fmtMoney(amount: number, currency: string): string {
-  const v = Math.round(amount).toLocaleString("en-US");
-  if (currency === "XAF") return `${v} XAF`;
-  return `${currency === "EUR" ? "€" : "$"}${v}`;
-}
-
-function fmtRate(amount: number, currency: string): string {
-  const v = Math.round(amount * 100) / 100;
-  if (currency === "XAF") return `${v.toLocaleString("en-US")} XAF`;
-  // Whole rates stay clean (€4); fractional rates carry both decimals (€3.20, not €3.2).
-  const str = Number.isInteger(v) ? String(v) : v.toFixed(2);
-  return `${currency === "EUR" ? "€" : "$"}${str}`;
 }
 
 type Dict = Record<string, string>;
@@ -46,6 +33,9 @@ export function PricingCalculator({
   packages?: Record<string, Partial<PackageText>>;
 }) {
   const { currency } = useCurrency();
+  // Locale-aware formatters (capture the active lang so FR shows "1 234 $US").
+  const fmtMoney = (amount: number, cur: string) => formatMoney(amount, cur, lang);
+  const fmtRate = (amount: number, cur: string) => formatRate(amount, cur, lang);
   const [annual, setAnnual] = useState(false);
   const [employees, setEmployees] = useState(25);
   const [mode, setMode] = useState<"packages" | "compare" | "custom">("packages");

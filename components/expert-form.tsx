@@ -27,10 +27,12 @@ export function ExpertForm({ dict }: { dict: Dict }) {
   const [company, setCompany] = useState("");
   const [email, setEmail] = useState("");
   const [msg, setMsg] = useState("");
+  const [hp, setHp] = useState(""); // honeypot — humans never fill this
   const [state, setState] = useState<"idle" | "sending" | "sent">("idle");
 
   async function submit() {
     if (state === "sending") return;
+    if (hp) return setState("sent"); // bot filled the honeypot → silently drop
     if (!email.trim() || !msg.trim()) return; // request_demo requires email + message
     setState("sending");
     const res = await apiPost("request_demo", {
@@ -96,6 +98,16 @@ export function ExpertForm({ dict }: { dict: Dict }) {
                 rows={3}
                 className={`${INPUT} col-span-2 resize-y`}
                 aria-label={dict.expertMsg}
+              />
+              {/* Honeypot — off-screen, off the tab order. */}
+              <input
+                type="text"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                value={hp}
+                onChange={(e) => setHp(e.target.value)}
+                className="pointer-events-none absolute -left-[9999px] h-0 w-0"
               />
             </div>
             <button

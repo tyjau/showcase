@@ -45,6 +45,7 @@ export function ContactForm({ dict }: { dict: Dict }) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [sent, setSent] = useState(false);
+  const [hp, setHp] = useState(""); // honeypot — humans never fill this
 
   // Prefill subject from ?sujet= and, for a job application, the role from ?poste=
   // (client-only read; no Suspense boundary needed in the static export).
@@ -59,6 +60,10 @@ export function ContactForm({ dict }: { dict: Dict }) {
 
   async function submit() {
     setError(null);
+    // Honeypot: a bot that filled the hidden field is silently dropped (no API call),
+    // shown a fake success so it doesn't retry. The backend has no captcha, only a
+    // per-email rate limit, so this front gate filters the cheapest spam bots.
+    if (hp) return setSent(true);
     if (!EMAIL.test(email.trim())) return setError(dict.errEmail);
     if (message.trim().length === 0) return setError(dict.errMessage);
     setSubmitting(true);
@@ -145,6 +150,20 @@ export function ContactForm({ dict }: { dict: Dict }) {
               className={`${INPUT} resize-y`}
             />
           </label>
+
+          {/* Honeypot — visually hidden, off the tab order; bots fill it, humans don't. */}
+          <div aria-hidden="true" className="pointer-events-none absolute -left-[9999px] h-0 w-0 overflow-hidden">
+            <label>
+              Ne pas remplir
+              <input
+                type="text"
+                tabIndex={-1}
+                autoComplete="off"
+                value={hp}
+                onChange={(e) => setHp(e.target.value)}
+              />
+            </label>
+          </div>
 
           {error && (
             <p className="mt-3.5 rounded-lg border border-err-border bg-err-bg px-4 py-2.5 text-sm text-err-fg">

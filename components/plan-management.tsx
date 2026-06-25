@@ -1,18 +1,15 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { usePathname } from "next/navigation";
 import { apiAuthed } from "@/lib/api";
 import { type Money } from "@/lib/catalog";
 import { stagedTotal, stagedDelta, type Addon } from "@/lib/plan-staging";
+import { formatRate } from "@/lib/money";
 
 type Dict = Record<string, string>;
 type AddonOpt = { code: string; label: string; prices: Money[] };
 
-function money(n: number, cur: string): string {
-  const v = Math.round((Number(n) || 0) * 100) / 100;
-  if (cur === "XAF") return `${v.toLocaleString("en-US")} XAF`;
-  return `${cur === "EUR" ? "€" : "$"}${v.toFixed(2)}`;
-}
 function rateFor(prices: Money[], cur: string): number {
   const p = prices.find((x) => x.currency === cur && x.cycle === "monthly") ?? prices.find((x) => x.cycle === "monthly");
   return p ? p.amount : 0;
@@ -31,10 +28,14 @@ const STATUS_TO_STATE: Record<string, (typeof STATES)[number]> = {
 // changes" bar with old→new + delta) until Save/Cancel. Save is a client commit here
 // (seam: apiAuthed("update_plan_modules", …) once the backend exposes it).
 export function PlanManagement({ dict, addons }: { dict: Dict; addons: AddonOpt[] }) {
+  const lang = (usePathname() || "").split("/")[1] === "en" ? "en" : "fr";
+  const money = (n: number, c: string) => formatRate(n, c, lang);
   const [cur, setCur] = useState({ total: 0, seats: 0, currency: "EUR", plan: "", status: "" });
   const [state, setState] = useState<"loading" | "error" | "ready">("loading");
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [saved, setSaved] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saveErr, setSaveErr] = useState<string | null>(null);
 
   useEffect(() => {
     apiAuthed("my_consumption").then((res) => {
@@ -74,8 +75,18 @@ export function PlanManagement({ dict, addons }: { dict: Dict; addons: AddonOpt[
     });
     setSaved(false);
   }
-  function save() {
-    // Seam: persist via apiAuthed("update_plan_modules", { add: [...selected] }) when available.
+  async function save() {
+    // Persist for real via the backend. NOTE: the `update_plan_modules` handler is not
+    // yet implemented server-side (returns an error today) — so this surfaces a real
+    // failure instead of faking success. It starts working the moment the backend ships it.
+    setSaveErr(null);
+    setSaving(true);
+    const res = await apiAuthed("update_plan_modules", { add: Array.from(selected) });
+    setSaving(false);
+    if (!res.ok) {
+      setSaveErr(res.error || dict.planSaveError);
+      return;
+    }
     setSelected(new Set());
     setSaved(true);
     setTimeout(() => setSaved(false), 2500);
@@ -169,6 +180,9 @@ export function PlanManagement({ dict, addons }: { dict: Dict; addons: AddonOpt[
       )}
 
       {saved && <p className="text-sm font-medium text-ok-fg">{dict.planSaved}</p>}
+      {saveErr && (
+        <p className="rounded-lg border border-err-border bg-err-bg px-4 py-2.5 text-sm text-err-fg">{saveErr}</p>
+      )}
 
       {/* Persistent unsaved-changes bar */}
       {dirty && (
@@ -184,8 +198,8 @@ export function PlanManagement({ dict, addons }: { dict: Dict; addons: AddonOpt[
             <button type="button" onClick={() => setSelected(new Set())} className="rounded-full px-4 py-2 text-sm font-semibold text-muted hover:text-ink">
               {dict.planCancel}
             </button>
-            <button type="button" onClick={save} className="rounded-full bg-sky-strong px-5 py-2 text-sm font-semibold text-white hover:bg-[#08607f]">
-              {dict.planSave}
+            <button type="button" onClick={save} disabled={saving} className="rounded-full bg-sky-strong px-5 py-2 text-sm font-semibold text-white hover:bg-[#08607f] disabled:opacity-60">
+              {saving ? "…" : dict.planSave}
             </button>
           </div>
         </div>
