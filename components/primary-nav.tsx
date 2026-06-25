@@ -10,13 +10,26 @@ type NavItem = { label: string; href: string };
 export function PrimaryNav({ items }: { items: NavItem[] }) {
   const pathname = usePathname();
   if (/\/(account|partner)(\/|$)/.test(pathname || "")) return null;
+  const path = (pathname || "").replace(/\/$/, "");
+  const isActive = (href: string) => {
+    const h = href.replace(/\/$/, "");
+    return path === h || path.startsWith(`${h}/`);
+  };
   return (
     <nav data-testid="primary-nav" className="hidden items-center gap-6 text-sm text-ink nav:flex">
-      {items.map((n) => (
-        <Link key={n.label} href={n.href} className="hover:text-sky-text">
-          {n.label}
-        </Link>
-      ))}
+      {items.map((n) => {
+        const active = isActive(n.href);
+        return (
+          <Link
+            key={n.label}
+            href={n.href}
+            aria-current={active ? "page" : undefined}
+            className={active ? "font-semibold text-sky-text" : "text-ink hover:text-sky-text"}
+          >
+            {n.label}
+          </Link>
+        );
+      })}
     </nav>
   );
 }

@@ -26,6 +26,11 @@ export function MobileNav({
 }) {
   const pathname = usePathname();
   if (/\/(account|partner)(\/|$)/.test(pathname || "")) return null;
+  const path = (pathname || "").replace(/\/$/, "");
+  const isActive = (href: string) => {
+    const h = href.replace(/\/$/, "");
+    return path === h || path.startsWith(`${h}/`);
+  };
   return (
     <details className={`relative ${className}`}>
       <summary
@@ -37,15 +42,19 @@ export function MobileNav({
       </summary>
       <div className="absolute right-0 top-11 z-40 w-56 rounded-lg border border-line bg-surface py-2 shadow-md">
         <nav className="flex flex-col text-sm">
-          {items.map((n) => (
-            <Link
-              key={n.label}
-              href={n.href}
-              className="px-4 py-2.5 text-ink hover:bg-mist"
-            >
-              {n.label}
-            </Link>
-          ))}
+          {items.map((n) => {
+            const active = isActive(n.href);
+            return (
+              <Link
+                key={n.label}
+                href={n.href}
+                aria-current={active ? "page" : undefined}
+                className={`px-4 py-2.5 hover:bg-mist ${active ? "font-semibold text-sky-text" : "text-ink"}`}
+              >
+                {n.label}
+              </Link>
+            );
+          })}
           {/* Controls that live in the desktop bar move here below 1123px:
               Devise · Langue · Thème · Se connecter (handoff order). */}
           {(currencySwitcher || localeSwitcher || themeToggle) && (
