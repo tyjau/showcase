@@ -57,7 +57,7 @@ function PayForm({ dict, onPaid }: { dict: Dict; onPaid: () => void }) {
         onClick={submit}
         disabled={!stripe || submitting}
         className={`mt-4 w-full rounded-full px-6 py-3 text-sm font-semibold ${
-          stripe && !submitting ? "bg-sky text-white" : "cursor-not-allowed bg-mist text-muted"
+          stripe && !submitting ? "bg-sky-strong text-white" : "cursor-not-allowed bg-mist text-muted"
         }`}
       >
         {submitting ? dict.paySaving : dict.payNow}

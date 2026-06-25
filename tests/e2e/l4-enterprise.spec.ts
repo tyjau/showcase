@@ -18,5 +18,5 @@ test("nav Entreprise -> /enterprise; footer A propos -> /company", async ({ page
   await expect(
     page.getByTestId("primary-nav").getByRole("link", { name: "Entreprise" }),
   ).toHaveAttribute("href", /\/enterprise/);
-  await expect(page.locator('footer a[href*="/company"]')).toHaveCount(1);
+  await expect(page.locator('footer a[href^="/"][href*="/company"]')).toHaveCount(1);
 });

@@ -92,7 +92,7 @@ export function PlanManagement({ dict, addons }: { dict: Dict; addons: AddonOpt[
             <span
               key={s}
               className={`rounded-full border px-3 py-1 text-xs font-semibold ${
-                s === activeState ? "border-sky bg-tint-sky text-sky" : "border-line text-muted"
+                s === activeState ? "border-sky bg-tint-sky text-sky-text" : "border-line text-muted"
               }`}
             >
               {dict[s]}
@@ -133,7 +133,7 @@ export function PlanManagement({ dict, addons }: { dict: Dict; addons: AddonOpt[
                   }`}
                 >
                   <span className="flex items-center gap-3">
-                    <span className={`flex h-5 w-5 items-center justify-center rounded ${on ? "bg-sky text-white" : "border border-line"}`}>
+                    <span className={`flex h-5 w-5 items-center justify-center rounded ${on ? "bg-sky-strong text-white" : "border border-line"}`}>
                       {on && <Check size={13} />}
                     </span>
                     <span className="text-sm font-medium text-ink">{a.label}</span>
@@ -162,7 +162,7 @@ export function PlanManagement({ dict, addons }: { dict: Dict; addons: AddonOpt[
             <button type="button" onClick={() => setSelected(new Set())} className="rounded-full px-4 py-2 text-sm font-semibold text-muted hover:text-ink">
               {dict.planCancel}
             </button>
-            <button type="button" onClick={save} className="rounded-full bg-sky px-5 py-2 text-sm font-semibold text-white hover:bg-[#0d8bbd]">
+            <button type="button" onClick={save} className="rounded-full bg-sky-strong px-5 py-2 text-sm font-semibold text-white hover:bg-[#08607f]">
               {dict.planSave}
             </button>
           </div>

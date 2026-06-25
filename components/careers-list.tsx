@@ -21,7 +21,7 @@ export function CareersList({
   const shown = filterJobs(jobs, team);
   const chip = (active: boolean) =>
     `rounded-full px-4 py-1.5 text-sm font-medium transition ${
-      active ? "bg-sky text-white" : "border border-line text-muted hover:text-ink"
+      active ? "bg-sky-strong text-white" : "border border-line text-muted hover:text-ink"
     }`;
 
   return (
@@ -61,7 +61,7 @@ export function CareersList({
               </div>
               <Link
                 href={`/${lang}/contact?sujet=produit`}
-                className="shrink-0 rounded-full bg-sky px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#0d8bbd]"
+                className="shrink-0 rounded-full bg-sky-strong px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#08607f]"
               >
                 {dict.apply}
               </Link>

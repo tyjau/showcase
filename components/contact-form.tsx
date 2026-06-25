@@ -127,7 +127,7 @@ export function ContactForm({ dict }: { dict: Dict }) {
           type="button"
           onClick={submit}
           disabled={submitting}
-          className="rounded-full bg-sky px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#0d8bbd] disabled:opacity-50"
+          className="rounded-full bg-sky-strong px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#08607f] disabled:opacity-50"
         >
           {submitting ? dict.sending : dict.send}
         </button>
@@ -140,7 +140,7 @@ export function ContactForm({ dict }: { dict: Dict }) {
         <ul className="mt-4 space-y-3">
           {dict.asidePoints.map((p) => (
             <li key={p} className="flex items-start gap-2.5 text-sm text-ink">
-              <span className="mt-0.5 inline-flex h-5 w-5 flex-none items-center justify-center rounded-full bg-tint-sky text-sky">
+              <span className="mt-0.5 inline-flex h-5 w-5 flex-none items-center justify-center rounded-full bg-tint-sky text-sky-text">
                 <Check size={12} strokeWidth={3} />
               </span>
               {p}

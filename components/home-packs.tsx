@@ -60,7 +60,7 @@ export function HomePacks({
               }`}
             >
               {p.popular && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-sky px-3 py-1 text-xs font-bold text-white">
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-sky-strong px-3 py-1 text-xs font-bold text-white">
                   {dict.popular}
                 </span>
               )}
@@ -79,7 +79,7 @@ export function HomePacks({
               <ul className="mt-4 flex-1 space-y-2.5">
                 {p.items.map((it) => (
                   <li key={it} className="flex items-center gap-2.5 text-sm text-ink">
-                    <Check size={16} className="flex-none text-sky" strokeWidth={3} />
+                    <Check size={16} className="flex-none text-sky-text" strokeWidth={3} />
                     {it}
                   </li>
                 ))}
@@ -88,7 +88,7 @@ export function HomePacks({
                 href={`/${lang}/signup`}
                 className={`mt-6 rounded-full px-5 py-2.5 text-center text-sm font-semibold transition-colors ${
                   p.popular
-                    ? "bg-sky text-white hover:bg-[#0d8bbd]"
+                    ? "bg-sky-strong text-white hover:bg-[#08607f]"
                     : "border border-line text-heading hover:border-sky"
                 }`}
               >

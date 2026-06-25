@@ -111,7 +111,7 @@ export function PortalLogin({ lang, dict }: { lang: string; dict: Dict }) {
         disabled={!canSubmit || submitting}
         onClick={submit}
         className={`mt-6 w-full rounded-full px-6 py-3 text-sm font-semibold ${
-          canSubmit && !submitting ? "bg-sky text-white" : "cursor-not-allowed bg-mist text-muted"
+          canSubmit && !submitting ? "bg-sky-strong text-white" : "cursor-not-allowed bg-mist text-muted"
         }`}
       >
         {submitting ? "…" : dict.cta}
@@ -147,7 +147,7 @@ export function PortalLogin({ lang, dict }: { lang: string; dict: Dict }) {
 
       <p className="mt-6 text-center text-sm text-muted">
         {dict.noWorkspace}{" "}
-        <Link href={`/${lang}/signup`} className="font-semibold text-sky hover:underline">
+        <Link href={`/${lang}/signup`} className="font-semibold text-sky-text hover:underline">
           {dict.signupCta}
         </Link>
       </p>

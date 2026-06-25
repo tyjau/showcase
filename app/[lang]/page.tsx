@@ -43,7 +43,7 @@ function PayrollPreview({ dict }: { dict: PreviewDict }) {
       <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-surface text-ink shadow-[0_24px_60px_-20px_rgba(8,24,40,0.55)]">
         <div className="flex items-center justify-between border-b border-line px-5 py-4">
           <div className="flex items-center gap-2.5">
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-tint-sky text-sky">
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-tint-sky text-sky-text">
               <FileText size={16} />
             </span>
             <div>
@@ -181,7 +181,7 @@ export default async function Home({
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
                 href={`/${lang}/signup`}
-                className="rounded-full bg-sky px-6 py-3 font-semibold text-white transition-colors hover:bg-[#0d8bbd]"
+                className="rounded-full bg-sky-strong px-6 py-3 font-semibold text-white transition-colors hover:bg-[#08607f]"
               >
                 {t.hero.ctaPrimary}
               </Link>
@@ -205,7 +205,7 @@ export default async function Home({
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-6 gap-y-2 px-5 py-3 text-xs text-accent">
           {t.trust.map((item) => (
             <span key={item} className="inline-flex items-center gap-1.5">
-              <span className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-sky text-white">
+              <span className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-sky-strong text-white">
                 <Check size={11} />
               </span>
               {item}
@@ -233,12 +233,12 @@ export default async function Home({
                   href={href}
                   className="group rounded-xl border border-line bg-surface p-5 transition hover:-translate-y-1 hover:border-sky hover:shadow-sm"
                 >
-                  <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-lg bg-tint-sky text-sky">
+                  <div className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-lg bg-tint-sky text-sky-text">
                     <Icon size={19} />
                   </div>
                   <h3 className="font-semibold text-ink">{item.title}</h3>
                   <p className="mt-1 text-sm leading-relaxed text-muted">{item.desc}</p>
-                  <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-sky opacity-0 transition-opacity group-hover:opacity-100">
+                  <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-sky-text opacity-0 transition-opacity group-hover:opacity-100">
                     {t.features.more} <ArrowRight size={14} />
                   </span>
                 </Link>

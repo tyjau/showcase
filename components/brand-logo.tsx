@@ -8,7 +8,14 @@ import { isHttpUrl } from "@/lib/cobrand";
  * partner name beside the mark), otherwise the default SkyRH mark. The triangle
  * uses the `--brand-sky` CSS variable so it follows the partner's primary colour.
  */
-export function BrandLogo({ className = "" }: { className?: string }) {
+export function BrandLogo({
+  className = "",
+  onDark = false,
+}: {
+  className?: string;
+  /** On an always-dark surface (footer): use the light sky for "RH" regardless of theme. */
+  onDark?: boolean;
+}) {
   const { partner } = usePartner();
 
   if (isHttpUrl(partner?.logo_url)) {
@@ -34,7 +41,7 @@ export function BrandLogo({ className = "" }: { className?: string }) {
           partner.brand_name
         ) : (
           <>
-            Sky<span className="text-sky">RH</span>
+            Sky<span className={onDark ? "text-sky-soft" : "text-sky-text"}>RH</span>
           </>
         )}
       </span>

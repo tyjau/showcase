@@ -76,7 +76,7 @@ export function BecomePartner({ lang, dict }: { lang: string; dict: Dict }) {
         <p className="mt-1 text-sm font-medium text-ink">{email.trim()}</p>
         <Link
           href={`/${lang}/partner/login`}
-          className="mt-6 inline-flex rounded-full bg-sky px-6 py-3 text-sm font-semibold text-white"
+          className="mt-6 inline-flex rounded-full bg-sky-strong px-6 py-3 text-sm font-semibold text-white"
         >
           {dict.doneCta}
         </Link>
@@ -207,7 +207,7 @@ export function BecomePartner({ lang, dict }: { lang: string; dict: Dict }) {
           type="button"
           disabled={submitting}
           onClick={submit}
-          className="inline-flex items-center gap-2 rounded-full bg-sky px-6 py-3 text-sm font-semibold text-white disabled:opacity-50"
+          className="inline-flex items-center gap-2 rounded-full bg-sky-strong px-6 py-3 text-sm font-semibold text-white disabled:opacity-50"
         >
           {submitting ? "…" : <>{dict.cta} <Check size={16} /></>}
         </button>

@@ -69,7 +69,7 @@ export default async function HelpPage({
             return (
               <div key={cat}>
                 <h2 className="mb-4 flex items-center gap-2 text-lg font-bold text-heading">
-                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-tint-sky text-sky">
+                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-tint-sky text-sky-text">
                     <Icon size={17} />
                   </span>
                   {h.categories[cat]}
@@ -91,7 +91,7 @@ export default async function HelpPage({
                         </span>
                         <ArrowRight
                           size={16}
-                          className="shrink-0 text-sky transition group-hover:translate-x-0.5"
+                          className="shrink-0 text-sky-text transition group-hover:translate-x-0.5"
                         />
                       </Link>
                     );
@@ -105,7 +105,7 @@ export default async function HelpPage({
             href={`/${lang}/features`}
             className="group flex items-start gap-4 rounded-xl border border-line bg-surface p-5 transition hover:-translate-y-0.5 hover:shadow-sm"
           >
-            <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-tint-sky text-sky">
+            <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-tint-sky text-sky-text">
               <LayoutGrid size={22} />
             </div>
             <div>
@@ -113,7 +113,7 @@ export default async function HelpPage({
                 {h.modulesTitle}
                 <ArrowRight
                   size={15}
-                  className="text-sky transition group-hover:translate-x-0.5"
+                  className="text-sky-text transition group-hover:translate-x-0.5"
                 />
               </h3>
               <p className="mt-1 text-sm text-muted">{h.modulesDesc}</p>
@@ -128,7 +128,7 @@ export default async function HelpPage({
           </p>
           <Link
             href={`/${lang}/contact`}
-            className="mt-4 inline-block rounded-full bg-sky px-5 py-2.5 font-semibold text-white transition-colors hover:bg-[#0d8bbd]"
+            className="mt-4 inline-block rounded-full bg-sky-strong px-5 py-2.5 font-semibold text-white transition-colors hover:bg-[#08607f]"
           >
             {h.contactCta}
           </Link>

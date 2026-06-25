@@ -89,7 +89,7 @@ export default async function ModulePage({
             <ArrowLeft size={15} /> {t.modulePage.back}
           </Link>
           <div className="mt-5 flex flex-col gap-5 sm:flex-row sm:items-start">
-            <div className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-sky text-white">
+            <div className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-sky-strong text-white">
               <ModuleIcon name={m.icon} size={28} />
             </div>
             <div>
@@ -98,7 +98,7 @@ export default async function ModulePage({
               <div className="mt-5 flex flex-wrap items-center gap-3">
                 <Link
                   href={`/${lang}/signup`}
-                  className="rounded-full bg-sky px-5 py-2.5 font-semibold text-white transition-colors hover:bg-[#0d8bbd]"
+                  className="rounded-full bg-sky-strong px-5 py-2.5 font-semibold text-white transition-colors hover:bg-[#08607f]"
                 >
                   {t.nav.startTrial}
                 </Link>
@@ -140,7 +140,7 @@ export default async function ModulePage({
               <div className="grid gap-x-6 gap-y-3 sm:grid-cols-2">
                 {content.capabilities.map((cap) => (
                   <div key={cap} className="flex items-start gap-2.5">
-                    <Check size={18} className="mt-0.5 shrink-0 text-sky" />
+                    <Check size={18} className="mt-0.5 shrink-0 text-sky-text" />
                     <span className="text-ink">{cap}</span>
                   </div>
                 ))}
@@ -179,7 +179,7 @@ export default async function ModulePage({
                   href={`/${lang}/pricing`}
                   className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-3 py-1.5 text-sm transition hover:border-sky"
                 >
-                  <Check size={14} className="text-sky" /> {p.name}
+                  <Check size={14} className="text-sky-text" /> {p.name}
                 </Link>
               ))}
             </div>
@@ -200,7 +200,7 @@ export default async function ModulePage({
                     href={`/${lang}/features/${mod.code}`}
                     className="flex items-center gap-3 rounded-xl border border-line bg-surface p-3 transition hover:-translate-y-0.5 hover:shadow-sm"
                   >
-                    <div className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-tint-sky text-sky">
+                    <div className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-tint-sky text-sky-text">
                       <ModuleIcon name={mod.icon} size={18} />
                     </div>
                     <div className="min-w-0">

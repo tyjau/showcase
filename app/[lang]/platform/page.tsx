@@ -58,7 +58,7 @@ export default async function PlatformPage({
                 key={pl.title}
                 className="rounded-xl border border-line bg-surface p-6"
               >
-                <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-tint-sky text-sky">
+                <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-tint-sky text-sky-text">
                   <Icon size={22} />
                 </div>
                 <h3 className="mt-4 font-semibold text-ink">{pl.title}</h3>

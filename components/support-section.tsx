@@ -118,7 +118,7 @@ export function SupportSection({ dict }: { dict: Dict }) {
             setView("list");
             setActive(null);
           }}
-          className="text-sm font-semibold text-sky hover:underline"
+          className="text-sm font-semibold text-sky-text hover:underline"
         >
           ← {dict.supBack}
         </button>
@@ -151,7 +151,7 @@ export function SupportSection({ dict }: { dict: Dict }) {
             <button
               onClick={submitReply}
               disabled={replying || !reply.trim()}
-              className="mt-2 rounded-full bg-sky px-5 py-2 text-sm font-semibold text-white disabled:opacity-50"
+              className="mt-2 rounded-full bg-sky-strong px-5 py-2 text-sm font-semibold text-white disabled:opacity-50"
             >
               {replying ? dict.supSending : dict.supReply}
             </button>
@@ -164,7 +164,7 @@ export function SupportSection({ dict }: { dict: Dict }) {
   if (view === "new") {
     return (
       <div className="max-w-xl">
-        <button onClick={() => setView("list")} className="text-sm font-semibold text-sky hover:underline">
+        <button onClick={() => setView("list")} className="text-sm font-semibold text-sky-text hover:underline">
           ← {dict.supBack}
         </button>
         <h2 className="mt-3 text-lg font-bold text-heading">{dict.supNewTitle}</h2>
@@ -185,7 +185,7 @@ export function SupportSection({ dict }: { dict: Dict }) {
         <button
           onClick={submitNew}
           disabled={submitting}
-          className="mt-3 rounded-full bg-sky px-5 py-2.5 text-sm font-semibold text-white disabled:opacity-50"
+          className="mt-3 rounded-full bg-sky-strong px-5 py-2.5 text-sm font-semibold text-white disabled:opacity-50"
         >
           {submitting ? dict.supSending : dict.supSubmit}
         </button>
@@ -200,7 +200,7 @@ export function SupportSection({ dict }: { dict: Dict }) {
         className="mb-4 flex items-center gap-2 rounded-xl border border-line bg-tint-sky px-4 py-3 text-sm text-ink transition hover:bg-mist"
       >
         <span>💡 {dict.supDeflect}</span>
-        <span className="ml-auto shrink-0 font-semibold text-sky">{dict.supHelpLink} →</span>
+        <span className="ml-auto shrink-0 font-semibold text-sky-text">{dict.supHelpLink} →</span>
       </a>
       <div className="mb-4 flex items-center justify-between gap-3">
         <p className="text-sm text-muted">{dict.supIntro}</p>
@@ -209,7 +209,7 @@ export function SupportSection({ dict }: { dict: Dict }) {
             setView("new");
             setFormErr(null);
           }}
-          className="shrink-0 rounded-full bg-sky px-4 py-2 text-sm font-semibold text-white"
+          className="shrink-0 rounded-full bg-sky-strong px-4 py-2 text-sm font-semibold text-white"
         >
           {dict.supNew}
         </button>

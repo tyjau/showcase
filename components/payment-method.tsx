@@ -57,7 +57,7 @@ function CardForm({ dict, onSaved, onCancel }: { dict: Dict; onSaved: (c: Card) 
           onClick={submit}
           disabled={!stripe || submitting}
           className={`rounded-full px-5 py-2 text-sm font-semibold ${
-            stripe && !submitting ? "bg-sky text-white" : "cursor-not-allowed bg-mist text-muted"
+            stripe && !submitting ? "bg-sky-strong text-white" : "cursor-not-allowed bg-mist text-muted"
           }`}
         >
           {submitting ? dict.paySaving : dict.paySubmit}

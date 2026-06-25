@@ -68,7 +68,7 @@ export default async function CompanyPage({
                   key={v.title}
                   className="rounded-xl border border-line bg-surface p-5"
                 >
-                  <div className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-tint-sky text-sky">
+                  <div className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-tint-sky text-sky-text">
                     <Icon size={20} />
                   </div>
                   <h3 className="mt-3 font-semibold text-ink">{v.title}</h3>
@@ -92,14 +92,14 @@ export default async function CompanyPage({
             href={`/${lang}/platform`}
             className="group rounded-xl border border-line bg-surface p-6 transition hover:-translate-y-1 hover:shadow-sm"
           >
-            <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-tint-sky text-sky">
+            <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-tint-sky text-sky-text">
               <Layers size={22} />
             </div>
             <h3 className="mt-4 flex items-center gap-1.5 font-semibold text-ink">
               {c.ecoPlatform}
               <ArrowRight
                 size={15}
-                className="text-sky transition group-hover:translate-x-0.5"
+                className="text-sky-text transition group-hover:translate-x-0.5"
               />
             </h3>
             <p className="mt-1.5 text-sm leading-relaxed text-muted">
@@ -110,14 +110,14 @@ export default async function CompanyPage({
             href={`/${lang}/partners`}
             className="group rounded-xl border border-line bg-surface p-6 transition hover:-translate-y-1 hover:shadow-sm"
           >
-            <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-tint-sky text-sky">
+            <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-tint-sky text-sky-text">
               <Handshake size={22} />
             </div>
             <h3 className="mt-4 flex items-center gap-1.5 font-semibold text-ink">
               {c.ecoPartners}
               <ArrowRight
                 size={15}
-                className="text-sky transition group-hover:translate-x-0.5"
+                className="text-sky-text transition group-hover:translate-x-0.5"
               />
             </h3>
             <p className="mt-1.5 text-sm leading-relaxed text-muted">

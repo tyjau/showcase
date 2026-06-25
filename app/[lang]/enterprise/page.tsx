@@ -39,7 +39,7 @@ export default async function EnterprisePage({ params }: { params: { lang: Local
           <div className="mt-7 flex flex-wrap justify-center gap-3">
             <Link
               href={`/${lang}/contact?sujet=devis`}
-              className="rounded-full bg-sky px-6 py-3 font-semibold text-white transition-colors hover:bg-[#0d8bbd]"
+              className="rounded-full bg-sky-strong px-6 py-3 font-semibold text-white transition-colors hover:bg-[#08607f]"
             >
               {p.ctaPrimary}
             </Link>
@@ -60,7 +60,7 @@ export default async function EnterprisePage({ params }: { params: { lang: Local
             const Icon = MODE_ICONS[i] ?? Cloud;
             return (
               <div key={m.title} className="rounded-xl border border-line bg-surface p-6">
-                <div className="mb-3 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-tint-sky text-sky">
+                <div className="mb-3 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-tint-sky text-sky-text">
                   <Icon size={22} />
                 </div>
                 <h3 className="font-bold text-heading">{m.title}</h3>
@@ -79,7 +79,7 @@ export default async function EnterprisePage({ params }: { params: { lang: Local
               const Icon = BENEFIT_ICONS[i] ?? ShieldCheck;
               return (
                 <div key={b.title} className="rounded-xl border border-line bg-surface p-6">
-                  <div className="mb-3 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-tint-sky text-sky">
+                  <div className="mb-3 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-tint-sky text-sky-text">
                     <Icon size={22} />
                   </div>
                   <h3 className="font-bold text-heading">{b.title}</h3>

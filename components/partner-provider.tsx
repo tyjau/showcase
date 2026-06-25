@@ -56,16 +56,23 @@ export function PartnerProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  // Partner brand colours → CSS variables (themes every bg-sky / text-navy …).
+  // Partner brand colours → CSS variables (themes every bg-sky-strong / text-navy …).
   useEffect(() => {
     const root = document.documentElement;
     // Validate before applying — never trust a network value (defense-in-depth).
-    if (isHexColor(partner?.primary_color))
+    if (isHexColor(partner?.primary_color)) {
+      // Co-brand the whole sky family (identity + the accessible-accent fill/text tokens)
+      // from the partner's primary, so co-branded CTAs/text use the partner colour.
       root.style.setProperty("--brand-sky", partner.primary_color);
+      root.style.setProperty("--brand-sky-strong", partner.primary_color);
+      root.style.setProperty("--sky-text", partner.primary_color);
+    }
     if (isHexColor(partner?.secondary_color))
       root.style.setProperty("--brand-navy", partner.secondary_color);
     return () => {
       root.style.removeProperty("--brand-sky");
+      root.style.removeProperty("--brand-sky-strong");
+      root.style.removeProperty("--sky-text");
       root.style.removeProperty("--brand-navy");
     };
   }, [partner]);

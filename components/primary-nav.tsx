@@ -13,7 +13,7 @@ export function PrimaryNav({ items }: { items: NavItem[] }) {
   return (
     <nav data-testid="primary-nav" className="hidden items-center gap-6 text-sm text-ink nav:flex">
       {items.map((n) => (
-        <Link key={n.label} href={n.href} className="hover:text-sky">
+        <Link key={n.label} href={n.href} className="hover:text-sky-text">
           {n.label}
         </Link>
       ))}

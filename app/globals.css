@@ -16,6 +16,12 @@
   /* Brand — partner-overridable, theme-independent. */
   --brand-navy: #0e2841;
   --brand-sky: #0f9ed5;
+  /* Accessible-accent (AA): the vivid --brand-sky stays for identity/decorative, but
+     functional sky FILLS that carry white text/icons use --brand-sky-strong (≥4.5:1
+     with white), and small sky TEXT uses --sky-text (flips per theme for contrast).
+     Both are partner-overridable (see partner-provider) to keep co-branding. */
+  --brand-sky-strong: #0a7aa6;
+  --sky-text: #096a8f;
 
   /* Neutrals / surfaces (light). */
   --bg: #ffffff; /* page background */
@@ -31,7 +37,7 @@
   --tint-sky-bg: #e7f4fb;
   --tint-sky-strong-bg: #f4fbfe; /* selected card fill */
   --ok-bg: #e6f5ec;
-  --ok-fg: #2e7d4f;
+  --ok-fg: #256b41;
   --ok-border: #cdebd8;
   --warn-bg: #fdf6e7;
   --warn-border: #f0d9a8;
@@ -44,7 +50,7 @@
 
   /* Sticky header — translucent page surface (Tailwind alpha can't apply to a
      var-based colour, so the translucency is baked into the token). */
-  --header-bg: rgba(255, 255, 255, 0.9);
+  --header-bg: #ffffff;
 
   /* Hero band (navy section). Kept brand-navy in light. */
   --hero-bg: var(--brand-navy);
@@ -58,6 +64,10 @@
 }
 
 .dark {
+  /* Sky TEXT goes lighter on dark surfaces for contrast (the bg-strong stays the same,
+     since white text on #0a7aa6 already meets AA in both themes). */
+  --sky-text: #3caef2;
+
   /* Neutrals / surfaces (dark). A near-black slate base with layered surfaces. */
   --bg: #0b1622;
   --surface: #14212f;
@@ -83,8 +93,9 @@
   --info-bg: rgba(169, 106, 0, 0.2);
   --info-fg: #e6b96a;
 
-  /* Translucent header on the dark page base. */
-  --header-bg: rgba(11, 22, 34, 0.85);
+  /* Opaque header on the dark page base (solid so the sticky bar keeps AA contrast
+     over any hero behind it; backdrop-blur still applies a subtle frosted edge). */
+  --header-bg: #0c1722;
 
   /* Hero band in dark: a deep slate so it sits a touch above the page bg without
      a jarring bright-navy block. */

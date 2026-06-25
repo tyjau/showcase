@@ -19,7 +19,7 @@ test("careers — team filter narrows the job list", async ({ page }) => {
 test("status — services list with a degraded pill", async ({ page }) => {
   await page.goto("/fr/status");
   await expect(page.getByText("Moteur de paie")).toBeVisible();
-  await expect(page.getByText("Dégradé")).toBeVisible();
+  await expect(page.getByText("Dégradé", { exact: true })).toBeVisible();
   await page.screenshot({ path: "tests/visual/__captures__/l4/status.png", fullPage: true });
 });
 

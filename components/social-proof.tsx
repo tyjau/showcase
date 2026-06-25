@@ -51,7 +51,7 @@ export function SocialProof({ dict }: { dict: SocialProofDict }) {
                 key={tm.author}
                 className="rounded-xl border border-line bg-surface p-5"
               >
-                <Quote size={20} className="text-sky" aria-hidden="true" />
+                <Quote size={20} className="text-sky-text" aria-hidden="true" />
                 <blockquote className="mt-3 text-sm leading-relaxed text-ink">
                   {tm.quote}
                 </blockquote>

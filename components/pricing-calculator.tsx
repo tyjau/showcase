@@ -126,14 +126,14 @@ export function PricingCalculator({
           <button
             type="button"
             onClick={() => setAnnual(false)}
-            className={`px-3 py-1.5 transition ${!annual ? "bg-sky font-semibold text-white" : "text-muted hover:text-heading"}`}
+            className={`px-3 py-1.5 transition ${!annual ? "bg-sky-strong font-semibold text-white" : "text-muted hover:text-heading"}`}
           >
             {dict.monthly}
           </button>
           <button
             type="button"
             onClick={() => setAnnual(true)}
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 transition ${annual ? "bg-sky font-semibold text-white" : "text-muted hover:text-heading"}`}
+            className={`inline-flex items-center gap-1.5 px-3 py-1.5 transition ${annual ? "bg-sky-strong font-semibold text-white" : "text-muted hover:text-heading"}`}
           >
             {dict.annual}
             <span className="rounded-full bg-ok-bg px-1.5 text-[11px] text-ok-fg">
@@ -205,7 +205,7 @@ export function PricingCalculator({
                 className={`flex flex-col rounded-xl bg-surface p-5 ${popular ? "border-2 border-sky" : "border border-line"}`}
               >
                 {popular && (
-                  <div className="mb-2 inline-block self-start rounded-full bg-tint-sky px-2 py-0.5 text-[11px] font-semibold text-sky">
+                  <div className="mb-2 inline-block self-start rounded-full bg-tint-sky px-2 py-0.5 text-[11px] font-semibold text-sky-text">
                     {dict.popular}
                   </div>
                 )}
@@ -237,7 +237,7 @@ export function PricingCalculator({
                     const m = catalog.modules.find((x) => x.code === code);
                     return (
                       <div key={code} className="flex items-center gap-1.5">
-                        <Check size={13} className="shrink-0 text-sky" />
+                        <Check size={13} className="shrink-0 text-sky-text" />
                         {m ? moduleText(m, lang).headline : code}
                       </div>
                     );
@@ -248,7 +248,7 @@ export function PricingCalculator({
                       onClick={() =>
                         setExpanded(expanded === p.code ? null : p.code)
                       }
-                      className="inline-flex items-center gap-1 pt-0.5 font-semibold text-sky"
+                      className="inline-flex items-center gap-1 pt-0.5 font-semibold text-sky-text"
                     >
                       {expanded === p.code
                         ? dict.showLess
@@ -291,7 +291,7 @@ export function PricingCalculator({
                               className="flex w-full items-center gap-2 text-left text-xs"
                             >
                               <span
-                                className={`flex h-4 w-4 shrink-0 items-center justify-center rounded ${on ? "bg-sky text-white" : "border border-line"}`}
+                                className={`flex h-4 w-4 shrink-0 items-center justify-center rounded ${on ? "bg-sky-strong text-white" : "border border-line"}`}
                               >
                                 {on && <Check size={11} />}
                               </span>
@@ -310,7 +310,7 @@ export function PricingCalculator({
                 )}
                 <Link
                   href={`/${lang}/signup?plan=${p.code}${sel.size ? `&addons=${Array.from(sel).join(",")}` : ""}`}
-                  className={`mt-4 block rounded-full px-4 py-2 text-center text-sm font-semibold ${popular ? "bg-sky text-white" : "border border-line text-heading hover:border-sky"}`}
+                  className={`mt-4 block rounded-full px-4 py-2 text-center text-sm font-semibold ${popular ? "bg-sky-strong text-white" : "border border-line text-heading hover:border-sky"}`}
                 >
                   {p.code === "ENTERPRISE" ? dict.contact : dict.startTrial}
                 </Link>
@@ -328,7 +328,7 @@ export function PricingCalculator({
                 </th>
                 {catalog.packages.map((p) => (
                   <th key={p.code} className="px-3 py-3 text-center font-semibold text-heading">
-                    <span className={p.code === "BUSINESS" ? "text-sky" : ""}>
+                    <span className={p.code === "BUSINESS" ? "text-sky-text" : ""}>
                       {pkgName(p.code, p.name)}
                     </span>
                   </th>
@@ -346,7 +346,7 @@ export function PricingCalculator({
                     {catalog.packages.map((p) => (
                       <td key={p.code} className="px-3 py-2.5 text-center">
                         {p.modules.includes(code) ? (
-                          <Check size={16} className="mx-auto text-sky" />
+                          <Check size={16} className="mx-auto text-sky-text" />
                         ) : (
                           <span className="text-muted">—</span>
                         )}
@@ -363,7 +363,7 @@ export function PricingCalculator({
                   <td key={p.code} className="px-3 py-4 text-center">
                     <Link
                       href={`/${lang}/signup?plan=${p.code}`}
-                      className={`inline-block rounded-full px-4 py-2 text-sm font-semibold ${p.code === "BUSINESS" ? "bg-sky text-white" : "border border-line text-heading hover:border-sky"}`}
+                      className={`inline-block rounded-full px-4 py-2 text-sm font-semibold ${p.code === "BUSINESS" ? "bg-sky-strong text-white" : "border border-line text-heading hover:border-sky"}`}
                     >
                       {p.code === "ENTERPRISE" ? dict.contact : dict.startTrial}
                     </Link>
@@ -397,14 +397,14 @@ export function PricingCalculator({
                   }`}
                 >
                   <span
-                    className={`flex h-5 w-5 shrink-0 items-center justify-center rounded ${checked || auto ? "bg-sky text-white" : "border border-line"}`}
+                    className={`flex h-5 w-5 shrink-0 items-center justify-center rounded ${checked || auto ? "bg-sky-strong text-white" : "border border-line"}`}
                   >
                     {(checked || auto) && <Check size={13} />}
                   </span>
                   <ModuleIcon
                     name={m.icon}
                     size={18}
-                    className="shrink-0 text-sky"
+                    className="shrink-0 text-sky-text"
                   />
                   <span className="min-w-0 flex-1">
                     <span className="block truncate text-sm font-semibold text-ink">
@@ -433,7 +433,7 @@ export function PricingCalculator({
             </div>
             <Link
               href={`/${lang}/signup`}
-              className="mt-4 block rounded-full bg-sky px-4 py-2 text-sm font-semibold text-white"
+              className="mt-4 block rounded-full bg-sky-strong px-4 py-2 text-sm font-semibold text-white"
             >
               {dict.startTrial}
             </Link>

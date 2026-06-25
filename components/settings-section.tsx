@@ -53,7 +53,7 @@ export function SettingsSection({ dict }: { dict: Dict }) {
           <button
             onClick={undo}
             disabled={busy}
-            className="mt-4 rounded-full bg-sky px-6 py-2.5 text-sm font-semibold text-white disabled:opacity-50"
+            className="mt-4 rounded-full bg-sky-strong px-6 py-2.5 text-sm font-semibold text-white disabled:opacity-50"
           >
             {busy ? dict.paySaving : dict.delUndo}
           </button>

@@ -76,7 +76,7 @@ export default async function LangLayout({
       <body className="font-sans bg-page text-ink antialiased flex min-h-screen flex-col">
         <a
           href="#content"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-sky focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-sky-strong focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
         >
           {dict.nav.skipToContent}
         </a>

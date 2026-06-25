@@ -44,12 +44,12 @@ export function HeaderAccount({ lang, labels }: { lang: string; labels: Labels }
   if (!authed) {
     return (
       <>
-        <Link href={`/${lang}/login`} className="hidden text-heading hover:text-sky nav:inline">
+        <Link href={`/${lang}/login`} className="hidden text-heading hover:text-sky-text nav:inline">
           {labels.signin}
         </Link>
         <Link
           href={`/${lang}/signup`}
-          className="rounded-full bg-sky px-4 py-2 font-semibold text-white transition-colors hover:bg-[#0d8bbd]"
+          className="rounded-full bg-sky-strong px-4 py-2 font-semibold text-white transition-colors hover:bg-[#08607f]"
         >
           {labels.startTrial}
         </Link>

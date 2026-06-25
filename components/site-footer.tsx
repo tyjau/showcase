@@ -79,7 +79,7 @@ export function SiteFooter({
       <div className="mx-auto max-w-6xl px-5 py-14">
         <div className="grid grid-cols-2 gap-8 min-[600px]:grid-cols-3 min-[880px]:grid-cols-4">
           <div className="col-span-2 min-[600px]:col-span-3 min-[880px]:col-span-1">
-            <BrandLogo className="!text-white" />
+            <BrandLogo className="!text-white" onDark />
             <p className="mt-3 max-w-[34ch] text-sm">{dict.tagline}</p>
             <div className="mt-4 flex gap-3">
               {SOCIALS.map(({ name, href }) => (

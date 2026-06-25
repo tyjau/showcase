@@ -15,7 +15,12 @@ const config: Config = {
       colors: {
         // Brand — partner-overridable CSS vars, theme-independent.
         navy: { DEFAULT: "var(--brand-navy, #0E2841)", deep: "#0a1f33" },
-        sky: { DEFAULT: "var(--brand-sky, #0F9ED5)", soft: "#3CAEF2" },
+        sky: {
+          DEFAULT: "var(--brand-sky, #0F9ED5)",
+          soft: "#3CAEF2",
+          strong: "var(--brand-sky-strong, #0a7aa6)",
+          text: "var(--sky-text, #0a7aa6)",
+        },
 
         // Neutrals mapped to semantic tokens → flip automatically under .dark.
         accent: "var(--accent, #156082)",

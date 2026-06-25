@@ -44,14 +44,14 @@ export default async function LegalPage({
     <main className="mx-auto max-w-3xl px-5 py-14">
       <Link
         href={`/${lang}`}
-        className="inline-flex items-center gap-1.5 text-sm font-semibold text-sky"
+        className="inline-flex items-center gap-1.5 text-sm font-semibold text-sky-text"
       >
         <ArrowLeft size={15} />
         {t.legalPage.back}
       </Link>
 
       <div className="mt-6 flex items-center gap-3">
-        <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-tint-sky text-sky">
+        <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-tint-sky text-sky-text">
           <FileText size={22} />
         </div>
         <h1 className="text-3xl font-bold text-heading">{title}</h1>

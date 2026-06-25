@@ -132,14 +132,14 @@ function InvoicesTab({ dict }: { dict: Dict }) {
               <td className="px-4 py-2.5 text-right">
                 <div className="flex justify-end gap-3">
                   {inv.outstanding > 0 && (
-                    <button onClick={() => pay(inv.id)} className="font-semibold text-sky hover:underline">
+                    <button onClick={() => pay(inv.id)} className="font-semibold text-sky-text hover:underline">
                       {dict.invPay}
                     </button>
                   )}
                   <button
                     onClick={() => download(inv.id)}
                     disabled={downloading === inv.id}
-                    className="font-semibold text-sky hover:underline disabled:opacity-50"
+                    className="font-semibold text-sky-text hover:underline disabled:opacity-50"
                   >
                     {downloading === inv.id ? dict.paySaving : dict.invDownload}
                   </button>
@@ -212,7 +212,7 @@ export function AccountPortal({ lang, dict, addons = [] }: { lang: string; dict:
         <p className="text-muted">{dict.signedOut}</p>
         <Link
           href={`/${lang}/login`}
-          className="mt-4 inline-flex rounded-full bg-sky px-6 py-3 text-sm font-semibold text-white"
+          className="mt-4 inline-flex rounded-full bg-sky-strong px-6 py-3 text-sm font-semibold text-white"
         >
           {dict.signin}
         </Link>
@@ -254,7 +254,7 @@ export function AccountPortal({ lang, dict, addons = [] }: { lang: string; dict:
           {workspace && (
             <a
               href={`https://${workspace}.${APP_DOMAIN}`}
-              className="inline-flex items-center gap-1.5 rounded-full bg-sky px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#0d8bbd]"
+              className="inline-flex items-center gap-1.5 rounded-full bg-sky-strong px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#08607f]"
             >
               {dict.openWorkspace} →
             </a>
@@ -281,7 +281,7 @@ export function AccountPortal({ lang, dict, addons = [] }: { lang: string; dict:
                     key={it.key}
                     onClick={() => setTab(it.key)}
                     className={`rounded-lg px-3 py-2 text-left text-sm transition ${
-                      tab === it.key ? "bg-tint-sky font-semibold text-sky" : "text-ink hover:bg-mist"
+                      tab === it.key ? "bg-tint-sky font-semibold text-sky-text" : "text-ink hover:bg-mist"
                     }`}
                   >
                     {it.label}

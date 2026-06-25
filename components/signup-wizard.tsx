@@ -227,7 +227,7 @@ export function SignupWizard({
         </div>
         <Link
           href={`/${lang}`}
-          className="mt-6 inline-flex rounded-full bg-sky px-6 py-3 text-sm font-semibold text-white"
+          className="mt-6 inline-flex rounded-full bg-sky-strong px-6 py-3 text-sm font-semibold text-white"
         >
           {dict.successCta}
         </Link>
@@ -246,7 +246,7 @@ export function SignupWizard({
         {STEP_KEYS.map((k, i) => (
           <div key={k} className="flex items-center">
             <span
-              className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-semibold ${i <= step ? "bg-sky text-white" : "bg-mist text-muted"}`}
+              className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-semibold ${i <= step ? "bg-sky-strong text-white" : "bg-mist text-muted"}`}
             >
               {i < step ? <Check size={14} /> : i + 1}
             </span>
@@ -281,7 +281,7 @@ export function SignupWizard({
                   <div className="flex items-center justify-between">
                     <span className="font-semibold text-ink">{p.name}</span>
                     {pop && (
-                      <span className="rounded-full bg-tint-sky px-2 py-0.5 text-[11px] font-semibold text-sky">
+                      <span className="rounded-full bg-tint-sky px-2 py-0.5 text-[11px] font-semibold text-sky-text">
                         {dict.popular}
                       </span>
                     )}
@@ -336,7 +336,7 @@ export function SignupWizard({
                       className={`flex items-center gap-2 rounded-lg border p-2.5 text-left text-sm transition ${on ? "border-sky bg-tint-sky-strong" : "border-line bg-surface hover:border-sky"}`}
                     >
                       <span
-                        className={`flex h-4 w-4 shrink-0 items-center justify-center rounded ${on ? "bg-sky text-white" : "border border-line"}`}
+                        className={`flex h-4 w-4 shrink-0 items-center justify-center rounded ${on ? "bg-sky-strong text-white" : "border border-line"}`}
                       >
                         {on && <Check size={11} />}
                       </span>
@@ -489,14 +489,14 @@ export function SignupWizard({
               {dict.termsPre}{" "}
               <Link
                 href={`/${lang}/legal/terms`}
-                className="text-sky underline"
+                className="text-sky-text underline"
               >
                 {legal.terms}
               </Link>{" "}
               {dict.termsAnd}{" "}
               <Link
                 href={`/${lang}/legal/privacy`}
-                className="text-sky underline"
+                className="text-sky-text underline"
               >
                 {legal.privacy}
               </Link>
@@ -529,7 +529,7 @@ export function SignupWizard({
             type="button"
             disabled={!canNext}
             onClick={() => canNext && setStep(step + 1)}
-            className={`inline-flex items-center gap-1 rounded-full px-6 py-2.5 text-sm font-semibold ${canNext ? "bg-sky text-white" : "cursor-not-allowed bg-mist text-muted"}`}
+            className={`inline-flex items-center gap-1 rounded-full px-6 py-2.5 text-sm font-semibold ${canNext ? "bg-sky-strong text-white" : "cursor-not-allowed bg-mist text-muted"}`}
           >
             {dict.next} <ChevronRight size={16} />
           </button>
@@ -538,7 +538,7 @@ export function SignupWizard({
             type="button"
             disabled={!canNext || submitting}
             onClick={submit}
-            className={`rounded-full px-6 py-2.5 text-sm font-semibold ${canNext && !submitting ? "bg-sky text-white" : "cursor-not-allowed bg-mist text-muted"}`}
+            className={`rounded-full px-6 py-2.5 text-sm font-semibold ${canNext && !submitting ? "bg-sky-strong text-white" : "cursor-not-allowed bg-mist text-muted"}`}
           >
             {submitting ? "…" : dict.create}
           </button>

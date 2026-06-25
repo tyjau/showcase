@@ -55,7 +55,7 @@ export default async function PartnersPage({
             const Icon = TYPE_ICONS[i] ?? Store;
             return (
               <div key={tp.title} className="rounded-xl border border-line bg-surface p-6">
-                <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-tint-sky text-sky">
+                <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-tint-sky text-sky-text">
                   <Icon size={22} />
                 </div>
                 <h3 className="mt-4 font-semibold text-ink">{tp.title}</h3>
@@ -82,7 +82,7 @@ export default async function PartnersPage({
           <ul className="space-y-3">
             {p.consolePoints.map((pt: string) => (
               <li key={pt} className="flex items-start gap-3">
-                <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-sky text-white">
+                <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-sky-strong text-white">
                   <Check size={13} />
                 </span>
                 <span className="text-sm text-ink">{pt}</span>

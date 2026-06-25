@@ -40,13 +40,13 @@ export default async function HelpArticlePage({
     <main className="mx-auto max-w-3xl px-5 py-14">
       <Link
         href={`/${lang}/help`}
-        className="inline-flex items-center gap-1.5 text-sm font-semibold text-sky"
+        className="inline-flex items-center gap-1.5 text-sm font-semibold text-sky-text"
       >
         <ArrowLeft size={15} /> {h.back}
       </Link>
 
       <div className="mt-6 flex items-center gap-3">
-        <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-tint-sky text-sky">
+        <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-tint-sky text-sky-text">
           <HelpCircle size={22} />
         </div>
         <h1 className="text-3xl font-bold text-heading">{at.title}</h1>
@@ -66,7 +66,7 @@ export default async function HelpArticlePage({
         <p className="mx-auto mt-1 max-w-md text-sm text-muted">{h.contactLead}</p>
         <Link
           href={`/${lang}/company#contact`}
-          className="mt-4 inline-block rounded-full bg-sky px-5 py-2.5 font-semibold text-white transition-colors hover:bg-[#0d8bbd]"
+          className="mt-4 inline-block rounded-full bg-sky-strong px-5 py-2.5 font-semibold text-white transition-colors hover:bg-[#08607f]"
         >
           {h.contactCta}
         </Link>

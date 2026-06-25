@@ -104,7 +104,7 @@ function CobrandEditor({
         className="flex w-full items-center justify-between gap-3 text-left"
       >
         <span className="text-xs uppercase tracking-wide text-muted">{dict.cbTitle}</span>
-        <span className="text-sm font-semibold text-sky">{open ? dict.cbHide : dict.cbEdit}</span>
+        <span className="text-sm font-semibold text-sky-text">{open ? dict.cbHide : dict.cbEdit}</span>
       </button>
 
       {/* Collapsed: the current co-brand at a glance (swatches + domain). */}
@@ -215,7 +215,7 @@ function CobrandEditor({
               type="button"
               onClick={save}
               disabled={saving}
-              className="rounded-full bg-sky px-5 py-2 text-sm font-semibold text-white disabled:opacity-50"
+              className="rounded-full bg-sky-strong px-5 py-2 text-sm font-semibold text-white disabled:opacity-50"
             >
               {saving ? dict.cbSaving : dict.cbSave}
             </button>
@@ -261,7 +261,7 @@ export function PartnerPortal({ lang, dict }: { lang: string; dict: Dict }) {
     return (
       <div>
         <p className="text-muted">{dict.signedOut}</p>
-        <Link href={`/${lang}/partner/login`} className="mt-4 inline-flex rounded-full bg-sky px-6 py-3 text-sm font-semibold text-white">
+        <Link href={`/${lang}/partner/login`} className="mt-4 inline-flex rounded-full bg-sky-strong px-6 py-3 text-sm font-semibold text-white">
           {dict.signin}
         </Link>
       </div>
@@ -287,7 +287,7 @@ export function PartnerPortal({ lang, dict }: { lang: string; dict: Dict }) {
       {!d?.is_referrer ? (
         <div className="mt-8 rounded-xl border border-line p-6">
           <p className="text-muted">{dict.notPartner}</p>
-          <Link href={`/${lang}/become-partner`} className="mt-4 inline-flex rounded-full bg-sky px-6 py-2.5 text-sm font-semibold text-white">
+          <Link href={`/${lang}/become-partner`} className="mt-4 inline-flex rounded-full bg-sky-strong px-6 py-2.5 text-sm font-semibold text-white">
             {dict.becomePartner}
           </Link>
         </div>
@@ -318,7 +318,7 @@ export function PartnerPortal({ lang, dict }: { lang: string; dict: Dict }) {
                     setCopied(true);
                     setTimeout(() => setCopied(false), 1500);
                   }}
-                  className="shrink-0 rounded-full bg-sky px-4 py-2 text-sm font-semibold text-white"
+                  className="shrink-0 rounded-full bg-sky-strong px-4 py-2 text-sm font-semibold text-white"
                 >
                   {copied ? dict.copied : dict.copy}
                 </button>

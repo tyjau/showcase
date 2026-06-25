@@ -38,7 +38,7 @@ export default async function SignupPage({
       {/* Login toggle — the onboarding screen offers a path back to sign-in. */}
       <p className="mt-8 text-center text-sm text-muted">
         {t.signupPage.haveAccount}{" "}
-        <Link href={`/${params.lang}/login`} className="font-semibold text-sky hover:underline">
+        <Link href={`/${params.lang}/login`} className="font-semibold text-sky-text hover:underline">
           {t.signupPage.signin}
         </Link>
       </p>

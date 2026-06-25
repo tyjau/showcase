@@ -89,7 +89,7 @@ export function SignupConfirm({
         )}
         <Link
           href={`/${lang}/login`}
-          className="mt-6 inline-flex rounded-full bg-sky px-6 py-3 text-sm font-semibold text-white"
+          className="mt-6 inline-flex rounded-full bg-sky-strong px-6 py-3 text-sm font-semibold text-white"
         >
           {dict.successCta}
         </Link>
@@ -110,7 +110,7 @@ export function SignupConfirm({
         <p className="mx-auto mt-2 max-w-md text-muted">{dict.invalidBody}</p>
         <Link
           href={`/${lang}/signup`}
-          className="mt-6 inline-flex rounded-full bg-sky px-6 py-3 text-sm font-semibold text-white"
+          className="mt-6 inline-flex rounded-full bg-sky-strong px-6 py-3 text-sm font-semibold text-white"
         >
           {dict.invalidCta}
         </Link>
@@ -159,7 +159,7 @@ export function SignupConfirm({
         type="button"
         disabled={submitting || !token}
         onClick={submit}
-        className={`mt-6 w-full rounded-full px-6 py-3 text-sm font-semibold ${!submitting && token ? "bg-sky text-white" : "cursor-not-allowed bg-mist text-muted"}`}
+        className={`mt-6 w-full rounded-full px-6 py-3 text-sm font-semibold ${!submitting && token ? "bg-sky-strong text-white" : "cursor-not-allowed bg-mist text-muted"}`}
       >
         {submitting ? "…" : dict.cta}
       </button>

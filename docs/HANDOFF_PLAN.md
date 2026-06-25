@@ -4,7 +4,12 @@
 > (seule adaptation assumée : Légal en routes path + alias plutôt qu'onglets-hash, sous le routing
 > hybride). Portes : `tsc` 0 · **unit 61/61** · **e2e** (chrome/home/pricing/contact/legal/careers/
 > status/enterprise/account/onboarding/qa/a11y) · **build export prod OK** (210 fichiers, `.htaccess` livré).
-> Résidu connu non bloquant : contraste de la couleur de marque #0F9ED5 (3:1, AA-large OK) — décision design.
+>
+> **Suivis traités** : ✅ **Contraste marque RÉSOLU** — accent accessible (`--brand-sky-strong` pour les fonds
+> à texte blanc, `--sky-text` flippant pour le texte ; #0F9ED5 gardé pour identité/déco ; co-brand préservé).
+> **AA strict 18/18** (9 écrans × clair/sombre, color-contrast inclus). ✅ **lucide-react@1.18.0** confirmé
+> légitime (latest=1.21.0 ; icônes de marque retirées par Lucide → SVG inline). Tickets restants :
+> `request_demo` (rebuild PHAR guardian) · migration Next 15 (breaking).
 
 > Référence de suivi des lots. Source de vérité du design : le bundle handoff
 > (`design_handoff_skyrh_site/`, 14 maquettes `.dc.html` + screenshots). Ce plan traduit

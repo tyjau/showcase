@@ -14,7 +14,7 @@ export function RedirectTo({ href, label }: { href: string; label: string }) {
   }, [router, href]);
   return (
     <main className="mx-auto max-w-3xl px-5 py-24 text-center">
-      <Link href={href} className="font-semibold text-sky underline">
+      <Link href={href} className="font-semibold text-sky-text underline">
         {label} →
       </Link>
     </main>

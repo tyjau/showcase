@@ -44,7 +44,7 @@ function SlideVisual({ index, Icon }: { index: number; Icon: LucideIcon }) {
   return (
     <div className="overflow-hidden rounded-2xl border border-white/10 bg-surface text-ink shadow-[0_30px_70px_-28px_rgba(0,0,0,0.6)]">
       <div className="flex items-center gap-2.5 border-b border-line px-5 py-4">
-        <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-tint-sky text-sky">
+        <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-tint-sky text-sky-text">
           <Icon size={16} />
         </span>
         <div className="h-2.5 w-32 rounded bg-mist" />
@@ -54,7 +54,7 @@ function SlideVisual({ index, Icon }: { index: number; Icon: LucideIcon }) {
           {[0, 1, 2].map((i) => (
             <div key={i} className="rounded-[10px] bg-mist px-3 py-3">
               <div className="h-2 w-10 rounded bg-line" />
-              <div className="mt-2 h-3.5 w-12 rounded bg-sky/40" />
+              <div className="mt-2 h-3.5 w-12 rounded bg-sky-strong/40" />
             </div>
           ))}
         </div>
@@ -139,7 +139,7 @@ export function ModulesCarousel({ lang, dict }: { lang: string; dict: Dict }) {
                   <div className="grid items-center gap-10 min-[895px]:grid-cols-2">
                     <div className="max-w-md">
                       <div className="mb-3.5 inline-flex items-center gap-2.5">
-                        <span className="inline-flex h-9 w-9 items-center justify-center rounded-[10px] bg-sky/20 text-sky-soft">
+                        <span className="inline-flex h-9 w-9 items-center justify-center rounded-[10px] bg-sky-strong/20 text-sky-soft">
                           <Icon size={19} />
                         </span>
                         <span className="text-sm font-bold text-sky-soft">{s.chip}</span>
@@ -149,7 +149,7 @@ export function ModulesCarousel({ lang, dict }: { lang: string; dict: Dict }) {
                       <ul className="mt-4 flex flex-col gap-2.5">
                         {s.bullets.map((b) => (
                           <li key={b} className="flex items-center gap-2.5 text-[15px]">
-                            <span className="inline-flex h-5 w-5 flex-none items-center justify-center rounded-full bg-sky text-white">
+                            <span className="inline-flex h-5 w-5 flex-none items-center justify-center rounded-full bg-sky-strong text-white">
                               <Check size={12} strokeWidth={3.5} />
                             </span>
                             {b}
@@ -158,7 +158,7 @@ export function ModulesCarousel({ lang, dict }: { lang: string; dict: Dict }) {
                       </ul>
                       <Link
                         href={`/${lang}/features`}
-                        className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-sky px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#0d8bbd]"
+                        className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-sky-strong px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#08607f]"
                       >
                         {dict.more} <ArrowRight size={15} />
                       </Link>
@@ -181,7 +181,7 @@ export function ModulesCarousel({ lang, dict }: { lang: string; dict: Dict }) {
               aria-label={`${i + 1}`}
               aria-current={i === slide}
               className={`h-2.5 rounded-full transition-all ${
-                i === slide ? "w-7 bg-sky" : "w-2.5 bg-white/30 hover:bg-white/50"
+                i === slide ? "w-7 bg-sky-strong" : "w-2.5 bg-white/30 hover:bg-white/50"
               }`}
             />
           ))}

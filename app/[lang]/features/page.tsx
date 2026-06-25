@@ -63,7 +63,7 @@ export default async function FeaturesPage({
                     className="group rounded-xl border border-line bg-surface p-5 transition hover:-translate-y-1 hover:shadow-sm"
                   >
                     <div className="mb-3 flex items-center justify-between">
-                      <div className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-tint-sky text-sky">
+                      <div className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-tint-sky text-sky-text">
                         <ModuleIcon name={m.icon} size={20} />
                       </div>
                       {m.isAddon && (
@@ -76,7 +76,7 @@ export default async function FeaturesPage({
                     <p className="mt-1 text-sm leading-relaxed text-muted">
                       {txt.tagline}
                     </p>
-                    <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-sky">
+                    <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-sky-text">
                       {t.modulesPage.learnMore}
                       <ArrowRight
                         size={15}
