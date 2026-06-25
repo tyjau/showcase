@@ -131,6 +131,12 @@
     "showAll": "See all",
     "showLess": "Show less",
     "addOptions": "Add options",
+    "addonsLabel": "Add-on modules",
+    "selectionTitle": "Your selection",
+    "perEmployeeShort": "Per employee",
+    "requires": "Requires",
+    "autoTag": "auto",
+    "emptySelection": "No module selected.",
     "faqTitle": "Frequently asked",
     "faq": [
       { "q": "How does per-employee billing work?", "a": "You're billed monthly for active employees only, prorated — add or remove people anytime and the next invoice adjusts automatically." },

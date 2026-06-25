@@ -131,6 +131,12 @@
     "showAll": "Tout voir",
     "showLess": "Réduire",
     "addOptions": "Ajouter des options",
+    "addonsLabel": "Modules complémentaires",
+    "selectionTitle": "Votre sélection",
+    "perEmployeeShort": "Par employé",
+    "requires": "Requiert",
+    "autoTag": "auto",
+    "emptySelection": "Aucun module sélectionné.",
     "faqTitle": "Questions fréquentes",
     "faq": [
       { "q": "Comment fonctionne la facturation par employé ?", "a": "Vous êtes facturé chaque mois pour les seuls employés actifs, au prorata — ajoutez ou retirez des personnes à tout moment, la facture suivante s'ajuste automatiquement." },

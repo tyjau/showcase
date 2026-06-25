@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { Check, ChevronDown } from "lucide-react";
+import { Check } from "lucide-react";
 import {
   type Catalog,
   type Money,
@@ -10,13 +10,26 @@ import {
   moduleText,
   packageText,
 } from "@/lib/catalog";
-import { ModuleIcon } from "./module-icon";
 import { useCurrency } from "./currency-provider";
 import { formatMoney, formatRate } from "@/lib/money";
 
 function unitPrice(prices: Money[], currency: string): number {
   const p = prices.find((x) => x.currency === currency && x.cycle === "monthly");
   return p ? p.amount : 0;
+}
+
+// Default à-la-carte selection ≈ the mockup's 3 starter modules (records + time-off + payroll).
+function defaultCustomCodes(catalog: Catalog): Set<string> {
+  const codes = new Set<string>();
+  for (const cat of ["people", "time-off", "payroll"]) {
+    const m = catalog.modules.find((x) => x.category === cat && !x.isAddon);
+    if (m) codes.add(m.code);
+  }
+  if (codes.size === 0) {
+    const first = catalog.modules.find((x) => !x.isAddon);
+    if (first) codes.add(first.code);
+  }
+  return codes;
 }
 
 type Dict = Record<string, string>;
@@ -41,12 +54,10 @@ export function PricingCalculator({
   const [mode, setMode] = useState<"packages" | "compare" | "custom">("packages");
   const pkgName = (code: string, fallbackName: string) =>
     packageText(code, packages, { name: fallbackName, description: "" }).name;
-  const [expanded, setExpanded] = useState<string | null>(null);
-  const [optionsOpen, setOptionsOpen] = useState<string | null>(null);
+  const pkgDesc = (code: string) =>
+    packageText(code, packages, { name: "", description: "" }).description;
   const [packAddons, setPackAddons] = useState<Record<string, Set<string>>>({});
-  const [selected, setSelected] = useState<Set<string>>(
-    () => new Set(["WAGE-GEN00"]),
-  );
+  const [selected, setSelected] = useState<Set<string>>(() => defaultCustomCodes(catalog));
 
   const factor = annual ? 0.8 : 1;
   const periodTotal = (rate: number) => rate * employees * (annual ? 12 : 1);
@@ -112,7 +123,7 @@ export function PricingCalculator({
   }
 
   const tabCls = (on: boolean) =>
-    `px-4 py-2 font-semibold transition ${on ? "bg-white text-[#0E2841]" : "text-hero-fg-muted hover:text-white"}`;
+    `rounded-[9px] px-4 py-2 font-semibold transition ${on ? "bg-white text-[#156082]" : "text-hero-fg-muted hover:text-white"}`;
 
   return (
     <div>
@@ -126,21 +137,21 @@ export function PricingCalculator({
           <p className="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-hero-fg-muted">{dict.sub}</p>
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <div className="inline-flex overflow-hidden rounded-md border border-white/25 text-sm">
+            <div className="inline-flex items-center gap-1 rounded-full bg-white/[0.08] p-1 text-sm">
               <button
                 type="button"
                 onClick={() => setAnnual(false)}
-                className={`px-3 py-1.5 transition ${!annual ? "bg-sky-strong font-semibold text-white" : "text-hero-fg-muted hover:text-white"}`}
+                className={`rounded-full px-3.5 py-1.5 font-semibold transition ${!annual ? "bg-sky-strong text-white" : "text-hero-fg-muted hover:text-white"}`}
               >
                 {dict.monthly}
               </button>
               <button
                 type="button"
                 onClick={() => setAnnual(true)}
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 transition ${annual ? "bg-sky-strong font-semibold text-white" : "text-hero-fg-muted hover:text-white"}`}
+                className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 font-semibold transition ${annual ? "bg-sky-strong text-white" : "text-hero-fg-muted hover:text-white"}`}
               >
                 {dict.annual}
-                <span className="rounded-full bg-ok-bg px-1.5 text-[11px] text-ok-fg">
+                <span className={`text-[11px] font-bold ${annual ? "text-white/85" : "text-[#7fe3b0]"}`}>
                   {dict.annualSave}
                 </span>
               </button>
@@ -163,7 +174,7 @@ export function PricingCalculator({
           </div>
 
           <div className="mt-5 flex justify-center">
-            <div className="inline-flex overflow-hidden rounded-full border border-white/25 text-sm">
+            <div className="inline-flex items-center gap-1 rounded-xl bg-white/[0.06] p-1 text-sm">
               <button type="button" onClick={() => setMode("packages")} className={tabCls(mode === "packages")}>
                 {dict.tabPackages}
               </button>
@@ -224,11 +235,11 @@ export function PricingCalculator({
                     ≈ {fmtMoney(periodTotal(rate), currency)} {periodLabel}
                   </div>
                 )}
+                {pkgDesc(p.code) && (
+                  <p className="mt-2 min-h-[34px] text-xs leading-relaxed text-muted">{pkgDesc(p.code)}</p>
+                )}
                 <div className="mt-3 flex-1 space-y-1.5 text-xs text-muted">
-                  {(expanded === p.code
-                    ? p.modules
-                    : p.modules.slice(0, 5)
-                  ).map((code) => {
+                  {p.modules.map((code) => {
                     const m = catalog.modules.find((x) => x.code === code);
                     return (
                       <div key={code} className="flex items-center gap-1.5">
@@ -237,70 +248,28 @@ export function PricingCalculator({
                       </div>
                     );
                   })}
-                  {p.modules.length > 5 && (
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setExpanded(expanded === p.code ? null : p.code)
-                      }
-                      className="inline-flex items-center gap-1 pt-0.5 font-semibold text-sky-text"
-                    >
-                      {expanded === p.code
-                        ? dict.showLess
-                        : `${dict.showAll} (${p.modules.length})`}
-                      <ChevronDown
-                        size={13}
-                        className={`transition ${expanded === p.code ? "rotate-180" : ""}`}
-                      />
-                    </button>
-                  )}
                 </div>
                 {addonMods.length > 0 && (
                   <div className="mt-3 border-t border-line pt-3">
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setOptionsOpen(optionsOpen === p.code ? null : p.code)
-                      }
-                      className="flex w-full items-center justify-between text-xs font-semibold text-heading"
-                    >
-                      <span>
-                        {dict.addOptions}
-                        {sel.size > 0 ? ` (${sel.size})` : ""}
-                      </span>
-                      <ChevronDown
-                        size={14}
-                        className={`transition ${optionsOpen === p.code ? "rotate-180" : ""}`}
-                      />
-                    </button>
-                    {optionsOpen === p.code && (
-                      <div className="mt-2 space-y-1">
-                        {addonMods.map((m) => {
-                          const on = sel.has(m.code);
-                          const arate = unitPrice(m.prices, currency) * factor;
-                          return (
-                            <button
-                              key={m.code}
-                              type="button"
-                              onClick={() => togglePackAddon(p.code, m.code)}
-                              className="flex w-full items-center gap-2 text-left text-xs"
-                            >
-                              <span
-                                className={`flex h-4 w-4 shrink-0 items-center justify-center rounded ${on ? "bg-sky-strong text-white" : "border border-line"}`}
-                              >
-                                {on && <Check size={11} />}
-                              </span>
-                              <span className="flex-1 truncate text-ink">
-                                {moduleText(m, lang).headline}
-                              </span>
-                              <span className="shrink-0 text-muted">
-                                +{fmtRate(arate, currency)}
-                              </span>
-                            </button>
-                          );
-                        })}
-                      </div>
-                    )}
+                    <div className="mb-2 text-xs font-semibold text-heading">{dict.addonsLabel}</div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {addonMods.map((m) => {
+                        const on = sel.has(m.code);
+                        const arate = unitPrice(m.prices, currency) * factor;
+                        return (
+                          <button
+                            key={m.code}
+                            type="button"
+                            onClick={() => togglePackAddon(p.code, m.code)}
+                            aria-pressed={on}
+                            className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11.5px] font-semibold transition ${on ? "border-sky bg-sky-strong text-white" : "border-line text-ink hover:border-sky"}`}
+                          >
+                            {moduleText(m, lang).headline}
+                            <span className={on ? "text-white/85" : "text-muted"}>+{fmtRate(arate, currency)}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
                 )}
                 <Link
@@ -359,21 +328,6 @@ export function PricingCalculator({
                 );
               })}
             </tbody>
-            <tfoot>
-              <tr>
-                <td className="px-3 py-4" />
-                {catalog.packages.map((p) => (
-                  <td key={p.code} className="px-3 py-4 text-center">
-                    <Link
-                      href={p.code === "ENTERPRISE" ? `/${lang}/enterprise` : `/${lang}/signup?plan=${p.code}`}
-                      className={`inline-block rounded-full px-4 py-2 text-sm font-semibold ${p.code === "BUSINESS" ? "bg-sky-strong text-white" : "border border-line text-heading hover:border-sky"}`}
-                    >
-                      {p.code === "ENTERPRISE" ? dict.contact : dict.startTrial}
-                    </Link>
-                  </td>
-                ))}
-              </tr>
-            </tfoot>
           </table>
         </div>
       ) : (
@@ -387,12 +341,18 @@ export function PricingCalculator({
               const checked = selected.has(m.code);
               const auto = resolved.has(m.code) && !checked;
               const rate = unitPrice(m.prices, currency) * factor;
+              const reqNames = m.requires
+                .filter((r) => r.kind === "required")
+                .map((r) => {
+                  const dep = catalog.modules.find((x) => x.code === r.code);
+                  return dep ? moduleText(dep, lang).headline : r.code;
+                });
               return (
                 <button
                   key={m.code}
                   type="button"
                   onClick={() => toggleModule(m.code)}
-                  className={`flex items-center gap-3 rounded-xl border p-3 text-left transition ${
+                  className={`flex items-start gap-3 rounded-[14px] border p-4 text-left transition ${
                     checked
                       ? "border-sky bg-tint-sky-strong"
                       : auto
@@ -401,46 +361,80 @@ export function PricingCalculator({
                   }`}
                 >
                   <span
-                    className={`flex h-5 w-5 shrink-0 items-center justify-center rounded ${checked || auto ? "bg-sky-strong text-white" : "border border-line"}`}
+                    className={`mt-0.5 flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-md ${checked || auto ? "bg-sky-strong text-white" : "border-2 border-line"}`}
                   >
-                    {(checked || auto) && <Check size={13} />}
+                    {(checked || auto) && <Check size={13} strokeWidth={3} />}
                   </span>
-                  <ModuleIcon
-                    name={m.icon}
-                    size={18}
-                    className="shrink-0 text-sky-text"
-                  />
                   <span className="min-w-0 flex-1">
-                    <span className="block truncate text-sm font-semibold text-ink">
-                      {moduleText(m, lang).headline}
+                    <span className="flex items-center justify-between gap-2">
+                      <span className="truncate text-[14.5px] font-bold text-ink">
+                        {moduleText(m, lang).headline}
+                      </span>
+                      <span className="shrink-0 text-[13px] font-extrabold text-sky-text">
+                        {rate === 0 ? dict.free : `+${fmtRate(rate, currency)}`}
+                      </span>
                     </span>
-                    <span className="text-[11px] text-muted">
-                      {auto
-                        ? dict.autoIncluded
-                        : `${fmtRate(rate, currency)} ${dict.perEmployee}`}
+                    <span className="mt-0.5 block text-[12.5px] leading-snug text-muted">
+                      {moduleText(m, lang).tagline}
                     </span>
+                    {reqNames.length > 0 && (
+                      <span className="mt-1.5 block text-[11px] text-muted">
+                        {dict.requires} : {reqNames.join(", ")}
+                      </span>
+                    )}
                   </span>
                 </button>
               );
             })}
           </div>
-          <div className="rounded-2xl border border-line bg-surface p-6 text-center lg:sticky lg:top-24">
-            <div className="text-xs uppercase tracking-wide text-muted">
-              {dict.estTotal}
+          <div className="rounded-2xl border border-line bg-surface p-[22px] lg:sticky lg:top-24">
+            <div className="text-[13px] font-bold uppercase tracking-[0.05em] text-muted">
+              {dict.selectionTitle}
             </div>
-            <div className="mt-1 text-[34px] font-extrabold text-heading">
-              {fmtMoney(periodTotal(customRate), currency)}
-              <span className="text-sm font-normal text-muted"> {periodLabel}</span>
+            <div className="mt-3.5 flex flex-col gap-2 text-[13.5px]">
+              {Array.from(resolved).length === 0 ? (
+                <p className="text-muted">{dict.emptySelection}</p>
+              ) : (
+                Array.from(resolved).map((code) => {
+                  const m = catalog.modules.find((x) => x.code === code);
+                  if (!m) return null;
+                  const auto = !selected.has(code);
+                  const rate = unitPrice(m.prices, currency) * factor;
+                  return (
+                    <div key={code} className="flex items-center justify-between gap-3">
+                      <span className="min-w-0 truncate text-ink">
+                        {moduleText(m, lang).headline}
+                        {auto && <span className="ml-1 text-[11px] text-muted">({dict.autoTag})</span>}
+                      </span>
+                      <span className="shrink-0 font-semibold text-ink">
+                        {rate === 0 ? dict.free : `+${fmtRate(rate, currency)}`}
+                      </span>
+                    </div>
+                  );
+                })
+              )}
             </div>
-            <div className="mt-1 text-xs text-muted">
-              {fmtRate(customRate, currency)} {dict.perEmployee} × {employees}
+            <div className="mt-4 border-t border-line pt-4">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-muted">{dict.perEmployeeShort}</span>
+                <span className="font-bold text-ink">{fmtRate(customRate, currency)}</span>
+              </div>
+              <div className="mt-3 flex items-baseline justify-between gap-2">
+                <span className="text-xs uppercase tracking-wide text-muted">
+                  {dict.estTotal} ({employees})
+                </span>
+                <span className="text-2xl font-extrabold text-heading">
+                  {fmtMoney(periodTotal(customRate), currency)}
+                  <span className="text-xs font-normal text-muted"> {periodLabel}</span>
+                </span>
+              </div>
+              <Link
+                href={`/${lang}/signup`}
+                className="mt-4 block rounded-full bg-sky-strong py-2.5 text-center text-sm font-semibold text-white transition-colors hover:bg-[#08607f]"
+              >
+                {dict.startTrial}
+              </Link>
             </div>
-            <Link
-              href={`/${lang}/signup`}
-              className="mt-4 block rounded-full bg-sky-strong px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#08607f]"
-            >
-              {dict.startTrial}
-            </Link>
           </div>
           </div>
         </div>
