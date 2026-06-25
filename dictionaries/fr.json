@@ -265,7 +265,18 @@
     "sentTitle": "Message envoyé",
     "sentBody": "Merci — notre équipe revient vers vous sous un jour ouvré.",
     "asideTitle": "Ce à quoi vous attendre",
-    "asidePoints": ["Une réponse sous un jour ouvré", "Une démo sur mesure, pas un pitch générique", "Sans engagement"]
+    "asidePoints": ["Une réponse sous un jour ouvré", "Une démo sur mesure, pas un pitch générique", "Sans engagement"],
+    "channelsTitle": "Nous joindre directement",
+    "channels": [
+      { "label": "Commercial", "value": "sales@skyrh.app" },
+      { "label": "Support", "value": "support@skyrh.app" },
+      { "label": "Partenariats", "value": "partners@skyrh.app" }
+    ],
+    "officesTitle": "Nos bureaux",
+    "offices": [
+      { "city": "Douala", "lines": ["Bonanjo, Douala", "Cameroun"] },
+      { "city": "Paris", "lines": ["2 rue de la Paix", "75002 Paris, France"] }
+    ]
   },
   "statusPage": {
     "eyebrow": "Statut",
@@ -277,6 +288,19 @@
     "incident": "Incident",
     "uptimeLabel": "Disponibilité 90 j",
     "subscribe": "S'abonner aux mises à jour",
+    "metricsTitle": "90 derniers jours",
+    "metrics": [
+      { "value": "99,95 %", "label": "Disponibilité" },
+      { "value": "180 ms", "label": "Latence API médiane" },
+      { "value": "12", "label": "Incidents résolus" },
+      { "value": "< 15 min", "label": "Temps de réponse moyen" }
+    ],
+    "historyTitle": "Historique des incidents",
+    "incidents": [
+      { "date": "18 juin 2026", "tag": "Résolu", "title": "Latence élevée sur les notifications e-mail", "desc": "Service e-mail dégradé pendant 42 min. Cause : un worker saturé. Résolu par une mise à l'échelle." },
+      { "date": "30 mai 2026", "tag": "Maintenance", "title": "Maintenance planifiée du moteur de paie", "desc": "Fenêtre de maintenance de 20 min, sans impact sur les données." },
+      { "date": "12 mai 2026", "tag": "Résolu", "title": "Interruption partielle de l'API publique", "desc": "Erreurs 5xx intermittentes pendant 15 min. Correctif déployé." }
+    ],
     "services": [
       { "name": "Application web", "status": "operational", "uptime": "99,98 %" },
       { "name": "Moteur de paie", "status": "operational", "uptime": "99,95 %" },
@@ -293,6 +317,16 @@
     "openings": "Postes ouverts",
     "allTeams": "Toutes les équipes",
     "apply": "Postuler",
+    "valuesTitle": "Ce qui nous fait avancer",
+    "values": [
+      { "title": "Responsabilité", "desc": "Des équipes réduites, une vraie autonomie, et la confiance pour livrer." },
+      { "title": "Obsession client", "desc": "Nous construisons avec les équipes RH et paie, sur le terrain." },
+      { "title": "Exigence", "desc": "Qualité, performance et clarté — dans le code comme dans le produit." },
+      { "title": "Impact sans frontières", "desc": "Ce que nous bâtissons change la gestion des entreprises, dans plusieurs pays." }
+    ],
+    "perksTitle": "Pas de poste qui vous correspond ?",
+    "perksBody": "Nous sommes toujours ravis de rencontrer de belles personnes. Dites-nous comment vous auriez de l'impact.",
+    "perksCta": "Envoyer une candidature spontanée",
     "noJobs": "Aucun poste ouvert dans cette équipe pour le moment.",
     "jobs": [
       { "title": "Ingénieur·e Backend Senior", "team": "Engineering", "location": "Télétravail · UE", "type": "CDI" },

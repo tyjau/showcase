@@ -76,7 +76,34 @@ export default async function StatusPage(props: { params: Promise<{ lang: string
             );
           })}
         </div>
-        <div className="mt-6 text-center">
+        {/* Metrics */}
+        <div className="mt-10 grid grid-cols-2 gap-4 rounded-xl border border-line bg-surface p-6 sm:grid-cols-4">
+          {p.metrics.map((m: { value: string; label: string }) => (
+            <div key={m.label} className="text-center">
+              <div className="text-2xl font-extrabold text-heading">{m.value}</div>
+              <div className="mt-1 text-xs text-muted">{m.label}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Incident history */}
+        <div className="mt-10">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-accent">{p.historyTitle}</h2>
+          <ul className="mt-4 space-y-4">
+            {p.incidents.map((it: { date: string; tag: string; title: string; desc: string }) => (
+              <li key={it.title} className="rounded-xl border border-line bg-surface p-5">
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="text-xs text-muted">{it.date}</span>
+                  <span className="rounded-full bg-mist px-2 py-0.5 text-xs font-semibold text-muted">{it.tag}</span>
+                </div>
+                <h3 className="mt-2 font-semibold text-ink">{it.title}</h3>
+                <p className="mt-1 text-sm leading-relaxed text-muted">{it.desc}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="mt-10 text-center">
           <Link
             href={`/${params.lang}/contact?sujet=produit`}
             className="inline-flex rounded-full border border-line px-5 py-2.5 text-sm font-semibold text-heading hover:border-sky"

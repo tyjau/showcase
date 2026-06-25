@@ -35,6 +35,37 @@ export default async function ContactPage(props: { params: Promise<{ lang: strin
       <section className="mx-auto max-w-5xl px-5 py-12">
         <ContactForm dict={p} />
       </section>
+
+      <section className="border-t border-line bg-mist">
+        <div className="mx-auto grid max-w-5xl gap-10 px-5 py-12 sm:grid-cols-2">
+          <div>
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-accent">{p.channelsTitle}</h2>
+            <ul className="mt-4 space-y-3">
+              {p.channels.map((ch: { label: string; value: string }) => (
+                <li key={ch.label} className="flex items-center justify-between gap-4 border-b border-line pb-3 last:border-0">
+                  <span className="text-sm font-medium text-ink">{ch.label}</span>
+                  <a href={`mailto:${ch.value}`} className="text-sm font-semibold text-sky-text hover:underline">
+                    {ch.value}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-accent">{p.officesTitle}</h2>
+            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+              {p.offices.map((o: { city: string; lines: string[] }) => (
+                <div key={o.city} className="rounded-xl border border-line bg-surface p-4">
+                  <div className="font-semibold text-ink">{o.city}</div>
+                  {o.lines.map((ln: string) => (
+                    <div key={ln} className="text-sm text-muted">{ln}</div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
   );
 }
