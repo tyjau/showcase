@@ -217,7 +217,9 @@ export function PricingCalculator({
                 )}
                 <div className="text-sm font-semibold text-ink">{pkgName(p.code, p.name)}</div>
                 <div className="mt-2">
-                  {isFree ? (
+                  {p.code === "ENTERPRISE" ? (
+                    <span className="text-2xl font-extrabold text-heading">{dict.enterprisePrice}</span>
+                  ) : isFree ? (
                     <span className="text-[34px] font-extrabold text-heading">
                       {dict.free}
                     </span>
