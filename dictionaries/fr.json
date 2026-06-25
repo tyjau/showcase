@@ -153,7 +153,8 @@
     "missionTitle": "Notre mission",
     "missionHeadline": "Réunir tout le cycle RH sur une seule plateforme",
     "missionBody": "Trop d'équipes jonglent encore entre tableurs et règles propres à chaque pays. Nous réunissons tout le cycle RH sur une seule plateforme et y intégrons la conformité — pour que les RH se concentrent sur l'humain, pas sur la paperasse.",
-    "valuesTitle": "Ce qui nous guide",
+    "valuesEyebrow": "Ce qui nous guide",
+    "valuesTitle": "Nos valeurs",
     "values": [
       { "title": "La conformité d'abord", "desc": "Les règles locales intégrées au produit et tenues à jour — pas en option." },
       { "title": "Proches du terrain", "desc": "Conçu avec les RH, la finance et les managers, pour le travail réel des équipes." },
@@ -170,9 +171,18 @@
     "careersCta": "Voir les postes ouverts",
     "expertEyebrow": "Parlons-en",
     "expertTitle": "Parler à un expert",
+    "expertLead": "Client, partenaire ou futur collègue — écrivez-nous et réservez une démo adaptée à vos équipes.",
+    "expertName": "Nom",
+    "expertCompany": "Société",
+    "expertEmail": "E-mail professionnel",
+    "expertMsg": "Combien d'employés ? Quels modules vous intéressent ?",
+    "expertSubmit": "Réserver une démo",
+    "expertNote": "Réponse sous 1 jour ouvré · Sans engagement",
+    "expertSent": "Message envoyé — on revient vers vous sous 1 jour ouvré.",
     "contactTitle": "Parlons-en",
     "contactBody": "Client, partenaire ou futur collègue — écrivez-nous.",
     "contactCta": "Réserver une démo",
+    "ecoEyebrow": "Plus qu'une application",
     "ecosystemTitle": "Plus qu'une application",
     "ecosystemLead": "SkyRH est une plateforme et un écosystème — déployez-la à votre manière, et grandissez avec des partenaires.",
     "ecoPlatform": "La plateforme",
@@ -378,7 +388,17 @@
       { "title": "Scalabilité linéaire", "desc": "De 10 à 100 000 employés, les performances suivent — aucun ralentissement à la montée en charge." },
       { "title": "Résultats reproductibles", "desc": "Chaque clôture est déterministe, traçable et auditable au centime près." }
     ],
+    "engineLead": "Au cœur de SkyRH, SkyEngine calcule votre paie en parallèle plutôt que ligne par ligne. Résultat : des clôtures quasi instantanées, un recalcul en temps réel et la même fiabilité, que vous payiez 10 ou 100 000 personnes.",
+    "throughputTitle": "Traitement parallèle",
+    "throughputBadge": "50 000 bulletins · ~4 min",
+    "laneLabel": "Lot",
+    "engineStats": [
+      { "value": "≤ 5 min", "label": "clôture mensuelle" },
+      { "value": "100 000+", "label": "employés / cycle" },
+      { "value": "100 %", "label": "reproductible" }
+    ],
     "modesTitle": "Déployez à votre manière",
+    "modesHeading": "Le même produit, là où vos données doivent résider",
     "modesLead": "Le même produit, livré comme votre organisation en a besoin.",
     "modes": [
       { "title": "Cloud", "desc": "Nous l'hébergeons et l'exploitons. Opérationnel en quelques minutes, mises à jour incluses." },
@@ -386,6 +406,7 @@
       { "title": "Autonome", "desc": "Un paquet autonome pour les environnements hors-ligne ou isolés." }
     ],
     "securityTitle": "Sécurité & conformité par conception",
+    "securityLead": "Vos données RH et de paie sont parmi les plus sensibles. SkyRH les protège à chaque couche — accès, transport, stockage et traçabilité.",
     "security": [
       { "title": "Contrôle d'accès (RBAC)", "desc": "Rôles et droits fins, cloisonnés par société (multi-tenant)." },
       { "title": "Journal d'audit", "desc": "Chaque action est tracée : qui, quoi, quand." },
@@ -397,7 +418,23 @@
     "ctaTitle": "Trouvons votre configuration",
     "ctaBody": "Dites-nous comment vos équipes travaillent et où vos données doivent résider.",
     "ctaPrimary": "Parler à un expert",
-    "partnersCta": "Devenir partenaire"
+    "partnersCta": "Devenir partenaire",
+    "ecoEyebrow": "Plus qu'une application",
+    "ecoTitle": "Une plateforme et un écosystème",
+    "ecoLead": "Déployez SkyRH à votre manière, et grandissez avec un réseau de partenaires qui pilotent leurs clients depuis une seule console.",
+    "ecoPlatform": "La plateforme",
+    "ecoPlatformDesc": "Cloud, votre infrastructure ou 100 % autonome — à grande échelle, avec un journal d'audit complet.",
+    "ecoPartners": "Partenaires & revendeurs",
+    "ecoPartnersDesc": "Revendez, intégrez ou recommandez — et pilotez chaque client depuis la console opérateur Harmony.",
+    "stack": {
+      "modules": "Modules RH",
+      "pills": ["Paie", "Congés", "Recrutement", "Carrière", "Self-service"],
+      "engine": "SkyEngine™",
+      "engineSub": "notre moteur de calcul ultra-rapide",
+      "security": ["Sécurité & RBAC", "Journal d'audit"],
+      "deploy": "Déploiement",
+      "modes": ["Cloud", "Sur site", "Autonome"]
+    }
   },
   "partnersPage": {
     "eyebrow": "Partenaires & revendeurs",
