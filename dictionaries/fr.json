@@ -146,11 +146,12 @@
     "heroJoin": "Nous rejoindre",
     "stats": [
       { "value": "1 200+", "label": "entreprises" },
-      { "value": "50+", "label": "pays couverts" },
+      { "value": "17", "label": "pays couverts" },
       { "value": "300 000+", "label": "employés gérés" },
       { "value": "99,9 %", "label": "de disponibilité" }
     ],
     "missionTitle": "Notre mission",
+    "missionHeadline": "Réunir tout le cycle RH sur une seule plateforme",
     "missionBody": "Trop d'équipes jonglent encore entre tableurs et règles propres à chaque pays. Nous réunissons tout le cycle RH sur une seule plateforme et y intégrons la conformité — pour que les RH se concentrent sur l'humain, pas sur la paperasse.",
     "valuesTitle": "Ce qui nous guide",
     "values": [
@@ -816,9 +817,9 @@
   },
   "socialProof": {
     "stats": [
-      { "value": "200+", "label": "entreprises" },
+      { "value": "1 200+", "label": "entreprises" },
       { "value": "40 000+", "label": "bulletins / mois" },
-      { "value": "10", "label": "pays (CEMAC & OHADA)" },
+      { "value": "17", "label": "pays (CEMAC & OHADA)" },
       { "value": "99,9 %", "label": "de disponibilité" }
     ],
     "logosTitle": "Ils nous font confiance",

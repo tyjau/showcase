@@ -93,7 +93,7 @@ export default async function CompanyPage(
           <h2 className="text-sm font-semibold uppercase tracking-wide text-accent">
             {c.missionTitle}
           </h2>
-          <p className="mt-3 text-2xl font-bold leading-snug text-heading">{c.lead}</p>
+          <p className="mt-3 text-2xl font-bold leading-snug text-heading">{c.missionHeadline}</p>
         </div>
         <p className="self-center text-lg leading-relaxed text-ink">{c.missionBody}</p>
       </section>

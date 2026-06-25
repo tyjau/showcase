@@ -146,11 +146,12 @@
     "heroJoin": "Join us",
     "stats": [
       { "value": "1,200+", "label": "companies" },
-      { "value": "50+", "label": "countries covered" },
+      { "value": "17", "label": "countries covered" },
       { "value": "300,000+", "label": "employees managed" },
       { "value": "99.9%", "label": "uptime" }
     ],
     "missionTitle": "Our mission",
+    "missionHeadline": "Bring the whole people cycle onto one platform",
     "missionBody": "Too many teams still juggle spreadsheets and country-specific rules. We bring the whole people cycle onto one platform and build compliance in — so HR can focus on people, not paperwork.",
     "valuesTitle": "What guides us",
     "values": [
@@ -816,9 +817,9 @@
   },
   "socialProof": {
     "stats": [
-      { "value": "200+", "label": "companies" },
+      { "value": "1,200+", "label": "companies" },
       { "value": "40,000+", "label": "payslips / month" },
-      { "value": "10", "label": "countries (CEMAC & OHADA)" },
+      { "value": "17", "label": "countries (CEMAC & OHADA)" },
       { "value": "99.9%", "label": "uptime" }
     ],
     "logosTitle": "Trusted by teams at",
