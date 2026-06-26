@@ -48,6 +48,14 @@ export async function apiPost(
 const TOKEN_KEY = "skyrh.portal.token";
 const REFRESH_KEY = "skyrh.portal.refresh";
 const WORKSPACE_KEY = "skyrh.portal.workspace";
+// The login also mints a rich "user token" (name, surname, avatar, role…) — kept so the
+// header + greeting can show the person, since the lean access_token has no name claim.
+const USER_TOKEN_KEY = "skyrh.portal.user";
+// Local override for the avatar after an in-session update (the user token is only
+// refreshed at next login), so the header/settings reflect a new upload immediately.
+const AVATAR_KEY = "skyrh.portal.avatar";
+// Same-tab components can't hear `storage`, so profile updates broadcast this instead.
+export const PROFILE_EVENT = "skyrh:profile";
 // A partner (referrer) session reuses the SAME token slots as the billing portal —
 // the partner JWT (scope=partner) is the Bearer for my_referrals + update_referrer_cobrand,
 // so /partner reads it via getToken() exactly like /account. We additionally cache the
@@ -83,21 +91,48 @@ export function tokenScope(): string | null {
   }
 }
 
-/**
- * Decode the display `name` claim from the current access token (best-effort), for the
- * portal greeting ("Bonjour, {name}"). Same base64url-safe path as tokenScope(); any
- * decode failure yields null so the header falls back to its generic title.
- */
-export function getSessionName(): string | null {
-  const t = getToken();
-  if (!t) return null;
+/** The rich user token (name / surname / avatar / role), kept beside the lean access
+ * token — the access token has no name claim. Mock-aware for the dev portal preview. */
+function getUserToken(): string | null {
+  if (typeof window === "undefined") return null;
+  if (PORTAL_MOCK) return MOCK_TOKEN; // dev portal preview (carries a name)
   try {
-    const seg = (t.split(".")[1] || "").replace(/-/g, "+").replace(/_/g, "/");
-    const payload = JSON.parse(atob(seg)) as { name?: string };
-    return payload?.name ?? null;
+    return localStorage.getItem(USER_TOKEN_KEY);
   } catch {
     return null;
   }
+}
+
+/** Best-effort base64url-safe decode of a string claim from a JWT payload; null on miss. */
+function decodeClaim(token: string | null, claim: string): string | null {
+  if (!token) return null;
+  try {
+    const seg = (token.split(".")[1] || "").replace(/-/g, "+").replace(/_/g, "/");
+    const payload = JSON.parse(atob(seg)) as Record<string, unknown>;
+    const v = payload[claim];
+    return typeof v === "string" && v ? v : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Display name for the portal greeting ("Bonjour, {name}"), from the user token. */
+export function getSessionName(): string | null {
+  return decodeClaim(getUserToken(), "name");
+}
+
+/** Avatar (data-URL or URL): the in-session local override if present, else the user
+ * token's avatar claim, else null. */
+export function getSessionAvatar(): string | null {
+  if (typeof window !== "undefined" && !PORTAL_MOCK) {
+    try {
+      const local = localStorage.getItem(AVATAR_KEY);
+      if (local) return local;
+    } catch {
+      /* storage unavailable */
+    }
+  }
+  return decodeClaim(getUserToken(), "avatar");
 }
 
 export function getWorkspace(): string | null {
@@ -115,6 +150,8 @@ export function clearSession(): void {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(REFRESH_KEY);
     localStorage.removeItem(WORKSPACE_KEY);
+    localStorage.removeItem(USER_TOKEN_KEY);
+    localStorage.removeItem(AVATAR_KEY);
     localStorage.removeItem(REFERRER_KEY);
   } catch {
     /* storage unavailable */
@@ -138,7 +175,7 @@ export async function apiLogin(
     });
     const json = (await res.json().catch(() => ({}))) as {
       meta?: { code?: number };
-      data?: { access_token?: string; refresh_token?: string };
+      data?: { access_token?: string; refresh_token?: string; user_token?: string };
       error?: string;
     };
     const code = json?.meta?.code ?? res.status;
@@ -148,6 +185,7 @@ export async function apiLogin(
     try {
       localStorage.setItem(TOKEN_KEY, token);
       if (json?.data?.refresh_token) localStorage.setItem(REFRESH_KEY, json.data.refresh_token);
+      if (json?.data?.user_token) localStorage.setItem(USER_TOKEN_KEY, json.data.user_token);
       localStorage.setItem(WORKSPACE_KEY, workspace);
     } catch {
       /* storage unavailable */
@@ -164,10 +202,12 @@ export function storeSession(
   workspace: string,
   accessToken: string,
   refreshToken?: string | null,
+  userToken?: string | null,
 ): void {
   try {
     localStorage.setItem(TOKEN_KEY, accessToken);
     if (refreshToken) localStorage.setItem(REFRESH_KEY, refreshToken);
+    if (userToken) localStorage.setItem(USER_TOKEN_KEY, userToken);
     if (workspace) localStorage.setItem(WORKSPACE_KEY, workspace);
   } catch {
     /* storage unavailable */
@@ -190,14 +230,14 @@ export async function apiLoginOAuth(
     });
     const json = (await res.json().catch(() => ({}))) as {
       meta?: { code?: number };
-      data?: { access_token?: string; refresh_token?: string };
+      data?: { access_token?: string; refresh_token?: string; user_token?: string };
       error?: string;
     };
     const code = json?.meta?.code ?? res.status;
     if (!res.ok || code >= 400) return { ok: false, error: json?.error || `Error ${code}` };
     const tok = json?.data?.access_token;
     if (!tok) return { ok: false, error: "No token returned" };
-    storeSession(workspace, tok, json?.data?.refresh_token ?? null);
+    storeSession(workspace, tok, json?.data?.refresh_token ?? null, json?.data?.user_token ?? null);
     return { ok: true };
   } catch {
     return { ok: false, error: "Network error — please try again." };
@@ -283,6 +323,21 @@ export async function apiAuthed(
   } catch {
     return { ok: false, error: "Network error — please try again." };
   }
+}
+
+/** Update the account owner's avatar (data-URL or URL) via the billing-scope
+ * update_profile action, then cache it locally + broadcast PROFILE_EVENT so the header
+ * and settings reflect it immediately (the user token only refreshes at next login). */
+export async function apiUpdateAvatar(avatar: string): Promise<{ ok: boolean; error?: string }> {
+  const res = await apiAuthed("update_profile", { avatar });
+  if (!res.ok) return { ok: false, error: res.error };
+  try {
+    localStorage.setItem(AVATAR_KEY, avatar);
+    window.dispatchEvent(new Event(PROFILE_EVENT));
+  } catch {
+    /* storage unavailable */
+  }
+  return { ok: true };
 }
 
 // ── Partner (referrer) lifecycle ───────────────────────────────────────────────

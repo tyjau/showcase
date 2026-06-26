@@ -1,12 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ChangeEvent } from "react";
 import { ShieldCheck, KeyRound, Bell, UserRound } from "lucide-react";
-import { apiAuthed, getWorkspace } from "@/lib/api";
+import { apiAuthed, getWorkspace, getSessionName, getSessionAvatar, apiUpdateAvatar } from "@/lib/api";
 
 type Dict = Record<string, string>;
 
 const APP_DOMAIN = process.env.NEXT_PUBLIC_APP_DOMAIN ?? "skyrh.app";
+
+function initials(name: string | null): string {
+  if (!name) return "•";
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  return ((parts[0]?.[0] ?? "") + (parts.length > 1 ? parts[parts.length - 1][0] : "")).toUpperCase() || "•";
+}
 
 // Presentational toggle (profile/security/notifications are managed in the Harmony
 // product; the billing portal mirrors the controls and links out for real changes).
@@ -34,6 +40,10 @@ export function SettingsSection({ dict }: { dict: Dict }) {
   const [confirming, setConfirming] = useState(false);
   const [busy, setBusy] = useState(false);
   const [workspace, setWorkspace] = useState<string | null>(null);
+  const [avatar, setAvatar] = useState<string | null>(null);
+  const [displayName, setDisplayName] = useState<string | null>(null);
+  const [photoBusy, setPhotoBusy] = useState(false);
+  const [photoErr, setPhotoErr] = useState<string | null>(null);
   const notifLabels = (dict.setNotif as unknown as string[]) ?? [];
   // Each notification label maps to a backend key (users.preferences.notifications).
   const NOTIF_KEYS = ["billing", "product", "security"] as const;
@@ -42,6 +52,8 @@ export function SettingsSection({ dict }: { dict: Dict }) {
 
   useEffect(() => {
     setWorkspace(getWorkspace());
+    setAvatar(getSessionAvatar());
+    setDisplayName(getSessionName());
     apiAuthed("my_consumption").then((res) => {
       const d = res.data || {};
       setScheduled(!!d.cancellation_scheduled);
@@ -59,6 +71,34 @@ export function SettingsSection({ dict }: { dict: Dict }) {
     const next = !notif[i];
     setNotif((arr) => arr.map((v, j) => (j === i ? next : v)));
     apiAuthed("update_notification_prefs", { [NOTIF_KEYS[i]]: next });
+  }
+
+  // Avatar upload: read the picked image to a data-URL and persist via update_profile.
+  async function onPickPhoto(e: ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = ""; // allow re-picking the same file
+    if (!file) return;
+    setPhotoErr(null);
+    if (file.size > 500 * 1024) {
+      setPhotoErr(dict.setPhotoTooBig);
+      return;
+    }
+    setPhotoBusy(true);
+    const dataUrl = await new Promise<string>((resolve) => {
+      const fr = new FileReader();
+      fr.onload = () => resolve(String(fr.result));
+      fr.onerror = () => resolve("");
+      fr.readAsDataURL(file);
+    });
+    if (!dataUrl) {
+      setPhotoBusy(false);
+      setPhotoErr(dict.setPhotoTooBig);
+      return;
+    }
+    const res = await apiUpdateAvatar(dataUrl);
+    setPhotoBusy(false);
+    if (res.ok) setAvatar(dataUrl);
+    else setPhotoErr(res.error || dict.payError);
   }
 
   async function requestDeletion() {
@@ -88,7 +128,31 @@ export function SettingsSection({ dict }: { dict: Dict }) {
         <h3 className="flex items-center gap-2 text-lg font-bold text-heading">
           <UserRound size={18} className="text-sky-text" /> {dict.setProfileTitle}
         </h3>
-        <div className="mt-3 flex items-center justify-between gap-4 border-b border-line pb-3">
+        <div className="mt-4 flex items-center gap-4">
+          {avatar ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={avatar} alt="" className="h-14 w-14 flex-none rounded-full object-cover" />
+          ) : (
+            <span className="flex h-14 w-14 flex-none items-center justify-center rounded-full bg-sky-strong text-lg font-bold text-white">
+              {initials(displayName)}
+            </span>
+          )}
+          <div className="min-w-0">
+            <label className="inline-flex cursor-pointer items-center rounded-full border border-line px-4 py-2 text-sm font-semibold text-heading transition hover:border-sky">
+              <input
+                type="file"
+                accept="image/png,image/jpeg"
+                className="hidden"
+                onChange={onPickPhoto}
+                disabled={photoBusy}
+              />
+              {photoBusy ? dict.setPhotoSaving : dict.setPhotoChange}
+            </label>
+            <p className="mt-1.5 text-xs text-muted">{dict.setPhotoHint}</p>
+            {photoErr && <p className="mt-1 text-xs text-err-fg">{photoErr}</p>}
+          </div>
+        </div>
+        <div className="mt-4 flex items-center justify-between gap-4 border-b border-line pb-3">
           <span className="text-sm text-muted">{dict.setWorkspaceLabel}</span>
           <span className="text-sm font-medium text-ink">{workspace ? `${workspace}.${APP_DOMAIN}` : "—"}</span>
         </div>
