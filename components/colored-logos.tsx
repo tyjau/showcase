@@ -19,9 +19,15 @@ export function ColoredLogos({ names, className = "" }: { names: string[]; class
       {names.map((name, i) => {
         const m = MARKS[i % MARKS.length];
         return (
-          <span key={name} className="inline-flex items-center gap-2.5" style={{ color: m.color }}>
-            {m.glyph}
-            <span className="text-[17px] font-extrabold tracking-tight">{name}</span>
+          <span key={name} className="inline-flex items-center gap-2.5">
+            <span
+              className="flex h-9 w-9 flex-none items-center justify-center rounded-[9px] text-white"
+              style={{ backgroundColor: m.color }}
+              aria-hidden="true"
+            >
+              {m.glyph}
+            </span>
+            <span className="text-[17px] font-extrabold tracking-tight text-heading">{name}</span>
           </span>
         );
       })}

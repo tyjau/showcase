@@ -65,8 +65,9 @@
 
 .dark {
   /* Sky TEXT goes lighter on dark surfaces for contrast (the bg-strong stays the same,
-     since white text on #0a7aa6 already meets AA in both themes). */
-  --sky-text: #3caef2;
+     since white text on #0a7aa6 already meets AA in both themes). Lightened slightly so
+     it also clears AA (4.5:1) on the --tint-sky chip background, not just the page. */
+  --sky-text: #54b8f4;
 
   /* Neutrals / surfaces (dark). A near-black slate base with layered surfaces. */
   --bg: #0b1622;

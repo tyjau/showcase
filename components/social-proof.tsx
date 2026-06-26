@@ -38,10 +38,15 @@ export function SocialProof({ dict }: { dict: SocialProofDict }) {
               <div
                 key={name}
                 className="flex h-[88px] items-center justify-center gap-2.5 rounded-[14px] border border-line bg-surface px-3"
-                style={{ color: m.color }}
               >
-                {m.glyph}
-                <span className="truncate text-[15px] font-extrabold tracking-tight">{name}</span>
+                <span
+                  className="flex h-9 w-9 flex-none items-center justify-center rounded-[9px] text-white"
+                  style={{ backgroundColor: m.color }}
+                  aria-hidden="true"
+                >
+                  {m.glyph}
+                </span>
+                <span className="truncate text-[15px] font-extrabold tracking-tight text-heading">{name}</span>
               </div>
             );
           })}
