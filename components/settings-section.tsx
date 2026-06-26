@@ -34,8 +34,9 @@ export function SettingsSection({ dict }: { dict: Dict }) {
   const [confirming, setConfirming] = useState(false);
   const [busy, setBusy] = useState(false);
   const [workspace, setWorkspace] = useState<string | null>(null);
-  const [twoFa, setTwoFa] = useState(true);
   const notifLabels = (dict.setNotif as unknown as string[]) ?? [];
+  // Each notification label maps to a backend key (users.preferences.notifications).
+  const NOTIF_KEYS = ["billing", "product", "security"] as const;
   const [notif, setNotif] = useState<boolean[]>(() => notifLabels.map(() => true));
   const harmonyUrl = workspace ? `https://${workspace}.${APP_DOMAIN}` : "#";
 
@@ -46,7 +47,19 @@ export function SettingsSection({ dict }: { dict: Dict }) {
       setScheduled(!!d.cancellation_scheduled);
       setAccessUntil((d.access_until as string) || "");
     });
+    apiAuthed("my_notification_prefs").then((res) => {
+      const n = (res.data?.notifications ?? {}) as Record<string, boolean>;
+      setNotif(NOTIF_KEYS.map((k) => n[k] !== false)); // default opt-in
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Persist a single notification toggle to the backend (optimistic).
+  function toggleNotif(i: number) {
+    const next = !notif[i];
+    setNotif((arr) => arr.map((v, j) => (j === i ? next : v)));
+    apiAuthed("update_notification_prefs", { [NOTIF_KEYS[i]]: next });
+  }
 
   async function requestDeletion() {
     setBusy(true);
@@ -98,9 +111,9 @@ export function SettingsSection({ dict }: { dict: Dict }) {
         </div>
         <div className="mt-3 flex items-center justify-between gap-4">
           <span className="text-sm text-ink">
-            {dict.set2fa} {twoFa && <span className="ml-1 text-xs text-ok-fg">· {dict.setEnabled}</span>}
+            {dict.set2fa} <span className="ml-1 text-xs text-ok-fg">· {dict.setEnabled}</span>
           </span>
-          <Toggle on={twoFa} onClick={() => setTwoFa((v) => !v)} label={dict.set2fa} />
+          <a href={harmonyUrl} className="text-sm font-semibold text-sky-text hover:underline">{dict.setChange}</a>
         </div>
       </div>
 
@@ -113,11 +126,7 @@ export function SettingsSection({ dict }: { dict: Dict }) {
           {notifLabels.map((label, i) => (
             <div key={label} className="flex items-center justify-between gap-4 py-3">
               <span className="text-sm text-ink">{label}</span>
-              <Toggle
-                on={notif[i]}
-                onClick={() => setNotif((arr) => arr.map((v, j) => (j === i ? !v : v)))}
-                label={label}
-              />
+              <Toggle on={notif[i]} onClick={() => toggleNotif(i)} label={label} />
             </div>
           ))}
         </div>

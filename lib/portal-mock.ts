@@ -56,6 +56,7 @@ const MOCK: Record<string, Record<string, unknown>> = {
     ],
   },
   my_payment_method: { brand: "visa", last4: "4242", exp_month: 8, exp_year: 27 },
+  my_notification_prefs: { notifications: { billing: true, product: false, security: true } },
   my_referrals: {
     is_referrer: true,
     code: "GLOBEX",
