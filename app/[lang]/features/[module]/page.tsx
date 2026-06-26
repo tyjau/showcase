@@ -196,11 +196,14 @@ export default async function ModulePage(
               const FIG_ICONS = [Clock, Globe, FileText];
               const Icon = FIG_ICONS[i % FIG_ICONS.length];
               return (
-                <div key={kf} className="flex items-center gap-3">
+                <div key={kf.title} className="flex items-center gap-3">
                   <span className="inline-flex h-11 w-11 flex-none items-center justify-center rounded-xl bg-tint-sky text-sky-text">
                     <Icon size={20} />
                   </span>
-                  <span className="font-bold text-ink">{kf}</span>
+                  <div>
+                    <div className="font-bold text-ink">{kf.title}</div>
+                    <div className="text-[12.5px] text-muted">{kf.sub}</div>
+                  </div>
                 </div>
               );
             })}

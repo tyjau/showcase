@@ -397,51 +397,52 @@ const CONTENT: Record<string, ModuleContent> = {
 // Key figures (3 punchy stats) + highlight titles (3, paired with the gallery
 // screenshots as alternating feature blocks). Kept separate from CONTENT so the
 // rich page upgrade doesn't disturb the capabilities/use-case copy above.
-type ModuleExtra = { keyFigures: string[]; highlights: string[] };
+type KeyFigure = { title: string; sub: string };
+type ModuleExtra = { keyFigures: KeyFigure[]; highlights: string[] };
 const EXTRAS: Record<string, { fr: ModuleExtra; en: ModuleExtra }> = {
   MGMT00: {
-    fr: { keyFigures: ["Fiche à 16+ onglets", "7 types de contrat", "Source unique RH & paie"], highlights: ["Tout l'agent en un dossier", "Du recrutement au contrat de paie", "Discipline, missions, patrimoine"] },
-    en: { keyFigures: ["16+ tab record", "7 contract types", "One source for HR & payroll"], highlights: ["The whole employee in one file", "From hiring to payroll contract", "Discipline, missions, assets"] },
+    fr: { keyFigures: [{ title: "Fiche à 16+ onglets", sub: "état civil, contrats, CNPS" }, { title: "7 types de contrat", sub: "CDI, CDD, stage, alternance…" }, { title: "Source unique RH & paie", sub: "zéro double-saisie" }], highlights: ["Tout l'agent en un dossier", "Du recrutement au contrat de paie", "Discipline, missions, patrimoine"] },
+    en: { keyFigures: [{ title: "16+ tab record", sub: "civil status, contracts, CNPS" }, { title: "7 contract types", sub: "permanent, fixed-term, intern…" }, { title: "One source for HR & payroll", sub: "no double entry" }], highlights: ["The whole employee in one file", "From hiring to payroll contract", "Discipline, missions, assets"] },
   },
   ATT00: {
-    fr: { keyFigures: ["Workflow multi-niveaux", "Calendrier d'équipe", "Dashboard d'absentéisme"], highlights: ["Demandes & validation", "Plannings & pointages", "Pilotage de l'absentéisme"] },
-    en: { keyFigures: ["Multi-level workflow", "Team calendar", "Absence dashboard"], highlights: ["Requests & approval", "Schedules & attendance", "Absence analytics"] },
+    fr: { keyFigures: [{ title: "Workflow multi-niveaux", sub: "demande → validation" }, { title: "Calendrier d'équipe", sub: "qui est où, en un coup d'œil" }, { title: "Dashboard d'absentéisme", sub: "par direction et statut" }], highlights: ["Demandes & validation", "Plannings & pointages", "Pilotage de l'absentéisme"] },
+    en: { keyFigures: [{ title: "Multi-level workflow", sub: "request → approval" }, { title: "Team calendar", sub: "who's where, at a glance" }, { title: "Absence dashboard", sub: "by department and status" }], highlights: ["Requests & approval", "Schedules & attendance", "Absence analytics"] },
   },
   "EMPL-SELF00": {
-    fr: { keyFigures: ["16 onglets employé", "Bulletins vérifiables", "−80 % de mails RH"], highlights: ["Tout en autonomie", "Bulletins & demandes", "Missions, frais, avances"] },
-    en: { keyFigures: ["16 employee tabs", "Verifiable payslips", "−80% HR emails"], highlights: ["Fully self-served", "Payslips & requests", "Missions, expenses, advances"] },
+    fr: { keyFigures: [{ title: "16 onglets employé", sub: "accessibles en self-service" }, { title: "Bulletins vérifiables", sub: "téléchargeables 24/7" }, { title: "−80 % de mails RH", sub: "moins de tickets, plus d'autonomie" }], highlights: ["Tout en autonomie", "Bulletins & demandes", "Missions, frais, avances"] },
+    en: { keyFigures: [{ title: "16 employee tabs", sub: "fully self-served" }, { title: "Verifiable payslips", sub: "downloadable 24/7" }, { title: "−80% HR emails", sub: "fewer tickets, more autonomy" }], highlights: ["Fully self-served", "Payslips & requests", "Missions, expenses, advances"] },
   },
   "MGMT-ONB00": {
-    fr: { keyFigures: ["Modèles réutilisables", "Suivi par progression", "Solde de tout compte auto"], highlights: ["Modèles d'intégration", "Processus suivis", "Départs & périodes d'essai"] },
-    en: { keyFigures: ["Reusable templates", "Progress tracking", "Auto final settlement"], highlights: ["Onboarding templates", "Tracked processes", "Exits & trial periods"] },
+    fr: { keyFigures: [{ title: "Modèles réutilisables", sub: "un parcours par poste" }, { title: "Suivi par progression", sub: "rien n'est oublié" }, { title: "Solde de tout compte auto", sub: "départs sans friction" }], highlights: ["Modèles d'intégration", "Processus suivis", "Départs & périodes d'essai"] },
+    en: { keyFigures: [{ title: "Reusable templates", sub: "one journey per role" }, { title: "Progress tracking", sub: "nothing slips" }, { title: "Auto final settlement", sub: "frictionless exits" }], highlights: ["Onboarding templates", "Tracked processes", "Exits & trial periods"] },
   },
   "WAGE-GEN00": {
-    fr: { keyFigures: ["Clôture en minutes", "Conformité locale à jour", "Export comptable & virements"], highlights: ["Lancez, validez, clôturez", "Des règles 100 % paramétrables", "À jour dans chaque pays"] },
-    en: { keyFigures: ["Close in minutes", "Local compliance, up to date", "Accounting export & transfers"], highlights: ["Run, validate, close", "Fully configurable rules", "Up to date in every country"] },
+    fr: { keyFigures: [{ title: "Clôture en minutes", sub: "propulsé par SkyEngine" }, { title: "Conformité locale à jour", sub: "maintenue pays par pays" }, { title: "Export comptable & virements", sub: "OHADA, SEPA, banques locales" }], highlights: ["Lancez, validez, clôturez", "Des règles 100 % paramétrables", "À jour dans chaque pays"] },
+    en: { keyFigures: [{ title: "Close in minutes", sub: "powered by SkyEngine" }, { title: "Local compliance, up to date", sub: "maintained per country" }, { title: "Accounting export & transfers", sub: "OHADA, SEPA, local banks" }], highlights: ["Run, validate, close", "Fully configurable rules", "Up to date in every country"] },
   },
   RECR00: {
-    fr: { keyFigures: ["Besoin → embauche tracé", "CVthèque centralisée", "Jury multi-évaluateurs"], highlights: ["Besoins & approbation", "Offres & candidats", "Entretiens & conversion"] },
-    en: { keyFigures: ["Need → hire, traced", "Central CV bank", "Multi-rater panel"], highlights: ["Needs & approval", "Offers & candidates", "Interviews & conversion"] },
+    fr: { keyFigures: [{ title: "Besoin → embauche tracé", sub: "workflow d'approbation" }, { title: "CVthèque centralisée", sub: "recherche et réutilisation" }, { title: "Jury multi-évaluateurs", sub: "décision objective" }], highlights: ["Besoins & approbation", "Offres & candidats", "Entretiens & conversion"] },
+    en: { keyFigures: [{ title: "Need → hire, traced", sub: "approval workflow" }, { title: "Central CV bank", sub: "search and reuse" }, { title: "Multi-rater panel", sub: "objective decision" }], highlights: ["Needs & approval", "Offers & candidates", "Interviews & conversion"] },
   },
   CARE00: {
-    fr: { keyFigures: ["Objectifs pondérés", "Avancement automatisé", "Organigramme & succession"], highlights: ["Objectifs & campagnes", "Évaluations & rang", "Avancements & retraites"] },
-    en: { keyFigures: ["Weighted goals", "Automated advancement", "Org chart & succession"], highlights: ["Goals & campaigns", "Reviews & ranking", "Advancements & retirements"] },
+    fr: { keyFigures: [{ title: "Objectifs pondérés", sub: "alignés sur la stratégie" }, { title: "Avancement automatisé", sub: "règles d'ancienneté & mérite" }, { title: "Organigramme & succession", sub: "visualisez les relèves" }], highlights: ["Objectifs & campagnes", "Évaluations & rang", "Avancements & retraites"] },
+    en: { keyFigures: [{ title: "Weighted goals", sub: "aligned to strategy" }, { title: "Automated advancement", sub: "seniority & merit rules" }, { title: "Org chart & succession", sub: "see who's next" }], highlights: ["Goals & campaigns", "Reviews & ranking", "Advancements & retirements"] },
   },
   TRAIN00: {
-    fr: { keyFigures: ["Besoins → plan validé", "Émargements électroniques", "Taux de transfert"], highlights: ["Recueil & consolidation", "Sessions & calendrier", "Évaluations à chaud/froid"] },
-    en: { keyFigures: ["Needs → approved plan", "Electronic sign-in", "Transfer rate"], highlights: ["Collection & consolidation", "Sessions & calendar", "Hot/cold evaluations"] },
+    fr: { keyFigures: [{ title: "Besoins → plan validé", sub: "budget maîtrisé" }, { title: "Émargements électroniques", sub: "preuve de présence" }, { title: "Taux de transfert", sub: "mesurez l'impact" }], highlights: ["Recueil & consolidation", "Sessions & calendrier", "Évaluations à chaud/froid"] },
+    en: { keyFigures: [{ title: "Needs → approved plan", sub: "budget under control" }, { title: "Electronic sign-in", sub: "proof of attendance" }, { title: "Transfer rate", sub: "measure the impact" }], highlights: ["Collection & consolidation", "Sessions & calendar", "Hot/cold evaluations"] },
   },
   "CARE-COMP-FW00": {
-    fr: { keyFigures: ["Écarts par poste", "Évaluations 360°", "Plans de succession"], highlights: ["Référentiels & catalogue", "Compétences & écarts", "Développement & succession"] },
-    en: { keyFigures: ["Gaps by role", "360° evaluations", "Succession plans"], highlights: ["Frameworks & catalog", "Competencies & gaps", "Development & succession"] },
+    fr: { keyFigures: [{ title: "Écarts par poste", sub: "où investir en priorité" }, { title: "Évaluations 360°", sub: "vision à plusieurs voix" }, { title: "Plans de succession", sub: "anticipez les départs clés" }], highlights: ["Référentiels & catalogue", "Compétences & écarts", "Développement & succession"] },
+    en: { keyFigures: [{ title: "Gaps by role", sub: "where to invest first" }, { title: "360° evaluations", sub: "multi-voice view" }, { title: "Succession plans", sub: "anticipate key exits" }], highlights: ["Frameworks & catalog", "Competencies & gaps", "Development & succession"] },
   },
   SOC00: {
-    fr: { keyFigures: ["Affiliation CNPS/DIPE", "Bons → bordereaux", "Suivi des plafonds"], highlights: ["Dossiers d'assuré", "Prises en charge", "Prestations sociales"] },
-    en: { keyFigures: ["CNPS/DIPE enrollment", "Vouchers → schedules", "Cap tracking"], highlights: ["Insured files", "Care vouchers", "Social benefits"] },
+    fr: { keyFigures: [{ title: "Affiliation CNPS/DIPE", sub: "déclarations conformes" }, { title: "Bons → bordereaux", sub: "prises en charge tracées" }, { title: "Suivi des plafonds", sub: "par garantie et bénéficiaire" }], highlights: ["Dossiers d'assuré", "Prises en charge", "Prestations sociales"] },
+    en: { keyFigures: [{ title: "CNPS/DIPE enrollment", sub: "compliant filings" }, { title: "Vouchers → schedules", sub: "traceable care" }, { title: "Cap tracking", sub: "per benefit & beneficiary" }], highlights: ["Insured files", "Care vouchers", "Social benefits"] },
   },
   "SOC-SST-INC00": {
-    fr: { keyFigures: ["Déclaration < 48 h", "DUERP en heatmap", "EPI & habilitations"], highlights: ["Incidents & analyse", "Risques & actions", "Visites & habilitations"] },
-    en: { keyFigures: ["Report < 48 h", "Risk heatmap", "PPE & certifications"], highlights: ["Incidents & analysis", "Risks & actions", "Visits & certifications"] },
+    fr: { keyFigures: [{ title: "Déclaration < 48 h", sub: "incidents tracés" }, { title: "DUERP en heatmap", sub: "risques priorisés" }, { title: "EPI & habilitations", sub: "échéances suivies" }], highlights: ["Incidents & analyse", "Risques & actions", "Visites & habilitations"] },
+    en: { keyFigures: [{ title: "Report < 48 h", sub: "traced incidents" }, { title: "Risk heatmap", sub: "prioritized risks" }, { title: "PPE & certifications", sub: "deadlines tracked" }], highlights: ["Incidents & analysis", "Risks & actions", "Visits & certifications"] },
   },
 };
 
