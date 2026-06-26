@@ -51,7 +51,7 @@ describe("gen-config-keys", () => {
     const out = JSON.parse(readFileSync(join(dir, "deploy/config-keys.json"), "utf8"));
     expect(out).toEqual({
       product: "tyjau/showcase",
-      keys: ["api_base_url", "catalog_api_key", "guardian_url"],
+      keys: ["api_base_url", "catalog_api_key", "guardian_url", "turnstile_sitekey"],
     });
   });
 });

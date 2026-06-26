@@ -8,6 +8,8 @@
 //   - GUARDIAN_URL         : backend URL for the BUILD-TIME catalog fetch (lib/catalog.ts,
 //     server-side — never shipped to the browser).
 //   - CATALOG_API_KEY      : scoped publishable key for that catalog fetch (X-API-KEY).
+//   - NEXT_PUBLIC_TURNSTILE_SITEKEY : public Cloudflare Turnstile sitekey, inlined so the
+//     front captcha widget renders in prod (components/turnstile-widget.tsx). Public value.
 //
 // No-op locally (GITHUB_ENV unset) and when no snapshot is present (keeps the dev defaults,
 // e.g. saas.test) — a production CD without a snapshot just logs a warning.
@@ -47,6 +49,9 @@ const apiBase = cfg.api_base_url ?? cfg.apiBaseUrl ?? process.env.NEXT_PUBLIC_AP
 // Catalog fetch target defaults to the same backend as the public API.
 const guardianUrl = cfg.guardian_url ?? cfg.guardianUrl ?? apiBase;
 const catalogKey = cfg.catalog_api_key ?? cfg.catalogApiKey ?? "";
+// Cloudflare Turnstile sitekey — PUBLIC (safe to inline + log). Empty in dev/no-snapshot,
+// so the widget stays a no-op there; set per-env in the Guardian config_json for prod.
+const turnstileSitekey = cfg.turnstile_sitekey ?? cfg.turnstileSitekey ?? "";
 
 // 🔒 The catalog key is a SECRET promoted into $GITHUB_ENV below. GitHub only auto-masks
 // `secrets.*`, NOT values we inject — so register a mask explicitly, else any later env dump
@@ -60,6 +65,7 @@ const lines = [];
 if (apiBase) lines.push(`NEXT_PUBLIC_API_BASE=${apiBase}`);
 if (guardianUrl) lines.push(`GUARDIAN_URL=${guardianUrl}`);
 if (catalogKey) lines.push(`CATALOG_API_KEY=${catalogKey}`);
+if (turnstileSitekey) lines.push(`NEXT_PUBLIC_TURNSTILE_SITEKEY=${turnstileSitekey}`);
 
 if (process.env.GITHUB_ENV && lines.length) {
   appendFileSync(process.env.GITHUB_ENV, lines.join("\n") + "\n");
@@ -70,6 +76,7 @@ console.log(
   "forge → NEXT_PUBLIC_API_BASE:", apiBase || "(default)",
   "| GUARDIAN_URL:", guardianUrl || "(default)",
   "| CATALOG_API_KEY:", catalogKey ? "(set)" : "(empty)",
+  "| TURNSTILE_SITEKEY:", turnstileSitekey || "(empty)",
 );
 if (!apiBase) {
   console.log("⚠ pas de api_base_url dans le snapshot → build avec les defaults dev (saas.test)");

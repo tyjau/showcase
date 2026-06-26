@@ -3,6 +3,7 @@
   "keys": [
     "api_base_url",
     "catalog_api_key",
-    "guardian_url"
+    "guardian_url",
+    "turnstile_sitekey"
   ]
 }

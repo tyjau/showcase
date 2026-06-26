@@ -16,6 +16,7 @@ const FULL = {
         api_base_url: "https://api.example.test",
         guardian_url: "https://guardian.example.test",
         catalog_api_key: "key_abc123",
+        turnstile_sitekey: "0xSITEKEY_test",
       },
     },
   },
@@ -49,12 +50,13 @@ function runForge(opts: { snapshot?: string; githubActions?: boolean } = {}) {
 }
 
 describe("forge-config", () => {
-  it("emits the 3 build env vars from a complete snapshot", () => {
+  it("emits the build env vars from a complete snapshot", () => {
     const r = runForge({ snapshot: JSON.stringify(FULL) });
     expect(r.status).toBe(0);
     expect(r.ghEnv).toContain("NEXT_PUBLIC_API_BASE=https://api.example.test");
     expect(r.ghEnv).toContain("GUARDIAN_URL=https://guardian.example.test");
     expect(r.ghEnv).toContain("CATALOG_API_KEY=key_abc123");
+    expect(r.ghEnv).toContain("NEXT_PUBLIC_TURNSTILE_SITEKEY=0xSITEKEY_test");
     expect(r.stdout).toContain("(set)");
   });
 
