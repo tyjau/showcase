@@ -502,6 +502,19 @@ export async function apiLoginPartner(
   }
 }
 
+/** Enrol the CURRENT account as a partner/referrer — a capability on the existing account
+ * (company-owned referrer), not a separate identity/session. Billing-scoped (the account
+ * admin). 409 if already a partner or the code is taken. On success the Parrainage tab
+ * re-fetches my_referrals and shows the full partner UI in place. */
+export async function apiEnrollPartner(fields: {
+  code: string;
+  brand_name?: string;
+}): Promise<{ ok: boolean; error?: string }> {
+  const res = await apiAuthed("enroll_as_partner", fields);
+  if (!res.ok) return { ok: false, error: res.error };
+  return { ok: true };
+}
+
 /** Update the caller's OWN referrer co-brand (resolved server-side from the JWT
  * owner_user_id). JWT-scoped (scope=partner) via apiAuthed → inherits the 401-refresh.
  * Re-caches the returned referrer so the editor + preview stay in sync after a save. */

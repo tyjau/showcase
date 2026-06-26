@@ -9,8 +9,6 @@ import {
   apiBecomePartner,
   storePartnerSession,
   getToken,
-  getSessionName,
-  getSessionEmail,
 } from "@/lib/api";
 import { isHexColor, isHttpUrl } from "@/lib/cobrand";
 
@@ -40,21 +38,18 @@ export function BecomePartner({ lang, dict }: { lang: string; dict: Dict }) {
   const [signedIn, setSignedIn] = useState(false);
   const [partnerSession, setPartnerSession] = useState<Record<string, unknown> | null>(null);
 
-  // Pre-fill name + email from the session when already signed in — don't ask the
-  // logged-in customer to retype what their account already carries.
+  // Already signed in → become a partner is a capability of the account now: send them to
+  // the account's Parrainage tab (inline enrolment), not a separate application. This public
+  // form stays for signed-OUT acquisition (request_partner provisions an account + magic link).
   useEffect(() => {
-    if (!getToken()) return;
-    setSignedIn(true);
-    const n = getSessionName();
-    const e = getSessionEmail();
-    if (n) setName((v) => v || n);
-    if (e) {
-      setEmail((v) => v || e);
-      setKnownAccount(e);
+    if (getToken()) {
+      setSignedIn(true);
+      router.replace(`/${lang}/account#referrals`);
     }
-  }, []);
+  }, [lang, router]);
 
-  // Normalise the desired code as the partner types (so the live hint matches what we send).
+  // Signed-in visitors are being redirected (above) — render nothing to avoid flashing the
+  // public application form.
   const slug = code.trim().toLowerCase().replace(/[^a-z0-9_-]/g, "");
 
   function validate(): string | null {
@@ -112,6 +107,9 @@ export function BecomePartner({ lang, dict }: { lang: string; dict: Dict }) {
     setError(/409|taken|exist/i.test(res.error ?? "") ? dict.errCodeTaken : dict.errGeneric);
   }
 
+  // Signed-in → redirected to the account's Parrainage tab; render nothing meanwhile.
+  if (signedIn) return null;
+
   // Signed-in success: the partner account is live immediately — offer to open the space
   // (which commits the partner session, swapping out the billing one).
   if (partnerSession) {
@@ -146,7 +144,7 @@ export function BecomePartner({ lang, dict }: { lang: string; dict: Dict }) {
         <p className="mx-auto mt-2 max-w-md text-muted">{dict.doneBody}</p>
         <p className="mt-1 text-sm font-medium text-ink">{email.trim()}</p>
         <Link
-          href={`/${lang}/partner/login`}
+          href={`/${lang}/login`}
           className="mt-6 inline-flex rounded-full bg-sky-strong px-6 py-3 text-sm font-semibold text-white"
         >
           {dict.doneCta}

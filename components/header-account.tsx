@@ -116,7 +116,7 @@ export function HeaderAccount({ lang, labels }: { lang: string; labels: Labels }
     { label: labels.account, href: `/${lang}/account` },
     { label: labels.invoices, href: `/${lang}/account#invoices` },
     { label: labels.paymentMethod, href: `/${lang}/account#payment` },
-    { label: labels.partner, href: `/${lang}/partner` },
+    { label: labels.partner, href: `/${lang}/account#referrals` },
   ];
 
   return (
