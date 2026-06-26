@@ -687,6 +687,20 @@
     "socialGoogle": "Continue with Google",
     "socialMicrosoft": "Continue with Microsoft"
   },
+  "forgotPasswordPage": {
+    "title": "Forgot password",
+    "lead": "Enter your workspace and email and we'll send you a link to reset your password.",
+    "workspaceLabel": "Your workspace address",
+    "placeholder": "your-company",
+    "email": "Email",
+    "emailPh": "you@company.com",
+    "cta": "Send the link",
+    "sending": "Sending…",
+    "error": "Something went wrong. Please try again.",
+    "sentTitle": "Check your inbox",
+    "sentBody": "If an account matches, we've just sent a reset link. The link expires after a short while.",
+    "backToLogin": "Back to sign in"
+  },
   "partnerPage": {
     "title": "Partner area",
     "subtitle": "Your referrals, leads and commissions.",
@@ -875,7 +889,8 @@
     "refNone": "No referrals yet.",
     "refEmail": "Email",
     "refRewardCol": "Reward",
-    "refNotPartner": "You're not enrolled in the referral program yet. Contact us to become a partner.",
+    "refNotPartner": "You're not in the referral program yet. Refer your clients and earn commissions.",
+    "refBecomePartner": "Become a partner",
     "refOffers": "Applied offers",
     "setProfileTitle": "Profile",
     "setPhoto": "Profile photo",

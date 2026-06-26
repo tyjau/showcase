@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { apiAuthed } from "@/lib/api";
 
 type Dict = Record<string, string>;
@@ -31,6 +33,7 @@ function offerValue(value: number, valueType: string, currency: string | null): 
 // Referral / partner overview (#4) — the company's own referrer code + referrals + rewards,
 // plus the promos applied to its subscription. Read-only (offer creation / payout = Harmony).
 export function ReferralsSection({ dict }: { dict: Dict }) {
+  const lang = (usePathname() || "").split("/")[1] === "en" ? "en" : "fr";
   const [d, setD] = useState<Data | null>(null);
   const [state, setState] = useState<"loading" | "error" | "ready">("loading");
 
@@ -93,7 +96,15 @@ export function ReferralsSection({ dict }: { dict: Dict }) {
           </div>
         </>
       ) : (
-        <p className="text-muted">{dict.refNotPartner}</p>
+        <div className="rounded-xl border border-line bg-mist p-6 text-center">
+          <p className="mx-auto max-w-md text-muted">{dict.refNotPartner}</p>
+          <Link
+            href={`/${lang}/become-partner`}
+            className="mt-4 inline-flex rounded-full bg-sky-strong px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#08607f]"
+          >
+            {dict.refBecomePartner}
+          </Link>
+        </div>
       )}
 
       {d.applied_offers.length > 0 && (

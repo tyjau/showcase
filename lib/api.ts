@@ -196,6 +196,28 @@ export async function apiLogin(
   }
 }
 
+/** Request a password-reset link. Tenant-scoped like login (?company=<workspace>): the
+ * backend emails a one-time link to the canonical reset page when the account exists.
+ * Anti-enumeration — a 200 always returns the same "if it exists, we sent it" message. */
+export async function apiSendResetLink(
+  workspace: string,
+  email: string,
+): Promise<{ ok: boolean; message?: string; error?: string }> {
+  try {
+    const res = await fetch(`${apiUrl("send_reset_link")}&company=${encodeURIComponent(workspace)}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+    const json = (await res.json().catch(() => ({}))) as { meta?: { code?: number }; data?: string; error?: string };
+    const code = json?.meta?.code ?? res.status;
+    if (!res.ok || code >= 400) return { ok: false, error: json?.error || `Error ${code}` };
+    return { ok: true, message: typeof json?.data === "string" ? json.data : undefined };
+  } catch {
+    return { ok: false, error: "Network error — please try again." };
+  }
+}
+
 // Persist a session minted elsewhere (e.g. signup_confirm auto-login) so the funnel can
 // land a new pay_first customer authenticated on /account without a second login round-trip.
 export function storeSession(

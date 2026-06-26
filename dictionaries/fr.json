@@ -687,6 +687,20 @@
     "socialGoogle": "Continuer avec Google",
     "socialMicrosoft": "Continuer avec Microsoft"
   },
+  "forgotPasswordPage": {
+    "title": "Mot de passe oublié",
+    "lead": "Indiquez votre espace et votre e-mail : nous vous enverrons un lien pour réinitialiser votre mot de passe.",
+    "workspaceLabel": "Adresse de votre espace",
+    "placeholder": "votre-entreprise",
+    "email": "Email",
+    "emailPh": "vous@entreprise.com",
+    "cta": "Envoyer le lien",
+    "sending": "Envoi…",
+    "error": "Une erreur est survenue. Réessayez.",
+    "sentTitle": "Vérifiez votre boîte mail",
+    "sentBody": "Si un compte correspond, nous venons d'envoyer un lien de réinitialisation. Le lien expire après un court délai.",
+    "backToLogin": "Retour à la connexion"
+  },
   "partnerPage": {
     "title": "Espace partenaire",
     "subtitle": "Votre parrainage, vos filleuls et vos commissions.",
@@ -875,7 +889,8 @@
     "refNone": "Aucun filleul pour l'instant.",
     "refEmail": "E-mail",
     "refRewardCol": "Récompense",
-    "refNotPartner": "Vous n'êtes pas encore inscrit au programme de parrainage. Contactez-nous pour devenir partenaire.",
+    "refNotPartner": "Vous n'êtes pas encore inscrit au programme de parrainage. Parrainez vos clients et gagnez des commissions.",
+    "refBecomePartner": "Devenir partenaire",
     "refOffers": "Offres appliquées",
     "setProfileTitle": "Profil",
     "setPhoto": "Photo de profil",
