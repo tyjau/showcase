@@ -5,11 +5,10 @@ import { usePathname } from "next/navigation";
 
 type NavItem = { label: string; href: string };
 
-// Marketing nav. Hidden on portal screens (/account, /partner) so the logged-in
-// chrome stays focused — there the account dropdown is the primary navigation.
+// Marketing nav — shown on every page, portal screens included (the design mockup keeps
+// the marketing nav in the header on the account/partner pages alongside the account pill).
 export function PrimaryNav({ items }: { items: NavItem[] }) {
   const pathname = usePathname();
-  if (/\/(account|partner)(\/|$)/.test(pathname || "")) return null;
   const path = (pathname || "").replace(/\/$/, "");
   const isActive = (href: string) => {
     const h = href.replace(/\/$/, "");

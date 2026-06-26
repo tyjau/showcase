@@ -7,8 +7,8 @@ import type { ReactNode } from "react";
 
 type NavItem = { label: string; href: string };
 
-// <details> disclosure for the marketing menu. Hidden on portal screens
-// (/account, /partner), where the account dropdown is the primary navigation.
+// <details> disclosure for the marketing menu. Shown on every page, portal screens
+// included (the mockup keeps the marketing nav reachable from the account/partner header).
 export function MobileNav({
   items,
   authLink,
@@ -25,7 +25,6 @@ export function MobileNav({
   className?: string;
 }) {
   const pathname = usePathname();
-  if (/\/(account|partner)(\/|$)/.test(pathname || "")) return null;
   const path = (pathname || "").replace(/\/$/, "");
   const isActive = (href: string) => {
     const h = href.replace(/\/$/, "");
