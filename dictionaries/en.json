@@ -661,6 +661,15 @@
       "How do I export my accounting entries?"
     ]
   },
+  "guidePage": {
+    "eyebrow": "Guide",
+    "back": "All guides",
+    "capabilitiesTitle": "What you can do",
+    "useCasesTitle": "Real-world use cases",
+    "featureCta": "See the product page",
+    "ctaTitle": "Ready to set this module up?",
+    "ctaSub": "Enable it in your free SkyRH trial — no credit card."
+  },
   "loginPage": {
     "title": "Sign in",
     "lead": "Manage your subscription, products and invoices.",

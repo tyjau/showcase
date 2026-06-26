@@ -95,7 +95,7 @@ export default async function ResourcesPage(
             {p.guides.map((g) => (
               <Link
                 key={g.code}
-                href={href(`features/${g.code}`)}
+                href={href(`resources/guides/${g.code}`)}
                 className="flex items-center gap-3 rounded-xl border border-line bg-surface p-4 transition hover:-translate-y-0.5 hover:shadow-sm"
               >
                 <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-tint-sky text-sky-text">

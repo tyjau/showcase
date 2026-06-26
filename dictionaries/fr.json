@@ -661,6 +661,15 @@
       "Comment exporter mes écritures comptables ?"
     ]
   },
+  "guidePage": {
+    "eyebrow": "Guide",
+    "back": "Tous les guides",
+    "capabilitiesTitle": "Ce que vous pouvez faire",
+    "useCasesTitle": "Cas d'usage concrets",
+    "featureCta": "Voir la page produit",
+    "ctaTitle": "Prêt à mettre ce module en place ?",
+    "ctaSub": "Activez-le dans votre essai gratuit SkyRH, sans carte bancaire."
+  },
   "loginPage": {
     "title": "Se connecter",
     "lead": "Gérez votre abonnement, vos produits et vos factures.",
