@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { Check } from "lucide-react";
+import { Check, ChevronDown } from "lucide-react";
 import {
   type Catalog,
   type Money,
@@ -57,6 +57,7 @@ export function PricingCalculator({
   const pkgDesc = (code: string) =>
     packageText(code, packages, { name: "", description: "" }).description;
   const [packAddons, setPackAddons] = useState<Record<string, Set<string>>>({});
+  const [openPacks, setOpenPacks] = useState<Set<string>>(new Set());
   const [selected, setSelected] = useState<Set<string>>(() => defaultCustomCodes(catalog));
 
   const factor = annual ? 0.8 : 1;
@@ -113,6 +114,15 @@ export function PricingCalculator({
     });
   }
 
+  function togglePackOpen(packCode: string) {
+    setOpenPacks((prev) => {
+      const next = new Set(prev);
+      if (next.has(packCode)) next.delete(packCode);
+      else next.add(packCode);
+      return next;
+    });
+  }
+
   function togglePackAddon(packCode: string, code: string) {
     setPackAddons((prev) => {
       const cur = new Set(prev[packCode] ?? []);
@@ -136,7 +146,8 @@ export function PricingCalculator({
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-hero-fg-muted">{dict.sub}</p>
 
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          {/* Recurrence toggle — its own row */}
+          <div className="mt-8 flex justify-center">
             <div className="inline-flex items-center gap-1 rounded-full bg-white/[0.08] p-1 text-sm">
               <button
                 type="button"
@@ -156,21 +167,22 @@ export function PricingCalculator({
                 </span>
               </button>
             </div>
-            <div className="inline-flex items-center gap-2 text-sm">
-              <span className="text-hero-fg-muted">{dict.employees}</span>
-              <input
-                type="range"
-                min={1}
-                max={500}
-                step={1}
-                value={employees}
-                onChange={(e) => setEmployees(Number(e.target.value))}
-                aria-label={dict.employees}
-                aria-valuenow={employees}
-                className="w-28 accent-sky sm:w-44"
-              />
-              <span className="w-10 font-semibold text-white">{employees}</span>
-            </div>
+          </div>
+          {/* Employee slider — full row below the recurrence */}
+          <div className="mt-4 flex items-center justify-center gap-3 text-sm">
+            <span className="text-hero-fg-muted">{dict.employees}</span>
+            <input
+              type="range"
+              min={1}
+              max={500}
+              step={1}
+              value={employees}
+              onChange={(e) => setEmployees(Number(e.target.value))}
+              aria-label={dict.employees}
+              aria-valuenow={employees}
+              className="w-48 accent-sky sm:w-72"
+            />
+            <span className="w-10 font-semibold text-white">{employees}</span>
           </div>
 
           <div className="mt-5 flex justify-center">
@@ -255,24 +267,43 @@ export function PricingCalculator({
                 </div>
                 {addonMods.length > 0 && (
                   <div className="mt-3 border-t border-line pt-3">
-                    <div className="mb-2 text-xs font-semibold text-heading">{dict.addonsLabel}</div>
-                    <div className="flex flex-wrap gap-1.5">
-                      {addonMods.map((m) => {
-                        const on = sel.has(m.code);
-                        const arate = unitPrice(m.prices, currency) * factor;
-                        return (
-                          <button
-                            key={m.code}
-                            type="button"
-                            onClick={() => togglePackAddon(p.code, m.code)}
-                            aria-pressed={on}
-                            className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11.5px] font-semibold transition ${on ? "border-sky bg-sky-strong text-white" : "border-line text-ink hover:border-sky"}`}
-                          >
-                            {moduleText(m, lang).headline}
-                            <span className={on ? "text-white/85" : "text-muted"}>+{fmtRate(arate, currency)}</span>
-                          </button>
-                        );
-                      })}
+                    <button
+                      type="button"
+                      onClick={() => togglePackOpen(p.code)}
+                      aria-expanded={openPacks.has(p.code)}
+                      className="flex w-full items-center justify-between gap-2 text-xs font-semibold text-heading transition hover:text-sky-text"
+                    >
+                      <span>
+                        {dict.addonsLabel} ({addonMods.length})
+                      </span>
+                      <ChevronDown
+                        size={15}
+                        className={`shrink-0 text-muted transition-transform duration-300 ${openPacks.has(p.code) ? "rotate-180" : ""}`}
+                      />
+                    </button>
+                    <div
+                      className={`grid transition-all duration-300 ease-out ${openPacks.has(p.code) ? "mt-2 grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}
+                    >
+                      <div className="overflow-hidden">
+                        <div className="flex flex-wrap gap-1.5 pt-0.5">
+                          {addonMods.map((m) => {
+                            const on = sel.has(m.code);
+                            const arate = unitPrice(m.prices, currency) * factor;
+                            return (
+                              <button
+                                key={m.code}
+                                type="button"
+                                onClick={() => togglePackAddon(p.code, m.code)}
+                                aria-pressed={on}
+                                className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11.5px] font-semibold transition ${on ? "border-sky bg-sky-strong text-white" : "border-line text-ink hover:border-sky"}`}
+                              >
+                                {moduleText(m, lang).headline}
+                                <span className={on ? "text-white/85" : "text-muted"}>+{fmtRate(arate, currency)}</span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 )}
