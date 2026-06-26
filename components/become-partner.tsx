@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Check, Mail } from "lucide-react";
-import { apiRequestPartner } from "@/lib/api";
+import { apiRequestPartner, getToken, getSessionName, getSessionEmail } from "@/lib/api";
 import { isHexColor, isHttpUrl } from "@/lib/cobrand";
 
 type Dict = Record<string, string>;
@@ -27,6 +27,20 @@ export function BecomePartner({ lang, dict }: { lang: string; dict: Dict }) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
+  const [knownAccount, setKnownAccount] = useState<string | null>(null);
+
+  // Pre-fill name + email from the session when already signed in — don't ask the
+  // logged-in customer to retype what their account already carries.
+  useEffect(() => {
+    if (!getToken()) return;
+    const n = getSessionName();
+    const e = getSessionEmail();
+    if (n) setName((v) => v || n);
+    if (e) {
+      setEmail((v) => v || e);
+      setKnownAccount(e);
+    }
+  }, []);
 
   // Normalise the desired code as the partner types (so the live hint matches what we send).
   const slug = code.trim().toLowerCase().replace(/[^a-z0-9_-]/g, "");
@@ -88,6 +102,13 @@ export function BecomePartner({ lang, dict }: { lang: string; dict: Dict }) {
     <div>
       <h1 className="text-2xl font-bold text-heading">{dict.title}</h1>
       <p className="mt-1 text-muted">{dict.lead}</p>
+
+      {knownAccount && (
+        <p className="mt-3 inline-flex items-center gap-2 rounded-lg border border-line bg-mist px-3 py-2 text-sm text-muted">
+          <Check size={14} className="text-sky-text" /> {dict.prefilledNote}{" "}
+          <span className="font-medium text-ink">{knownAccount}</span>
+        </p>
+      )}
 
       <div className="mt-6 grid gap-8 md:grid-cols-[1fr_auto]">
         <div className="space-y-4">

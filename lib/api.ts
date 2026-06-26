@@ -121,6 +121,11 @@ export function getSessionName(): string | null {
   return decodeClaim(getUserToken(), "name");
 }
 
+/** Account email from the user token (for pre-filling forms when already signed in). */
+export function getSessionEmail(): string | null {
+  return decodeClaim(getUserToken(), "email");
+}
+
 /** Avatar (data-URL or URL): the in-session local override if present, else the user
  * token's avatar claim, else null. */
 export function getSessionAvatar(): string | null {

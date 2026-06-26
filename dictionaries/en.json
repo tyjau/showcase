@@ -760,6 +760,7 @@
   "becomePartnerPage": {
     "title": "Become a partner",
     "lead": "Refer customers with your own branded funnel and earn rewards. Tell us about your brand — we'll set up your account.",
+    "prefilledNote": "Pre-filled from your account:",
     "name": "Your name or company",
     "namePh": "Acme Consulting",
     "email": "Email",

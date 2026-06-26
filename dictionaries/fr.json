@@ -760,6 +760,7 @@
   "becomePartnerPage": {
     "title": "Devenir partenaire",
     "lead": "Parrainez des clients via votre propre tunnel à votre marque et touchez des récompenses. Parlez-nous de votre marque — nous créons votre compte.",
+    "prefilledNote": "Pré-rempli depuis votre compte :",
     "name": "Votre nom ou société",
     "namePh": "Acme Conseil",
     "email": "E-mail",
