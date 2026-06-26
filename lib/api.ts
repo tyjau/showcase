@@ -131,11 +131,6 @@ export function getSessionName(): string | null {
   return decodeClaim(getUserToken(), "name");
 }
 
-/** Account email from the user token (for pre-filling forms when already signed in). */
-export function getSessionEmail(): string | null {
-  return decodeClaim(getUserToken(), "email");
-}
-
 /** Avatar (data-URL or URL): the in-session local override if present, else the user
  * token's avatar claim, else null. */
 export function getSessionAvatar(): string | null {
@@ -376,36 +371,6 @@ export async function apiUpdateAvatar(avatar: string): Promise<{ ok: boolean; er
     /* storage unavailable */
   }
   return { ok: true };
-}
-
-/** Authenticated self-enrolment as a partner (no email round-trip): the backend provisions
- * the referrer for the SESSION email + mints a partner session, returned here WITHOUT being
- * stored — the caller commits it (storePartnerSession) only when the user opts to open the
- * partner space, so the billing session isn't silently swapped out. */
-export async function apiBecomePartner(fields: {
-  name: string;
-  code: string;
-  logo_url?: string;
-  primary_color?: string;
-  secondary_color?: string;
-}): Promise<{ ok: boolean; data?: Record<string, unknown>; error?: string }> {
-  const res = await apiAuthed("become_partner", fields);
-  if (!res.ok) return { ok: false, error: res.error };
-  return { ok: true, data: res.data };
-}
-
-/** Swap the shared session slot to a partner session (from become_partner or a partner login
- * payload) + cache the referrer. A partner has no workspace, so clear any stale one. */
-export function storePartnerSession(data: Record<string, unknown>): void {
-  const access = data?.access_token as string | undefined;
-  if (!access) return;
-  storeSession("", access, (data?.refresh_token as string) ?? null, (data?.user_token as string) ?? null);
-  try {
-    localStorage.removeItem(WORKSPACE_KEY);
-  } catch {
-    /* storage unavailable */
-  }
-  storeReferrer(data?.referrer as Referrer | undefined);
 }
 
 /** Update the account owner's display name via update_profile, then cache it locally +

@@ -4,12 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Check, Mail } from "lucide-react";
-import {
-  apiRequestPartner,
-  apiBecomePartner,
-  storePartnerSession,
-  getToken,
-} from "@/lib/api";
+import { apiRequestPartner, getToken } from "@/lib/api";
 import { isHexColor, isHttpUrl } from "@/lib/cobrand";
 
 type Dict = Record<string, string>;
@@ -34,9 +29,7 @@ export function BecomePartner({ lang, dict }: { lang: string; dict: Dict }) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
-  const [knownAccount, setKnownAccount] = useState<string | null>(null);
   const [signedIn, setSignedIn] = useState(false);
-  const [partnerSession, setPartnerSession] = useState<Record<string, unknown> | null>(null);
 
   // Already signed in → become a partner is a capability of the account now: send them to
   // the account's Parrainage tab (inline enrolment), not a separate application. This public
@@ -70,26 +63,8 @@ export function BecomePartner({ lang, dict }: { lang: string; dict: Dict }) {
     setSubmitting(true);
     setError(null);
 
-    // Signed in: enrol straight away (no email round-trip). The backend mints a partner
-    // session we hold until the customer chooses to open the partner space.
-    if (signedIn) {
-      const res = await apiBecomePartner({
-        name: name.trim(),
-        code: slug,
-        ...(logoUrl.trim() ? { logo_url: logoUrl.trim() } : {}),
-        primary_color: primary,
-        secondary_color: secondary,
-      });
-      setSubmitting(false);
-      if (res.ok && res.data) {
-        setPartnerSession(res.data);
-        return;
-      }
-      setError(/409|taken|exist/i.test(res.error ?? "") ? dict.errCodeTaken : dict.errGeneric);
-      return;
-    }
-
-    // Signed out: public application — provisions a pending partner + emails a magic link.
+    // Public application (signed-out acquisition) — provisions a pending partner + emails a
+    // magic link. Signed-in visitors are redirected to the account's Parrainage tab instead.
     const res = await apiRequestPartner({
       name: name.trim(),
       email: email.trim(),
@@ -109,30 +84,6 @@ export function BecomePartner({ lang, dict }: { lang: string; dict: Dict }) {
 
   // Signed-in → redirected to the account's Parrainage tab; render nothing meanwhile.
   if (signedIn) return null;
-
-  // Signed-in success: the partner account is live immediately — offer to open the space
-  // (which commits the partner session, swapping out the billing one).
-  if (partnerSession) {
-    return (
-      <div className="rounded-2xl border border-line bg-surface p-8 text-center">
-        <div className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-full bg-ok-bg text-ok-fg">
-          <Check size={28} />
-        </div>
-        <h1 className="mt-4 text-2xl font-bold text-heading">{dict.liveTitle}</h1>
-        <p className="mx-auto mt-2 max-w-md text-muted">{dict.liveBody}</p>
-        <button
-          type="button"
-          onClick={() => {
-            storePartnerSession(partnerSession);
-            router.push(`/${lang}/partner`);
-          }}
-          className="mt-6 inline-flex rounded-full bg-sky-strong px-6 py-3 text-sm font-semibold text-white"
-        >
-          {dict.liveCta}
-        </button>
-      </div>
-    );
-  }
 
   if (done) {
     return (
@@ -157,13 +108,6 @@ export function BecomePartner({ lang, dict }: { lang: string; dict: Dict }) {
     <div>
       <h1 className="text-2xl font-bold text-heading">{dict.title}</h1>
       <p className="mt-1 text-muted">{dict.lead}</p>
-
-      {knownAccount && (
-        <p className="mt-3 inline-flex items-center gap-2 rounded-lg border border-line bg-mist px-3 py-2 text-sm text-muted">
-          <Check size={14} className="text-sky-text" /> {dict.prefilledNote}{" "}
-          <span className="font-medium text-ink">{knownAccount}</span>
-        </p>
-      )}
 
       <div className="mt-6 grid gap-8 md:grid-cols-[1fr_auto]">
         <div className="space-y-4">
