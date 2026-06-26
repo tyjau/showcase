@@ -15,7 +15,7 @@ import {
   ExternalLink,
   type LucideIcon,
 } from "lucide-react";
-import { apiAuthed, getToken, getWorkspace, clearSession } from "@/lib/api";
+import { apiAuthed, getToken, getWorkspace, getSessionName, clearSession } from "@/lib/api";
 import { PaymentMethod } from "@/components/payment-method";
 import { OrderCheckout } from "@/components/order-checkout";
 import { ConsumptionSection } from "@/components/consumption-section";
@@ -29,6 +29,10 @@ import { type Money } from "@/lib/catalog";
 type Dict = Record<string, string>;
 type AddonOpt = { code: string; label: string; prices: Money[] };
 const APP_DOMAIN = process.env.NEXT_PUBLIC_APP_DOMAIN ?? "skyrh.app";
+// The clickable "Harmony" workspace app lives on its own domain. In prod it equals
+// APP_DOMAIN (acme.skyrh.app IS Harmony); in dev it's harmony.test. Env-driven so the
+// pill actually opens the running app rather than a placeholder.
+const HARMONY_DOMAIN = process.env.NEXT_PUBLIC_HARMONY_DOMAIN ?? APP_DOMAIN;
 
 type Invoice = {
   id: number;
@@ -193,10 +197,14 @@ export function AccountPortal({ lang, dict, addons = [] }: { lang: string; dict:
   const router = useRouter();
   const [state, setState] = useState<"loading" | "out" | "ready">("loading");
   const [workspace, setWorkspace] = useState<string | null>(null);
+  const [firstName, setFirstName] = useState<string | null>(null);
   const [tab, setTab] = useState("plan");
 
   useEffect(() => {
     setWorkspace(getWorkspace());
+    // Greeting name comes from the JWT `name` claim (first word only); falls back to the
+    // generic title when the token carries no name.
+    setFirstName((getSessionName() || "").trim().split(/\s+/)[0] || null);
     if (!getToken()) {
       setState("out");
       return;
@@ -252,9 +260,11 @@ export function AccountPortal({ lang, dict, addons = [] }: { lang: string; dict:
     <div>
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-[28px] font-extrabold tracking-tight text-heading">{dict.title}</h1>
+          <h1 className="text-[28px] font-extrabold tracking-tight text-heading">
+            {firstName ? `${dict.acctGreeting}, ${firstName}` : dict.title}
+          </h1>
           <p className="mt-1 text-[15px] text-muted">
-            {dict.subtitle}
+            {dict.acctSubline}
             {workspace ? (
               <>
                 {" · "}
@@ -271,7 +281,7 @@ export function AccountPortal({ lang, dict, addons = [] }: { lang: string; dict:
           </button>
           {workspace && (
             <a
-              href={`https://${workspace}.${APP_DOMAIN}`}
+              href={`https://${workspace}.${HARMONY_DOMAIN}`}
               className="inline-flex items-center gap-1.5 rounded-full bg-sky-strong px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#08607f]"
             >
               <ExternalLink size={15} /> {dict.openWorkspace}

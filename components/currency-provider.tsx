@@ -8,14 +8,16 @@ export type Currency = (typeof CURRENCIES)[number];
 const STORAGE_KEY = "skyrh.currency";
 
 // Default currency is configurable at build time via NEXT_PUBLIC_DEFAULT_CURRENCY
-// (one of EUR | USD | XAF), falling back to EUR. It is build-time inlined, so the
-// server and the client agree on the first render (no hydration mismatch);
-// localStorage then overrides it on mount for returning visitors.
+// (one of EUR | USD | XAF), falling back to USD. The env var is NOT forged into the
+// prod bundle (it's outside the deploy/config-keys contract), so this fallback IS the
+// production default — keep it as the intended market default. It is build-time inlined,
+// so server and client agree on the first render (no hydration mismatch); localStorage
+// then overrides it on mount for returning visitors.
 const ENV_DEFAULT = process.env.NEXT_PUBLIC_DEFAULT_CURRENCY;
 const DEFAULT_CURRENCY: Currency =
   ENV_DEFAULT && (CURRENCIES as readonly string[]).includes(ENV_DEFAULT)
     ? (ENV_DEFAULT as Currency)
-    : "EUR";
+    : "USD";
 
 const CurrencyContext = createContext<{
   currency: Currency;

@@ -2,6 +2,8 @@
 // hits the guardian backend directly; the backend's CORS allows the showcase
 // origin. NEXT_PUBLIC_API_BASE is the public guardian URL in prod; it defaults
 // to the local dev backend.
+import { PORTAL_MOCK, MOCK_TOKEN, MOCK_WORKSPACE, mockAuthed } from "./portal-mock";
+
 const API_BASE =
   process.env.NEXT_PUBLIC_API_BASE || "https://saas.test:8443";
 
@@ -54,6 +56,7 @@ const REFERRER_KEY = "skyrh.partner.referrer";
 
 export function getToken(): string | null {
   if (typeof window === "undefined") return null;
+  if (PORTAL_MOCK) return MOCK_TOKEN; // dev portal preview
   try {
     return localStorage.getItem(TOKEN_KEY);
   } catch {
@@ -80,8 +83,26 @@ export function tokenScope(): string | null {
   }
 }
 
+/**
+ * Decode the display `name` claim from the current access token (best-effort), for the
+ * portal greeting ("Bonjour, {name}"). Same base64url-safe path as tokenScope(); any
+ * decode failure yields null so the header falls back to its generic title.
+ */
+export function getSessionName(): string | null {
+  const t = getToken();
+  if (!t) return null;
+  try {
+    const seg = (t.split(".")[1] || "").replace(/-/g, "+").replace(/_/g, "/");
+    const payload = JSON.parse(atob(seg)) as { name?: string };
+    return payload?.name ?? null;
+  } catch {
+    return null;
+  }
+}
+
 export function getWorkspace(): string | null {
   if (typeof window === "undefined") return null;
+  if (PORTAL_MOCK) return MOCK_WORKSPACE; // dev portal preview
   try {
     return localStorage.getItem(WORKSPACE_KEY);
   } catch {
@@ -248,6 +269,7 @@ export async function apiAuthed(
   action: string,
   body: Record<string, unknown> = {},
 ): Promise<{ ok: boolean; data?: Record<string, unknown>; error?: string; status?: number }> {
+  if (PORTAL_MOCK) return mockAuthed(action); // dev portal preview — canned data
   let token = getToken();
   if (!token) return { ok: false, error: "Not signed in", status: 401 };
   try {
