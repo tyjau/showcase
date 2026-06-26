@@ -2,8 +2,16 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Check, Mail } from "lucide-react";
-import { apiRequestPartner, getToken, getSessionName, getSessionEmail } from "@/lib/api";
+import {
+  apiRequestPartner,
+  apiBecomePartner,
+  storePartnerSession,
+  getToken,
+  getSessionName,
+  getSessionEmail,
+} from "@/lib/api";
 import { isHexColor, isHttpUrl } from "@/lib/cobrand";
 
 type Dict = Record<string, string>;
@@ -24,15 +32,19 @@ export function BecomePartner({ lang, dict }: { lang: string; dict: Dict }) {
   const [logoUrl, setLogoUrl] = useState("");
   const [primary, setPrimary] = useState("#2563eb");
   const [secondary, setSecondary] = useState("#0f172a");
+  const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
   const [knownAccount, setKnownAccount] = useState<string | null>(null);
+  const [signedIn, setSignedIn] = useState(false);
+  const [partnerSession, setPartnerSession] = useState<Record<string, unknown> | null>(null);
 
   // Pre-fill name + email from the session when already signed in — don't ask the
   // logged-in customer to retype what their account already carries.
   useEffect(() => {
     if (!getToken()) return;
+    setSignedIn(true);
     const n = getSessionName();
     const e = getSessionEmail();
     if (n) setName((v) => v || n);
@@ -62,6 +74,27 @@ export function BecomePartner({ lang, dict }: { lang: string; dict: Dict }) {
     }
     setSubmitting(true);
     setError(null);
+
+    // Signed in: enrol straight away (no email round-trip). The backend mints a partner
+    // session we hold until the customer chooses to open the partner space.
+    if (signedIn) {
+      const res = await apiBecomePartner({
+        name: name.trim(),
+        code: slug,
+        ...(logoUrl.trim() ? { logo_url: logoUrl.trim() } : {}),
+        primary_color: primary,
+        secondary_color: secondary,
+      });
+      setSubmitting(false);
+      if (res.ok && res.data) {
+        setPartnerSession(res.data);
+        return;
+      }
+      setError(/409|taken|exist/i.test(res.error ?? "") ? dict.errCodeTaken : dict.errGeneric);
+      return;
+    }
+
+    // Signed out: public application — provisions a pending partner + emails a magic link.
     const res = await apiRequestPartner({
       name: name.trim(),
       email: email.trim(),
@@ -77,6 +110,30 @@ export function BecomePartner({ lang, dict }: { lang: string; dict: Dict }) {
     }
     // 409 = desired code already taken; surface a specific hint, else the generic error.
     setError(/409|taken|exist/i.test(res.error ?? "") ? dict.errCodeTaken : dict.errGeneric);
+  }
+
+  // Signed-in success: the partner account is live immediately — offer to open the space
+  // (which commits the partner session, swapping out the billing one).
+  if (partnerSession) {
+    return (
+      <div className="rounded-2xl border border-line bg-surface p-8 text-center">
+        <div className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-full bg-ok-bg text-ok-fg">
+          <Check size={28} />
+        </div>
+        <h1 className="mt-4 text-2xl font-bold text-heading">{dict.liveTitle}</h1>
+        <p className="mx-auto mt-2 max-w-md text-muted">{dict.liveBody}</p>
+        <button
+          type="button"
+          onClick={() => {
+            storePartnerSession(partnerSession);
+            router.push(`/${lang}/partner`);
+          }}
+          className="mt-6 inline-flex rounded-full bg-sky-strong px-6 py-3 text-sm font-semibold text-white"
+        >
+          {dict.liveCta}
+        </button>
+      </div>
+    );
   }
 
   if (done) {
