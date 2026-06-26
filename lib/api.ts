@@ -51,9 +51,10 @@ const WORKSPACE_KEY = "skyrh.portal.workspace";
 // The login also mints a rich "user token" (name, surname, avatar, role…) — kept so the
 // header + greeting can show the person, since the lean access_token has no name claim.
 const USER_TOKEN_KEY = "skyrh.portal.user";
-// Local override for the avatar after an in-session update (the user token is only
-// refreshed at next login), so the header/settings reflect a new upload immediately.
+// Local overrides for the avatar + display name after an in-session update (the user token
+// is only refreshed at next login), so the header/settings reflect the change immediately.
 const AVATAR_KEY = "skyrh.portal.avatar";
+const NAME_KEY = "skyrh.portal.name";
 // Same-tab components can't hear `storage`, so profile updates broadcast this instead.
 export const PROFILE_EVENT = "skyrh:profile";
 // A partner (referrer) session reuses the SAME token slots as the billing portal —
@@ -116,8 +117,17 @@ function decodeClaim(token: string | null, claim: string): string | null {
   }
 }
 
-/** Display name for the portal greeting ("Bonjour, {name}"), from the user token. */
+/** Display name for the portal greeting ("Bonjour, {name}"): the in-session local override
+ * if present, else the user token's name claim. */
 export function getSessionName(): string | null {
+  if (typeof window !== "undefined" && !PORTAL_MOCK) {
+    try {
+      const local = localStorage.getItem(NAME_KEY);
+      if (local) return local;
+    } catch {
+      /* storage unavailable */
+    }
+  }
   return decodeClaim(getUserToken(), "name");
 }
 
@@ -157,6 +167,7 @@ export function clearSession(): void {
     localStorage.removeItem(WORKSPACE_KEY);
     localStorage.removeItem(USER_TOKEN_KEY);
     localStorage.removeItem(AVATAR_KEY);
+    localStorage.removeItem(NAME_KEY);
     localStorage.removeItem(REFERRER_KEY);
   } catch {
     /* storage unavailable */
@@ -395,6 +406,20 @@ export function storePartnerSession(data: Record<string, unknown>): void {
     /* storage unavailable */
   }
   storeReferrer(data?.referrer as Referrer | undefined);
+}
+
+/** Update the account owner's display name via update_profile, then cache it locally +
+ * broadcast PROFILE_EVENT so the header greeting + settings reflect it without a re-login. */
+export async function apiUpdateName(name: string): Promise<{ ok: boolean; error?: string }> {
+  const res = await apiAuthed("update_profile", { name });
+  if (!res.ok) return { ok: false, error: res.error };
+  try {
+    localStorage.setItem(NAME_KEY, name);
+    window.dispatchEvent(new Event(PROFILE_EVENT));
+  } catch {
+    /* storage unavailable */
+  }
+  return { ok: true };
 }
 
 // ── Partner (referrer) lifecycle ───────────────────────────────────────────────

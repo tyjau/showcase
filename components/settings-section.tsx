@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type ChangeEvent } from "react";
 import { ShieldCheck, KeyRound, Bell, UserRound } from "lucide-react";
-import { apiAuthed, getWorkspace, getSessionName, getSessionAvatar, apiUpdateAvatar } from "@/lib/api";
+import { apiAuthed, getWorkspace, getSessionName, getSessionAvatar, apiUpdateAvatar, apiUpdateName } from "@/lib/api";
 
 type Dict = Record<string, string>;
 
@@ -44,6 +44,9 @@ export function SettingsSection({ dict }: { dict: Dict }) {
   const [displayName, setDisplayName] = useState<string | null>(null);
   const [photoBusy, setPhotoBusy] = useState(false);
   const [photoErr, setPhotoErr] = useState<string | null>(null);
+  const [nameInput, setNameInput] = useState("");
+  const [nameBusy, setNameBusy] = useState(false);
+  const [nameSaved, setNameSaved] = useState(false);
   const notifLabels = (dict.setNotif as unknown as string[]) ?? [];
   // Each notification label maps to a backend key (users.preferences.notifications).
   const NOTIF_KEYS = ["billing", "product", "security"] as const;
@@ -54,6 +57,7 @@ export function SettingsSection({ dict }: { dict: Dict }) {
     setWorkspace(getWorkspace());
     setAvatar(getSessionAvatar());
     setDisplayName(getSessionName());
+    setNameInput(getSessionName() || "");
     apiAuthed("my_consumption").then((res) => {
       const d = res.data || {};
       setScheduled(!!d.cancellation_scheduled);
@@ -99,6 +103,21 @@ export function SettingsSection({ dict }: { dict: Dict }) {
     setPhotoBusy(false);
     if (res.ok) setAvatar(dataUrl);
     else setPhotoErr(res.error || dict.payError);
+  }
+
+  // Persist the display name (updates the greeting + header via the profile event).
+  async function saveName() {
+    const next = nameInput.trim();
+    if (!next || next === (displayName || "")) return;
+    setNameBusy(true);
+    setNameSaved(false);
+    const res = await apiUpdateName(next);
+    setNameBusy(false);
+    if (res.ok) {
+      setDisplayName(next);
+      setNameSaved(true);
+      setTimeout(() => setNameSaved(false), 2500);
+    }
   }
 
   async function requestDeletion() {
@@ -151,6 +170,31 @@ export function SettingsSection({ dict }: { dict: Dict }) {
             <p className="mt-1.5 text-xs text-muted">{dict.setPhotoHint}</p>
             {photoErr && <p className="mt-1 text-xs text-err-fg">{photoErr}</p>}
           </div>
+        </div>
+        {/* Display name — editable, persisted via update_profile (greeting + header refresh) */}
+        <div className="mt-4">
+          <label className="mb-1 block text-sm font-medium text-ink">{dict.setNameLabel}</label>
+          <div className="flex items-stretch gap-2">
+            <input
+              value={nameInput}
+              onChange={(e) => {
+                setNameInput(e.target.value);
+                setNameSaved(false);
+              }}
+              onKeyDown={(e) => e.key === "Enter" && saveName()}
+              placeholder={dict.setNamePh}
+              className="w-full rounded-lg border border-line px-3 py-2.5 text-sm outline-none focus:border-sky"
+            />
+            <button
+              type="button"
+              onClick={saveName}
+              disabled={nameBusy || !nameInput.trim() || nameInput.trim() === (displayName || "")}
+              className="shrink-0 rounded-lg bg-sky-strong px-4 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {nameBusy ? dict.setPhotoSaving : dict.setNameSave}
+            </button>
+          </div>
+          {nameSaved && <p className="mt-1 text-xs text-ok-fg">{dict.setNameSaved}</p>}
         </div>
         <div className="mt-4 flex items-center justify-between gap-4 border-b border-line pb-3">
           <span className="text-sm text-muted">{dict.setWorkspaceLabel}</span>

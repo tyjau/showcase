@@ -15,7 +15,7 @@ import {
   ExternalLink,
   type LucideIcon,
 } from "lucide-react";
-import { apiAuthed, getToken, getWorkspace, getSessionName, clearSession } from "@/lib/api";
+import { apiAuthed, getToken, getWorkspace, getSessionName, clearSession, PROFILE_EVENT } from "@/lib/api";
 import { PaymentMethod } from "@/components/payment-method";
 import { OrderCheckout } from "@/components/order-checkout";
 import { ConsumptionSection } from "@/components/consumption-section";
@@ -214,6 +214,13 @@ export function AccountPortal({ lang, dict, addons = [] }: { lang: string; dict:
     const h = window.location.hash.replace("#", "");
     const match = TABS.find((t) => t.anchor === h);
     if (match) setTab(match.key);
+  }, []);
+
+  // Live-refresh the greeting when the profile name changes (Settings → Display name).
+  useEffect(() => {
+    const onProfile = () => setFirstName((getSessionName() || "").trim().split(/\s+/)[0] || null);
+    window.addEventListener(PROFILE_EVENT, onProfile);
+    return () => window.removeEventListener(PROFILE_EVENT, onProfile);
   }, []);
 
   function logout() {
