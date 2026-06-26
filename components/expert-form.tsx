@@ -5,8 +5,6 @@ import { MessageSquare } from "lucide-react";
 import { apiPost } from "@/lib/api";
 import { TurnstileWidget } from "@/components/turnstile-widget";
 
-const TURNSTILE_ON = !!process.env.NEXT_PUBLIC_TURNSTILE_SITEKEY;
-
 type Dict = {
   expertEyebrow: string;
   expertTitle: string;
@@ -38,7 +36,8 @@ export function ExpertForm({ dict }: { dict: Dict }) {
     if (state === "sending") return;
     if (hp) return setState("sent"); // bot filled the honeypot → silently drop
     if (!email.trim() || !msg.trim()) return; // request_demo requires email + message
-    if (TURNSTILE_ON && !captcha) return; // captcha required when configured
+    // Don't hard-gate on the captcha token — the backend (env-gated) is the enforcer, so a
+    // slow/failed Turnstile widget can't make the form un-submittable. Token still sent below.
     setState("sending");
     const res = await apiPost("request_demo", {
       email: email.trim(),

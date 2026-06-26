@@ -5,8 +5,6 @@ import { Check } from "lucide-react";
 import { apiRequestDemo } from "@/lib/api";
 import { TurnstileWidget } from "@/components/turnstile-widget";
 
-const TURNSTILE_ON = !!process.env.NEXT_PUBLIC_TURNSTILE_SITEKEY;
-
 type Dict = {
   formTitle: string;
   formNote: string;
@@ -71,7 +69,9 @@ export function ContactForm({ dict }: { dict: Dict }) {
     if (hp) return setSent(true);
     if (!EMAIL.test(email.trim())) return setError(dict.errEmail);
     if (message.trim().length === 0) return setError(dict.errMessage);
-    if (TURNSTILE_ON && !captcha) return setError(dict.errCaptcha);
+    // Don't HARD-gate on the captcha token: if the Turnstile widget is slow or fails to
+    // load (offline / Cloudflare blocked), the form must still submit — the backend is the
+    // real enforcer (env-gated verify) and rejects a missing/invalid token there.
     setSubmitting(true);
     const res = await apiRequestDemo({
       email: email.trim(),
@@ -82,7 +82,7 @@ export function ContactForm({ dict }: { dict: Dict }) {
       turnstile_token: captcha,
     });
     setSubmitting(false);
-    if (!res.ok) return setError(res.error || dict.errGeneric);
+    if (!res.ok) return setError(/captcha|turnstile/i.test(res.error ?? "") ? dict.errCaptcha : res.error || dict.errGeneric);
     setSent(true);
   }
 
