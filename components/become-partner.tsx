@@ -4,11 +4,11 @@ import { useState } from "react";
 import Link from "next/link";
 import { Check, Mail } from "lucide-react";
 import { apiRequestPartner } from "@/lib/api";
+import { isHexColor, isHttpUrl } from "@/lib/cobrand";
 
 type Dict = Record<string, string>;
 
 const INPUT = "w-full rounded-lg border border-line px-3 py-2.5 text-sm outline-none focus:border-sky";
-const HEX = /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/;
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 // A referrer code is a URL-safe slug (shared as ?ref=<code>) — letters/digits/dash/underscore.
 const CODE = /^[a-z0-9][a-z0-9_-]{1,30}$/;
@@ -35,8 +35,8 @@ export function BecomePartner({ lang, dict }: { lang: string; dict: Dict }) {
     if (!name.trim()) return dict.errRequired;
     if (!EMAIL.test(email.trim())) return dict.errEmail;
     if (!CODE.test(slug)) return dict.errCode;
-    if (logoUrl.trim() && !/^https?:\/\//.test(logoUrl.trim())) return dict.errLogo;
-    if (!HEX.test(primary) || !HEX.test(secondary)) return dict.errColor;
+    if (logoUrl.trim() && !isHttpUrl(logoUrl.trim())) return dict.errLogo;
+    if (!isHexColor(primary) || !isHexColor(secondary)) return dict.errColor;
     return null;
   }
 
@@ -133,7 +133,7 @@ export function BecomePartner({ lang, dict }: { lang: string; dict: Dict }) {
               <div className="flex items-stretch gap-2">
                 <input
                   type="color"
-                  value={HEX.test(primary) ? primary : "#2563eb"}
+                  value={isHexColor(primary) ? primary : "#2563eb"}
                   onChange={(e) => setPrimary(e.target.value)}
                   className="h-10 w-12 shrink-0 cursor-pointer rounded-lg border border-line bg-surface p-1"
                   aria-label={dict.primary}
@@ -146,7 +146,7 @@ export function BecomePartner({ lang, dict }: { lang: string; dict: Dict }) {
               <div className="flex items-stretch gap-2">
                 <input
                   type="color"
-                  value={HEX.test(secondary) ? secondary : "#0f172a"}
+                  value={isHexColor(secondary) ? secondary : "#0f172a"}
                   onChange={(e) => setSecondary(e.target.value)}
                   className="h-10 w-12 shrink-0 cursor-pointer rounded-lg border border-line bg-surface p-1"
                   aria-label={dict.secondary}
@@ -162,11 +162,11 @@ export function BecomePartner({ lang, dict }: { lang: string; dict: Dict }) {
           <p className="mb-1 text-xs font-medium uppercase tracking-wide text-muted">{dict.previewLabel}</p>
           <div
             className="overflow-hidden rounded-xl border border-line"
-            style={{ borderColor: HEX.test(primary) ? primary : undefined }}
+            style={{ borderColor: isHexColor(primary) ? primary : undefined }}
           >
             <div
               className="flex items-center gap-2 px-4 py-3 text-white"
-              style={{ backgroundColor: HEX.test(secondary) ? secondary : "#0f172a" }}
+              style={{ backgroundColor: isHexColor(secondary) ? secondary : "#0f172a" }}
             >
               {logoUrl.trim() ? (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -174,7 +174,7 @@ export function BecomePartner({ lang, dict }: { lang: string; dict: Dict }) {
               ) : (
                 <span
                   className="inline-flex h-6 w-6 items-center justify-center rounded text-xs font-bold"
-                  style={{ backgroundColor: HEX.test(primary) ? primary : "#2563eb" }}
+                  style={{ backgroundColor: isHexColor(primary) ? primary : "#2563eb" }}
                 >
                   {(name.trim()[0] || "S").toUpperCase()}
                 </span>
@@ -187,7 +187,7 @@ export function BecomePartner({ lang, dict }: { lang: string; dict: Dict }) {
               <button
                 type="button"
                 className="mt-1 w-full rounded-full px-3 py-2 text-xs font-semibold text-white"
-                style={{ backgroundColor: HEX.test(primary) ? primary : "#2563eb" }}
+                style={{ backgroundColor: isHexColor(primary) ? primary : "#2563eb" }}
               >
                 {dict.previewCta}
               </button>
