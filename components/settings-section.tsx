@@ -3,10 +3,9 @@
 import { useEffect, useState, type ChangeEvent } from "react";
 import { ShieldCheck, KeyRound, Bell, UserRound } from "lucide-react";
 import { apiAuthed, getWorkspace, getSessionName, getSessionAvatar, apiUpdateAvatar, apiUpdateName } from "@/lib/api";
+import { harmonyHref, harmonyLabel } from "@/lib/harmony";
 
 type Dict = Record<string, string>;
-
-const APP_DOMAIN = process.env.NEXT_PUBLIC_APP_DOMAIN ?? "skyrh.app";
 
 function initials(name: string | null): string {
   if (!name) return "•";
@@ -51,7 +50,7 @@ export function SettingsSection({ dict }: { dict: Dict }) {
   // Each notification label maps to a backend key (users.preferences.notifications).
   const NOTIF_KEYS = ["billing", "product", "security"] as const;
   const [notif, setNotif] = useState<boolean[]>(() => notifLabels.map(() => true));
-  const harmonyUrl = workspace ? `https://${workspace}.${APP_DOMAIN}` : "#";
+  const harmonyUrl = harmonyHref(workspace);
 
   useEffect(() => {
     setWorkspace(getWorkspace());
@@ -198,7 +197,7 @@ export function SettingsSection({ dict }: { dict: Dict }) {
         </div>
         <div className="mt-4 flex items-center justify-between gap-4 border-b border-line pb-3">
           <span className="text-sm text-muted">{dict.setWorkspaceLabel}</span>
-          <span className="text-sm font-medium text-ink">{workspace ? `${workspace}.${APP_DOMAIN}` : "—"}</span>
+          <span className="text-sm font-medium text-ink">{harmonyLabel(workspace)}</span>
         </div>
         <p className="mt-3 text-sm text-muted">{dict.setManaged}</p>
         <a href={harmonyUrl} className="mt-3 inline-flex text-sm font-semibold text-sky-text hover:underline">

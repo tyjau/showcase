@@ -41,6 +41,13 @@ if (Object.keys(cfg).length > 0 && (cfg.turnstile_sitekey == null || cfg.turnsti
   cfg.turnstile_sitekey = "1x00000000000000000000AA"; // placeholder démo — remplacé par le vrai sitekey via Ignition
 }
 
+// Harmony (app SIRH du tenant) : URL de base bakée pour le lien « ouvrir mon espace » (lib/harmony.ts).
+// Défaut = modèle sous-domaine par tenant (prod) via le placeholder {workspace} ; le snapshot l'écrase par
+// env (staging : https://rh.ikwhat.com/harmony, chemin fixe). Appliqué SEULEMENT si absent/vide (comme Turnstile).
+if (Object.keys(cfg).length > 0 && (cfg.harmony_url == null || cfg.harmony_url === "")) {
+  cfg.harmony_url = "https://{workspace}.skyrh.app"; // défaut sous-domaine — remplacé par le vrai via Ignition
+}
+
 // Garde-fou complétude (rempart dur au deploy) : si une config produit est fournie — déploiement
 // RÉEL, pas le mode mock à config vide — elle doit porter TOUTES les clés du contrat
 // deploy/config-keys.json, sinon le bundle partirait avec des valeurs vides. Config vide → exempt.
@@ -60,6 +67,8 @@ const catalogKey = cfg.catalog_api_key ?? cfg.catalogApiKey ?? "";
 // Cloudflare Turnstile sitekey — PUBLIC (safe to inline + log). Empty in dev/no-snapshot,
 // so the widget stays a no-op there; set per-env in the Guardian config_json for prod.
 const turnstileSitekey = cfg.turnstile_sitekey ?? cfg.turnstileSitekey ?? "";
+// Harmony base URL — PUBLIC (URL, safe to inline + log). Placeholder {workspace} résolu côté client.
+const harmonyUrl = cfg.harmony_url ?? cfg.harmonyUrl ?? "";
 
 // 🔒 The catalog key is a SECRET promoted into $GITHUB_ENV below. GitHub only auto-masks
 // `secrets.*`, NOT values we inject — so register a mask explicitly, else any later env dump
@@ -74,6 +83,7 @@ if (apiBase) lines.push(`NEXT_PUBLIC_API_BASE=${apiBase}`);
 if (guardianUrl) lines.push(`GUARDIAN_URL=${guardianUrl}`);
 if (catalogKey) lines.push(`CATALOG_API_KEY=${catalogKey}`);
 if (turnstileSitekey) lines.push(`NEXT_PUBLIC_TURNSTILE_SITEKEY=${turnstileSitekey}`);
+if (harmonyUrl) lines.push(`NEXT_PUBLIC_HARMONY_URL=${harmonyUrl}`);
 
 if (process.env.GITHUB_ENV && lines.length) {
   appendFileSync(process.env.GITHUB_ENV, lines.join("\n") + "\n");
@@ -85,6 +95,7 @@ console.log(
   "| GUARDIAN_URL:", guardianUrl || "(default)",
   "| CATALOG_API_KEY:", catalogKey ? "(set)" : "(empty)",
   "| TURNSTILE_SITEKEY:", turnstileSitekey || "(empty)",
+  "| HARMONY_URL:", harmonyUrl || "(empty)",
 );
 if (!apiBase) {
   console.log("⚠ pas de api_base_url dans le snapshot → build avec les defaults dev (saas.test)");

@@ -25,14 +25,12 @@ import { SupportSection } from "@/components/support-section";
 import { InvoicePayBox } from "@/components/invoice-pay-box";
 import { PlanManagement } from "@/components/plan-management";
 import { type Money } from "@/lib/catalog";
+import { harmonyHref, harmonyLabel } from "@/lib/harmony";
 
 type Dict = Record<string, string>;
 type AddonOpt = { code: string; label: string; prices: Money[] };
-const APP_DOMAIN = process.env.NEXT_PUBLIC_APP_DOMAIN ?? "skyrh.app";
-// The clickable "Harmony" workspace app lives on its own domain. In prod it equals
-// APP_DOMAIN (acme.skyrh.app IS Harmony); in dev it's harmony.test. Env-driven so the
-// pill actually opens the running app rather than a placeholder.
-const HARMONY_DOMAIN = process.env.NEXT_PUBLIC_HARMONY_DOMAIN ?? APP_DOMAIN;
+// Lien + libellé de l'espace Harmony : cf. lib/harmony.ts (URL bakée NEXT_PUBLIC_HARMONY_URL,
+// avec fallback sous-domaine <workspace>.<NEXT_PUBLIC_APP_DOMAIN>).
 
 type Invoice = {
   id: number;
@@ -275,7 +273,7 @@ export function AccountPortal({ lang, dict, addons = [] }: { lang: string; dict:
             {workspace ? (
               <>
                 {" · "}
-                <span className="font-semibold text-ink">{workspace}</span>.{APP_DOMAIN}
+                <span className="font-semibold text-ink">{harmonyLabel(workspace)}</span>
               </>
             ) : (
               ""
@@ -288,7 +286,7 @@ export function AccountPortal({ lang, dict, addons = [] }: { lang: string; dict:
           </button>
           {workspace && (
             <a
-              href={`https://${workspace}.${HARMONY_DOMAIN}`}
+              href={harmonyHref(workspace)}
               className="inline-flex items-center gap-1.5 rounded-full bg-sky-strong px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#08607f]"
             >
               <ExternalLink size={15} /> {dict.openWorkspace}

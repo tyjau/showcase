@@ -4,6 +4,7 @@
     "api_base_url",
     "catalog_api_key",
     "guardian_url",
+    "harmony_url",
     "turnstile_sitekey"
   ]
 }
