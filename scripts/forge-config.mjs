@@ -33,6 +33,14 @@ try {
 
 const cfg = snap?.products?.[repo]?.config ?? {};
 
+// Turnstile : clé DÉMO (Cloudflare test sitekey `1x00000000000000000000AA`, always-passes — valeur PUBLIQUE)
+// si le snapshot n'en fournit pas encore. Débloque le build ; la vraie clé arrivera via le snapshot Guardian
+// (config_json) d'un déploiement Ignition ultérieur — qui ÉCRASE ce défaut (appliqué SEULEMENT si absent/vide).
+// N'agit QUE sur un déploiement RÉEL (cfg non vide) — le mode mock/dev à config vide reste no-op.
+if (Object.keys(cfg).length > 0 && (cfg.turnstile_sitekey == null || cfg.turnstile_sitekey === "")) {
+  cfg.turnstile_sitekey = "1x00000000000000000000AA"; // placeholder démo — remplacé par le vrai sitekey via Ignition
+}
+
 // Garde-fou complétude (rempart dur au deploy) : si une config produit est fournie — déploiement
 // RÉEL, pas le mode mock à config vide — elle doit porter TOUTES les clés du contrat
 // deploy/config-keys.json, sinon le bundle partirait avec des valeurs vides. Config vide → exempt.

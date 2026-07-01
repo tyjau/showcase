@@ -69,6 +69,20 @@ describe("forge-config", () => {
     expect(r.ghEnv).toBe("");
   });
 
+  it("injecte une clé Turnstile DÉMO si absente du snapshot (débloque le build ; écrasée par le vrai config_json)", () => {
+    const partial = JSON.parse(JSON.stringify(FULL));
+    delete partial.products["tyjau/showcase"].config.turnstile_sitekey;
+    const r = runForge({ snapshot: JSON.stringify(partial) });
+    expect(r.status).toBe(0);
+    expect(r.ghEnv).toContain("NEXT_PUBLIC_TURNSTILE_SITEKEY=1x00000000000000000000AA");
+  });
+
+  it("garde le sitekey RÉEL du snapshot quand il est fourni (le défaut démo n'écrase pas)", () => {
+    const r = runForge({ snapshot: JSON.stringify(FULL) });
+    expect(r.status).toBe(0);
+    expect(r.ghEnv).toContain("NEXT_PUBLIC_TURNSTILE_SITEKEY=0xSITEKEY_test");
+  });
+
   it("is a no-op (exit 0, no vars) for an empty/mock snapshot", () => {
     const r = runForge({ snapshot: "{}" });
     expect(r.status).toBe(0);
