@@ -38,24 +38,38 @@ const CATALOG_API_KEY = process.env.CATALOG_API_KEY ?? "";
  * static export at build time. Prod guardian has a valid certificate; in dev we
  * tolerate the self-signed saas.test certificate.
  */
-export async function fetchCatalog(): Promise<Catalog> {
-  // Tolerate the self-signed certificate only for the local dev backend
-  // (saas.test) — a real guardian endpoint has a valid certificate, so a
-  // production build against it never disables verification.
-  if (GUARDIAN_URL.includes("saas.test")) {
-    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-  }
+const EMPTY_CATALOG: Catalog = { packages: [], modules: [] };
 
-  const res = await fetch(`${GUARDIAN_URL}/auth.php?c=catalog`, {
-    headers: { "X-API-KEY": CATALOG_API_KEY },
-    cache: "force-cache",
-  });
-  if (!res.ok) {
-    throw new Error(`Catalog fetch failed: ${res.status} ${res.statusText}`);
+export async function fetchCatalog(): Promise<Catalog> {
+  // Résilience build : si le catalogue est injoignable ou la clé non encore alignée (401), NE PAS casser
+  // le build — retomber sur un catalogue VIDE (le site déploie ; le vrai catalogue arrive quand la clé
+  // CATALOG_API_KEY est alignée back↔snapshot via Ignition). Miroir du fallback de fetchCountries.
+  // Cohérent pour staging/placeholder ; en prod, aligner la clé pour un catalogue non vide.
+  try {
+    // Tolerate the self-signed certificate only for the local dev backend
+    // (saas.test) — a real guardian endpoint has a valid certificate, so a
+    // production build against it never disables verification.
+    if (GUARDIAN_URL.includes("saas.test")) {
+      process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+    }
+
+    const res = await fetch(`${GUARDIAN_URL}/auth.php?c=catalog`, {
+      headers: { "X-API-KEY": CATALOG_API_KEY },
+      cache: "force-cache",
+    });
+    if (!res.ok) {
+      throw new Error(`Catalog fetch failed: ${res.status} ${res.statusText}`);
+    }
+    const json = (await res.json()) as { data?: Catalog };
+    if (!json.data) throw new Error("Catalog response missing data");
+    return json.data;
+  } catch (e) {
+    console.warn(
+      `[catalog] fetch échoué (${e instanceof Error ? e.message : String(e)}) → catalogue VIDE (fallback build). ` +
+        "Aligner CATALOG_API_KEY (back↔snapshot) via Ignition pour un catalogue réel.",
+    );
+    return EMPTY_CATALOG;
   }
-  const json = (await res.json()) as { data?: Catalog };
-  if (!json.data) throw new Error("Catalog response missing data");
-  return json.data;
 }
 
 // Fallback if the countries endpoint is unreachable (e.g. an older backend without
