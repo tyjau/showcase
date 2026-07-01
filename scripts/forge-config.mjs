@@ -61,8 +61,11 @@ if (Object.keys(cfg).length > 0) {
   }
 }
 const apiBase = cfg.api_base_url ?? cfg.apiBaseUrl ?? process.env.NEXT_PUBLIC_API_BASE ?? "";
-// Catalog fetch target defaults to the same backend as the public API.
-const guardianUrl = cfg.guardian_url ?? cfg.guardianUrl ?? apiBase;
+// guardian_url est OPTIONNEL : par défaut le build tape le catalogue au MÊME back que le funnel client
+// (api_base_url). Lu via bracket (cfg["…"]) pour NE PAS l'imposer dans le contrat config-keys.json — une
+// seule URL à saisir dans le cas courant. Surcharge possible via le config_json si le build doit un jour
+// taper une URL interne distincte du navigateur ; il faudra alors le re-déclarer au contrat (accès point).
+const guardianUrl = cfg["guardian_url"] ?? cfg["guardianUrl"] ?? apiBase;
 const catalogKey = cfg.catalog_api_key ?? cfg.catalogApiKey ?? "";
 // Cloudflare Turnstile sitekey — PUBLIC (safe to inline + log). Empty in dev/no-snapshot,
 // so the widget stays a no-op there; set per-env in the Guardian config_json for prod.
