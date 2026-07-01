@@ -38,7 +38,37 @@ const CATALOG_API_KEY = process.env.CATALOG_API_KEY ?? "";
  * static export at build time. Prod guardian has a valid certificate; in dev we
  * tolerate the self-signed saas.test certificate.
  */
-const EMPTY_CATALOG: Catalog = { packages: [], modules: [] };
+// Fallback MINIMAL (pas vide) : `output: export` exige ≥1 param pour /[lang]/features/[module] — un
+// catalogue vide casse le build (« missing generateStaticParams »). Placeholder COHÉRENT (1 package,
+// 1 module) — remplacé par le vrai catalogue quand CATALOG_API_KEY est alignée via Ignition.
+const FALLBACK_CATALOG: Catalog = {
+  packages: [
+    {
+      code: "starter",
+      name: "Starter",
+      description: "Catalogue placeholder — à aligner via Ignition (CATALOG_API_KEY).",
+      prices: [{ currency: "EUR", cycle: "monthly", amount: 0 }],
+      modules: ["core"],
+    },
+  ],
+  modules: [
+    {
+      code: "core",
+      gate: "core",
+      category: "core",
+      icon: null,
+      cover: null,
+      isAddon: false,
+      sort: 0,
+      text: {
+        fr: { headline: "Module (placeholder)", tagline: null, description: null },
+        en: { headline: "Module (placeholder)", tagline: null, description: null },
+      },
+      prices: [{ currency: "EUR", cycle: "monthly", amount: 0 }],
+      requires: [],
+    },
+  ],
+};
 
 export async function fetchCatalog(): Promise<Catalog> {
   // Résilience build : si le catalogue est injoignable ou la clé non encore alignée (401), NE PAS casser
@@ -68,7 +98,7 @@ export async function fetchCatalog(): Promise<Catalog> {
       `[catalog] fetch échoué (${e instanceof Error ? e.message : String(e)}) → catalogue VIDE (fallback build). ` +
         "Aligner CATALOG_API_KEY (back↔snapshot) via Ignition pour un catalogue réel.",
     );
-    return EMPTY_CATALOG;
+    return FALLBACK_CATALOG;
   }
 }
 
