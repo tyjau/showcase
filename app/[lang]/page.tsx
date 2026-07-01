@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { getDictionary } from "@/lib/dictionaries";
 import { i18n, type Locale } from "@/lib/i18n";
+import { withBase } from "@/lib/asset";
 import { SocialProof } from "@/components/social-proof";
 import { ParallaxTriangles } from "@/components/parallax-triangles";
 import { ModulesCarousel } from "@/components/modules-carousel";
@@ -160,7 +161,7 @@ export default async function Home(
         {/* Photo backdrop + navy overlay + sky radial + parallax triangles. */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/img/hero-office.png"
+          src={withBase("/img/hero-office.png")}
           alt=""
           aria-hidden="true"
           className="absolute inset-0 h-full w-full object-cover opacity-[0.55]"
@@ -269,7 +270,7 @@ export default async function Home(
           {/* Photo tile with caption overlay */}
           <div
             className="relative hidden min-h-[300px] overflow-hidden rounded-2xl border border-line bg-cover bg-[center_42%] min-[895px]:block"
-            style={{ backgroundImage: "url('/img/feat-photo-filled.png')" }}
+            style={{ backgroundImage: `url('${withBase("/img/feat-photo-filled.png")}')` }}
             role="img"
             aria-label={t.features.lateralAlt}
           >

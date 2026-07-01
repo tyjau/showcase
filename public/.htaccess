@@ -7,13 +7,15 @@ Options -Indexes
 # The app lives entirely under /<lang>/ (static export, no middleware), so the bare
 # domain and a few legacy paths need redirecting at the HTTP layer. A generated
 # out/index.html covers hosts without mod_rewrite; these rules are the clean 302s.
+# __BASE_PATH__ is substituted at postbuild (scripts/postbuild.mjs) with the deploy
+# sub-path (e.g. /showcase), so the redirects land under it, not the domain root.
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
   # Root → locale: prefer French when the browser asks for it, else the default (en).
   RewriteCond %{HTTP:Accept-Language} ^fr [NC]
-  RewriteRule ^$ /fr/ [R=302,L]
-  RewriteRule ^$ /en/ [R=302,L]
+  RewriteRule ^$ __BASE_PATH__/fr/ [R=302,L]
+  RewriteRule ^$ __BASE_PATH__/en/ [R=302,L]
 </IfModule>
 
 <IfModule mod_headers.c>

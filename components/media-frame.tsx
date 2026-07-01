@@ -1,4 +1,5 @@
 import { ImageIcon } from "lucide-react";
+import { withBase } from "@/lib/asset";
 
 /**
  * Product-screenshot slot. Renders the image when `src` is set, else a labelled
@@ -25,7 +26,10 @@ export function MediaFrame({
   chrome?: "dark" | "light";
   url?: string;
 }) {
-  if (src && chrome) {
+  // Préfixe l'asset public par le basePath (servi sous /showcase/ → /_next et <Link> sont préfixés
+  // par Next, mais pas ce <img> brut). Idempotent + sans effet sur les URLs externes (cover partenaire).
+  const resolved = withBase(src);
+  if (resolved && chrome) {
     const dark = chrome === "dark";
     return (
       <div
@@ -48,15 +52,15 @@ export function MediaFrame({
           )}
         </div>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={src} alt={alt} className="block w-full" />
+        <img src={resolved} alt={alt} className="block w-full" />
       </div>
     );
   }
-  if (src) {
+  if (resolved) {
     // eslint-disable-next-line @next/next/no-img-element
     return (
       <img
-        src={src}
+        src={resolved}
         alt={alt}
         className={`w-full rounded-xl border border-line object-cover ${className}`}
       />

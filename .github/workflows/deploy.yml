@@ -96,7 +96,22 @@ jobs:
           node scripts/forge-config.mjs
 
       - name: 🏗️ Build (Next static export → out/)
+        env:
+          # basePath = sous-chemin public sous lequel le site est servi. Dérivé de FRONT_SMOKE_URL (qui
+          # EST l'URL publique du déploiement), avec override explicite possible via la var FRONT_BASE_PATH.
+          # Alimente Next basePath (liens + /_next), le gateway et le .htaccess (postbuild) ; sinon les
+          # assets /_next et les liens /<lang> tapent la racine du domaine → 404 sous un sous-chemin.
+          # Vide (aucune des deux vars) → build à la racine, comportement historique inchangé.
+          FRONT_SMOKE_URL: ${{ vars.FRONT_SMOKE_URL }}
+          FRONT_BASE_PATH: ${{ vars.FRONT_BASE_PATH }}
         run: |
+          if [ -n "${FRONT_BASE_PATH:-}" ]; then
+            BASE_PATH="$FRONT_BASE_PATH"
+          elif [ -n "${FRONT_SMOKE_URL:-}" ]; then
+            BASE_PATH="$(node -e 'try{process.stdout.write(new URL(process.env.FRONT_SMOKE_URL).pathname.replace(/\/+$/,""))}catch(e){}')"
+          fi
+          export BASE_PATH="${BASE_PATH:-}"
+          echo "→ BASE_PATH='${BASE_PATH}' (FRONT_BASE_PATH='${FRONT_BASE_PATH:-}', FRONT_SMOKE_URL='${FRONT_SMOKE_URL:-}')"
           NODE_ENV=production npm run build
           test -f out/index.html || { echo "❌ build incomplet (pas d'out/index.html)"; exit 1; }
           echo "✓ build OK : $(find out -type f | wc -l) fichiers, $(du -sh out | cut -f1)"

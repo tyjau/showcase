@@ -6,6 +6,7 @@ import { i18n, type Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
 import { fetchCatalog, moduleText, type CatalogModule } from "@/lib/catalog";
 import { moduleContent, moduleExtras } from "@/lib/module-content";
+import { withBase } from "@/lib/asset";
 import { ModuleIcon } from "@/components/module-icon";
 import { MediaFrame } from "@/components/media-frame";
 import { Price } from "@/components/price";
@@ -132,7 +133,7 @@ export default async function ModulePage(
           <>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={shots.heroPhoto}
+              src={withBase(shots.heroPhoto)}
               alt=""
               aria-hidden="true"
               className="absolute inset-0 h-full w-full object-cover opacity-[0.4]"

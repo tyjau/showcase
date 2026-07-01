@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { withBase } from "@/lib/asset";
 import type { Metadata } from "next";
 import {
   ShieldCheck,
@@ -44,7 +45,7 @@ export default async function CompanyPage(
       <section className="relative overflow-hidden bg-hero-bg text-hero-fg">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/img/hero-photo.png"
+          src={withBase("/img/hero-photo.png")}
           alt=""
           aria-hidden="true"
           className="absolute inset-0 h-full w-full object-cover opacity-[0.42]"

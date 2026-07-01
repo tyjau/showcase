@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { withBase } from "@/lib/asset";
 import {
   FileText,
   CalendarDays,
@@ -154,7 +155,7 @@ function RecruitVisual() {
         <span className="ml-2.5 text-[11px] text-[#7d93a6]">app.skyrh.com/recruit/needs</span>
       </div>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/img/product-recruitment.png" alt="" aria-hidden="true" className="block w-full" />
+      <img src={withBase("/img/product-recruitment.png")} alt="" aria-hidden="true" className="block w-full" />
     </div>
   );
 }
