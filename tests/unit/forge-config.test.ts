@@ -17,6 +17,7 @@ const FULL = {
         guardian_url: "https://guardian.example.test",
         catalog_api_key: "key_abc123",
         turnstile_sitekey: "0xSITEKEY_test",
+        harmony_url: "https://harmony.example.test",
       },
     },
   },
@@ -57,6 +58,7 @@ describe("forge-config", () => {
     expect(r.ghEnv).toContain("GUARDIAN_URL=https://guardian.example.test");
     expect(r.ghEnv).toContain("CATALOG_API_KEY=key_abc123");
     expect(r.ghEnv).toContain("NEXT_PUBLIC_TURNSTILE_SITEKEY=0xSITEKEY_test");
+    expect(r.ghEnv).toContain("NEXT_PUBLIC_HARMONY_URL=https://harmony.example.test");
     expect(r.stdout).toContain("(set)");
   });
 
