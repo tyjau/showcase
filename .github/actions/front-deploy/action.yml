@@ -130,6 +130,8 @@ runs:
 
     # ── Smoke post-deploy : l'index doit être servi (200 + marqueur SPA). SMOKE_URL forgé depuis le
     #    snapshot (fallback var permanente). Vide → on saute. Retry x3 (généralisé depuis showcase).
+    #    curl -L : le front est exporté en `trailingSlash: true` → une SMOKE_URL sans slash renvoie un
+    #    301 vers la version avec slash ; sans -L le smoke voit le 301 (≠ 2xx) et rougit sur un deploy OK.
     - name: 🩺 Smoke test (front)
       shell: bash
       run: |
@@ -138,7 +140,7 @@ runs:
         # Retry : l'hôte peut throttler/ralentir l'IP du runner (faux négatif sur un deploy OK).
         ok=0; code=000
         for i in 1 2 3 4 5; do
-          code=$(curl -s -o /tmp/idx.html -w '%{http_code}' --max-time 20 "$SMOKE_URL" || echo 000)
+          code=$(curl -sL -o /tmp/idx.html -w '%{http_code}' --max-time 20 "$SMOKE_URL" || echo 000)
           echo "tentative $i : HTTP $code"
           if printf '%s' "$code" | grep -q '^2' && grep -qiE '${{ inputs.smoke_grep }}' /tmp/idx.html; then ok=1; break; fi
           sleep 8
