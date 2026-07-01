@@ -27,10 +27,11 @@ inputs:
 runs:
   using: composite
   steps:
-    # ── Forge des COORDONNÉES de deploy depuis le snapshot → $GITHUB_ENV (SSH_*/SMOKE_URL). Dé-sature
-    #    GitHub (les coords voyagent dans le snapshot temporaire). La CLÉ PRIVÉE reste un secret
-    #    permanent (ssh_key, non routée). Fallback FB_* tant que rien n'est authored → INCHANGÉ.
-    - name: 🔧 Forge deploy coords (snapshot → env ; fallback secrets permanents)
+    # ── Forge les COORDS + SECRETS de deploy depuis le snapshot → $GITHUB_ENV (SSH_*/SMOKE_URL +
+    #    SSH_KEY/FTP_PASS). Dé-sature GitHub : tout voyage dans le snapshot temporaire. Les creds de
+    #    transport (clé SSH, mdp FTPS) sont snapshot-first, fallback secret permanent (deploy-creds
+    #    managés) → migration douce. Fallback FB_* tant que rien n'est authored → INCHANGÉ.
+    - name: 🔧 Forge deploy coords+secrets (snapshot → env ; fallback secrets permanents)
       shell: bash
       env:
         SNAP_STAGING: ${{ inputs.snapshot_staging }}
@@ -42,6 +43,8 @@ runs:
         FB_USER: ${{ inputs.fb_ssh_user }}
         FB_REMOTE_DIR: ${{ inputs.fb_ssh_remote_dir }}
         FB_SMOKE_URL: ${{ inputs.fb_smoke_url }}
+        FB_SSH_KEY: ${{ inputs.ssh_key }}   # clé SSH : fallback si le snapshot ne la porte pas
+        FB_FTP_PASS: ${{ inputs.ftp_pass }} # mdp FTPS : idem
       run: |
         if [ "$ENV_NAME" = "production" ]; then export RELEASE_SNAPSHOT="$SNAP_PROD"; else export RELEASE_SNAPSHOT="$SNAP_STAGING"; fi
         node "${{ github.action_path }}/forge-deploy.mjs"
@@ -53,9 +56,9 @@ runs:
       continue-on-error: true
       shell: bash
       env:
-        SSH_KEY: ${{ inputs.ssh_key }}
         FTP_DELETE: ${{ inputs.ftp_delete }}
-        # SSH_HOST / SSH_PORT / SSH_USER / SSH_REMOTE_DIR : forgés depuis le snapshot ($GITHUB_ENV ci-dessus)
+        # SSH_KEY / SSH_HOST / SSH_PORT / SSH_USER / SSH_REMOTE_DIR : forgés depuis le snapshot
+        # (fallback secret permanent) via $GITHUB_ENV ci-dessus — NE PAS re-poser ici (écraserait le snapshot).
       run: |
         if [ -z "$SSH_KEY" ] || [ -z "$SSH_HOST" ] || [ -z "$SSH_USER" ] || [ -z "$SSH_REMOTE_DIR" ]; then
           echo "ℹ️ Secrets SSH front absents (FRONT_SSH_KEY/HOST/USER + var FRONT_SSH_REMOTE_DIR) — saut du rsync → fallback FTPS"; exit 1
@@ -100,9 +103,9 @@ runs:
       env:
         FTP_HOST: ${{ inputs.ftp_host }}
         FTP_USER: ${{ inputs.ftp_user }}
-        FTP_PASS: ${{ inputs.ftp_pass }}
         REMOTE_DIR: ${{ inputs.remote_dir }}
         FTP_DELETE: ${{ inputs.ftp_delete }}
+        # FTP_PASS : forgé depuis le snapshot (fallback secret permanent) via $GITHUB_ENV — pas re-posé ici.
       run: |
         if [ -z "$FTP_HOST" ] || [ -z "$FTP_USER" ] || [ -z "$FTP_PASS" ] || [ -z "$REMOTE_DIR" ]; then
           echo "::error::FRONT_FTP_HOST/USER/PASS ou variable FRONT_REMOTE_DIR manquants"; exit 1
@@ -130,8 +133,6 @@ runs:
 
     # ── Smoke post-deploy : l'index doit être servi (200 + marqueur SPA). SMOKE_URL forgé depuis le
     #    snapshot (fallback var permanente). Vide → on saute. Retry x3 (généralisé depuis showcase).
-    #    curl -L : le front est exporté en `trailingSlash: true` → une SMOKE_URL sans slash renvoie un
-    #    301 vers la version avec slash ; sans -L le smoke voit le 301 (≠ 2xx) et rougit sur un deploy OK.
     - name: 🩺 Smoke test (front)
       shell: bash
       run: |
@@ -140,7 +141,7 @@ runs:
         # Retry : l'hôte peut throttler/ralentir l'IP du runner (faux négatif sur un deploy OK).
         ok=0; code=000
         for i in 1 2 3 4 5; do
-          code=$(curl -sL -o /tmp/idx.html -w '%{http_code}' --max-time 20 "$SMOKE_URL" || echo 000)
+          code=$(curl -s -o /tmp/idx.html -w '%{http_code}' --max-time 20 "$SMOKE_URL" || echo 000)
           echo "tentative $i : HTTP $code"
           if printf '%s' "$code" | grep -q '^2' && grep -qiE '${{ inputs.smoke_grep }}' /tmp/idx.html; then ok=1; break; fi
           sleep 8

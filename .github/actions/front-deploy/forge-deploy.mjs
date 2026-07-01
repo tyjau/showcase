@@ -1,10 +1,11 @@
-// forge-deploy.mjs — forge les COORDONNÉES de déploiement (non secrètes) depuis le snapshot
-// de release et les expose aux étapes deploy via $GITHUB_ENV. Objectif : « dé-saturer » GitHub —
-// host/port/user/remote_dir/smoke_url voyagent dans le snapshot temporaire (DB → Ignition) au lieu
-// d'être des secrets/vars permanents par repo/env.
+// forge-deploy.mjs — forge les COORDONNÉES + SECRETS de déploiement depuis le snapshot de release
+// et les expose aux étapes deploy via $GITHUB_ENV. Objectif : « dé-saturer » GitHub — host/port/user/
+// remote_dir/smoke_url ET les creds de transport (clé SSH, mdp FTPS) voyagent dans le snapshot
+// temporaire (DB → Ignition, secret-ref baké au release) au lieu d'être des secrets/vars permanents.
 //
-// La CLÉ PRIVÉE SSH N'EST PAS routée ici : elle reste un secret permanent (FRONT_SSH_KEY, posé une
-// fois, comme une deploy key) — pas de re-transmission de clé privée à chaque release.
+// CLÉ PRIVÉE SSH / MDP FTPS (deploy-creds managés, cf. docs/SPEC-deploy-creds-managed.md) : routés ici
+// DEPUIS LE SNAPSHOT s'il les porte, sinon repli sur le secret permanent (FB_SSH_KEY/FB_FTP_PASS) →
+// migration douce « dossier-first ». TOUJOURS masqués (::add-mask:: par ligne, PEM multi-ligne géré).
 //
 // FALLBACK : si le snapshot ne porte pas de bloc `deploy` (mode mock / pas encore authored), on
 // retombe sur les valeurs permanentes FB_* (secrets/vars actuels) → comportement INCHANGÉ.
@@ -33,6 +34,11 @@ const MAP = {
   SSH_USER:       [d.ssh_user,       process.env.FB_USER,       true],
   SSH_REMOTE_DIR: [d.ssh_remote_dir, process.env.FB_REMOTE_DIR, false],
   SMOKE_URL:      [d.smoke_url,      process.env.FB_SMOKE_URL,  false],
+  // SECRETS de transport (deploy-creds managés) : la clé SSH / le mdp FTPS viennent du snapshot
+  // (secret-ref baké au release) sinon du secret permanent (FB_SSH_KEY=FRONT_SSH_KEY,
+  // FB_FTP_PASS=FRONT_FTP_PASS). TOUJOURS masqués. dossier-first → retrait progressif des secrets.
+  SSH_KEY:        [d.ssh_key,        process.env.FB_SSH_KEY,    true],
+  FTP_PASS:       [d.ftps_pass,      process.env.FB_FTP_PASS,   true],
 };
 
 const lines = [];
@@ -43,8 +49,17 @@ for (const [name, [snapVal, fb, mask]] of Object.entries(MAP)) {
   const v = hasSnap ? String(snapVal) : (fb ?? "");
   if (v === "") continue; // ni snapshot ni fallback → on n'émet rien (l'étape deploy gardera son défaut/erreur)
   (hasSnap ? fromSnap : fromFallback).push(name);
-  if (mask) console.log(`::add-mask::${v}`); // jamais la valeur en clair dans les logs
-  lines.push(`${name}=${v}`);
+  if (mask) {
+    // ::add-mask:: agit PAR LIGNE → masquer chaque ligne non vide (une clé privée PEM est multi-ligne).
+    for (const ln of v.split(/\r?\n/)) { const t = ln.trim(); if (t !== "") console.log(`::add-mask::${t}`); }
+  }
+  if (v.includes("\n")) {
+    // valeur MULTI-LIGNE (clé privée PEM) → heredoc $GITHUB_ENV ; `NAME=valeur` ne gère qu'UNE ligne.
+    const delim = `__FORGE_EOF_${name}__`;
+    lines.push(`${name}<<${delim}\n${v}\n${delim}`);
+  } else {
+    lines.push(`${name}=${v}`);
+  }
 }
 
 if (process.env.GITHUB_ENV) {
