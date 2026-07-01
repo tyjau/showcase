@@ -38,9 +38,14 @@ const CATALOG_API_KEY = process.env.CATALOG_API_KEY ?? "";
  * static export at build time. Prod guardian has a valid certificate; in dev we
  * tolerate the self-signed saas.test certificate.
  */
-// Fallback MINIMAL (pas vide) : `output: export` exige ≥1 param pour /[lang]/features/[module] — un
-// catalogue vide casse le build (« missing generateStaticParams »). Placeholder COHÉRENT (1 package,
-// 1 module) — remplacé par le vrai catalogue quand CATALOG_API_KEY est alignée via Ignition.
+// Fallback MINIMAL (pas vide) : `output: export` exige ≥1 param pour CHAQUE route dynamique tirée du
+// catalogue — un catalogue vide casse le build (« missing generateStaticParams »). Deux routes en
+// dépendent : /[lang]/features/[module] (mappe TOUS les modules) ET /[lang]/resources/guides/[code]
+// (ne garde que les modules AYANT du contenu front via moduleContent()). Le code du module placeholder
+// DOIT donc être un VRAI code documenté dans lib/module-content.ts (MGMT00) — sinon le filtre de la
+// route guides le jette et son generateStaticParams retombe à 0 param → l'export casse. Placeholder
+// COHÉRENT (1 package, 1 module réel) — remplacé par le vrai catalogue quand CATALOG_API_KEY est
+// alignée via Ignition.
 const FALLBACK_CATALOG: Catalog = {
   packages: [
     {
@@ -48,14 +53,17 @@ const FALLBACK_CATALOG: Catalog = {
       name: "Starter",
       description: "Catalogue placeholder — à aligner via Ignition (CATALOG_API_KEY).",
       prices: [{ currency: "EUR", cycle: "monthly", amount: 0 }],
-      modules: ["core"],
+      modules: ["MGMT00"],
     },
   ],
   modules: [
     {
-      code: "core",
-      gate: "core",
-      category: "core",
+      // Vrai code catalogue (présent dans module-content.ts / EXTRAS / MODULE_SHOTS) et catégorie
+      // connue (« people ») : survit au filtre moduleContent() de la route guides, rend un contenu
+      // cohérent sur features + guides, et apparaît bien sur l'index features (CATEGORY_ORDER).
+      code: "MGMT00",
+      gate: "MGMT00",
+      category: "people",
       icon: null,
       cover: null,
       isAddon: false,
@@ -72,9 +80,9 @@ const FALLBACK_CATALOG: Catalog = {
 
 export async function fetchCatalog(): Promise<Catalog> {
   // Résilience build : si le catalogue est injoignable ou la clé non encore alignée (401), NE PAS casser
-  // le build — retomber sur un catalogue VIDE (le site déploie ; le vrai catalogue arrive quand la clé
-  // CATALOG_API_KEY est alignée back↔snapshot via Ignition). Miroir du fallback de fetchCountries.
-  // Cohérent pour staging/placeholder ; en prod, aligner la clé pour un catalogue non vide.
+  // le build — retomber sur un catalogue PLACEHOLDER MINIMAL (le site déploie ; le vrai catalogue arrive
+  // quand la clé CATALOG_API_KEY est alignée back↔snapshot via Ignition). Miroir du fallback de
+  // fetchCountries. Cohérent pour staging/placeholder ; en prod, aligner la clé pour le vrai catalogue.
   try {
     // Tolerate the self-signed certificate only for the local dev backend
     // (saas.test) — a real guardian endpoint has a valid certificate, so a
@@ -95,7 +103,7 @@ export async function fetchCatalog(): Promise<Catalog> {
     return json.data;
   } catch (e) {
     console.warn(
-      `[catalog] fetch échoué (${e instanceof Error ? e.message : String(e)}) → catalogue VIDE (fallback build). ` +
+      `[catalog] fetch échoué (${e instanceof Error ? e.message : String(e)}) → catalogue placeholder minimal (fallback build). ` +
         "Aligner CATALOG_API_KEY (back↔snapshot) via Ignition pour un catalogue réel.",
     );
     return FALLBACK_CATALOG;
