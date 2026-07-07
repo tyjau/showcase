@@ -141,7 +141,9 @@ runs:
         # Retry : l'hôte peut throttler/ralentir l'IP du runner (faux négatif sur un deploy OK).
         ok=0; code=000
         for i in 1 2 3 4 5; do
-          code=$(curl -s -o /tmp/idx.html -w '%{http_code}' --max-time 20 "$SMOKE_URL" || echo 000)
+          # -L : suit les redirections (ex. Apache DirectorySlash /site → /site/ = 301) ; sinon un
+          #      SMOKE_URL sans slash final renvoie 301 → faux négatif (le front est pourtant servi).
+          code=$(curl -s -L -o /tmp/idx.html -w '%{http_code}' --max-time 20 "$SMOKE_URL" || echo 000)
           echo "tentative $i : HTTP $code"
           if printf '%s' "$code" | grep -q '^2' && grep -qiE '${{ inputs.smoke_grep }}' /tmp/idx.html; then ok=1; break; fi
           sleep 8
