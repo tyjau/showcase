@@ -13,7 +13,7 @@
 //
 // Both the gateway and the .htaccess redirects are prefixed with BASE_PATH: the site is served under a
 // sub-path in deployment (e.g. /showcase/), so an absolute "/en/" would 404 off the sub-path.
-import { existsSync, writeFileSync, readFileSync } from "node:fs";
+import { existsSync, writeFileSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
 const OUT = "out";
@@ -68,3 +68,39 @@ const indexHtml = `<!doctype html>
 `;
 writeFileSync(join(OUT, "index.html"), indexHtml);
 console.log(`[postbuild] wrote out/index.html (root locale gateway → ${BASE}/${DEFAULT_LOCALE}/)`);
+
+// 3. Sitemap + robots (pages publiques indexables). SITE = URL publique de base (origin + sous-chemin
+//    éventuel), dérivée de FRONT_SMOKE_URL (l'URL de smoke EST l'URL publique) au build CI ; absente en
+//    local → on saute. Les chemins de out/ sont déjà relatifs à la racine de déploiement (= le sous-chemin),
+//    donc SITE les préfixe directement. Pages d'auth/utilitaires exclues.
+const SITE = (process.env.SITE_URL || process.env.FRONT_SMOKE_URL || "").replace(/\/+$/, "");
+if (SITE) {
+  const EXCLUDE = new Set(["login", "signup", "account", "partner", "forgot-password", "status"]);
+  const urls = [];
+  const walk = (dir, rel) => {
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      if (entry.name.startsWith("_") || entry.name.startsWith(".")) continue; // _next, dotfiles
+      const relPath = rel ? `${rel}/${entry.name}` : entry.name;
+      if (entry.isDirectory()) {
+        walk(join(dir, entry.name), relPath);
+      } else if (entry.name === "index.html" && rel) {
+        const segs = rel.split("/"); // ex. "en/features/MGMT00" → ["en","features","MGMT00"]
+        if (!LOCALES.includes(segs[0])) continue; // hors locale (404, etc.) — pas une page de contenu
+        if (segs.length >= 2 && EXCLUDE.has(segs[1])) continue; // page non-publique (auth/utilitaire)
+        urls.push(`${SITE}/${rel}/`);
+      }
+    }
+  };
+  walk(OUT, "");
+  urls.sort();
+  writeFileSync(
+    join(OUT, "sitemap.xml"),
+    `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls
+      .map((u) => `  <url><loc>${u}</loc></url>`)
+      .join("\n")}\n</urlset>\n`,
+  );
+  writeFileSync(join(OUT, "robots.txt"), `User-agent: *\nAllow: /\nSitemap: ${SITE}/sitemap.xml\n`);
+  console.log(`[postbuild] wrote out/sitemap.xml (${urls.length} URLs) + out/robots.txt (SITE=${SITE})`);
+} else {
+  console.log("[postbuild] pas de SITE_URL/FRONT_SMOKE_URL → sitemap/robots ignorés (build local)");
+}

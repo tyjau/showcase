@@ -39,7 +39,11 @@ export async function generateMetadata(
       siteName: "SkyRH",
       locale: params.lang === "fr" ? "fr_FR" : "en_US",
       type: "website",
+      // Visuel de partage social. Résolu contre metadataBase (PAS le basePath) → sur le domaine
+      // public (skyrh.app en prod). Image existante à défaut d'un visuel OG dédié 1200×630.
+      images: [{ url: "/img/hero-office.png", alt: "SkyRH" }],
     },
+    twitter: { card: "summary_large_image", images: ["/img/hero-office.png"] },
   };
 }
 

@@ -32,6 +32,13 @@ location /showcase/ {
     # Pages inexistantes → la 404 stylée de Next (out/404.html, générée au build), pas le 404
     # brut d'nginx. nginx conserve le statut 404 en servant ce fichier statique.
     error_page 404 /showcase/404.html;
+    # 403 / 5xx → même page stylée plutôt que la page d'erreur brute d'nginx.
+    error_page 403 500 502 503 504 /showcase/404.html;
+
+    # ⚠️ STAGING UNIQUEMENT — empêche l'indexation Google du staging (à RETIRER en prod). Sur un
+    # sous-chemin, le robots.txt racine n'est pas contrôlé par le showcase ; ce header suffit
+    # (X-Robots-Tag est respecté par Google, page par page).
+    add_header X-Robots-Tag "noindex, nofollow" always;
 
     add_header Cache-Control $skyrh_cache always;
 
