@@ -1,8 +1,22 @@
 # SkyRH showcase — static export (Next.js output:export), served by Apache.
 # Next copies public/ into out/ at build, so this lands at the deployed docroot
 # (same delivery pattern as harmony's public/.htaccess).
+# ⚠️ Apache UNIQUEMENT — un hôte nginx IGNORE ce fichier ; y porter ces règles en config
+#    serveur (cf. deploy/nginx-showcase.conf.example).
 
 Options -Indexes
+
+# Pages inexistantes / erreurs → la 404 stylée de Next (out/404.html) plutôt que la page brute
+# d'Apache. __BASE_PATH__ substitué au postbuild (vide → racine en prod).
+ErrorDocument 404 __BASE_PATH__/404.html
+ErrorDocument 403 __BASE_PATH__/404.html
+ErrorDocument 500 __BASE_PATH__/404.html
+
+# Marque les requêtes servies depuis le HOST de staging (pour le noindex conditionnel plus bas) —
+# empêche Google d'indexer le staging sans toucher la prod (même .htaccess livré aux deux).
+<IfModule mod_setenvif.c>
+  SetEnvIf Host "rh\.ikwhat\.com" SKYRH_STAGING
+</IfModule>
 
 # The app lives entirely under /<lang>/ (static export, no middleware), so the bare
 # domain and a few legacy paths need redirecting at the HTTP layer. A generated
@@ -34,6 +48,9 @@ Options -Indexes
   Header set Referrer-Policy "strict-origin-when-cross-origin"
   Header set Permissions-Policy "camera=(), microphone=(), geolocation=()"
   Header set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+
+  # noindex — appliqué UNIQUEMENT sur le host de staging (cf. SetEnvIf plus haut), jamais en prod.
+  Header set X-Robots-Tag "noindex, nofollow" env=SKYRH_STAGING
 
   # Content-Security-Policy.
   # NOTE: a Next static export inlines per-page RSC bootstrap scripts (self.__next_f.push)
