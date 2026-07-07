@@ -134,6 +134,9 @@ jobs:
           path: out/
           retention-days: 1
           if-no-files-found: error
+          # upload-artifact@v4 exclut les fichiers cachés par défaut → out/.htaccess (dotfile) serait
+          # perdu et JAMAIS déployé (headers/ErrorDocument/noindex sans effet). L'inclure explicitement.
+          include-hidden-files: true
 
   deploy:
     needs: [setup, build]
