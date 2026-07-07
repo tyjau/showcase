@@ -29,6 +29,10 @@ map $uri $skyrh_cache {
 location /showcase/ {
     try_files $uri $uri/ =404;
 
+    # Pages inexistantes → la 404 stylée de Next (out/404.html, générée au build), pas le 404
+    # brut d'nginx. nginx conserve le statut 404 en servant ce fichier statique.
+    error_page 404 /showcase/404.html;
+
     add_header Cache-Control $skyrh_cache always;
 
     # En-têtes de sécurité — repris tels quels de public/.htaccess (ignoré ici).

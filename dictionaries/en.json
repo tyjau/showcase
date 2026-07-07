@@ -1016,8 +1016,8 @@
     ]
   },
   "homePacks": {
-    "eyebrow": "Simple plans",
-    "title": "Simple plans, per employee",
+    "eyebrow": "Plans",
+    "title": "Simple, transparent pricing",
     "sub": "Each plan includes a 14-day trial. Billed per active employee, prorated.",
     "popular": "Most popular",
     "perMonth": "per employee / month",
