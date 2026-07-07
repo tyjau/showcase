@@ -1,0 +1,34 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# SkyRH showcase — config Apache (static export servi sous /showcase/).
+#
+# Le showcase LIVRE déjà un .htaccess (public/.htaccess → out/.htaccess, déposé au docroot par le
+# déploiement) qui porte TOUT : redirection racine → /<lang>/, cache (no-cache HTML + assets
+# immuables), en-têtes de sécurité (CSP, HSTS, X-Frame-Options, X-Content-Type-Options…),
+# ErrorDocument 404/403/500 → la 404 stylée de Next, et X-Robots-Tag noindex (staging, par host).
+#
+# Il n'y a donc RIEN à recopier ici. Il faut seulement, côté serveur, DEUX choses :
+#
+# (1) Charger les modules qu'utilise le .htaccess :
+#       a2enmod rewrite headers setenvif deflate
+#       systemctl reload apache2        # (ou : apachectl -k graceful)
+#     Sans mod_headers/mod_setenvif, les blocs <IfModule> sont silencieusement sautés
+#     (pas d'erreur, mais pas de headers / pas de noindex).
+#
+# (2) Autoriser Apache à LIRE le .htaccess. Apache 2.4 : AllowOverride vaut None par défaut →
+#     le .htaccess est IGNORÉ (c'est ce qu'on observait). Il faut l'activer sur le répertoire.
+#     Adapter le chemin au docroot réel (là où le déploiement dépose out/, p.ex. .../rh/showcase).
+# ─────────────────────────────────────────────────────────────────────────────
+
+<Directory "/home/USER/public_html/rh/showcase">
+    # FileInfo autorise Header / RewriteRule / ErrorDocument du .htaccess ; + Options / Indexes / Limit.
+    # « All » est le plus simple ; sinon, minimal : AllowOverride FileInfo Options=Indexes,FollowSymLinks Limit
+    AllowOverride All
+    Require all granted
+    Options -Indexes +FollowSymLinks
+</Directory>
+
+# ⚠️ Piège fréquent — un nginx FRONTAL (reverse-proxy / cache) devant Apache : s'il sert les fichiers
+#    statiques LUI-MÊME, la requête n'atteint jamais Apache et le .htaccess reste sans effet, même avec
+#    AllowOverride All. Vérifier (`curl -sI …/showcase/en/` → en-têtes de sécurité présents = Apache
+#    répond). Si nginx sert le statique, router /showcase/ vers Apache OU porter les règles dans nginx
+#    (cf. deploy/nginx-showcase.conf.example).
