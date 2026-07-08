@@ -74,6 +74,7 @@ describe("apiLogin", () => {
     expect(url).toContain("c=login");
     expect(url).toContain("company=acme");
     expect(JSON.parse(init.body).scope).toBe("billing");
+    expect(JSON.parse(init.body).role).toBe("company_admin");
   });
 
   it("surfaces a backend error and stores nothing", async () => {
@@ -177,7 +178,7 @@ describe("apiLoginOAuth", () => {
     expect(getToken()).toBe("otok");
     expect(getWorkspace()).toBe("acme");
     const body = JSON.parse((fetch as any).mock.calls[0][1].body);
-    expect(body).toMatchObject({ provider: "google", token: "id-token-xyz", scope: "billing" });
+    expect(body).toMatchObject({ provider: "google", token: "id-token-xyz", scope: "billing", role: "company_admin" });
   });
 });
 

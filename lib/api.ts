@@ -13,6 +13,11 @@ const API_BASE =
 const PARTNER_COMPANY =
   process.env.NEXT_PUBLIC_PARTNER_COMPANY || "skyrh";
 
+// Le portail /account est réservé à l'admin de la company (facturation/abonnement) : le back attend
+// ce rôle au login — sinon « le rôle sélectionné ne matche pas le rôle attendu ». Le signup crée
+// l'owner de la nouvelle company avec le même rôle. Aligne users.role côté harmony (company_admin).
+export const PORTAL_ROLE = "company_admin";
+
 export function apiUrl(action: string): string {
   return `${API_BASE}/auth.php?c=${action}`;
 }
@@ -182,7 +187,7 @@ export async function apiLogin(
       // scope=billing: the portal only needs a session for invoices + checkout, so a
       // pending pay_first tenant can authenticate to pay (the HR module gate is skipped
       // server-side; HR access stays gated on order_status).
-      body: JSON.stringify({ email, password, scope: "billing" }),
+      body: JSON.stringify({ email, password, scope: "billing", role: PORTAL_ROLE }),
     });
     const json = (await res.json().catch(() => ({}))) as {
       meta?: { code?: number };
@@ -259,7 +264,7 @@ export async function apiLoginOAuth(
     const res = await fetch(`${apiUrl("login")}&company=${encodeURIComponent(workspace)}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ provider, token, scope: "billing" }),
+      body: JSON.stringify({ provider, token, scope: "billing", role: PORTAL_ROLE }),
     });
     const json = (await res.json().catch(() => ({}))) as {
       meta?: { code?: number };
