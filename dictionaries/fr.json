@@ -1046,6 +1046,12 @@
       { "quote": "Déployé sur 4 pays en deux semaines — l'équipe SkyRH nous a accompagnés de bout en bout.", "author": "Marc Rossi", "role": "COO, Kivu Logistics" }
     ]
   },
+  "cookieConsent": {
+    "text": "Nous utilisons des cookies pour mesurer l'audience et améliorer votre expérience.",
+    "accept": "Accepter",
+    "decline": "Refuser",
+    "privacy": "Politique de confidentialité"
+  },
   "footer": {
     "tagline": "RH & paie modernes, sur une seule plateforme, avec une conformité localisée selon votre pays.",
     "product": "Produit",

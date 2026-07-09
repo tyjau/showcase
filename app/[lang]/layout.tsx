@@ -9,6 +9,7 @@ import { RouteProgress } from "@/components/route-progress";
 import { CurrencyProvider } from "@/components/currency-provider";
 import { PartnerProvider } from "@/components/partner-provider";
 import { Analytics } from "@/components/analytics";
+import { CookieConsent } from "@/components/cookie-consent";
 
 const mulish = Mulish({
   subsets: ["latin"],
@@ -103,6 +104,7 @@ export default async function LangLayout(props: Readonly<{ children: React.React
             />
           </CurrencyProvider>
         </PartnerProvider>
+        <CookieConsent dict={dict.cookieConsent} lang={params.lang} />
       </body>
     </html>
   );

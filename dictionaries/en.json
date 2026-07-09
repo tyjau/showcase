@@ -1046,6 +1046,12 @@
       { "quote": "Rolled out across 4 countries in two weeks — the SkyRH team supported us end to end.", "author": "Marc Rossi", "role": "COO, Kivu Logistics" }
     ]
   },
+  "cookieConsent": {
+    "text": "We use cookies to measure traffic and improve your experience.",
+    "accept": "Accept",
+    "decline": "Decline",
+    "privacy": "Privacy policy"
+  },
   "footer": {
     "tagline": "Modern HR & payroll, on one platform, with compliance localized to your country.",
     "product": "Product",
