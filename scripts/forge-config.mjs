@@ -72,6 +72,9 @@ const catalogKey = cfg.catalog_api_key ?? cfg.catalogApiKey ?? "";
 const turnstileSitekey = cfg.turnstile_sitekey ?? cfg.turnstileSitekey ?? "";
 // Harmony base URL — PUBLIC (URL, safe to inline + log). Placeholder {workspace} résolu côté client.
 const harmonyUrl = cfg.harmony_url ?? cfg.harmonyUrl ?? "";
+// Google Analytics 4 (démo) — OPTIONNEL. Lu via bracket → PAS ajouté au contrat config-keys.json (non
+// requis au publish). Vide → GA no-op (components/analytics). L'ID démo/prod est posé dans le config_json.
+const gaId = cfg["ga_id"] ?? cfg["gaId"] ?? "";
 
 // 🔒 The catalog key is a SECRET promoted into $GITHUB_ENV below. GitHub only auto-masks
 // `secrets.*`, NOT values we inject — so register a mask explicitly, else any later env dump
@@ -87,6 +90,7 @@ if (guardianUrl) lines.push(`GUARDIAN_URL=${guardianUrl}`);
 if (catalogKey) lines.push(`CATALOG_API_KEY=${catalogKey}`);
 if (turnstileSitekey) lines.push(`NEXT_PUBLIC_TURNSTILE_SITEKEY=${turnstileSitekey}`);
 if (harmonyUrl) lines.push(`NEXT_PUBLIC_HARMONY_URL=${harmonyUrl}`);
+if (gaId) lines.push(`NEXT_PUBLIC_GA_ID=${gaId}`);
 
 if (process.env.GITHUB_ENV && lines.length) {
   appendFileSync(process.env.GITHUB_ENV, lines.join("\n") + "\n");
@@ -99,6 +103,7 @@ console.log(
   "| CATALOG_API_KEY:", catalogKey ? "(set)" : "(empty)",
   "| TURNSTILE_SITEKEY:", turnstileSitekey || "(empty)",
   "| HARMONY_URL:", harmonyUrl || "(empty)",
+  "| GA_ID:", gaId || "(empty)",
 );
 if (!apiBase) {
   console.log("⚠ pas de api_base_url dans le snapshot → build avec les defaults dev (saas.test)");

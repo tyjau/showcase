@@ -60,7 +60,7 @@ ErrorDocument 500 __BASE_PATH__/404.html
   # checkout; Cloudflare Turnstile (challenges.cloudflare.com) for the captcha widget
   # (script + iframe); connect-src allows the (deploy-configured) guardian API over https;
   # partner logos are arbitrary https images.
-  Header set Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data: https:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://js.stripe.com https://challenges.cloudflare.com; connect-src 'self' https:; frame-src https://js.stripe.com https://challenges.cloudflare.com;"
+  Header set Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data: https:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://js.stripe.com https://challenges.cloudflare.com https://www.googletagmanager.com; connect-src 'self' https:; frame-src https://js.stripe.com https://challenges.cloudflare.com;"
 </IfModule>
 
 <IfModule mod_deflate.c>

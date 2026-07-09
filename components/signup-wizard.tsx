@@ -12,6 +12,7 @@ import {
 import { useCurrency } from "./currency-provider";
 import { usePartner } from "./partner-provider";
 import { apiPost } from "@/lib/api";
+import { trackEvent } from "@/lib/analytics";
 import { formatMoney, formatRate } from "@/lib/money";
 import { TurnstileWidget } from "@/components/turnstile-widget";
 
@@ -207,6 +208,7 @@ export function SignupWizard({
     });
     setSubmitting(false);
     if (res.ok) {
+      trackEvent("sign_up", { method: "email", plan: planCode }); // conversion clé du funnel showcase
       setDone(true);
     } else {
       setError(res.error ?? "Something went wrong");

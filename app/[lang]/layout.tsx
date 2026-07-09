@@ -8,6 +8,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { RouteProgress } from "@/components/route-progress";
 import { CurrencyProvider } from "@/components/currency-provider";
 import { PartnerProvider } from "@/components/partner-provider";
+import { Analytics } from "@/components/analytics";
 
 const mulish = Mulish({
   subsets: ["latin"],
@@ -81,6 +82,7 @@ export default async function LangLayout(props: Readonly<{ children: React.React
               "(function(){try{var t=localStorage.getItem('skyrh.theme');var d=t==='dark'||!t||(t==='system'&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',d);}catch(e){}})();",
           }}
         />
+        <Analytics />
       </head>
       <body className="font-sans bg-page text-ink antialiased flex min-h-screen flex-col">
         <a

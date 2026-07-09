@@ -48,7 +48,7 @@ location /showcase/ {
     add_header Referrer-Policy          "strict-origin-when-cross-origin" always;
     add_header Permissions-Policy       "camera=(), microphone=(), geolocation=()" always;
     add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
-    add_header Content-Security-Policy   "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data: https:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://js.stripe.com https://challenges.cloudflare.com; connect-src 'self' https:; frame-src https://js.stripe.com https://challenges.cloudflare.com;" always;
+    add_header Content-Security-Policy   "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data: https:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https://js.stripe.com https://challenges.cloudflare.com https://www.googletagmanager.com; connect-src 'self' https:; frame-src https://js.stripe.com https://challenges.cloudflare.com;" always;
 }
 
 # Note : la redirection racine /showcase/ → /showcase/<lang>/ est déjà assurée par le
