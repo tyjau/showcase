@@ -1100,6 +1100,45 @@
     "security": "Security",
     "status": "Status",
     "trust": "Trust Center",
+    "compare": "Comparisons",
     "rights": "All rights reserved."
+  },
+  "comparePage": {
+    "eyebrow": "Comparisons",
+    "hubTitle": "SkyRH compared to other HR & payroll tools",
+    "hubLead": "Weighing up HR & payroll platforms? Here's where SkyRH stands out — built for multi-country teams and francophone Africa, all-in-one, at a transparent price.",
+    "pickTitle": "Pick a comparison",
+    "draft": "To validate before publishing: fill in the verified competitor facts and confirm compliance with comparative-advertising rules before going to production. Competitor cells are placeholders until then.",
+    "vsPrefix": "SkyRH vs",
+    "vsLead": "How SkyRH compares to {name} for multi-country teams and francophone Africa.",
+    "whyTitle": "Why teams pick SkyRH",
+    "why": [
+      "Payroll localized country by country — France and francophone Africa included.",
+      "The whole HR cycle on one platform, from hiring to performance.",
+      "A transparent per-employee price, with no mandatory quote."
+    ],
+    "tableTitle": "Capability comparison",
+    "featureCol": "Capability",
+    "skyrhCol": "SkyRH",
+    "verify": "To verify",
+    "features": [
+      { "label": "Multi-country payroll", "skyrh": "Yes — engine localized per country" },
+      { "label": "Localized compliance", "skyrh": "Yes — local rules built in" },
+      { "label": "Francophone Africa", "skyrh": "Yes — core market" },
+      { "label": "All-in-one (hiring, payroll, performance)", "skyrh": "Yes — one platform" },
+      { "label": "Transparent per-employee pricing", "skyrh": "Yes — published publicly" },
+      { "label": "Employee self-service portal", "skyrh": "Yes — included" },
+      { "label": "Partner white-label", "skyrh": "Yes — co-branded funnels" },
+      { "label": "Free trial, no card", "skyrh": "Yes — 14 days" }
+    ],
+    "backToHub": "All comparisons",
+    "ctaTitle": "See SkyRH for your team",
+    "ctaSub": "14-day free trial, no credit card.",
+    "ctaButton": "Start free trial",
+    "competitors": {
+      "payfit": { "name": "PayFit" },
+      "lucca": { "name": "Lucca" },
+      "factorial": { "name": "Factorial" }
+    }
   }
 }
