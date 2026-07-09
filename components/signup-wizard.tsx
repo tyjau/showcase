@@ -11,7 +11,7 @@ import {
 } from "@/lib/catalog";
 import { useCurrency } from "./currency-provider";
 import { usePartner } from "./partner-provider";
-import { apiPost, PORTAL_ROLE } from "@/lib/api";
+import { apiPost } from "@/lib/api";
 import { formatMoney, formatRate } from "@/lib/money";
 import { TurnstileWidget } from "@/components/turnstile-widget";
 
@@ -198,7 +198,6 @@ export function SignupWizard({
       country,
       currency,
       lang,
-      role: PORTAL_ROLE, // l'owner de la nouvelle company doit être company_admin (login portail)
       turnstile_token: captcha,
       // Attribution partenaire (funnels co-brandés) — referrers/referrals (back migr.112)
       ...(refCode ? { referral_code: refCode } : {}),
