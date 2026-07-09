@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { i18n, type Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
+import { NOINDEX } from "@/lib/seo";
 import { SignupConfirm } from "@/components/signup-confirm";
 
 export function generateStaticParams() {
@@ -14,7 +15,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const params = await props.params;
   const t = await getDictionary(params.lang);
-  return { title: t.signupPage.confirm.title };
+  return { title: t.signupPage.confirm.title, robots: NOINDEX };
 }
 
 export default async function SignupConfirmPage(

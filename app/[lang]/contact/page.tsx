@@ -5,6 +5,7 @@ import { getDictionary } from "@/lib/dictionaries";
 import { i18n, type Locale } from "@/lib/i18n";
 import { ParallaxTriangles } from "@/components/parallax-triangles";
 import { ContactForm } from "@/components/contact-form";
+import { buildAlternates } from "@/lib/seo";
 
 export function generateStaticParams() {
   return i18n.locales.map((lang) => ({ lang }));
@@ -15,7 +16,11 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const params = await props.params;
   const t = await getDictionary(params.lang);
-  return { title: t.seo.pages.contact };
+  return {
+    title: t.seo.pages.contact,
+    description: t.contactPage.lead,
+    alternates: buildAlternates(params.lang, "/contact"),
+  };
 }
 
 const CHANNEL_ICONS: LucideIcon[] = [Mail, LifeBuoy, Phone];

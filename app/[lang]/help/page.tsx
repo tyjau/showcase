@@ -16,6 +16,7 @@ import {
   HELP_CATEGORIES,
   type HelpCategory,
 } from "@/lib/help";
+import { buildAlternates } from "@/lib/seo";
 import { ParallaxTriangles } from "@/components/parallax-triangles";
 
 export function generateStaticParams() {
@@ -29,7 +30,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const params = await props.params;
   const t = await getDictionary(params.lang);
-  return { title: t.helpPage.eyebrow };
+  return { title: t.helpPage.eyebrow, alternates: buildAlternates(params.lang, "/help") };
 }
 
 const CAT_ICON: Record<HelpCategory, LucideIcon> = {

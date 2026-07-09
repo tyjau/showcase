@@ -600,6 +600,7 @@
     "next": "Continue",
     "successTitle": "You're almost there",
     "successBody": "We've recorded your workspace request. Check your inbox to activate it and set your password.",
+    "successHint": "Don't see the email? Check your spam folder.",
     "successCta": "Back to home",
     "none": "None",
     "confirm": {
@@ -791,6 +792,36 @@
     "doneTitle": "Check your email",
     "doneBody": "We've sent a magic link to set your password and activate your partner account. Your request is pending review — we'll confirm your reward terms shortly.",
     "doneCta": "Go to partner sign in"
+  },
+  "trustPage": {
+    "eyebrow": "Trust Center",
+    "title": "Security, privacy and compliance at SkyRH",
+    "lead": "Payroll and HR data is sensitive. Here's how we protect it, how we handle privacy, and where to reach us for anything security-related.",
+    "approachTitle": "Our security approach",
+    "pillars": [
+      { "title": "Encryption", "desc": "Traffic is encrypted in transit (TLS) and sensitive secrets are protected at rest." },
+      { "title": "Tenant isolation", "desc": "A multi-tenant architecture keeps each company's data strictly separated from the others." },
+      { "title": "Access control", "desc": "Role-based access control (RBAC) governs who can see and do what, down to each workspace." },
+      { "title": "Availability", "desc": "We run the service to be reliable and transparent about its status." }
+    ],
+    "availabilityNote": "Follow real-time service status on our",
+    "availabilityLink": "status page",
+    "privacyTitle": "Privacy & GDPR",
+    "privacyBody": "We build with privacy by design: analytics run under GDPR-compliant consent (cookieless until you accept), personal data is processed only to deliver the service, and you stay in control of your data. The full details are in our privacy policy.",
+    "privacyLink": "Read the privacy policy",
+    "complianceTitle": "Compliance & data governance",
+    "complianceLead": "The specifics below depend on your plan and region — contact us for the details that apply to your organization.",
+    "draft": "TO VALIDATE before publishing: fill in the real facts (hosting provider & region, sub-processor list, ISO 27001 / SOC 2 certification status, DPA link). This reminder only shows in development.",
+    "complianceItems": [
+      { "title": "Data residency", "desc": "Your data is hosted on secure infrastructure. Contact us to confirm the hosting region that applies to your account." },
+      { "title": "Sub-processors", "desc": "We rely on a limited set of vetted processors (hosting, payment, email) under compliant agreements. The current list is available on request." },
+      { "title": "Certifications", "desc": "Our compliance program improves continuously. Contact us for the current status of our audits and certifications." },
+      { "title": "Data Processing Agreement", "desc": "A GDPR Data Processing Agreement (DPA) is available on request for customers who need one." }
+    ],
+    "disclosureTitle": "Responsible disclosure",
+    "disclosureBody": "Found a security issue? We want to hear from you. Reach our team and we'll work with you to investigate and fix it.",
+    "disclosureCta": "Report a security issue",
+    "docsTitle": "Legal documents"
   },
   "accountPage": {
     "title": "My account",
@@ -1068,6 +1099,7 @@
     "guides": "Guides",
     "security": "Security",
     "status": "Status",
+    "trust": "Trust Center",
     "rights": "All rights reserved."
   }
 }

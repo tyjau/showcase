@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { getDictionary } from "@/lib/dictionaries";
 import { i18n, type Locale } from "@/lib/i18n";
+import { NOINDEX } from "@/lib/seo";
 
 export function generateStaticParams() {
   return i18n.locales.map((lang) => ({ lang }));
@@ -24,7 +25,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const params = await props.params;
   const t = await getDictionary(params.lang);
-  return { title: t.seo.pages.status };
+  return { title: t.seo.pages.status, robots: NOINDEX };
 }
 
 const SVC_ICONS: LucideIcon[] = [Monitor, Code2, FileText, Lock, Bell, Folder];

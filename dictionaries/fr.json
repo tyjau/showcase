@@ -600,6 +600,7 @@
     "next": "Continuer",
     "successTitle": "Vous y êtes presque",
     "successBody": "Nous avons enregistré votre demande d'espace. Consultez votre boîte mail pour l'activer et définir votre mot de passe.",
+    "successHint": "Vous ne voyez pas l'email ? Pensez à vérifier vos spams.",
     "successCta": "Retour à l'accueil",
     "none": "Aucune",
     "confirm": {
@@ -791,6 +792,36 @@
     "doneTitle": "Vérifiez votre e-mail",
     "doneBody": "Nous vous avons envoyé un lien magique pour définir votre mot de passe et activer votre compte partenaire. Votre demande est en cours d'examen — nous confirmerons vos conditions de récompense sous peu.",
     "doneCta": "Aller à la connexion partenaire"
+  },
+  "trustPage": {
+    "eyebrow": "Trust Center",
+    "title": "Sécurité, confidentialité et conformité chez SkyRH",
+    "lead": "Les données de paie et RH sont sensibles. Voici comment nous les protégeons, comment nous gérons la confidentialité, et où nous joindre pour toute question de sécurité.",
+    "approachTitle": "Notre approche de la sécurité",
+    "pillars": [
+      { "title": "Chiffrement", "desc": "Le trafic est chiffré en transit (TLS) et les secrets sensibles sont protégés au repos." },
+      { "title": "Isolation des données", "desc": "Une architecture multi-tenant sépare strictement les données de chaque entreprise des autres." },
+      { "title": "Contrôle d'accès", "desc": "Le contrôle d'accès par rôle (RBAC) régit qui peut voir et faire quoi, jusqu'à chaque espace de travail." },
+      { "title": "Disponibilité", "desc": "Nous exploitons le service pour qu'il soit fiable et transparent sur son état." }
+    ],
+    "availabilityNote": "Suivez l'état du service en temps réel sur notre",
+    "availabilityLink": "page de statut",
+    "privacyTitle": "Confidentialité & RGPD",
+    "privacyBody": "Nous concevons selon le principe de privacy by design : l'analytics fonctionne sous consentement conforme au RGPD (sans cookie tant que vous n'acceptez pas), les données personnelles ne sont traitées que pour fournir le service, et vous gardez le contrôle de vos données. Le détail figure dans notre politique de confidentialité.",
+    "privacyLink": "Lire la politique de confidentialité",
+    "complianceTitle": "Conformité & gouvernance des données",
+    "complianceLead": "Les éléments ci-dessous dépendent de votre offre et de votre région — contactez-nous pour les détails applicables à votre organisation.",
+    "draft": "À VALIDER avant publication : renseigner les faits réels (hébergeur & région, liste des sous-traitants, statut des certifications ISO 27001 / SOC 2, lien du DPA). Ce rappel n'apparaît qu'en développement.",
+    "complianceItems": [
+      { "title": "Résidence des données", "desc": "Vos données sont hébergées sur une infrastructure sécurisée. Contactez-nous pour confirmer la région d'hébergement applicable à votre compte." },
+      { "title": "Sous-traitants", "desc": "Nous nous appuyons sur un ensemble restreint de sous-traitants vérifiés (hébergement, paiement, e-mail) sous accords conformes. La liste à jour est disponible sur demande." },
+      { "title": "Certifications", "desc": "Notre programme de conformité s'améliore en continu. Contactez-nous pour connaître l'état actuel de nos audits et certifications." },
+      { "title": "Accord de traitement (DPA)", "desc": "Un accord de traitement des données (DPA) conforme au RGPD est disponible sur demande pour les clients qui en ont besoin." }
+    ],
+    "disclosureTitle": "Divulgation responsable",
+    "disclosureBody": "Vous avez trouvé une faille de sécurité ? Nous voulons le savoir. Contactez notre équipe : nous investiguerons et corrigerons avec vous.",
+    "disclosureCta": "Signaler un problème de sécurité",
+    "docsTitle": "Documents légaux"
   },
   "accountPage": {
     "title": "Mon compte",
@@ -1068,6 +1099,7 @@
     "guides": "Guides",
     "security": "Sécurité",
     "status": "Statut",
+    "trust": "Trust Center",
     "rights": "Tous droits réservés."
   }
 }

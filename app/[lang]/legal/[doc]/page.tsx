@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { FileText } from "lucide-react";
 import { i18n, type Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
+import { buildAlternates } from "@/lib/seo";
 
 const DOCS = ["terms", "privacy", "cookies", "security"];
 
@@ -23,7 +24,10 @@ export async function generateMetadata(
   const params = await props.params;
   const t = await getDictionary(params.lang);
   const docs = t.legalPage.docs as Record<string, string>;
-  return { title: docs[params.doc] ?? t.seo.pages.company };
+  return {
+    title: docs[params.doc] ?? t.seo.pages.company,
+    alternates: buildAlternates(params.lang, `/legal/${params.doc}`),
+  };
 }
 
 export default async function LegalPage(

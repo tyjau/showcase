@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { i18n, type Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
+import { buildAlternates } from "@/lib/seo";
 import { ParallaxTriangles } from "@/components/parallax-triangles";
 import { ExpertForm } from "@/components/expert-form";
 
@@ -26,7 +27,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const params = await props.params;
   const t = await getDictionary(params.lang);
-  return { title: t.seo.pages.company };
+  return { title: t.seo.pages.company, alternates: buildAlternates(params.lang, "/company") };
 }
 
 const VALUE_ICONS = [ShieldCheck, Users, CheckCircle2, Lock];

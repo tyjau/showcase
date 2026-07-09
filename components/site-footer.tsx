@@ -35,6 +35,7 @@ type FooterDict = {
   guides: string;
   security: string;
   status: string;
+  trust: string;
   rights: string;
 };
 
@@ -120,6 +121,7 @@ export function SiteFooter({
             title={dict.resources}
             links={[
               [dict.guides, `/${lang}/resources`],
+              [dict.trust, `/${lang}/trust`],
               [dict.security, `/${lang}/legal/security`],
               [dict.status, `/${lang}/status`],
             ]}

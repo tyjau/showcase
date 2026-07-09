@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Check, Mail } from "lucide-react";
 import { apiRequestPartner, getToken } from "@/lib/api";
+import { trackEvent } from "@/lib/analytics";
 import { isHexColor, isHttpUrl } from "@/lib/cobrand";
 
 type Dict = Record<string, string>;
@@ -75,6 +76,7 @@ export function BecomePartner({ lang, dict }: { lang: string; dict: Dict }) {
     });
     setSubmitting(false);
     if (res.ok) {
+      trackEvent("generate_lead", { form: "become_partner" }); // acquisition partenaire (co-brand)
       setDone(true);
       return;
     }

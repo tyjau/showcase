@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { i18n, type Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
+import { buildAlternates } from "@/lib/seo";
 import { ParallaxTriangles } from "@/components/parallax-triangles";
 import { ColoredLogos } from "@/components/colored-logos";
 
@@ -28,7 +29,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const params = await props.params;
   const t = await getDictionary(params.lang);
-  return { title: t.seo.pages.partners };
+  return { title: t.seo.pages.partners, alternates: buildAlternates(params.lang, "/partners") };
 }
 
 const TYPE_ICONS: LucideIcon[] = [Wrench, Store, Calculator, Code2];

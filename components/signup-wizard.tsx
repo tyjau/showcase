@@ -58,6 +58,7 @@ type Dict = {
   next: string;
   successTitle: string;
   successBody: string;
+  successHint: string;
   successCta: string;
   none: string;
 };
@@ -147,6 +148,12 @@ export function SignupWizard({
     if (!subTouched) setSubdomain(slugify(company));
   }, [company, subTouched]);
 
+  // Entrée dans le wizard — première étape du funnel d'inscription (une fois par montage).
+  useEffect(() => {
+    trackEvent("sign_up_start");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const pkg =
     catalog.packages.find((p) => p.code === planCode) ?? catalog.packages[0];
   const addonMods = catalog.modules.filter(
@@ -225,6 +232,8 @@ export function SignupWizard({
           {dict.successTitle}
         </h1>
         <p className="mx-auto mt-2 max-w-md text-muted">{dict.successBody}</p>
+        <p className="mt-3 text-sm font-semibold text-ink">{email}</p>
+        <p className="mx-auto mt-1 max-w-md text-xs text-muted">{dict.successHint}</p>
         <div className="mt-3 text-sm">
           <span className="text-muted">{subdomain}</span>
           <span className="font-semibold text-ink">.{domainBase}</span>
@@ -279,7 +288,10 @@ export function SignupWizard({
                 <button
                   key={p.code}
                   type="button"
-                  onClick={() => setPlanCode(p.code)}
+                  onClick={() => {
+                    setPlanCode(p.code);
+                    trackEvent("select_plan", { plan: p.code });
+                  }}
                   className={`rounded-xl p-4 text-left transition ${active ? "border-2 border-sky bg-tint-sky-strong" : "border border-line bg-surface hover:border-sky"}`}
                 >
                   <div className="flex items-center justify-between">
@@ -540,7 +552,11 @@ export function SignupWizard({
           <button
             type="button"
             disabled={!canNext}
-            onClick={() => canNext && setStep(step + 1)}
+            onClick={() => {
+              if (!canNext) return;
+              trackEvent("sign_up_step", { step: STEP_KEYS[step + 1], index: step + 1 });
+              setStep(step + 1);
+            }}
             className={`inline-flex items-center gap-1 rounded-full px-6 py-2.5 text-sm font-semibold ${canNext ? "bg-sky-strong text-white" : "cursor-not-allowed bg-mist text-muted"}`}
           >
             {dict.next} <ChevronRight size={16} />

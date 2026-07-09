@@ -6,6 +6,7 @@ import { i18n, type Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
 import { fetchCatalog, moduleText, type CatalogModule } from "@/lib/catalog";
 import { moduleContent, moduleExtras } from "@/lib/module-content";
+import { buildAlternates } from "@/lib/seo";
 import { withBase } from "@/lib/asset";
 import { ModuleIcon } from "@/components/module-icon";
 import { MediaFrame } from "@/components/media-frame";
@@ -94,6 +95,7 @@ export async function generateMetadata(
   const t = await getDictionary(params.lang);
   return {
     title: m ? moduleText(m, params.lang).headline : t.seo.pages.features,
+    alternates: buildAlternates(params.lang, `/features/${params.module}`),
   };
 }
 

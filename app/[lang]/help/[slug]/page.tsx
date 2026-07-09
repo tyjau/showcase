@@ -5,6 +5,7 @@ import { ArrowLeft, HelpCircle } from "lucide-react";
 import { i18n, type Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
 import { helpArticles, helpArticle, helpText } from "@/lib/help";
+import { buildAlternates } from "@/lib/seo";
 
 export const dynamicParams = false;
 
@@ -22,7 +23,10 @@ export async function generateMetadata(
   const params = await props.params;
   const a = helpArticle(params.slug);
   const t = await getDictionary(params.lang);
-  return { title: a ? helpText(a, params.lang).title : t.helpPage.eyebrow };
+  return {
+    title: a ? helpText(a, params.lang).title : t.helpPage.eyebrow,
+    alternates: buildAlternates(params.lang, `/help/${params.slug}`),
+  };
 }
 
 export default async function HelpArticlePage(

@@ -103,6 +103,8 @@ export function HeaderAccount({ lang, labels }: { lang: string; labels: Labels }
         </Link>
         <Link
           href={`/${lang}/signup`}
+          data-cta="start_trial"
+          data-cta-location="header"
           className="rounded-full bg-sky-strong px-4 py-2 font-semibold text-white transition-colors hover:bg-[#08607f]"
         >
           {labels.startTrial}

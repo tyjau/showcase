@@ -10,6 +10,9 @@ import { CurrencyProvider } from "@/components/currency-provider";
 import { PartnerProvider } from "@/components/partner-provider";
 import { Analytics } from "@/components/analytics";
 import { CookieConsent } from "@/components/cookie-consent";
+import { CtaTracking } from "@/components/cta-tracking";
+import { JsonLd } from "@/components/json-ld";
+import { organizationLd, websiteLd } from "@/lib/seo";
 
 const mulish = Mulish({
   subsets: ["latin"],
@@ -31,10 +34,6 @@ export async function generateMetadata(
     ),
     title: { default: t.seo.defaultTitle, template: t.seo.titleTemplate },
     description: t.seo.description,
-    alternates: {
-      canonical: `/${params.lang}`,
-      languages: { en: "/en", fr: "/fr" },
-    },
     openGraph: {
       title: t.seo.defaultTitle,
       description: t.seo.description,
@@ -84,6 +83,8 @@ export default async function LangLayout(props: Readonly<{ children: React.React
           }}
         />
         <Analytics />
+        <JsonLd data={organizationLd()} />
+        <JsonLd data={websiteLd()} />
       </head>
       <body className="font-sans bg-page text-ink antialiased flex min-h-screen flex-col">
         <a
@@ -104,6 +105,7 @@ export default async function LangLayout(props: Readonly<{ children: React.React
             />
           </CurrencyProvider>
         </PartnerProvider>
+        <CtaTracking />
         <CookieConsent dict={dict.cookieConsent} lang={params.lang} />
       </body>
     </html>
