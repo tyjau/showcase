@@ -16,7 +16,12 @@ export const SITE_URL = (
  * l'accueil (bug SEO-01). Résolu contre `metadataBase` (domaine de prod), donc jamais préfixé
  * par le basePath de staging.
  */
-export function buildAlternates(lang: string, path = ""): Metadata["alternates"] {
+// Type de retour concret (non-nullable) : assignable au champ `alternates` d'une Metadata côté pages,
+// et exploitable sans garde côté test (sinon tsc --noEmit → TS2533 sur `.canonical`).
+export function buildAlternates(
+  lang: string,
+  path = "",
+): { canonical: string; languages: Record<string, string> } {
   const rel = path && !path.startsWith("/") ? `/${path}` : path;
   const languages: Record<string, string> = {};
   for (const l of i18n.locales) languages[l] = `/${l}${rel}`;
