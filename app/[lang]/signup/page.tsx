@@ -3,6 +3,7 @@ import Link from "next/link";
 import { i18n, type Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
 import { fetchCatalog, fetchCountries } from "@/lib/catalog";
+import { NOINDEX } from "@/lib/seo";
 import { ParallaxTriangles } from "@/components/parallax-triangles";
 import { SignupWizard } from "@/components/signup-wizard";
 
@@ -17,7 +18,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const params = await props.params;
   const t = await getDictionary(params.lang);
-  return { title: t.seo.pages.signup };
+  return { title: t.seo.pages.signup, robots: NOINDEX };
 }
 
 export default async function SignupPage(

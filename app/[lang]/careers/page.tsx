@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Heart, ShieldCheck, Globe, BookOpen, type LucideIcon } from "lucide-react";
 import { getDictionary } from "@/lib/dictionaries";
 import { i18n, type Locale } from "@/lib/i18n";
+import { buildAlternates } from "@/lib/seo";
 import { ParallaxTriangles } from "@/components/parallax-triangles";
 import { CareersList } from "@/components/careers-list";
 
@@ -15,7 +16,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const params = await props.params;
   const t = await getDictionary(params.lang);
-  return { title: t.seo.pages.careers };
+  return { title: t.seo.pages.careers, alternates: buildAlternates(params.lang, "/careers") };
 }
 
 const VALUE_ICONS: LucideIcon[] = [Heart, ShieldCheck, Globe, BookOpen];

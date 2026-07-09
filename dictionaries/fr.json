@@ -600,6 +600,7 @@
     "next": "Continuer",
     "successTitle": "Vous y êtes presque",
     "successBody": "Nous avons enregistré votre demande d'espace. Consultez votre boîte mail pour l'activer et définir votre mot de passe.",
+    "successHint": "Vous ne voyez pas l'email ? Pensez à vérifier vos spams.",
     "successCta": "Retour à l'accueil",
     "none": "Aucune",
     "confirm": {

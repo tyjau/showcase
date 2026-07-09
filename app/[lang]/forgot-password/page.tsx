@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { i18n } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
+import { NOINDEX } from "@/lib/seo";
 import { ForgotPassword } from "@/components/forgot-password";
 
 export function generateStaticParams() {
@@ -12,7 +13,7 @@ export async function generateMetadata(props: {
 }): Promise<Metadata> {
   const params = await props.params;
   const t = await getDictionary(params.lang);
-  return { title: t.forgotPasswordPage.title };
+  return { title: t.forgotPasswordPage.title, robots: NOINDEX };
 }
 
 export default async function ForgotPasswordPage(props: {

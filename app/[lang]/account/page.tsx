@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { i18n, type Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
 import { fetchCatalog, moduleText } from "@/lib/catalog";
+import { NOINDEX } from "@/lib/seo";
 import { AccountPortal } from "@/components/account-portal";
 
 export function generateStaticParams() {
@@ -15,7 +16,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const params = await props.params;
   const t = await getDictionary(params.lang);
-  return { title: t.accountPage.title };
+  return { title: t.accountPage.title, robots: NOINDEX };
 }
 
 export default async function AccountPage(

@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { i18n, type Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
+import { buildAlternates } from "@/lib/seo";
 import { ParallaxTriangles } from "@/components/parallax-triangles";
 import { ResourceSearch } from "@/components/resource-search";
 
@@ -23,7 +24,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const params = await props.params;
   const t = await getDictionary(params.lang);
-  return { title: t.seo.pages.resources };
+  return { title: t.seo.pages.resources, alternates: buildAlternates(params.lang, "/resources") };
 }
 
 const CARD_ICONS: Record<string, LucideIcon> = {

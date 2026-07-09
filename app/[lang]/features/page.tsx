@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { i18n, type Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
 import { fetchCatalog, modulesByCategory, moduleText } from "@/lib/catalog";
+import { buildAlternates } from "@/lib/seo";
 import { ModuleIcon } from "@/components/module-icon";
 import { ParallaxTriangles } from "@/components/parallax-triangles";
 
@@ -18,7 +19,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const params = await props.params;
   const t = await getDictionary(params.lang);
-  return { title: t.seo.pages.features };
+  return { title: t.seo.pages.features, alternates: buildAlternates(params.lang, "/features") };
 }
 
 const CATEGORY_ORDER = ["people", "time-off", "payroll", "talent", "health"];

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Cloud, Server, Package, ShieldCheck, KeyRound, Headphones, type LucideIcon } from "lucide-react";
 import { getDictionary } from "@/lib/dictionaries";
 import { i18n, type Locale } from "@/lib/i18n";
+import { buildAlternates } from "@/lib/seo";
 import { ParallaxTriangles } from "@/components/parallax-triangles";
 import { CtaBand } from "@/components/cta-band";
 
@@ -13,7 +14,7 @@ export function generateStaticParams() {
 export async function generateMetadata(props: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const params = await props.params;
   const t = await getDictionary(params.lang);
-  return { title: t.enterprisePage.title };
+  return { title: t.enterprisePage.title, alternates: buildAlternates(params.lang, "/enterprise") };
 }
 
 const MODE_ICONS: LucideIcon[] = [Cloud, Server, Package];

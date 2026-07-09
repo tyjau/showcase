@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { i18n } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
+import { NOINDEX } from "@/lib/seo";
 import { ClientRedirect } from "@/components/client-redirect";
 
 export function generateStaticParams() {
@@ -10,7 +11,7 @@ export function generateStaticParams() {
 export async function generateMetadata(props: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const params = await props.params;
   const t = await getDictionary(params.lang);
-  return { title: t.partnerLoginPage.title };
+  return { title: t.partnerLoginPage.title, robots: NOINDEX };
 }
 
 // Deprecated: partners now sign in via the regular account login and manage their referral

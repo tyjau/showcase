@@ -21,6 +21,8 @@ import { HomePacks } from "@/components/home-packs";
 import { CtaBand } from "@/components/cta-band";
 import { fetchCatalog, type Money } from "@/lib/catalog";
 import { FileText, ArrowRight } from "lucide-react";
+import type { Metadata } from "next";
+import { buildAlternates } from "@/lib/seo";
 
 type PreviewDict = {
   title: string;
@@ -107,6 +109,19 @@ export function generateStaticParams() {
   return i18n.locales.map((lang) => ({ lang }));
 }
 
+export async function generateMetadata(
+  props: { params: Promise<{ lang: string }> },
+): Promise<Metadata> {
+  const params = await props.params;
+  const t = await getDictionary(params.lang);
+  // Titre : hérite du défaut du layout (l'accueil EST la page-vitrine). Description : le lead du
+  // hero, déjà rédigé. Alternates : self-canonical + hreflang par page (sinon héritage → SEO-01).
+  return {
+    description: t.hero.lead,
+    alternates: buildAlternates(params.lang, ""),
+  };
+}
+
 const VALUE_ICONS: LucideIcon[] = [Calculator, ShieldCheck, Users];
 
 const featureMeta: { key: keyof Features; icon: LucideIcon }[] = [
@@ -187,12 +202,16 @@ export default async function Home(
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
                 href={`/${lang}/signup`}
+                data-cta="start_trial"
+                data-cta-location="hero"
                 className="rounded-full bg-sky-strong px-6 py-3 font-semibold text-white transition-colors hover:bg-[#08607f]"
               >
                 {t.hero.ctaPrimary}
               </Link>
               <Link
                 href={`/${lang}/contact?sujet=demo`}
+                data-cta="book_demo"
+                data-cta-location="hero"
                 className="inline-flex items-center gap-2 rounded-full border border-white/50 px-6 py-3 font-semibold text-white transition-colors hover:bg-white/10"
               >
                 <Play size={16} /> {t.hero.ctaDemo}

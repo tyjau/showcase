@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getDictionary } from "@/lib/dictionaries";
 import { i18n, type Locale } from "@/lib/i18n";
+import { buildAlternates } from "@/lib/seo";
 import { ParallaxTriangles } from "@/components/parallax-triangles";
 import { VideoLibrary } from "@/components/video-library";
 
@@ -14,7 +15,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const params = await props.params;
   const t = await getDictionary(params.lang);
-  return { title: t.webinarsPage.title };
+  return { title: t.webinarsPage.title, alternates: buildAlternates(params.lang, "/resources/webinars") };
 }
 
 export default async function WebinarsPage(props: { params: Promise<{ lang: string }> }) {

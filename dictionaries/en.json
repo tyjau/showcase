@@ -600,6 +600,7 @@
     "next": "Continue",
     "successTitle": "You're almost there",
     "successBody": "We've recorded your workspace request. Check your inbox to activate it and set your password.",
+    "successHint": "Don't see the email? Check your spam folder.",
     "successCta": "Back to home",
     "none": "None",
     "confirm": {

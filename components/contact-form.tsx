@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Check } from "lucide-react";
 import { apiRequestDemo } from "@/lib/api";
+import { trackEvent } from "@/lib/analytics";
 import { TurnstileWidget } from "@/components/turnstile-widget";
 
 type Dict = {
@@ -83,6 +84,7 @@ export function ContactForm({ dict }: { dict: Dict }) {
     });
     setSubmitting(false);
     if (!res.ok) return setError(/captcha|turnstile/i.test(res.error ?? "") ? dict.errCaptcha : res.error || dict.errGeneric);
+    trackEvent("generate_lead", { form: "contact", subject }); // conversion sales-assisted du funnel
     setSent(true);
   }
 

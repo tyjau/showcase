@@ -10,12 +10,14 @@ export function CtaBand({
   sub,
   button,
   reassurances = [],
+  location = "cta_band",
 }: {
   href: string;
   title: string;
   sub?: string;
   button: string;
   reassurances?: string[];
+  location?: string;
 }) {
   return (
     <section className="bg-gradient-to-r from-sky to-accent px-5 py-16 text-center text-white">
@@ -24,6 +26,8 @@ export function CtaBand({
         {sub && <p className="mx-auto mt-3 max-w-lg text-[#eaf6fd]">{sub}</p>}
         <Link
           href={href}
+          data-cta="start_trial"
+          data-cta-location={location}
           className="mt-6 inline-block rounded-full bg-white px-6 py-3 font-semibold text-[#156082] transition-transform hover:scale-[1.02]"
         >
           {button}

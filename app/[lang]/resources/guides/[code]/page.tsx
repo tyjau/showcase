@@ -6,6 +6,7 @@ import { i18n } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionaries";
 import { fetchCatalog, moduleText } from "@/lib/catalog";
 import { moduleContent, moduleExtras } from "@/lib/module-content";
+import { buildAlternates } from "@/lib/seo";
 import { ModuleIcon } from "@/components/module-icon";
 
 export const dynamicParams = false;
@@ -27,7 +28,10 @@ export async function generateMetadata(props: {
   const m = catalog.modules.find((x) => x.code === params.code);
   const t = await getDictionary(params.lang);
   const name = m ? moduleText(m, params.lang).headline : "";
-  return { title: name ? `${name} — ${t.guidePage.eyebrow}` : t.seo.pages.resources };
+  return {
+    title: name ? `${name} — ${t.guidePage.eyebrow}` : t.seo.pages.resources,
+    alternates: buildAlternates(params.lang, `/resources/guides/${params.code}`),
+  };
 }
 
 export default async function GuidePage(props: {
