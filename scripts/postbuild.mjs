@@ -13,7 +13,7 @@
 //
 // Both the gateway and the .htaccess redirects are prefixed with BASE_PATH: the site is served under a
 // sub-path in deployment (e.g. /showcase/), so an absolute "/en/" would 404 off the sub-path.
-import { existsSync, writeFileSync, readFileSync, readdirSync } from "node:fs";
+import { existsSync, writeFileSync, readFileSync, readdirSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 
 const OUT = "out";
@@ -114,6 +114,20 @@ if (SITE) {
   );
   writeFileSync(join(OUT, "robots.txt"), `User-agent: *\nAllow: /\nSitemap: ${SITE}/sitemap.xml\n`);
   console.log(`[postbuild] wrote out/sitemap.xml (${urls.length} URLs, hreflang) + out/robots.txt (SITE=${SITE})`);
+
+  // security.txt (RFC 9116) — divulgation responsable. Le dossier .well-known est un dotfile, donc
+  // ignoré par l'export Next : on le génère ici (comme .htaccess). Contact = page de contact publique
+  // (aucun email inventé), Policy = Trust Center. Expires est requis par la RFC → build + 1 an.
+  const secExpires = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString();
+  mkdirSync(join(OUT, ".well-known"), { recursive: true });
+  writeFileSync(
+    join(OUT, ".well-known", "security.txt"),
+    `Contact: ${SITE}/${DEFAULT_LOCALE}/contact\n` +
+      `Policy: ${SITE}/${DEFAULT_LOCALE}/trust\n` +
+      `Preferred-Languages: en, fr\n` +
+      `Expires: ${secExpires}\n`,
+  );
+  console.log(`[postbuild] wrote out/.well-known/security.txt (expires ${secExpires.slice(0, 10)})`);
 } else {
   console.log("[postbuild] pas de SITE_URL/FRONT_SMOKE_URL → sitemap/robots ignorés (build local)");
 }
