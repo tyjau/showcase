@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { getDictionary } from "@/lib/dictionaries";
 import { i18n, type Locale } from "@/lib/i18n";
-import { withBase } from "@/lib/asset";
+import { Picture } from "@/components/picture";
 import { SocialProof } from "@/components/social-proof";
 import { ParallaxTriangles } from "@/components/parallax-triangles";
 import { ModulesCarousel } from "@/components/modules-carousel";
@@ -174,11 +174,11 @@ export default async function Home(
     <main>
       <section className="relative overflow-hidden bg-hero-bg text-hero-fg">
         {/* Photo backdrop + navy overlay + sky radial + parallax triangles. */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={withBase("/img/hero-office.png")}
+        <Picture
+          src="/img/hero-office.png"
           alt=""
-          aria-hidden="true"
+          ariaHidden
+          priority
           className="absolute inset-0 h-full w-full object-cover opacity-[0.55]"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-hero-bg via-hero-bg/85 to-hero-bg/30" />
@@ -287,12 +287,12 @@ export default async function Home(
             })}
           </div>
           {/* Photo tile with caption overlay */}
-          <div
-            className="relative hidden min-h-[300px] overflow-hidden rounded-2xl border border-line bg-cover bg-[center_42%] min-[895px]:block"
-            style={{ backgroundImage: `url('${withBase("/img/feat-photo-filled.png")}')` }}
-            role="img"
-            aria-label={t.features.lateralAlt}
-          >
+          <div className="relative hidden min-h-[300px] overflow-hidden rounded-2xl border border-line min-[895px]:block">
+            <Picture
+              src="/img/feat-photo-filled.png"
+              alt={t.features.lateralAlt}
+              className="absolute inset-0 h-full w-full object-cover object-[center_42%]"
+            />
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-hero-bg/60" />
             <div className="absolute inset-x-5 bottom-[18px] text-white">
               <div className="text-base font-extrabold">{t.features.photoTitle}</div>
