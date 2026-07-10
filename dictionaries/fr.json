@@ -1100,6 +1100,45 @@
     "security": "Sécurité",
     "status": "Statut",
     "trust": "Trust Center",
+    "compare": "Comparatifs",
     "rights": "Tous droits réservés."
+  },
+  "comparePage": {
+    "eyebrow": "Comparatifs",
+    "hubTitle": "SkyRH face aux autres logiciels RH & paie",
+    "hubLead": "Vous comparez les plateformes RH & paie ? Voici où SkyRH se distingue — pensé pour les équipes multi-pays et l'Afrique francophone, tout-en-un, à tarif transparent.",
+    "pickTitle": "Choisissez une comparaison",
+    "draft": "À valider avant publication : renseigner les faits concurrents vérifiés et confirmer la conformité à la publicité comparative (Code de la consommation, art. L122-1 et suivants) avant la mise en production. Les cellules concurrentes sont des repères en attendant.",
+    "vsPrefix": "SkyRH vs",
+    "vsLead": "Comment SkyRH se compare à {name} pour les équipes multi-pays et l'Afrique francophone.",
+    "whyTitle": "Pourquoi les équipes choisissent SkyRH",
+    "why": [
+      "Une paie localisée pays par pays — France et Afrique francophone incluses.",
+      "Tout le cycle RH sur une seule plateforme, du recrutement à la performance.",
+      "Un tarif par employé transparent, sans devis obligatoire."
+    ],
+    "tableTitle": "Comparaison des capacités",
+    "featureCol": "Capacité",
+    "skyrhCol": "SkyRH",
+    "verify": "À vérifier",
+    "features": [
+      { "label": "Paie multi-pays", "skyrh": "Oui — moteur localisé par pays" },
+      { "label": "Conformité localisée", "skyrh": "Oui — règles locales intégrées" },
+      { "label": "Afrique francophone", "skyrh": "Oui — cœur de cible" },
+      { "label": "Tout-en-un (recrutement, paie, performance)", "skyrh": "Oui — une seule plateforme" },
+      { "label": "Tarif par employé transparent", "skyrh": "Oui — affiché publiquement" },
+      { "label": "Portail self-service employé", "skyrh": "Oui — inclus" },
+      { "label": "Marque blanche partenaires", "skyrh": "Oui — funnels co-brandés" },
+      { "label": "Essai gratuit sans carte", "skyrh": "Oui — 14 jours" }
+    ],
+    "backToHub": "Toutes les comparaisons",
+    "ctaTitle": "Voir SkyRH pour votre équipe",
+    "ctaSub": "Essai gratuit de 14 jours, sans carte bancaire.",
+    "ctaButton": "Démarrer l'essai gratuit",
+    "competitors": {
+      "payfit": { "name": "PayFit" },
+      "lucca": { "name": "Lucca" },
+      "factorial": { "name": "Factorial" }
+    }
   }
 }
