@@ -1,5 +1,5 @@
 import { ImageIcon } from "lucide-react";
-import { withBase } from "@/lib/asset";
+import { Picture } from "@/components/picture";
 
 /**
  * Product-screenshot slot. Renders the image when `src` is set, else a labelled
@@ -9,7 +9,7 @@ import { withBase } from "@/lib/asset";
  * product UI: "dark" (navy bar + traffic lights + URL, for dark sections) or
  * "light" (mist bar, for light sections). Pass `url` to show an address.
  *
- * Static export ⇒ a plain <img> (unoptimized), not next/image.
+ * Static export ⇒ <Picture> (AVIF → WebP → PNG via <picture>), pas next/image.
  */
 export function MediaFrame({
   src,
@@ -26,10 +26,9 @@ export function MediaFrame({
   chrome?: "dark" | "light";
   url?: string;
 }) {
-  // Préfixe l'asset public par le basePath (servi sous /showcase/ → /_next et <Link> sont préfixés
-  // par Next, mais pas ce <img> brut). Idempotent + sans effet sur les URLs externes (cover partenaire).
-  const resolved = withBase(src);
-  if (resolved && chrome) {
+  // <Picture> applique le basePath et sert AVIF/WebP quand l'asset est un PNG local ; une URL
+  // externe (cover partenaire) retombe sur un <img> simple.
+  if (src && chrome) {
     const dark = chrome === "dark";
     return (
       <div
@@ -51,16 +50,14 @@ export function MediaFrame({
             </span>
           )}
         </div>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={resolved} alt={alt} className="block w-full" />
+        <Picture src={src} alt={alt} className="block w-full" />
       </div>
     );
   }
-  if (resolved) {
-    // eslint-disable-next-line @next/next/no-img-element
+  if (src) {
     return (
-      <img
-        src={resolved}
+      <Picture
+        src={src}
         alt={alt}
         className={`w-full rounded-xl border border-line object-cover ${className}`}
       />

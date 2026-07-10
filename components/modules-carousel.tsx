@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { withBase } from "@/lib/asset";
+import { Picture } from "@/components/picture";
 import {
   FileText,
   CalendarDays,
@@ -154,8 +154,7 @@ function RecruitVisual() {
         <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
         <span className="ml-2.5 text-[11px] text-[#7d93a6]">app.skyrh.com/recruit/needs</span>
       </div>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={withBase("/img/product-recruitment.png")} alt="" aria-hidden="true" className="block w-full" />
+      <Picture src="/img/product-recruitment.png" alt="" ariaHidden className="block w-full" />
     </div>
   );
 }
