@@ -810,13 +810,12 @@
     "privacyBody": "We build with privacy by design: analytics run under GDPR-compliant consent (cookieless until you accept), personal data is processed only to deliver the service, and you stay in control of your data. The full details are in our privacy policy.",
     "privacyLink": "Read the privacy policy",
     "complianceTitle": "Compliance & data governance",
-    "complianceLead": "The specifics below depend on your plan and region — contact us for the details that apply to your organization.",
-    "draft": "TO VALIDATE before publishing: fill in the real facts (hosting provider & region, sub-processor list, ISO 27001 / SOC 2 certification status, DPA link). This reminder only shows in development.",
+    "complianceLead": "Where your data lives, who we work with, and how you stay in control.",
     "complianceItems": [
-      { "title": "Data residency", "desc": "Your data is hosted on secure infrastructure. Contact us to confirm the hosting region that applies to your account." },
-      { "title": "Sub-processors", "desc": "We rely on a limited set of vetted processors (hosting, payment, email) under compliant agreements. The current list is available on request." },
-      { "title": "Certifications", "desc": "Our compliance program improves continuously. Contact us for the current status of our audits and certifications." },
-      { "title": "Data Processing Agreement", "desc": "A GDPR Data Processing Agreement (DPA) is available on request for customers who need one." }
+      { "title": "Data residency", "desc": "Your data is hosted with OVHcloud, in France." },
+      { "title": "Sub-processors", "desc": "We rely on a small set of sub-processors: OVHcloud (hosting, France) and Stripe (payments). Transactional emails are sent in-house, with no third-party processor." },
+      { "title": "Certifications", "desc": "Our compliance program improves continuously. We do not yet claim ISO 27001 or SOC 2 certification." },
+      { "title": "Data Processing Agreement", "desc": "A GDPR Data Processing Agreement (DPA) is available on request." }
     ],
     "disclosureTitle": "Responsible disclosure",
     "disclosureBody": "Found a security issue? We want to hear from you. Reach our team and we'll work with you to investigate and fix it.",
