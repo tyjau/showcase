@@ -45,6 +45,9 @@ type Dict = {
   lastName: string;
   email: string;
   emailPh: string;
+  password: string;
+  passwordPh: string;
+  passwordHint: string;
   reviewTitle: string;
   reviewLead: string;
   rPlan: string;
@@ -130,6 +133,7 @@ export function SignupWizard({
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [agree, setAgree] = useState(false);
   const [captcha, setCaptcha] = useState("");
   const [done, setDone] = useState(false);
@@ -172,6 +176,8 @@ export function SignupWizard({
   const domainBase = partner?.domain ?? "skyrh.app";
 
   const emailOk = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
+  // Même règle que le back (isPasswordComplex) : min 8, avec minuscule, majuscule, chiffre, symbole.
+  const pwOk = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d]).{8,}$/.test(password);
   const subOk = /^[a-z0-9](?:[a-z0-9-]{1,28}[a-z0-9])$/.test(subdomain);
   const canNext =
     step === 0
@@ -179,7 +185,7 @@ export function SignupWizard({
       : step === 1
         ? company.trim().length > 1 && subOk && country.trim().length > 1
         : step === 2
-          ? firstName.trim().length > 0 && lastName.trim().length > 0 && emailOk
+          ? firstName.trim().length > 0 && lastName.trim().length > 0 && emailOk && pwOk
           : agree && (!TURNSTILE_ON || !!captcha);
 
   function toggleAddon(code: string) {
@@ -203,6 +209,7 @@ export function SignupWizard({
       employees,
       first_name: firstName,
       last_name: lastName,
+      password,
       country,
       currency,
       lang,
@@ -471,6 +478,17 @@ export function SignupWizard({
                 placeholder={dict.emailPh}
                 className={INPUT_CLS}
               />
+            </Field>
+            <Field label={dict.password}>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder={dict.passwordPh}
+                className={INPUT_CLS}
+                autoComplete="new-password"
+              />
+              <p className="mt-1.5 text-xs text-muted">{dict.passwordHint}</p>
             </Field>
           </div>
         </div>
