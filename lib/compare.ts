@@ -3,7 +3,7 @@
 // factuelle ; les cellules concurrentes ne sont PAS préremplies — un comparatif nominatif est un
 // terrain juridique (publicité comparative, Code conso art. L122-1 s.) : l'équipe renseigne les faits
 // vérifiés avant publication (bannière rappel dev-only sur la page).
-export const COMPETITORS = ["payfit", "lucca", "factorial"] as const;
+export const COMPETITORS = ["payfit", "lucca", "factorial", "sage"] as const;
 
 export type CompetitorSlug = (typeof COMPETITORS)[number];
 
