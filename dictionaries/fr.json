@@ -1,8 +1,8 @@
 {
   "seo": {
-    "defaultTitle": "SkyRH — La RH et la paie modernes pour le monde entier",
+    "defaultTitle": "SkyRH — Paie multi-pays & SIRH, conforme dans chaque pays",
     "titleTemplate": "%s · SkyRH",
-    "description": "Gérez tout le cycle RH — paie, congés, recrutement, performance et un portail self-service employé — sur une seule plateforme, avec une conformité localisée selon votre pays.",
+    "description": "La paie multi-pays et les déclarations sociales, conformes dans chaque pays — OHADA compris. SkyRH réunit la paie, les déclarations aux caisses et tout le cycle RH sur une seule plateforme.",
     "pages": {
       "pricing": "Tarifs",
       "features": "Fonctionnalités",
@@ -42,9 +42,9 @@
     "system": "Système"
   },
   "hero": {
-    "eyebrow": "Plateforme RH & paie",
-    "title": "La RH et la paie modernes, pour les équipes du monde entier",
-    "lead": "Gérez tout le cycle RH — paie, congés, recrutement, performance et un portail self-service employé — sur une seule plateforme, avec une conformité localisée selon votre pays.",
+    "eyebrow": "SIRH — paie & déclarations sociales multi-pays",
+    "title": "La paie multi-pays, conforme dans chaque pays — OHADA compris.",
+    "lead": "SkyRH réunit la paie, les déclarations aux caisses et tout le cycle RH sur une seule plateforme, avec des règles maintenues pays par pays. La couverture s'étend en continu : là où d'autres s'arrêtent à l'Europe, nous allons jusqu'aux réglementations OHADA. Pensé pour les organisations qui opèrent au-delà d'une frontière.",
     "ctaPrimary": "Démarrer l'essai gratuit",
     "ctaDemo": "Réserver une démo",
     "trustNote": "14 jours d'essai · sans carte bancaire"
@@ -65,13 +65,13 @@
     "Conformité localisée"
   ],
   "homeValue": {
-    "eyebrow": "Le SIRH tout-en-un",
-    "title": "Le logiciel de gestion RH et de paie qui réunit tout votre capital humain",
-    "lead": "De l'embauche à la paie — en passant par les congés, la performance et la conformité locale — SkyRH réunit tout le cycle RH sur une seule plateforme, pour les équipes qui opèrent dans plusieurs pays.",
+    "eyebrow": "La paie multi-pays au cœur du SIRH",
+    "title": "Le SIRH dont la paie est le cœur, pas une option",
+    "lead": "La plupart des SIRH branchent la paie en option. SkyRH part de la paie et des déclarations aux caisses — le plus dur, le plus réglementé — et fait suivre tout le reste du cycle RH sur la même plateforme.",
     "blocks": [
-      { "title": "Paie automatisée et fiable", "desc": "Un moteur conforme à votre pays calcule cotisations, impôts et bulletins au centime près, en quelques minutes." },
-      { "title": "Conformité toujours à jour", "desc": "Les règles locales — CNPS, DIPE, barèmes, déclarations — sont intégrées au produit et maintenues, pas en option." },
-      { "title": "Équipes engagées", "desc": "Un portail self-service qui réduit de 80 % les demandes RH par e-mail." }
+      { "title": "Conforme, pays par pays", "desc": "Un moteur de règles maintenu et validé par tests de parité, étendu à de nouveaux pays en continu." },
+      { "title": "Les déclarations sociales incluses", "desc": "Immatriculations, cotisations et déclarations aux caisses (CNPS, CNSS, URSSAF…) dans le même outil que la paie — pas un module à part." },
+      { "title": "Tout le cycle RH, pas des silos", "desc": "Recrutement, congés, présences, performance et portail self-service — sur la même plateforme que la paie, avec les mêmes données." }
     ]
   },
   "modulesPage": {
@@ -810,13 +810,12 @@
     "privacyBody": "Nous concevons selon le principe de privacy by design : l'analytics fonctionne sous consentement conforme au RGPD (sans cookie tant que vous n'acceptez pas), les données personnelles ne sont traitées que pour fournir le service, et vous gardez le contrôle de vos données. Le détail figure dans notre politique de confidentialité.",
     "privacyLink": "Lire la politique de confidentialité",
     "complianceTitle": "Conformité & gouvernance des données",
-    "complianceLead": "Les éléments ci-dessous dépendent de votre offre et de votre région — contactez-nous pour les détails applicables à votre organisation.",
-    "draft": "À VALIDER avant publication : renseigner les faits réels (hébergeur & région, liste des sous-traitants, statut des certifications ISO 27001 / SOC 2, lien du DPA). Ce rappel n'apparaît qu'en développement.",
+    "complianceLead": "Où vivent vos données, avec qui nous travaillons, et comment vous gardez la main.",
     "complianceItems": [
-      { "title": "Résidence des données", "desc": "Vos données sont hébergées sur une infrastructure sécurisée. Contactez-nous pour confirmer la région d'hébergement applicable à votre compte." },
-      { "title": "Sous-traitants", "desc": "Nous nous appuyons sur un ensemble restreint de sous-traitants vérifiés (hébergement, paiement, e-mail) sous accords conformes. La liste à jour est disponible sur demande." },
-      { "title": "Certifications", "desc": "Notre programme de conformité s'améliore en continu. Contactez-nous pour connaître l'état actuel de nos audits et certifications." },
-      { "title": "Accord de traitement (DPA)", "desc": "Un accord de traitement des données (DPA) conforme au RGPD est disponible sur demande pour les clients qui en ont besoin." }
+      { "title": "Résidence des données", "desc": "Vos données sont hébergées chez OVHcloud, en France." },
+      { "title": "Sous-traitants", "desc": "Nous nous appuyons sur un nombre restreint de sous-traitants : OVHcloud (hébergement, France) et Stripe (paiements). Les e-mails sont envoyés par nos soins, sans sous-traitant tiers." },
+      { "title": "Certifications", "desc": "Notre programme de conformité s'améliore en continu. Nous ne revendiquons pas encore de certification ISO 27001 ou SOC 2." },
+      { "title": "Accord de traitement (DPA)", "desc": "Un accord de traitement des données (DPA) conforme au RGPD est disponible sur demande." }
     ],
     "disclosureTitle": "Divulgation responsable",
     "disclosureBody": "Vous avez trouvé une faille de sécurité ? Nous voulons le savoir. Contactez notre équipe : nous investiguerons et corrigerons avec vous.",
@@ -1101,21 +1100,22 @@
     "status": "Statut",
     "trust": "Trust Center",
     "compare": "Comparatifs",
+    "solutions": "Solutions par pays",
     "rights": "Tous droits réservés."
   },
   "comparePage": {
     "eyebrow": "Comparatifs",
     "hubTitle": "SkyRH face aux autres logiciels RH & paie",
-    "hubLead": "Vous comparez les plateformes RH & paie ? Voici où SkyRH se distingue — pensé pour les équipes multi-pays et l'Afrique francophone, tout-en-un, à tarif transparent.",
+    "hubLead": "Vous comparez les SIRH ? La plupart sont excellents en Europe et s'arrêtent à sa frontière. SkyRH gère la paie et les déclarations sociales au-delà — jusqu'aux réglementations OHADA — sur une seule plateforme.",
     "pickTitle": "Choisissez une comparaison",
     "draft": "À valider avant publication : renseigner les faits concurrents vérifiés et confirmer la conformité à la publicité comparative (Code de la consommation, art. L122-1 et suivants) avant la mise en production. Les cellules concurrentes sont des repères en attendant.",
     "vsPrefix": "SkyRH vs",
-    "vsLead": "Comment SkyRH se compare à {name} pour les équipes multi-pays et l'Afrique francophone.",
+    "vsLead": "{name} est fort en Europe. Voici ce qui change quand votre paie doit aussi être conforme au-delà — jusqu'à l'OHADA.",
     "whyTitle": "Pourquoi les équipes choisissent SkyRH",
     "why": [
-      "Une paie localisée pays par pays — France et Afrique francophone incluses.",
-      "Tout le cycle RH sur une seule plateforme, du recrutement à la performance.",
-      "Un tarif par employé transparent, sans devis obligatoire."
+      "Une paie conforme dans chaque pays — France, Europe et espace OHADA — étendue en continu.",
+      "Les déclarations aux caisses sociales dans le même outil que la paie, pas un module à part.",
+      "Tout le cycle RH sur une seule plateforme, avec les mêmes données."
     ],
     "tableTitle": "Comparaison des capacités",
     "featureCol": "Capacité",
@@ -1123,11 +1123,11 @@
     "verify": "À vérifier",
     "features": [
       { "label": "Paie multi-pays", "skyrh": "Oui — moteur localisé par pays" },
-      { "label": "Conformité localisée", "skyrh": "Oui — règles locales intégrées" },
-      { "label": "Afrique francophone", "skyrh": "Oui — cœur de cible" },
-      { "label": "Tout-en-un (recrutement, paie, performance)", "skyrh": "Oui — une seule plateforme" },
+      { "label": "Réglementations OHADA (Afrique)", "skyrh": "Oui — espace OHADA couvert" },
+      { "label": "Déclarations aux caisses sociales", "skyrh": "Oui — dans le même outil que la paie" },
+      { "label": "Couverture étendue en continu", "skyrh": "Oui — nouveaux pays en continu" },
+      { "label": "Tout le cycle RH sur une plateforme", "skyrh": "Oui — mêmes données" },
       { "label": "Tarif par employé transparent", "skyrh": "Oui — affiché publiquement" },
-      { "label": "Portail self-service employé", "skyrh": "Oui — inclus" },
       { "label": "Marque blanche partenaires", "skyrh": "Oui — funnels co-brandés" },
       { "label": "Essai gratuit sans carte", "skyrh": "Oui — 14 jours" }
     ],
@@ -1138,7 +1138,31 @@
     "competitors": {
       "payfit": { "name": "PayFit" },
       "lucca": { "name": "Lucca" },
-      "factorial": { "name": "Factorial" }
+      "factorial": { "name": "Factorial" },
+      "sage": { "name": "Sage" }
     }
+  },
+  "geoPage": {
+    "eyebrow": "Solutions par pays",
+    "hubTitle": "La paie, pays par pays",
+    "hubLead": "Une paie conforme dans chaque pays où vous opérez — de l'espace OHADA à l'Europe — gérée sur une seule plateforme. Choisissez un pays.",
+    "draft": "À valider avant publication : confirmer la disponibilité en production (productionSignoff) de chaque pays avant d'en annoncer la conformité. Les pages pays présentent la couverture cible.",
+    "groupOHADA": "Afrique — espace OHADA",
+    "groupEU": "Europe",
+    "titlePattern": "Logiciel de paie et conformité — {name}",
+    "lead": "Paie, cotisations et déclarations aux caisses locales, sur la même plateforme que vos entités des autres pays. Une seule paie, du siège à la filiale.",
+    "frameworkLabel": "Cadre",
+    "currencyLabel": "Devise",
+    "fundsLabel": "Déclarations",
+    "whyTitle": "Pourquoi SkyRH ici",
+    "why": [
+      "Un moteur de paie localisé, maintenu à jour et validé par tests de parité.",
+      "Immatriculations, cotisations et déclarations aux caisses dans le même outil.",
+      "Vos filiales et votre siège sur une seule plateforme, avec les mêmes données."
+    ],
+    "backToHub": "Tous les pays",
+    "ctaTitle": "Voir SkyRH pour vos équipes",
+    "ctaSub": "Essai gratuit de 14 jours, sans carte bancaire.",
+    "ctaButton": "Démarrer l'essai gratuit"
   }
 }

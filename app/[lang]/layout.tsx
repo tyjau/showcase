@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import { Mulish } from "next/font/google";
-import "../globals.css";
 import { i18n, type Locale } from "@/lib/i18n";
+import { mulish } from "@/lib/fonts";
 import { getDictionary } from "@/lib/dictionaries";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
@@ -12,14 +11,8 @@ import { Analytics } from "@/components/analytics";
 import { CookieConsent } from "@/components/cookie-consent";
 import { CtaTracking } from "@/components/cta-tracking";
 import { JsonLd } from "@/components/json-ld";
+import { ThemeBootScript } from "@/components/theme-boot-script";
 import { organizationLd, websiteLd } from "@/lib/seo";
-
-const mulish = Mulish({
-  subsets: ["latin"],
-  weight: ["400", "600", "700", "800"],
-  variable: "--font-mulish",
-  display: "swap",
-});
 
 export async function generateMetadata(
   props: {
@@ -45,6 +38,12 @@ export async function generateMetadata(
       images: [{ url: "/img/hero-office.png", alt: "SkyRH" }],
     },
     twitter: { card: "summary_large_image", images: ["/img/hero-office.png"] },
+    // Vérification Google Search Console : balise <meta google-site-verification> émise seulement si
+    // le jeton est baké (NEXT_PUBLIC_GSC_VERIFICATION, via la forge cfg.gsc_verification). Sinon rien
+    // — on peut aussi vérifier via la propriété GA4 déjà liée, sans code.
+    ...(process.env.NEXT_PUBLIC_GSC_VERIFICATION
+      ? { verification: { google: process.env.NEXT_PUBLIC_GSC_VERIFICATION } }
+      : {}),
   };
 }
 
@@ -62,6 +61,8 @@ export default async function LangLayout(props: Readonly<{ children: React.React
   } = props;
 
   const dict = await getDictionary(params.lang);
+  // Coquille <html> du site. Le layout racine (app/layout.tsx) est un passe-plat : c'est ici, où
+  // `params.lang` est connu, qu'on pose `lang` — cf. le commentaire de app/layout.tsx.
   return (
     <html
       lang={params.lang}
@@ -69,19 +70,7 @@ export default async function LangLayout(props: Readonly<{ children: React.React
       suppressHydrationWarning
     >
       <head>
-        {/*
-          No-flash theme boot. Runs before paint on the static export and sets the
-          `.dark` class on <html> synchronously (no flash, no hydration mismatch —
-          server markup is neutral). Default is DARK (handoff: dark-by-default): a
-          first-time visitor with no stored choice gets dark; an explicit 'light'
-          stays light; 'system' follows the OS.
-        */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html:
-              "(function(){try{var t=localStorage.getItem('skyrh.theme');var d=t==='dark'||!t||(t==='system'&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',d);}catch(e){}})();",
-          }}
-        />
+        <ThemeBootScript />
         <Analytics />
         <JsonLd data={organizationLd()} />
         <JsonLd data={websiteLd()} />
