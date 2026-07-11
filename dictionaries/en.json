@@ -1101,6 +1101,7 @@
     "status": "Status",
     "trust": "Trust Center",
     "compare": "Comparisons",
+    "solutions": "By country",
     "rights": "All rights reserved."
   },
   "comparePage": {
@@ -1141,5 +1142,28 @@
       "factorial": { "name": "Factorial" },
       "sage": { "name": "Sage" }
     }
+  },
+  "geoPage": {
+    "eyebrow": "By country",
+    "hubTitle": "Payroll, country by country",
+    "hubLead": "Payroll compliant in every country you operate in — from the OHADA zone to Europe — run on one platform. Pick a country.",
+    "draft": "To validate before publishing: confirm each country's production availability (productionSignoff) before claiming its compliance. Country pages present target coverage.",
+    "groupOHADA": "Africa — OHADA zone",
+    "groupEU": "Europe",
+    "titlePattern": "Payroll & compliance software — {name}",
+    "lead": "Payroll, contributions and filings to local social funds, on the same platform as your entities in other countries. One payroll, from HQ to subsidiary.",
+    "frameworkLabel": "Framework",
+    "currencyLabel": "Currency",
+    "fundsLabel": "Filings",
+    "whyTitle": "Why SkyRH here",
+    "why": [
+      "A localized payroll engine, kept up to date and checked by parity tests.",
+      "Registrations, contributions and social-fund filings in the same tool.",
+      "Your subsidiaries and HQ on one platform, sharing the same data."
+    ],
+    "backToHub": "All countries",
+    "ctaTitle": "See SkyRH for your teams",
+    "ctaSub": "14-day free trial, no credit card.",
+    "ctaButton": "Start free trial"
   }
 }
