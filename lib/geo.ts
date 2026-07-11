@@ -7,6 +7,13 @@
 // séparé). La page porte une bannière rappel dev-only, comme le Trust Center et les comparatifs.
 export type Framework = "OHADA" | "EU";
 
+// Libellé d'affichage du cadre (language-neutral, identique fr/en). « EU » est le regroupement moteur
+// du back — il inclut la Suisse, hors UE — donc on affiche « Europe », correct pour tout le groupe.
+export const FRAMEWORK_LABEL: Record<Framework, string> = {
+  OHADA: "OHADA",
+  EU: "Europe",
+};
+
 export type GeoCountry = {
   slug: string;
   code: string;
@@ -16,8 +23,8 @@ export type GeoCountry = {
   funds: string[];
 };
 
-// Espace OHADA complet (15 pays, source back payroll_compliance) + la France comme ancre européenne
-// cross-border. Extensible — un pays = une entrée ici (+ sa page se génère automatiquement).
+// Espace OHADA complet (15 pays) + zone Europe (9 pays, dont la Suisse hors UE), source back
+// payroll_compliance. Extensible — un pays = une entrée ici (+ sa page se génère automatiquement).
 // Devises et caisses proviennent des figures back (metadata.currency + sign-off agent 2026-06-24).
 export const GEO_COUNTRIES: GeoCountry[] = [
   { slug: "senegal", code: "SN", name: { fr: "Sénégal", en: "Senegal" }, framework: "OHADA", currency: "XOF", funds: ["IPRES", "CSS", "IPM"] },
@@ -36,6 +43,14 @@ export const GEO_COUNTRIES: GeoCountry[] = [
   { slug: "guinee", code: "GN", name: { fr: "Guinée", en: "Guinea" }, framework: "OHADA", currency: "GNF", funds: ["CNSS"] },
   { slug: "comores", code: "KM", name: { fr: "Comores", en: "Comoros" }, framework: "OHADA", currency: "KMF", funds: ["CRC", "CNSPS"] },
   { slug: "france", code: "FR", name: { fr: "France", en: "France" }, framework: "EU", currency: "EUR", funds: ["URSSAF", "DSN"] },
+  { slug: "belgique", code: "BE", name: { fr: "Belgique", en: "Belgium" }, framework: "EU", currency: "EUR", funds: ["ONSS", "IPP"] },
+  { slug: "allemagne", code: "DE", name: { fr: "Allemagne", en: "Germany" }, framework: "EU", currency: "EUR", funds: ["Sozialversicherung", "Lohnsteuer"] },
+  { slug: "espagne", code: "ES", name: { fr: "Espagne", en: "Spain" }, framework: "EU", currency: "EUR", funds: ["Seguridad Social", "IRPF"] },
+  { slug: "italie", code: "IT", name: { fr: "Italie", en: "Italy" }, framework: "EU", currency: "EUR", funds: ["INPS", "IRPEF"] },
+  { slug: "luxembourg", code: "LU", name: { fr: "Luxembourg", en: "Luxembourg" }, framework: "EU", currency: "EUR", funds: ["CCSS", "IGSS"] },
+  { slug: "pays-bas", code: "NL", name: { fr: "Pays-Bas", en: "Netherlands" }, framework: "EU", currency: "EUR", funds: ["Belastingdienst"] },
+  { slug: "portugal", code: "PT", name: { fr: "Portugal", en: "Portugal" }, framework: "EU", currency: "EUR", funds: ["Segurança Social", "IRS"] },
+  { slug: "suisse", code: "CH", name: { fr: "Suisse", en: "Switzerland" }, framework: "EU", currency: "CHF", funds: ["AVS", "LPP"] },
 ];
 
 export function geoBySlug(slug: string): GeoCountry | undefined {

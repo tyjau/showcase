@@ -5,7 +5,7 @@ import { ArrowLeft, ShieldCheck } from "lucide-react";
 import { getDictionary } from "@/lib/dictionaries";
 import { i18n } from "@/lib/i18n";
 import { buildAlternates, SITE_URL } from "@/lib/seo";
-import { GEO_COUNTRIES, geoBySlug, isGeoCountry } from "@/lib/geo";
+import { GEO_COUNTRIES, FRAMEWORK_LABEL, geoBySlug, isGeoCountry } from "@/lib/geo";
 import { JsonLd } from "@/components/json-ld";
 import { CtaBand } from "@/components/cta-band";
 import { ParallaxTriangles } from "@/components/parallax-triangles";
@@ -53,7 +53,7 @@ export default async function CountryPage(
   const why = g.why as string[];
 
   const facts = [
-    { label: g.frameworkLabel, value: c.framework },
+    { label: g.frameworkLabel, value: FRAMEWORK_LABEL[c.framework] },
     { label: g.currencyLabel, value: c.currency },
     { label: g.fundsLabel, value: c.funds.join(" · ") },
   ];
