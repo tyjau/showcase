@@ -27,7 +27,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const params = await props.params;
   const t = await getDictionary(params.lang);
-  return { title: t.seo.pages.company, alternates: buildAlternates(params.lang, "/company") };
+  return { title: t.seo.pages.company, description: t.companyPage.lead, alternates: buildAlternates(params.lang, "/company") };
 }
 
 const VALUE_ICONS = [ShieldCheck, Users, CheckCircle2, Lock];

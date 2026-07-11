@@ -29,7 +29,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const params = await props.params;
   const t = await getDictionary(params.lang);
-  return { title: t.seo.pages.partners, alternates: buildAlternates(params.lang, "/partners") };
+  return { title: t.seo.pages.partners, description: t.partnersPage.lead, alternates: buildAlternates(params.lang, "/partners") };
 }
 
 const TYPE_ICONS: LucideIcon[] = [Wrench, Store, Calculator, Code2];

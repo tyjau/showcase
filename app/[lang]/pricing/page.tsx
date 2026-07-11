@@ -20,6 +20,7 @@ export async function generateMetadata(
   const t = await getDictionary(params.lang);
   return {
     title: t.seo.pages.pricing,
+    description: t.pricingPage.sub,
     alternates: buildAlternates(params.lang, "/pricing"),
   };
 }

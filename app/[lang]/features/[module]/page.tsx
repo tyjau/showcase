@@ -93,8 +93,12 @@ export async function generateMetadata(
   const catalog = await fetchCatalog();
   const m = catalog.modules.find((x) => x.code === params.module);
   const t = await getDictionary(params.lang);
+  // Description par module (SEO-02) : la tagline commerciale du module, sinon sa description, sinon
+  // le sous-titre générique de la page modules.
+  const txt = m ? moduleText(m, params.lang) : null;
   return {
-    title: m ? moduleText(m, params.lang).headline : t.seo.pages.features,
+    title: txt ? txt.headline : t.seo.pages.features,
+    description: txt?.tagline ?? txt?.description ?? t.modulesPage.sub,
     alternates: buildAlternates(params.lang, `/features/${params.module}`),
   };
 }
