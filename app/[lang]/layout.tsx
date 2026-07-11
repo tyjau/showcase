@@ -38,6 +38,12 @@ export async function generateMetadata(
       images: [{ url: "/img/hero-office.png", alt: "SkyRH" }],
     },
     twitter: { card: "summary_large_image", images: ["/img/hero-office.png"] },
+    // Vérification Google Search Console : balise <meta google-site-verification> émise seulement si
+    // le jeton est baké (NEXT_PUBLIC_GSC_VERIFICATION, via la forge cfg.gsc_verification). Sinon rien
+    // — on peut aussi vérifier via la propriété GA4 déjà liée, sans code.
+    ...(process.env.NEXT_PUBLIC_GSC_VERIFICATION
+      ? { verification: { google: process.env.NEXT_PUBLIC_GSC_VERIFICATION } }
+      : {}),
   };
 }
 

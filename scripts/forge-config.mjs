@@ -75,6 +75,10 @@ const harmonyUrl = cfg.harmony_url ?? cfg.harmonyUrl ?? "";
 // Google Analytics 4 (démo) — OPTIONNEL. Lu via bracket → PAS ajouté au contrat config-keys.json (non
 // requis au publish). Vide → GA no-op (components/analytics). L'ID démo/prod est posé dans le config_json.
 const gaId = cfg["ga_id"] ?? cfg["gaId"] ?? "";
+// Google Search Console — jeton de vérification du domaine (balise <meta google-site-verification>).
+// OPTIONNEL, bracket → PAS dans le contrat config-keys.json. Vide → aucune balise émise (on peut aussi
+// vérifier via la propriété GA4 liée, sans code).
+const gscVerification = cfg["gsc_verification"] ?? cfg["gscVerification"] ?? "";
 
 // 🔒 The catalog key is a SECRET promoted into $GITHUB_ENV below. GitHub only auto-masks
 // `secrets.*`, NOT values we inject — so register a mask explicitly, else any later env dump
@@ -91,6 +95,7 @@ if (catalogKey) lines.push(`CATALOG_API_KEY=${catalogKey}`);
 if (turnstileSitekey) lines.push(`NEXT_PUBLIC_TURNSTILE_SITEKEY=${turnstileSitekey}`);
 if (harmonyUrl) lines.push(`NEXT_PUBLIC_HARMONY_URL=${harmonyUrl}`);
 if (gaId) lines.push(`NEXT_PUBLIC_GA_ID=${gaId}`);
+if (gscVerification) lines.push(`NEXT_PUBLIC_GSC_VERIFICATION=${gscVerification}`);
 
 if (process.env.GITHUB_ENV && lines.length) {
   appendFileSync(process.env.GITHUB_ENV, lines.join("\n") + "\n");
@@ -104,6 +109,7 @@ console.log(
   "| TURNSTILE_SITEKEY:", turnstileSitekey || "(empty)",
   "| HARMONY_URL:", harmonyUrl || "(empty)",
   "| GA_ID:", gaId || "(empty)",
+  "| GSC:", gscVerification ? "(set)" : "(empty)",
 );
 if (!apiBase) {
   console.log("⚠ pas de api_base_url dans le snapshot → build avec les defaults dev (saas.test)");
