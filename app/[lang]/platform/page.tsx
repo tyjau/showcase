@@ -38,7 +38,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const params = await props.params;
   const t = await getDictionary(params.lang);
-  return { title: t.seo.pages.platform, alternates: buildAlternates(params.lang, "/platform") };
+  return { title: t.seo.pages.platform, description: t.platformPage.lead, alternates: buildAlternates(params.lang, "/platform") };
 }
 
 const PILLAR_ICONS = [Server, Zap, ShieldCheck];

@@ -24,7 +24,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const params = await props.params;
   const t = await getDictionary(params.lang);
-  return { title: t.seo.pages.resources, alternates: buildAlternates(params.lang, "/resources") };
+  return { title: t.seo.pages.resources, description: t.resourcesPage.lead, alternates: buildAlternates(params.lang, "/resources") };
 }
 
 const CARD_ICONS: Record<string, LucideIcon> = {
