@@ -1101,6 +1101,7 @@
     "status": "Statut",
     "trust": "Trust Center",
     "compare": "Comparatifs",
+    "solutions": "Solutions par pays",
     "rights": "Tous droits réservés."
   },
   "comparePage": {
@@ -1141,5 +1142,28 @@
       "factorial": { "name": "Factorial" },
       "sage": { "name": "Sage" }
     }
+  },
+  "geoPage": {
+    "eyebrow": "Solutions par pays",
+    "hubTitle": "La paie, pays par pays",
+    "hubLead": "Une paie conforme dans chaque pays où vous opérez — de l'espace OHADA à l'Europe — gérée sur une seule plateforme. Choisissez un pays.",
+    "draft": "À valider avant publication : confirmer la disponibilité en production (productionSignoff) de chaque pays avant d'en annoncer la conformité. Les pages pays présentent la couverture cible.",
+    "groupOHADA": "Afrique — espace OHADA",
+    "groupEU": "Europe",
+    "titlePattern": "Logiciel de paie et conformité — {name}",
+    "lead": "Paie, cotisations et déclarations aux caisses locales, sur la même plateforme que vos entités des autres pays. Une seule paie, du siège à la filiale.",
+    "frameworkLabel": "Cadre",
+    "currencyLabel": "Devise",
+    "fundsLabel": "Déclarations",
+    "whyTitle": "Pourquoi SkyRH ici",
+    "why": [
+      "Un moteur de paie localisé, maintenu à jour et validé par tests de parité.",
+      "Immatriculations, cotisations et déclarations aux caisses dans le même outil.",
+      "Vos filiales et votre siège sur une seule plateforme, avec les mêmes données."
+    ],
+    "backToHub": "Tous les pays",
+    "ctaTitle": "Voir SkyRH pour vos équipes",
+    "ctaSub": "Essai gratuit de 14 jours, sans carte bancaire.",
+    "ctaButton": "Démarrer l'essai gratuit"
   }
 }
