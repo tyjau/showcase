@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { ArrowRight, MapPin } from "lucide-react";
+import { ArrowRight, MapPin, Layers, ShieldCheck, BarChart3, Users, type LucideIcon } from "lucide-react";
 import { getDictionary } from "@/lib/dictionaries";
 import { i18n } from "@/lib/i18n";
 import { buildAlternates, SITE_URL } from "@/lib/seo";
@@ -8,6 +8,9 @@ import { GEO_COUNTRIES, type Framework } from "@/lib/geo";
 import { JsonLd } from "@/components/json-ld";
 import { CtaBand } from "@/components/cta-band";
 import { ParallaxTriangles } from "@/components/parallax-triangles";
+
+// Icônes de la bande de valeur cross-border (par index, alignées sur l'ordre des points du dict).
+const CROSS_ICONS: LucideIcon[] = [Layers, ShieldCheck, BarChart3, Users];
 
 export function generateStaticParams() {
   return i18n.locales.map((lang) => ({ lang }));
@@ -58,6 +61,32 @@ export default async function SolutionsHub(props: { params: Promise<{ lang: stri
             {g.hubTitle}
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-hero-fg-muted">{g.hubLead}</p>
+        </div>
+      </section>
+
+      {/* VALEUR CROSS-BORDER — pourquoi une SEULE plateforme multi-pays (cœur du positionnement) */}
+      <section className="border-b border-line bg-mist">
+        <div className="mx-auto max-w-5xl px-5 py-16">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-2xl font-bold tracking-tight text-heading sm:text-3xl">{g.crossBorder.title}</h2>
+            <p className="mt-3 leading-relaxed text-muted">{g.crossBorder.lead}</p>
+          </div>
+          <div className="mt-10 grid gap-5 sm:grid-cols-2">
+            {(g.crossBorder.points as { title: string; desc: string }[]).map((pt, i) => {
+              const Icon = CROSS_ICONS[i] ?? Layers;
+              return (
+                <div key={pt.title} className="flex items-start gap-3.5 rounded-2xl border border-line bg-surface p-6">
+                  <span className="inline-flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-tint-sky text-sky-text">
+                    <Icon size={22} />
+                  </span>
+                  <div>
+                    <h3 className="font-bold text-heading">{pt.title}</h3>
+                    <p className="mt-1.5 text-sm leading-relaxed text-muted">{pt.desc}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </section>
 

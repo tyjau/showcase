@@ -1151,6 +1151,16 @@
     "hubTitle": "La paie, pays par pays",
     "hubLead": "Une paie conforme dans chaque pays où vous opérez — de l'espace OHADA à l'Europe — gérée sur une seule plateforme. Choisissez un pays.",
     "draft": "À valider avant publication : confirmer la disponibilité en production (productionSignoff) de chaque pays avant d'en annoncer la conformité. Les pages pays présentent la couverture cible.",
+    "crossBorder": {
+      "title": "Une seule paie, du siège à chaque filiale",
+      "lead": "Les groupes présents en France et en Afrique francophone jonglent avec un outil par pays — et réconcilient le reste dans des tableurs. SkyRH les réunit sur une seule plateforme.",
+      "points": [
+        { "title": "Une plateforme, tous les pays", "desc": "Chaque pays a ses règles ; une seule plateforme les porte toutes — fini un logiciel par filiale plus Excel." },
+        { "title": "Conformité tenue pays par pays", "desc": "Règles de paie et déclarations aux caisses maintenues dans chaque juridiction — OHADA et Europe." },
+        { "title": "Une vue consolidée", "desc": "Vos effectifs et votre masse salariale, tous pays confondus, au même endroit, sur les mêmes données." },
+        { "title": "Tout le cycle RH", "desc": "Au-delà de la paie : recrutement, congés, performance et self-service — pour toutes vos équipes, partout." }
+      ]
+    },
     "groupOHADA": "Afrique — espace OHADA",
     "groupEU": "Europe",
     "titlePattern": "Logiciel de paie et conformité — {name}",
