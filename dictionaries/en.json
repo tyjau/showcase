@@ -1151,6 +1151,16 @@
     "hubTitle": "Payroll, country by country",
     "hubLead": "Payroll compliant in every country you operate in — from the OHADA zone to Europe — run on one platform. Pick a country.",
     "draft": "To validate before publishing: confirm each country's production availability (productionSignoff) before claiming its compliance. Country pages present target coverage.",
+    "crossBorder": {
+      "title": "One payroll, from HQ to every subsidiary",
+      "lead": "Groups operating across France and francophone Africa juggle one tool per country — and reconcile the rest in spreadsheets. SkyRH runs them all on one platform.",
+      "points": [
+        { "title": "One platform, every country", "desc": "Each country has its own rules; one platform carries them all — no more one tool per subsidiary plus Excel." },
+        { "title": "Compliance kept per country", "desc": "Payroll rules and social-fund filings maintained in each jurisdiction — OHADA and Europe." },
+        { "title": "A consolidated view", "desc": "Your headcount and payroll cost across every country, in one place, on the same data." },
+        { "title": "The whole HR cycle", "desc": "Beyond payroll: hiring, time off, performance and self-service — for all your teams, everywhere." }
+      ]
+    },
     "groupOHADA": "Africa — OHADA zone",
     "groupEU": "Europe",
     "titlePattern": "Payroll & compliance software — {name}",
