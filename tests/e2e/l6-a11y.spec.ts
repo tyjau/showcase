@@ -4,7 +4,10 @@ import AxeBuilder from "@axe-core/playwright";
 // Full WCAG AA audit (incl. color-contrast) in both themes. The accessible-accent
 // (--brand-sky-strong fills + --sky-text) brings the locked #0F9ED5 brand to AA while
 // keeping the vivid colour for identity/decorative. Asserts zero critical/serious.
-const PAGES = ["/fr", "/fr/pricing", "/fr/contact", "/fr/enterprise", "/fr/careers", "/fr/legal/terms", "/fr/signup", "/fr/login", "/fr/status"];
+const PAGES = ["/fr", "/fr/pricing", "/fr/contact", "/fr/enterprise", "/fr/careers", "/fr/legal/terms", "/fr/signup", "/fr/login", "/fr/status",
+  // Pages ajoutées cette itération (SEO-06 comparatifs + hub géo 24 pays + Trust Center) — désormais
+  // sous l'audit WCAG AA (une comparative, un pays OHADA en échantillon des routes dynamiques).
+  "/fr/compare", "/fr/compare/payfit", "/fr/solutions", "/fr/solutions/senegal", "/fr/trust"];
 
 for (const theme of ["dark", "light"] as const) {
   for (const p of PAGES) {
