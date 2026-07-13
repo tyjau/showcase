@@ -567,6 +567,7 @@
     "planLead": "Modifiable à tout moment. Facturé par employé actif.",
     "employees": "Employés",
     "addOptions": "Options",
+    "included": "Inclus dans {plan}",
     "perEmployee": "par employé / mois",
     "estTotal": "Total estimé",
     "monthlyTotal": "/ mois",

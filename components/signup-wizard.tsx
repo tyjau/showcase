@@ -24,6 +24,7 @@ type Dict = {
   planLead: string;
   employees: string;
   addOptions: string;
+  included: string;
   perEmployee: string;
   estTotal: string;
   monthlyTotal: string;
@@ -172,6 +173,12 @@ export function SignupWizard({
   const addonMods = catalog.modules.filter(
     (m) => m.isAddon && pkg && !pkg.modules.includes(m.code),
   );
+  // Modules inclus dans le plan choisi — repréciser l'inclus AVANT de proposer les options.
+  const includedMods = pkg
+    ? pkg.modules
+        .map((code) => catalog.modules.find((m) => m.code === code))
+        .filter((m): m is CatalogModule => !!m)
+    : [];
   const base = pkg ? unitPrice(pkg.prices, currency) : 0;
   const addonSum = addonMods.reduce(
     (s, m) => (addons.has(m.code) ? s + unitPrice(m.prices, currency) : s),
@@ -334,6 +341,22 @@ export function SignupWizard({
               );
             })}
           </div>
+
+          {pkg && includedMods.length > 0 && (
+            <div className="mt-4 rounded-xl border border-line bg-mist/60 p-4">
+              <div className="mb-2 text-sm font-semibold text-ink">
+                {dict.included.replace("{plan}", pkg.name)}
+              </div>
+              <ul className="grid gap-x-4 gap-y-1.5 sm:grid-cols-2">
+                {includedMods.map((m) => (
+                  <li key={m.code} className="flex items-center gap-2 text-sm text-muted">
+                    <Check size={14} className="flex-none text-sky-text" strokeWidth={3} />
+                    {moduleText(m, lang).headline}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           <div className="mt-6 flex items-center gap-3 text-sm">
             <span className="text-muted">{dict.employees}</span>

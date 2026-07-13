@@ -567,6 +567,7 @@
     "planLead": "You can change this anytime. Billed per active employee.",
     "employees": "Employees",
     "addOptions": "Add-ons",
+    "included": "Included in {plan}",
     "perEmployee": "per employee / month",
     "estTotal": "Estimated total",
     "monthlyTotal": "/ month",
