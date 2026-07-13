@@ -82,6 +82,10 @@ function slugify(s: string): string {
 }
 
 const STEP_KEYS = ["plan", "workspace", "account", "review"] as const;
+// Offres en vente assistée : PAS de self-serve dans le wizard. Cohérent avec la page Tarifs, qui route
+// Enterprise vers /enterprise (contact) et non /signup. On les filtre de la grille de plans ET on
+// redirige un éventuel ?plan= vers la page contact (sinon Enterprise s'afficherait tarifé + soumettable).
+const CONTACT_ONLY = new Set(["ENTERPRISE"]);
 const INPUT_CLS =
   "w-full rounded-lg border border-line px-3 py-2.5 text-sm outline-none focus:border-sky";
 
@@ -143,10 +147,15 @@ export function SignupWizard({
   useEffect(() => {
     const sp = new URLSearchParams(window.location.search);
     const plan = sp.get("plan");
+    // Enterprise (vente assistée) n'est pas self-serve → renvoyer vers la page contact dédiée.
+    if (plan && CONTACT_ONLY.has(plan)) {
+      window.location.replace(`/${lang}/enterprise`);
+      return;
+    }
     if (plan && catalog.packages.some((p) => p.code === plan)) setPlanCode(plan);
     const ad = sp.get("addons");
     if (ad) setAddons(new Set(ad.split(",").filter(Boolean)));
-  }, [catalog]);
+  }, [catalog, lang]);
 
   useEffect(() => {
     if (!subTouched) setSubdomain(slugify(company));
@@ -287,7 +296,7 @@ export function SignupWizard({
           <h1 className="text-2xl font-bold text-heading">{dict.planTitle}</h1>
           <p className="mt-1 text-muted">{dict.planLead}</p>
           <div className="mt-6 grid gap-3 sm:grid-cols-3">
-            {catalog.packages.map((p) => {
+            {catalog.packages.filter((p) => !CONTACT_ONLY.has(p.code)).map((p) => {
               const pBase = unitPrice(p.prices, currency);
               const active = p.code === planCode;
               const pop = p.code === "BUSINESS";

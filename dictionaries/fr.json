@@ -2,7 +2,7 @@
   "seo": {
     "defaultTitle": "SkyRH — Paie multi-pays & SIRH, conforme dans chaque pays",
     "titleTemplate": "%s · SkyRH",
-    "description": "La paie multi-pays et les déclarations sociales, conformes dans chaque pays — OHADA compris. SkyRH réunit la paie, les déclarations aux caisses et tout le cycle RH sur une seule plateforme.",
+    "description": "Le SIRH complet — recrutement, congés, performance, self-service et paie multi-pays avec ses déclarations sociales — sur une seule plateforme. Sa différence : un moteur de conformité extensible, conforme dans chaque pays, de l'Europe à l'espace OHADA.",
     "pages": {
       "pricing": "Tarifs",
       "features": "Fonctionnalités",
@@ -42,12 +42,13 @@
     "system": "Système"
   },
   "hero": {
-    "eyebrow": "SIRH — paie & déclarations sociales multi-pays",
-    "title": "La paie multi-pays, conforme dans chaque pays — OHADA compris.",
-    "lead": "SkyRH réunit la paie, les déclarations aux caisses et tout le cycle RH sur une seule plateforme, avec des règles maintenues pays par pays. La couverture s'étend en continu : là où d'autres s'arrêtent à l'Europe, nous allons jusqu'aux réglementations OHADA. Pensé pour les organisations qui opèrent au-delà d'une frontière.",
+    "eyebrow": "SIRH multi-pays — du recrutement à la paie",
+    "title": "Le SIRH complet, du recrutement à la paie — dans chaque pays où vous opérez.",
+    "lead": "SkyRH réunit tout le cycle RH — recrutement, congés, performance, self-service — et la paie avec ses déclarations sociales, sur une seule plateforme. Sa différence : un moteur de conformité extensible, où chaque réglementation est un module qu'on embarque en jours. De l'Europe à l'espace OHADA, la couverture s'étend en continu.",
     "ctaPrimary": "Démarrer l'essai gratuit",
     "ctaDemo": "Réserver une démo",
-    "trustNote": "14 jours d'essai · sans carte bancaire"
+    "trustNote": "14 jours d'essai · sans carte bancaire",
+    "coverageLabel": "cadres réglementaires · Europe + OHADA · en expansion"
   },
   "preview": {
     "title": "Paie · juin 2026",
@@ -69,7 +70,7 @@
     "title": "Le SIRH dont la paie est le cœur, pas une option",
     "lead": "La plupart des SIRH branchent la paie en option. SkyRH part de la paie et des déclarations aux caisses — le plus dur, le plus réglementé — et fait suivre tout le reste du cycle RH sur la même plateforme.",
     "blocks": [
-      { "title": "Conforme, pays par pays", "desc": "Un moteur de règles maintenu et validé par tests de parité, étendu à de nouveaux pays en continu." },
+      { "title": "Chaque réglementation, un module", "desc": "Un cadre de paie, c'est de la donnée déclarative — barèmes, cotisations, déclarations — pas du code sur-mesure. On embarque un nouveau pays en jours, derrière des tests de parité, et la couverture s'étend en continu." },
       { "title": "Les déclarations sociales incluses", "desc": "Immatriculations, cotisations et déclarations aux caisses (CNPS, CNSS, URSSAF…) dans le même outil que la paie — pas un module à part." },
       { "title": "Tout le cycle RH, pas des silos", "desc": "Recrutement, congés, présences, performance et portail self-service — sur la même plateforme que la paie, avec les mêmes données." }
     ]
@@ -1110,14 +1111,14 @@
   "comparePage": {
     "eyebrow": "Comparatifs",
     "hubTitle": "SkyRH face aux autres logiciels RH & paie",
-    "hubLead": "Vous comparez les SIRH ? La plupart sont excellents en Europe et s'arrêtent à sa frontière. SkyRH gère la paie et les déclarations sociales au-delà — jusqu'aux réglementations OHADA — sur une seule plateforme.",
+    "hubLead": "Vous comparez les SIRH ? La plupart sont excellents en Europe et s'arrêtent à sa frontière — chaque nouveau pays y est un développement. Chez SkyRH, une réglementation est un module de données validé par des tests : la couverture s'étend en continu, de l'Europe à l'espace OHADA, sur une seule plateforme.",
     "pickTitle": "Choisissez une comparaison",
     "draft": "À valider avant publication : renseigner les faits concurrents vérifiés et confirmer la conformité à la publicité comparative (Code de la consommation, art. L122-1 et suivants) avant la mise en production. Les cellules concurrentes sont des repères en attendant.",
     "vsPrefix": "SkyRH vs",
-    "vsLead": "{name} est fort en Europe. Voici ce qui change quand votre paie doit aussi être conforme au-delà — jusqu'à l'OHADA.",
+    "vsLead": "{name} est fort en Europe. Voici ce qui change quand votre paie doit couvrir un pays de plus — et que, chez SkyRH, l'ajouter est un module, pas un chantier.",
     "whyTitle": "Pourquoi les équipes choisissent SkyRH",
     "why": [
-      "Une paie conforme dans chaque pays — France, Europe et espace OHADA — étendue en continu.",
+      "Une paie conforme dans chaque pays — Europe, espace OHADA et au-delà — étendue en continu, un module à la fois.",
       "Les déclarations aux caisses sociales dans le même outil que la paie, pas un module à part.",
       "Tout le cycle RH sur une seule plateforme, avec les mêmes données."
     ],
@@ -1127,9 +1128,9 @@
     "verify": "À vérifier",
     "features": [
       { "label": "Paie multi-pays", "skyrh": "Oui — moteur localisé par pays" },
-      { "label": "Réglementations OHADA (Afrique)", "skyrh": "Oui — espace OHADA couvert" },
+      { "label": "Ajouter un nouveau pays", "skyrh": "Oui — un module de données + tests, en jours" },
       { "label": "Déclarations aux caisses sociales", "skyrh": "Oui — dans le même outil que la paie" },
-      { "label": "Couverture étendue en continu", "skyrh": "Oui — nouveaux pays en continu" },
+      { "label": "Couverture Europe + OHADA", "skyrh": "Oui — même moteur, au même niveau, en expansion" },
       { "label": "Tout le cycle RH sur une plateforme", "skyrh": "Oui — mêmes données" },
       { "label": "Tarif par employé transparent", "skyrh": "Oui — affiché publiquement" },
       { "label": "Marque blanche partenaires", "skyrh": "Oui — funnels co-brandés" },

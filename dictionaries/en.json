@@ -2,7 +2,7 @@
   "seo": {
     "defaultTitle": "SkyRH — Multi-country payroll & HRIS, compliant in every country",
     "titleTemplate": "%s · SkyRH",
-    "description": "Multi-country payroll and social-fund filings, compliant in every country — OHADA included. SkyRH unifies payroll, social filings and the whole HR cycle on one platform.",
+    "description": "The complete HRIS — hiring, leave, performance, self-service and multi-country payroll with its social filings — on one platform. What sets it apart: an extensible compliance engine, compliant in every country, from Europe to the OHADA zone.",
     "pages": {
       "pricing": "Pricing",
       "features": "Features",
@@ -42,12 +42,13 @@
     "system": "System"
   },
   "hero": {
-    "eyebrow": "HRIS — multi-country payroll & social filings",
-    "title": "Multi-country payroll, compliant in every country — OHADA included.",
-    "lead": "SkyRH unifies payroll, social-fund filings and the whole HR cycle on one platform, with rules maintained country by country. Coverage keeps expanding: where others stop at Europe, we go all the way to OHADA. Built for organizations that operate across borders.",
+    "eyebrow": "Multi-country HRIS — from hiring to payroll",
+    "title": "The complete HRIS, from hiring to payroll — in every country you operate.",
+    "lead": "SkyRH brings the whole HR cycle — hiring, leave, performance, self-service — together with payroll and its social filings, on one platform. What sets it apart: an extensible compliance engine where each regulation is a module onboarded in days. From Europe to the OHADA zone, coverage keeps expanding.",
     "ctaPrimary": "Start free trial",
     "ctaDemo": "Book a demo",
-    "trustNote": "14-day free trial · no credit card"
+    "trustNote": "14-day free trial · no credit card",
+    "coverageLabel": "regulatory frameworks · Europe + OHADA · and growing"
   },
   "preview": {
     "title": "Payroll · June 2026",
@@ -69,7 +70,7 @@
     "title": "The HRIS with payroll at its core, not as an add-on",
     "lead": "Most HRIS bolt payroll on. SkyRH starts from payroll and social-fund filings — the hardest, most regulated part — and brings the rest of the HR cycle onto the same platform.",
     "blocks": [
-      { "title": "Compliant, country by country", "desc": "A rules engine maintained and checked by parity tests, extended to new countries continuously." },
+      { "title": "Every regulation, a module", "desc": "A payroll framework is declarative data — brackets, contributions, filings — not bespoke code. We onboard a new country in days, behind parity tests, and coverage keeps expanding." },
       { "title": "Social filings included", "desc": "Registrations, contributions and filings to social funds (CNPS, CNSS, URSSAF…) in the same tool as payroll — not a separate module." },
       { "title": "The whole HR cycle, not silos", "desc": "Hiring, leave, attendance, performance and a self-service portal — on the same platform as payroll, sharing the same data." }
     ]
@@ -1110,14 +1111,14 @@
   "comparePage": {
     "eyebrow": "Comparisons",
     "hubTitle": "SkyRH compared to other HR & payroll tools",
-    "hubLead": "Comparing HRIS platforms? Most are excellent in Europe and stop at its border. SkyRH runs payroll and social-fund filings beyond it — all the way to OHADA frameworks — on one platform.",
+    "hubLead": "Comparing HRIS platforms? Most are excellent in Europe and stop at its border — every new country is a development project. At SkyRH a regulation is a data module checked by tests: coverage keeps expanding, from Europe to the OHADA zone, on one platform.",
     "pickTitle": "Pick a comparison",
     "draft": "To validate before publishing: fill in the verified competitor facts and confirm compliance with comparative-advertising rules before going to production. Competitor cells are placeholders until then.",
     "vsPrefix": "SkyRH vs",
-    "vsLead": "{name} is strong in Europe. Here's what changes when your payroll also has to be compliant beyond it — all the way to OHADA.",
+    "vsLead": "{name} is strong in Europe. Here's what changes when your payroll has to cover one more country — and adding it, at SkyRH, is a module, not a project.",
     "whyTitle": "Why teams pick SkyRH",
     "why": [
-      "Payroll compliant in every country — France, Europe and the OHADA zone — expanding continuously.",
+      "Payroll compliant in every country — Europe, the OHADA zone and beyond — extended continuously, one module at a time.",
       "Social-fund filings in the same tool as payroll, not a separate module.",
       "The whole HR cycle on one platform, sharing the same data."
     ],
@@ -1127,9 +1128,9 @@
     "verify": "To verify",
     "features": [
       { "label": "Multi-country payroll", "skyrh": "Yes — engine localized per country" },
-      { "label": "OHADA frameworks (Africa)", "skyrh": "Yes — OHADA zone covered" },
+      { "label": "Add a new country", "skyrh": "Yes — a data module + tests, in days" },
       { "label": "Social-fund filings", "skyrh": "Yes — in the same tool as payroll" },
-      { "label": "Coverage that keeps expanding", "skyrh": "Yes — new countries continuously" },
+      { "label": "Europe + OHADA coverage", "skyrh": "Yes — same engine, same footing, and growing" },
       { "label": "Whole HR cycle on one platform", "skyrh": "Yes — shared data" },
       { "label": "Transparent per-employee pricing", "skyrh": "Yes — published publicly" },
       { "label": "Partner white-label", "skyrh": "Yes — co-branded funnels" },
