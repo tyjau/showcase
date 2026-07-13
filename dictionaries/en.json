@@ -598,6 +598,8 @@
     "rOptions": "Add-ons",
     "rWorkspace": "Workspace",
     "rAdmin": "Administrator",
+    "promoLabel": "Promo code (optional)",
+    "promoPh": "Your code",
     "termsPre": "I agree to the",
     "termsAnd": "and",
     "create": "Create workspace",

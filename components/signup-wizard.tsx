@@ -55,6 +55,8 @@ type Dict = {
   rOptions: string;
   rWorkspace: string;
   rAdmin: string;
+  promoLabel: string;
+  promoPh: string;
   termsPre: string;
   termsAnd: string;
   create: string;
@@ -141,6 +143,7 @@ export function SignupWizard({
   const [password, setPassword] = useState("");
   const [agree, setAgree] = useState(false);
   const [captcha, setCaptcha] = useState("");
+  const [promo, setPromo] = useState("");
   const [done, setDone] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -232,6 +235,7 @@ export function SignupWizard({
       turnstile_token: captcha,
       // Attribution partenaire (funnels co-brandés) — referrers/referrals (back migr.112)
       ...(refCode ? { referral_code: refCode } : {}),
+      ...(promo.trim() ? { coupon: promo.trim() } : {}),
       ...(utm.source ? { utm_source: utm.source } : {}),
       ...(utm.campaign ? { utm_campaign: utm.campaign } : {}),
       ...(utm.medium ? { utm_medium: utm.medium } : {}),
@@ -551,6 +555,17 @@ export function SignupWizard({
               value={`${firstName} ${lastName} · ${email}`}
             />
           </dl>
+          <div className="mt-5">
+            <Field label={dict.promoLabel}>
+              <input
+                value={promo}
+                onChange={(e) => setPromo(e.target.value)}
+                placeholder={dict.promoPh}
+                autoComplete="off"
+                className={INPUT_CLS}
+              />
+            </Field>
+          </div>
           <label className="mt-5 flex items-start gap-2 text-sm text-muted">
             <input
               type="checkbox"

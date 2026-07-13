@@ -598,6 +598,8 @@
     "rOptions": "Options",
     "rWorkspace": "Espace",
     "rAdmin": "Administrateur",
+    "promoLabel": "Code promo (facultatif)",
+    "promoPh": "Votre code",
     "termsPre": "J'accepte les",
     "termsAnd": "et la",
     "create": "Créer l'espace",
