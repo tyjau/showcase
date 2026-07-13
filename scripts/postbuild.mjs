@@ -115,19 +115,26 @@ if (SITE) {
   writeFileSync(join(OUT, "robots.txt"), `User-agent: *\nAllow: /\nSitemap: ${SITE}/sitemap.xml\n`);
   console.log(`[postbuild] wrote out/sitemap.xml (${urls.length} URLs, hreflang) + out/robots.txt (SITE=${SITE})`);
 
-  // security.txt (RFC 9116) — divulgation responsable. Le dossier .well-known est un dotfile, donc
-  // ignoré par l'export Next : on le génère ici (comme .htaccess). Contact = page de contact publique
-  // (aucun email inventé), Policy = Trust Center. Expires est requis par la RFC → build + 1 an.
-  const secExpires = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString();
-  mkdirSync(join(OUT, ".well-known"), { recursive: true });
-  writeFileSync(
-    join(OUT, ".well-known", "security.txt"),
-    `Contact: ${SITE}/${DEFAULT_LOCALE}/contact\n` +
-      `Policy: ${SITE}/${DEFAULT_LOCALE}/trust\n` +
-      `Preferred-Languages: en, fr\n` +
-      `Expires: ${secExpires}\n`,
-  );
-  console.log(`[postbuild] wrote out/.well-known/security.txt (expires ${secExpires.slice(0, 10)})`);
+  // security.txt (RFC 9116) — divulgation responsable. UNIQUEMENT aux déploiements RACINE (BASE vide) :
+  // la RFC l'exige à /.well-known/security.txt à la RACINE DU DOMAINE. Sous un sous-chemin (/showcase —
+  // le staging partage le domaine du guardian), le fichier serait non-canonique (les scanners lisent la
+  // racine du domaine, pas /showcase/.well-known/) → on ne le génère pas. Dossier .well-known = dotfile
+  // ignoré par l'export Next, donc généré ici (comme .htaccess). Contact = page de contact, Policy =
+  // Trust Center, Expires requis (build + 1 an).
+  if (!BASE) {
+    const secExpires = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString();
+    mkdirSync(join(OUT, ".well-known"), { recursive: true });
+    writeFileSync(
+      join(OUT, ".well-known", "security.txt"),
+      `Contact: ${SITE}/${DEFAULT_LOCALE}/contact\n` +
+        `Policy: ${SITE}/${DEFAULT_LOCALE}/trust\n` +
+        `Preferred-Languages: en, fr\n` +
+        `Expires: ${secExpires}\n`,
+    );
+    console.log(`[postbuild] wrote out/.well-known/security.txt (expires ${secExpires.slice(0, 10)})`);
+  } else {
+    console.log(`[postbuild] security.txt non généré (déploiement sous-chemin '${BASE}' → non canonique)`);
+  }
 } else {
   console.log("[postbuild] pas de SITE_URL/FRONT_SMOKE_URL → sitemap/robots ignorés (build local)");
 }

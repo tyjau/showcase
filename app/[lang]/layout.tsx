@@ -38,6 +38,12 @@ export async function generateMetadata(
       images: [{ url: "/img/hero-office.png", alt: "SkyRH" }],
     },
     twitter: { card: "summary_large_image", images: ["/img/hero-office.png"] },
+    // Staging : noindex piloté par le BUILD (SHOWCASE_ENV ≠ production) — serveur-agnostique, plus fiable
+    // qu'un X-Robots-Tag nginx à maintenir/retirer par environnement. Prod (SHOWCASE_ENV=production) ou
+    // build local → indexable. S'applique à toutes les pages ; les pages auth gardent leur propre NOINDEX.
+    ...(process.env.SHOWCASE_ENV && process.env.SHOWCASE_ENV !== "production"
+      ? { robots: { index: false, follow: true } }
+      : {}),
     // Vérification Google Search Console : balise <meta google-site-verification> émise seulement si
     // le jeton est baké (NEXT_PUBLIC_GSC_VERIFICATION, via la forge cfg.gsc_verification). Sinon rien
     // — on peut aussi vérifier via la propriété GA4 déjà liée, sans code.
