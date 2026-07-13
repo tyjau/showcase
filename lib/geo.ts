@@ -53,6 +53,11 @@ export const GEO_COUNTRIES: GeoCountry[] = [
   { slug: "suisse", code: "CH", name: { fr: "Suisse", en: "Switzerland" }, framework: "EU", currency: "CHF", funds: ["AVS", "LPP"] },
 ];
 
+// Nombre de cadres réglementaires couverts (1 pays = 1 cadre = 1 entrée ci-dessus). Source UNIQUE du
+// compteur affiché sur la vitrine — monte automatiquement quand on ajoute un pays. Cf. positionnement
+// (extensibilité : « un cadre = de la donnée, pas du code »).
+export const GEO_FRAMEWORK_COUNT = GEO_COUNTRIES.length;
+
 export function geoBySlug(slug: string): GeoCountry | undefined {
   return GEO_COUNTRIES.find((c) => c.slug === slug);
 }

@@ -6,6 +6,7 @@ import { Elements, PaymentElement, useStripe, useElements } from "@stripe/react-
 import { usePathname } from "next/navigation";
 import { apiAuthed } from "@/lib/api";
 import { formatRate } from "@/lib/money";
+import { trackEvent } from "@/lib/analytics";
 
 type Dict = Record<string, string>;
 type Invoice = {
@@ -110,7 +111,7 @@ export function OrderCheckout({ dict, onActivated }: { dict: Dict; onActivated?:
       )}
       {clientSecret && stripePromise && (
         <Elements stripe={stripePromise} options={{ clientSecret, appearance: { theme: "stripe" } }}>
-          <PayForm dict={dict} onPaid={() => { setState("paid"); onActivated?.(); }} />
+          <PayForm dict={dict} onPaid={() => { trackEvent("purchase", { transaction_id: String(invoice?.id ?? ""), value: invoice?.total ?? 0, currency: invoice?.currency ?? "" }); setState("paid"); onActivated?.(); }} />
         </Elements>
       )}
     </section>

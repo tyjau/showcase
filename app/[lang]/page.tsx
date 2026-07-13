@@ -20,6 +20,7 @@ import { ModulesCarousel } from "@/components/modules-carousel";
 import { HomePacks } from "@/components/home-packs";
 import { CtaBand } from "@/components/cta-band";
 import { fetchCatalog, type Money } from "@/lib/catalog";
+import { GEO_FRAMEWORK_COUNT } from "@/lib/geo";
 import { FileText, ArrowRight } from "lucide-react";
 import type { Metadata } from "next";
 import { buildAlternates } from "@/lib/seo";
@@ -220,6 +221,10 @@ export default async function Home(
             <p className="mt-4 inline-flex items-center gap-1.5 text-xs text-hero-fg-faint">
               <Check size={14} className="text-sky-soft" /> {t.hero.trustNote}
             </p>
+            <div className="mt-7 inline-flex items-baseline gap-2.5 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+              <span className="text-2xl font-extrabold tracking-tight text-white tabular-nums">{GEO_FRAMEWORK_COUNT}</span>
+              <span className="max-w-[15rem] text-[13px] leading-snug text-hero-fg-muted">{t.hero.coverageLabel}</span>
+            </div>
           </div>
 
           <PayrollPreview dict={t.preview} />
