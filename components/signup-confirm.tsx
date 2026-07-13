@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AlertCircle, Check } from "lucide-react";
 import { apiPost, storeSession } from "@/lib/api";
+import { trackEvent } from "@/lib/analytics";
 
 type Dict = Record<string, string>;
 
@@ -34,6 +35,9 @@ export function SignupConfirm({ lang, dict }: { lang: string; dict: Dict }) {
   // Applique une réponse signup_confirm réussie : auto-login (session billing pour les signups
   // pay_first) sinon écran de succès.
   function onConfirmed(data: Record<string, unknown>): void {
+    // Activation confirmée = la VRAIE conversion du funnel (le signup_request n'émet qu'un lead
+    // "sign_up_request"). Émis une fois : onConfirmed n'est appelé qu'au succès (1-clic OU repli).
+    trackEvent("sign_up", { method: "email" });
     if (data.access_token) {
       storeSession(
         (data.subdomain as string) ?? "",

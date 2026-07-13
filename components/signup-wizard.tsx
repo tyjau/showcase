@@ -242,7 +242,7 @@ export function SignupWizard({
     });
     setSubmitting(false);
     if (res.ok) {
-      trackEvent("sign_up", { method: "email", plan: planCode }); // conversion clé du funnel showcase
+      trackEvent("sign_up_request", { method: "email", plan: planCode }); // LEAD : formulaire soumis, email non confirmé. La VRAIE conversion = "sign_up" émis à l'activation (signup-confirm)
       setDone(true);
     } else {
       setError(res.error ?? "Something went wrong");
