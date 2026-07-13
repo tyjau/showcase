@@ -35,9 +35,10 @@ location /showcase/ {
     # 403 / 5xx → même page stylée plutôt que la page d'erreur brute d'nginx.
     error_page 403 500 502 503 504 /showcase/404.html;
 
-    # ⚠️ STAGING UNIQUEMENT — empêche l'indexation Google du staging (à RETIRER en prod). Sur un
-    # sous-chemin, le robots.txt racine n'est pas contrôlé par le showcase ; ce header suffit
-    # (X-Robots-Tag est respecté par Google, page par page).
+    # ⚠️ STAGING UNIQUEMENT — à RETIRER en prod. REDONDANT depuis que le noindex est piloté par le
+    # BUILD (SHOWCASE_ENV → balise <meta robots> des pages, cf. app/[lang]/layout.tsx) : le staging est
+    # déjà noindex sans ce header. Gardé en défense-en-profondeur ; NE DOIT PAS figurer sur la config
+    # nginx de prod (sinon la prod, pourtant buildée indexable, serait masquée par ce header).
     add_header X-Robots-Tag "noindex, nofollow" always;
 
     add_header Cache-Control $skyrh_cache always;
