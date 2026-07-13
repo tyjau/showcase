@@ -25,6 +25,31 @@ const PartnerContext = createContext<PartnerCtx>({
   utm: EMPTY_UTM,
 });
 
+// Persistance de l'attribution (ref/partner + utm) : cookie first-party ~90 j, pour qu'elle
+// survive à un reload dur ou à un accès direct à /signup (sans param d'URL). Sans ça, le code
+// ?ref/?partner_code n'était qu'en mémoire React → attribution perdue au moindre reload.
+const ATTRIB_COOKIE = "skyrh_attrib";
+const ATTRIB_MAX_AGE = 60 * 60 * 24 * 90; // 90 jours
+
+type Attrib = { ref: string | null; utm: Utm };
+
+function readAttrib(): Attrib | null {
+  const m = document.cookie.match(/(?:^|;\s*)skyrh_attrib=([^;]+)/);
+  if (!m) return null;
+  try {
+    return JSON.parse(decodeURIComponent(m[1])) as Attrib;
+  } catch {
+    return null;
+  }
+}
+
+function writeAttrib(data: Attrib) {
+  const secure = location.protocol === "https:" ? "; Secure" : "";
+  document.cookie = `${ATTRIB_COOKIE}=${encodeURIComponent(
+    JSON.stringify(data),
+  )}; path=/; max-age=${ATTRIB_MAX_AGE}; SameSite=Lax${secure}`;
+}
+
 /**
  * Reads the partner / referral code (`?partner_code=` or `?ref=`) and the UTM
  * params from the URL, fetches the partner's co-branding config at runtime, and
@@ -39,12 +64,23 @@ export function PartnerProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const sp = new URLSearchParams(window.location.search);
-    setUtm({
+    const urlUtm: Utm = {
       source: sp.get("utm_source"),
       campaign: sp.get("utm_campaign"),
       medium: sp.get("utm_medium"),
-    });
-    const code = sp.get("partner_code") || sp.get("ref");
+    };
+    const urlCode = sp.get("partner_code") || sp.get("ref");
+    const hasUrlAttrib =
+      !!urlCode || !!(urlUtm.source || urlUtm.campaign || urlUtm.medium);
+
+    // L'URL prime (dernière touche) ; sinon on relit l'attribution posée à la 1re visite.
+    const stored = hasUrlAttrib ? null : readAttrib();
+    const code = urlCode ?? stored?.ref ?? null;
+    const resolvedUtm = hasUrlAttrib ? urlUtm : stored?.utm ?? EMPTY_UTM;
+
+    setUtm(resolvedUtm);
+    if (hasUrlAttrib) writeAttrib({ ref: code, utm: resolvedUtm });
+
     if (!code) return;
     setRefCode(code);
     let alive = true;
