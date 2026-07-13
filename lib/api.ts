@@ -358,6 +358,14 @@ export async function apiAuthed(
   }
 }
 
+/** Handoff SSO : demande un token de handoff court (usage unique) pour ouvrir Harmony sans exposer
+ * l'access token dans l'URL. Renvoie le token, ou null si non connecté / erreur (fallback lien nu). */
+export async function apiHandoffToken(): Promise<string | null> {
+  const res = await apiAuthed("handoff_token", {});
+  const t = res.ok ? res.data?.handoff_token : null;
+  return typeof t === "string" ? t : null;
+}
+
 /** Update the account owner's avatar (data-URL or URL) via the billing-scope
  * update_profile action, then cache it locally + broadcast PROFILE_EVENT so the header
  * and settings reflect it immediately (the user token only refreshes at next login). */

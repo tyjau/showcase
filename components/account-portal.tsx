@@ -15,7 +15,7 @@ import {
   ExternalLink,
   type LucideIcon,
 } from "lucide-react";
-import { apiAuthed, getToken, getWorkspace, getSessionName, clearSession, PROFILE_EVENT } from "@/lib/api";
+import { apiAuthed, apiHandoffToken, getToken, getWorkspace, getSessionName, clearSession, PROFILE_EVENT } from "@/lib/api";
 import { PaymentMethod } from "@/components/payment-method";
 import { OrderCheckout } from "@/components/order-checkout";
 import { ConsumptionSection } from "@/components/consumption-section";
@@ -197,6 +197,7 @@ export function AccountPortal({ lang, dict, addons = [] }: { lang: string; dict:
   const [workspace, setWorkspace] = useState<string | null>(null);
   const [firstName, setFirstName] = useState<string | null>(null);
   const [tab, setTab] = useState("plan");
+  const [opening, setOpening] = useState(false);
 
   useEffect(() => {
     setWorkspace(getWorkspace());
@@ -224,6 +225,21 @@ export function AccountPortal({ lang, dict, addons = [] }: { lang: string; dict:
   function logout() {
     clearSession();
     router.push(`/${lang}/login`);
+  }
+
+  // Continuité vitrine → Harmony : on demande un token de handoff court (usage unique) et on redirige
+  // vers /auth/sso?t= qui l'échange contre une session Harmony — sans re-login. Fallback : lien nu
+  // (l'utilisateur se reconnecte dans Harmony) si le handoff échoue ou si l'endpoint n'est pas déployé.
+  async function openHarmony() {
+    if (!workspace || opening) return;
+    setOpening(true);
+    const base = harmonyHref(workspace).replace(/\/+$/, "");
+    try {
+      const t = await apiHandoffToken();
+      window.location.href = t ? `${base}/auth/sso?t=${encodeURIComponent(t)}` : base;
+    } catch {
+      window.location.href = base;
+    }
   }
 
   if (state === "loading") return <p className="text-muted">{dict.loading}</p>;
@@ -285,12 +301,13 @@ export function AccountPortal({ lang, dict, addons = [] }: { lang: string; dict:
             {dict.logout}
           </button>
           {workspace && (
-            <a
-              href={harmonyHref(workspace)}
-              className="inline-flex items-center gap-1.5 rounded-full bg-sky-strong px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#08607f]"
+            <button
+              onClick={openHarmony}
+              disabled={opening}
+              className="inline-flex items-center gap-1.5 rounded-full bg-sky-strong px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#08607f] disabled:opacity-60"
             >
               <ExternalLink size={15} /> {dict.openWorkspace}
-            </a>
+            </button>
           )}
         </div>
       </div>
