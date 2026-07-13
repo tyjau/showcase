@@ -690,6 +690,7 @@
     "forgotPassword": "Mot de passe oublié ?",
     "cta": "Se connecter",
     "error": "Identifiants ou espace invalides.",
+    "notAdmin": "Ce portail est réservé aux administrateurs du compte.",
     "noWorkspace": "Pas encore d'espace ?",
     "signupCta": "Démarrer un essai gratuit",
     "socialOr": "ou",

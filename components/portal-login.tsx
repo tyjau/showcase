@@ -39,7 +39,9 @@ export function PortalLogin({ lang, dict }: { lang: string; dict: Dict }) {
     const res = await apiLogin(slug, email.trim(), password);
     setSubmitting(false);
     if (res.ok) router.push(`/${lang}/account`);
-    else setError(dict.error);
+    // 403 = garde owner-family du portail billing (back) : message actionnable localisé plutôt que le
+    // générique. Sûr : le back ne renvoie ce 403 qu'APRÈS identifiants valides (aucune énumération).
+    else setError(res.code === 403 ? (dict.notAdmin ?? dict.error) : dict.error);
   }
 
   // Social login. The real Google/Microsoft SDK is wired when client IDs exist; in dev mock mode

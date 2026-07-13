@@ -174,7 +174,7 @@ export async function apiLogin(
   workspace: string,
   email: string,
   password: string,
-): Promise<{ ok: boolean; error?: string }> {
+): Promise<{ ok: boolean; error?: string; code?: number }> {
   try {
     const res = await fetch(`${apiUrl("login")}&company=${encodeURIComponent(workspace)}`, {
       method: "POST",
@@ -190,7 +190,7 @@ export async function apiLogin(
       error?: string;
     };
     const code = json?.meta?.code ?? res.status;
-    if (!res.ok || code >= 400) return { ok: false, error: json?.error || `Error ${code}` };
+    if (!res.ok || code >= 400) return { ok: false, error: json?.error || `Error ${code}`, code };
     const token = json?.data?.access_token;
     if (!token) return { ok: false, error: "No token returned" };
     try {
