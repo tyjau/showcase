@@ -76,18 +76,26 @@ export function OrderCheckout({ dict, onActivated }: { dict: Dict; onActivated?:
   const [invoice, setInvoice] = useState<Invoice | null>(null);
   const [stripePromise, setStripePromise] = useState<Promise<Stripe | null> | null>(null);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
+  // Rail Afrique (Flutterwave, mobile money XOF/XAF) : checkout HÉBERGÉ → pas d'Elements, on sort
+  // vers la page du PSP. On NE redirige PAS au montage (ça détournerait la page) : l'utilisateur clique.
+  const [redirectUrl, setRedirectUrl] = useState<string | null>(null);
 
   useEffect(() => {
     apiAuthed("pay_order").then((res) => {
       const d = res.data || {};
-      if (!res.ok || d.already_active || !d.client_secret || !d.publishable_key) {
+      const hosted = typeof d.redirect_url === "string" ? (d.redirect_url as string) : null;
+      if (!res.ok || d.already_active || (!hosted && (!d.client_secret || !d.publishable_key))) {
         setState("none");
         return;
       }
       const inv = d.invoice as Invoice;
       setInvoice(inv);
-      setStripePromise(loadStripe(d.publishable_key as string));
-      setClientSecret(d.client_secret as string);
+      if (hosted) {
+        setRedirectUrl(hosted);
+      } else {
+        setStripePromise(loadStripe(d.publishable_key as string));
+        setClientSecret(d.client_secret as string);
+      }
       setState("due");
       // GA4 : le prospect a ATTEINT l'étape paiement (pay_first). Le ratio begin_checkout→purchase est
       // le drop-off clé du tunnel ; jusqu'ici on ne mesurait que l'achat final (angle mort au milieu).
@@ -114,6 +122,18 @@ export function OrderCheckout({ dict, onActivated }: { dict: Dict; onActivated?:
           {money(invoice.total, invoice.currency)}
           {invoice.period_start ? ` · ${invoice.period_start} → ${invoice.period_end}` : ""}
         </p>
+      )}
+      {/* Checkout hébergé (mobile money) : le règlement se conclut chez le PSP puis revient par
+          webhook — donc le `purchase` GA4 ne peut PAS être émis ici (à câbler au retour, quand la
+          facture est constatée réglée). Le rail carte ci-dessous l'émet, lui, sur onPaid. */}
+      {redirectUrl && (
+        <button
+          type="button"
+          onClick={() => { window.location.href = redirectUrl; }}
+          className="mt-4 inline-flex rounded-full bg-sky-strong px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#08607f]"
+        >
+          {dict.payHosted ?? "Payer (mobile money / carte)"}
+        </button>
       )}
       {clientSecret && stripePromise && (
         <Elements stripe={stripePromise} options={{ clientSecret, appearance: { theme: "stripe" } }}>

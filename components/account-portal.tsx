@@ -83,6 +83,13 @@ function InvoicesTab({ dict }: { dict: Dict }) {
     setPayErr(null);
     const res = await apiAuthed("pay_invoice", { invoice_id: id });
     const d = res.data || {};
+    // Rail Afrique (Flutterwave, mobile money) : checkout HÉBERGÉ → on sort vers la page du PSP
+    // (l'utilisateur vient de cliquer « Payer », la redirection est donc attendue). Rail carte
+    // (Stripe) : on monte Elements avec le client_secret.
+    if (res.ok && typeof d.redirect_url === "string" && d.redirect_url) {
+      window.location.href = d.redirect_url as string;
+      return;
+    }
     if (!res.ok || !d.client_secret || !d.publishable_key) {
       setPayErr(dict.payError);
       return;
