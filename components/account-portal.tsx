@@ -25,7 +25,7 @@ import { SupportSection } from "@/components/support-section";
 import { InvoicePayBox } from "@/components/invoice-pay-box";
 import { PlanManagement } from "@/components/plan-management";
 import { type Money } from "@/lib/catalog";
-import { harmonyHref, harmonyLabel } from "@/lib/harmony";
+import { appHref, appLabel, harmonyHref, harmonyConfigured } from "@/lib/harmony";
 
 type Dict = Record<string, string>;
 type AddonOpt = { code: string; label: string; prices: Money[] };
@@ -227,18 +227,18 @@ export function AccountPortal({ lang, dict, addons = [] }: { lang: string; dict:
     router.push(`/${lang}/login`);
   }
 
-  // Continuité vitrine → Harmony : on demande un token de handoff court (usage unique) et on redirige
-  // vers /auth/sso?t= qui l'échange contre une session Harmony — sans re-login. Fallback : lien nu
-  // (l'utilisateur se reconnecte dans Harmony) si le handoff échoue ou si l'endpoint n'est pas déployé.
-  async function openHarmony() {
-    if (!workspace || opening) return;
+  // Continuité vitrine → app (skyrh RH OU CRM Harmony, selon le bouton) : on demande un token de handoff
+  // court (usage unique) et on redirige vers <base>/auth/sso?t= qui l'échange contre une session — sans
+  // re-login. Fallback lien nu (l'utilisateur se reconnecte) si le handoff échoue / endpoint non déployé.
+  async function openWith(base: string) {
+    if (!workspace || opening || !base || base === "#") return;
+    const dest = base.replace(/\/+$/, "");
     setOpening(true);
-    const base = harmonyHref(workspace).replace(/\/+$/, "");
     try {
       const t = await apiHandoffToken();
-      window.location.href = t ? `${base}/auth/sso?t=${encodeURIComponent(t)}` : base;
+      window.location.href = t ? `${dest}/auth/sso?t=${encodeURIComponent(t)}` : dest;
     } catch {
-      window.location.href = base;
+      window.location.href = dest;
     }
   }
 
@@ -289,7 +289,7 @@ export function AccountPortal({ lang, dict, addons = [] }: { lang: string; dict:
             {workspace ? (
               <>
                 {" · "}
-                <span className="font-semibold text-ink">{harmonyLabel(workspace)}</span>
+                <span className="font-semibold text-ink">{appLabel(workspace)}</span>
               </>
             ) : (
               ""
@@ -302,11 +302,20 @@ export function AccountPortal({ lang, dict, addons = [] }: { lang: string; dict:
           </button>
           {workspace && (
             <button
-              onClick={openHarmony}
+              onClick={() => openWith(appHref(workspace))}
               disabled={opening}
               className="inline-flex items-center gap-1.5 rounded-full bg-sky-strong px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#08607f] disabled:opacity-60"
             >
               <ExternalLink size={15} /> {dict.openWorkspace}
+            </button>
+          )}
+          {workspace && harmonyConfigured() && (
+            <button
+              onClick={() => openWith(harmonyHref(workspace))}
+              disabled={opening}
+              className="inline-flex items-center gap-1.5 rounded-full border border-line px-4 py-2 text-sm font-semibold text-heading transition-colors hover:border-sky disabled:opacity-60"
+            >
+              <ExternalLink size={15} /> {dict.openCrm ?? "Ouvrir Harmony (CRM)"}
             </button>
           )}
         </div>

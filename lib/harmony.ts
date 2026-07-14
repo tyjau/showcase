@@ -6,24 +6,44 @@
 //   - URL de base SANS `{workspace}`      → chemin fixe partagé, le tenant est résolu au login
 //                                            (staging : https://rh.ikwhat.com/harmony).
 // Absente (dev / build sans snapshot) → fallback historique <workspace>.<NEXT_PUBLIC_APP_DOMAIN|skyrh.app>.
+// DEUX applications distinctes du produit, liées depuis le portail vitrine (deux URLs bakées depuis le
+// snapshot par forge-config.mjs) :
+//   - app skyrh (produit RH du tenant)  → NEXT_PUBLIC_APP_URL. Défaut = sous-domaine {workspace}.skyrh.app.
+//   - CRM Harmony (app séparée)          → NEXT_PUBLIC_HARMONY_URL. PAS de fallback sous-domaine — URL/chemin
+//                                          dédié (ex. staging rh.ikwhat.com/harmony) ; vide ⇒ aucun lien CRM.
+// {workspace} est remplacé par le slug du tenant. APP_DOMAIN = base du fallback sous-domaine skyrh.
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "";
 const HARMONY_URL = process.env.NEXT_PUBLIC_HARMONY_URL ?? "";
 const APP_DOMAIN = process.env.NEXT_PUBLIC_APP_DOMAIN ?? "skyrh.app";
 
-function resolve(workspace?: string | null): string {
-  if (HARMONY_URL) {
-    return HARMONY_URL.includes("{workspace}")
-      ? HARMONY_URL.replace("{workspace}", workspace ?? "")
-      : HARMONY_URL;
-  }
-  return workspace ? `https://${workspace}.${APP_DOMAIN}` : "";
+function fill(base: string, workspace?: string | null): string {
+  return base.includes("{workspace}") ? base.replace("{workspace}", workspace ?? "") : base;
 }
 
-/** URL cliquable vers l'espace Harmony du tenant ("#" si aucun workspace en mode sous-domaine). */
+function skyrh(workspace?: string | null): string {
+  if (APP_URL) return fill(APP_URL, workspace);
+  return workspace ? `https://${workspace}.${APP_DOMAIN}` : ""; // fallback historique sous-domaine
+}
+
+const clean = (u: string): string => u.replace(/^https?:\/\//, "").replace(/\/+$/, "");
+
+/** URL de l'app skyrh (produit RH) du tenant ("#" si indéterminable). */
+export function appHref(workspace?: string | null): string {
+  return skyrh(workspace) || "#";
+}
+/** Libellé lisible de l'app skyrh (host + chemin, sans protocole ni slash final). */
+export function appLabel(workspace?: string | null): string {
+  return clean(skyrh(workspace)) || "—";
+}
+
+/** URL du CRM Harmony (app séparée) — "#" si non configuré (pas de fallback sous-domaine). */
 export function harmonyHref(workspace?: string | null): string {
-  return resolve(workspace) || "#";
+  return (HARMONY_URL ? fill(HARMONY_URL, workspace) : "") || "#";
 }
-
-/** Libellé lisible de l'espace (host + chemin, sans protocole ni slash final). */
 export function harmonyLabel(workspace?: string | null): string {
-  return resolve(workspace).replace(/^https?:\/\//, "").replace(/\/+$/, "") || "—";
+  return clean(HARMONY_URL ? fill(HARMONY_URL, workspace) : "") || "—";
+}
+/** Le CRM Harmony est-il configuré (lien à afficher dans le portail) ? */
+export function harmonyConfigured(): boolean {
+  return HARMONY_URL !== "";
 }

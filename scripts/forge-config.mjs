@@ -41,11 +41,11 @@ if (Object.keys(cfg).length > 0 && (cfg.turnstile_sitekey == null || cfg.turnsti
   cfg.turnstile_sitekey = "1x00000000000000000000AA"; // placeholder démo — remplacé par le vrai sitekey via Ignition
 }
 
-// Harmony (app SIRH du tenant) : URL de base bakée pour le lien « ouvrir mon espace » (lib/harmony.ts).
-// Défaut = modèle sous-domaine par tenant (prod) via le placeholder {workspace} ; le snapshot l'écrase par
-// env (staging : https://rh.ikwhat.com/harmony, chemin fixe). Appliqué SEULEMENT si absent/vide (comme Turnstile).
-if (Object.keys(cfg).length > 0 && (cfg.harmony_url == null || cfg.harmony_url === "")) {
-  cfg.harmony_url = "https://{workspace}.skyrh.app"; // défaut sous-domaine — remplacé par le vrai via Ignition
+// App skyrh (produit RH du tenant) : URL de base bakée pour « ouvrir mon espace » (lib/harmony.appHref).
+// Défaut = sous-domaine par tenant (prod) via {workspace} ; écrasé par env (staging rh.ikwhat.com/skyrh/).
+// REQUISE (dot-access cfg.app_url ⇒ contrat config-keys). Le CRM Harmony, lui, est OPTIONNEL (bracket).
+if (Object.keys(cfg).length > 0 && (cfg.app_url == null || cfg.app_url === "")) {
+  cfg.app_url = "https://{workspace}.skyrh.app"; // défaut sous-domaine — remplacé par le vrai via Ignition
 }
 
 // Garde-fou complétude (rempart dur au deploy) : si une config produit est fournie — déploiement
@@ -70,8 +70,11 @@ const catalogKey = cfg.catalog_api_key ?? cfg.catalogApiKey ?? "";
 // Cloudflare Turnstile sitekey — PUBLIC (safe to inline + log). Empty in dev/no-snapshot,
 // so the widget stays a no-op there; set per-env in the Guardian config_json for prod.
 const turnstileSitekey = cfg.turnstile_sitekey ?? cfg.turnstileSitekey ?? "";
-// Harmony base URL — PUBLIC (URL, safe to inline + log). Placeholder {workspace} résolu côté client.
-const harmonyUrl = cfg.harmony_url ?? cfg.harmonyUrl ?? "";
+// App skyrh (produit RH) — REQUISE (dot-access ⇒ contrat config-keys). {workspace} résolu côté client.
+const appUrl = cfg.app_url ?? cfg.appUrl ?? "";
+// CRM Harmony — OPTIONNEL (bracket ⇒ HORS contrat, comme ga_id/gsc) : app séparée, pas toujours déployée.
+// Vide ⇒ aucun lien CRM dans le portail. Staging : https://rh.ikwhat.com/harmony.
+const harmonyUrl = cfg["harmony_url"] ?? cfg["harmonyUrl"] ?? "";
 // Google Analytics 4 (démo) — OPTIONNEL. Lu via bracket → PAS ajouté au contrat config-keys.json (non
 // requis au publish). Vide → GA no-op (components/analytics). L'ID démo/prod est posé dans le config_json.
 const gaId = cfg["ga_id"] ?? cfg["gaId"] ?? "";
@@ -93,6 +96,7 @@ if (apiBase) lines.push(`NEXT_PUBLIC_API_BASE=${apiBase}`);
 if (guardianUrl) lines.push(`GUARDIAN_URL=${guardianUrl}`);
 if (catalogKey) lines.push(`CATALOG_API_KEY=${catalogKey}`);
 if (turnstileSitekey) lines.push(`NEXT_PUBLIC_TURNSTILE_SITEKEY=${turnstileSitekey}`);
+if (appUrl) lines.push(`NEXT_PUBLIC_APP_URL=${appUrl}`);
 if (harmonyUrl) lines.push(`NEXT_PUBLIC_HARMONY_URL=${harmonyUrl}`);
 if (gaId) lines.push(`NEXT_PUBLIC_GA_ID=${gaId}`);
 if (gscVerification) lines.push(`NEXT_PUBLIC_GSC_VERIFICATION=${gscVerification}`);

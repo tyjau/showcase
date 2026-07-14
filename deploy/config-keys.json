@@ -2,8 +2,8 @@
   "product": "tyjau/showcase",
   "keys": [
     "api_base_url",
+    "app_url",
     "catalog_api_key",
-    "harmony_url",
     "turnstile_sitekey"
   ]
 }
