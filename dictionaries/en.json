@@ -695,7 +695,13 @@
     "signupCta": "Start a free trial",
     "socialOr": "or",
     "socialGoogle": "Continue with Google",
-    "socialMicrosoft": "Continue with Microsoft"
+    "socialMicrosoft": "Continue with Microsoft",
+    "mfaTitle": "Two-step verification",
+    "mfaLead": "Enter the code from your authenticator app, or a recovery code.",
+    "mfaCodeLabel": "Code",
+    "mfaVerify": "Verify",
+    "mfaBack": "← Back",
+    "mfaError": "Invalid or expired code."
   },
   "forgotPasswordPage": {
     "title": "Forgot password",

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { apiLogin, apiLoginOAuth, getToken } from "@/lib/api";
+import { apiLogin, apiLoginOAuth, apiVerifyMfa, getToken } from "@/lib/api";
 
 type Dict = Record<string, string>;
 
@@ -22,6 +22,10 @@ export function PortalLogin({ lang, dict }: { lang: string; dict: Dict }) {
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // 2FA : quand le back exige un second facteur, le login renvoie un challenge (mfa_token) au lieu
+  // d'une session -> on bascule sur l'étape « code » (verify_mfa).
+  const [mfaToken, setMfaToken] = useState<string | null>(null);
+  const [code, setCode] = useState("");
 
   // Already signed in (token present) → straight to the account portal, so the header
   // "account" link and re-visiting /login don't show the form pointlessly.
@@ -38,6 +42,7 @@ export function PortalLogin({ lang, dict }: { lang: string; dict: Dict }) {
     setError(null);
     const res = await apiLogin(slug, email.trim(), password);
     setSubmitting(false);
+    if (res.mfaRequired && res.mfaToken) { setMfaToken(res.mfaToken); return; }
     if (res.ok) router.push(`/${lang}/account`);
     // 403 = garde owner-family du portail billing (back) : message actionnable localisé plutôt que le
     // générique. Sûr : le back ne renvoie ce 403 qu'APRÈS identifiants valides (aucune énumération).
@@ -57,6 +62,65 @@ export function PortalLogin({ lang, dict }: { lang: string; dict: Dict }) {
     setSubmitting(false);
     if (res.ok) router.push(`/${lang}/account`);
     else setError(dict.error);
+  }
+
+  async function verifyCode() {
+    if (!mfaToken || !code.trim()) return;
+    setSubmitting(true);
+    setError(null);
+    const res = await apiVerifyMfa(slug, mfaToken, code.trim());
+    setSubmitting(false);
+    if (res.ok) router.push(`/${lang}/account`);
+    else setError(dict.mfaError ?? dict.error);
+  }
+
+  // Étape 2FA : saisie du code (TOTP ou code de secours) après un mot de passe valide qui exige un 2e facteur.
+  if (mfaToken) {
+    return (
+      <div>
+        <h1 className="text-2xl font-bold text-heading">{dict.mfaTitle ?? "Vérification en deux étapes"}</h1>
+        <p className="mt-1 text-muted">{dict.mfaLead ?? "Entrez le code de votre application d'authentification (ou un code de secours)."}</p>
+        <div className="mt-6">
+          <label className="block">
+            <span className="mb-1 block text-sm font-medium text-ink">{dict.mfaCodeLabel ?? "Code"}</span>
+            <input
+              value={code}
+              onChange={(e) => setCode(e.target.value.replace(/\s/g, ""))}
+              onKeyDown={(e) => e.key === "Enter" && verifyCode()}
+              inputMode="numeric"
+              autoComplete="one-time-code"
+              autoFocus
+              placeholder="123456"
+              className={INPUT}
+            />
+          </label>
+        </div>
+        {error && (
+          <p className="mt-4 rounded-lg border border-err-border bg-err-bg px-4 py-2.5 text-sm text-err-fg">
+            {error}
+          </p>
+        )}
+        <button
+          type="button"
+          disabled={!code.trim() || submitting}
+          onClick={verifyCode}
+          className={`mt-6 w-full rounded-full px-6 py-3 text-sm font-semibold ${
+            code.trim() && !submitting ? "bg-sky-strong text-white" : "cursor-not-allowed bg-mist text-muted"
+          }`}
+        >
+          {submitting ? "…" : (dict.mfaVerify ?? "Vérifier")}
+        </button>
+        <p className="mt-6 text-center text-sm">
+          <button
+            type="button"
+            onClick={() => { setMfaToken(null); setCode(""); setError(null); }}
+            className="text-muted hover:text-sky-text hover:underline"
+          >
+            {dict.mfaBack ?? "← Revenir"}
+          </button>
+        </p>
+      </div>
+    );
   }
 
   return (

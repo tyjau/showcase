@@ -174,7 +174,7 @@ export async function apiLogin(
   workspace: string,
   email: string,
   password: string,
-): Promise<{ ok: boolean; error?: string; code?: number }> {
+): Promise<{ ok: boolean; error?: string; code?: number; mfaRequired?: boolean; mfaToken?: string }> {
   try {
     const res = await fetch(`${apiUrl("login")}&company=${encodeURIComponent(workspace)}`, {
       method: "POST",
@@ -186,11 +186,52 @@ export async function apiLogin(
     });
     const json = (await res.json().catch(() => ({}))) as {
       meta?: { code?: number };
-      data?: { access_token?: string; refresh_token?: string; user_token?: string };
+      data?: { access_token?: string; refresh_token?: string; user_token?: string; mfa_required?: boolean; mfa_token?: string };
       error?: string;
     };
     const code = json?.meta?.code ?? res.status;
     if (!res.ok || code >= 400) return { ok: false, error: json?.error || `Error ${code}`, code };
+    // 2FA activée : le back ne mint PAS de session, il renvoie un challenge court (mfa_token). On
+    // remonte l'état à l'UI (étape code) plutôt qu'une erreur — verify_mfa complètera la connexion.
+    if (json?.data?.mfa_required && json?.data?.mfa_token) {
+      return { ok: false, mfaRequired: true, mfaToken: json.data.mfa_token };
+    }
+    const token = json?.data?.access_token;
+    if (!token) return { ok: false, error: "No token returned" };
+    try {
+      localStorage.setItem(TOKEN_KEY, token);
+      if (json?.data?.refresh_token) localStorage.setItem(REFRESH_KEY, json.data.refresh_token);
+      if (json?.data?.user_token) localStorage.setItem(USER_TOKEN_KEY, json.data.user_token);
+      localStorage.setItem(WORKSPACE_KEY, workspace);
+    } catch {
+      /* storage unavailable */
+    }
+    return { ok: true };
+  } catch {
+    return { ok: false, error: "Network error — please try again." };
+  }
+}
+
+/** Deuxième étape du login 2FA : échange le challenge (mfa_token) + le code TOTP/de secours contre une
+ *  vraie session. Même scope company que login. Stocke la session au succès. */
+export async function apiVerifyMfa(
+  workspace: string,
+  mfaToken: string,
+  code: string,
+): Promise<{ ok: boolean; error?: string }> {
+  try {
+    const res = await fetch(`${apiUrl("verify_mfa")}&company=${encodeURIComponent(workspace)}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ mfa_token: mfaToken, code }),
+    });
+    const json = (await res.json().catch(() => ({}))) as {
+      meta?: { code?: number };
+      data?: { access_token?: string; refresh_token?: string; user_token?: string };
+      error?: string;
+    };
+    const status = json?.meta?.code ?? res.status;
+    if (!res.ok || status >= 400) return { ok: false, error: json?.error || `Error ${status}` };
     const token = json?.data?.access_token;
     if (!token) return { ok: false, error: "No token returned" };
     try {

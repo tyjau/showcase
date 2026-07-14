@@ -695,7 +695,13 @@
     "signupCta": "Démarrer un essai gratuit",
     "socialOr": "ou",
     "socialGoogle": "Continuer avec Google",
-    "socialMicrosoft": "Continuer avec Microsoft"
+    "socialMicrosoft": "Continuer avec Microsoft",
+    "mfaTitle": "Vérification en deux étapes",
+    "mfaLead": "Entrez le code de votre application d'authentification, ou un code de secours.",
+    "mfaCodeLabel": "Code",
+    "mfaVerify": "Vérifier",
+    "mfaBack": "← Revenir",
+    "mfaError": "Code invalide ou expiré."
   },
   "forgotPasswordPage": {
     "title": "Mot de passe oublié",
