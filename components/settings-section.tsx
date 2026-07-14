@@ -4,6 +4,7 @@ import { useEffect, useState, type ChangeEvent } from "react";
 import { ShieldCheck, KeyRound, Bell, UserRound } from "lucide-react";
 import { apiAuthed, getWorkspace, getSessionName, getSessionAvatar, apiUpdateAvatar, apiUpdateName } from "@/lib/api";
 import { harmonyHref, harmonyLabel } from "@/lib/harmony";
+import { MfaCard } from "@/components/mfa-card";
 
 type Dict = Record<string, string>;
 
@@ -216,12 +217,11 @@ export function SettingsSection({ dict }: { dict: Dict }) {
           </span>
           <a href={harmonyUrl} className="text-sm font-semibold text-sky-text hover:underline">{dict.setChange}</a>
         </div>
-        <div className="mt-3 flex items-center justify-between gap-4">
-          <span className="text-sm text-ink">
-            {dict.set2fa} <span className="ml-1 text-xs text-ok-fg">· {dict.setEnabled}</span>
-          </span>
-          <a href={harmonyUrl} className="text-sm font-semibold text-sky-text hover:underline">{dict.setChange}</a>
-        </div>
+        {/* 2FA — état RÉEL (mfa_status) + enrôlement/désactivation sur place. Remplace l'ancienne ligne
+            qui affichait « · Activé » EN DUR pour tout le monde et renvoyait vers Harmony (qui n'a pas
+            d'écran MFA) : elle pouvait faire croire à l'utilisateur qu'il était protégé alors qu'il ne
+            l'était pas — c'est le pire défaut possible pour un indicateur de sécurité. */}
+        <MfaCard dict={dict} />
       </div>
 
       {/* Notifications */}
