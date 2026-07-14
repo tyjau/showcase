@@ -228,17 +228,25 @@ export function AccountPortal({ lang, dict, addons = [] }: { lang: string; dict:
   }
 
   // Continuité vitrine → app (skyrh RH OU CRM Harmony, selon le bouton) : on demande un token de handoff
-  // court (usage unique) et on redirige vers <base>/auth/sso?t= qui l'échange contre une session — sans
-  // re-login. Fallback lien nu (l'utilisateur se reconnecte) si le handoff échoue / endpoint non déployé.
+  // court (usage unique) et on ouvre <base>/auth/sso?t= qui l'échange contre une session — sans re-login.
+  // Ouverture dans un NOUVEL ONGLET : on reste sur le portail. L'onglet est ouvert SYNCHRONEMENT au clic
+  // (avant l'await du token) sinon le bloqueur de pop-ups l'annule ; on y pose l'URL une fois le token reçu.
+  // Fallback lien nu (reconnexion) si le handoff échoue ; pop-up bloqué → on bascule sur le même onglet.
   async function openWith(base: string) {
     if (!workspace || opening || !base || base === "#") return;
     const dest = base.replace(/\/+$/, "");
+    const win = window.open("", "_blank"); // synchrone = préserve le geste utilisateur (anti pop-up-blocker)
     setOpening(true);
     try {
       const t = await apiHandoffToken();
-      window.location.href = t ? `${dest}/auth/sso?t=${encodeURIComponent(t)}&company=${encodeURIComponent(workspace)}` : dest;
+      const url = t ? `${dest}/auth/sso?t=${encodeURIComponent(t)}&company=${encodeURIComponent(workspace)}` : dest;
+      if (win) win.location.href = url;
+      else window.location.href = url; // pop-up bloqué → même onglet (dégradation)
     } catch {
-      window.location.href = dest;
+      if (win) win.location.href = dest;
+      else window.location.href = dest;
+    } finally {
+      setOpening(false); // nouvel onglet : la page reste montée → il faut réarmer le bouton
     }
   }
 
