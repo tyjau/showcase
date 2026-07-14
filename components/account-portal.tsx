@@ -236,7 +236,7 @@ export function AccountPortal({ lang, dict, addons = [] }: { lang: string; dict:
     setOpening(true);
     try {
       const t = await apiHandoffToken();
-      window.location.href = t ? `${dest}/auth/sso?t=${encodeURIComponent(t)}` : dest;
+      window.location.href = t ? `${dest}/auth/sso?t=${encodeURIComponent(t)}&company=${encodeURIComponent(workspace)}` : dest;
     } catch {
       window.location.href = dest;
     }
