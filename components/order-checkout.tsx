@@ -20,7 +20,7 @@ type Invoice = {
 // Inner form (mounted inside <Elements> with the PaymentIntent client_secret). Confirms
 // the payment with Stripe, then records it server-side (pay_order_confirm) so the order
 // unblocks without depending on the webhook.
-function PayForm({ dict, onPaid }: { dict: Dict; onPaid: () => void }) {
+function PayForm({ dict, value, currency, onPaid }: { dict: Dict; value: number; currency: string; onPaid: () => void }) {
   const stripe = useStripe();
   const elements = useElements();
   const [submitting, setSubmitting] = useState(false);
@@ -30,6 +30,8 @@ function PayForm({ dict, onPaid }: { dict: Dict; onPaid: () => void }) {
     if (!stripe || !elements) return;
     setSubmitting(true);
     setError(null);
+    // GA4 : intention de payer (carte soumise), avant la confirmation Stripe.
+    trackEvent("add_payment_info", { value, currency, payment_type: "card" });
     const { error: confErr, paymentIntent } = await stripe.confirmPayment({ elements, redirect: "if_required" });
     if (confErr || !paymentIntent) {
       setSubmitting(false);
@@ -82,10 +84,14 @@ export function OrderCheckout({ dict, onActivated }: { dict: Dict; onActivated?:
         setState("none");
         return;
       }
-      setInvoice(d.invoice as Invoice);
+      const inv = d.invoice as Invoice;
+      setInvoice(inv);
       setStripePromise(loadStripe(d.publishable_key as string));
       setClientSecret(d.client_secret as string);
       setState("due");
+      // GA4 : le prospect a ATTEINT l'étape paiement (pay_first). Le ratio begin_checkout→purchase est
+      // le drop-off clé du tunnel ; jusqu'ici on ne mesurait que l'achat final (angle mort au milieu).
+      trackEvent("begin_checkout", { value: inv?.total ?? 0, currency: inv?.currency ?? "" });
     });
   }, []);
 
@@ -111,7 +117,7 @@ export function OrderCheckout({ dict, onActivated }: { dict: Dict; onActivated?:
       )}
       {clientSecret && stripePromise && (
         <Elements stripe={stripePromise} options={{ clientSecret, appearance: { theme: "stripe" } }}>
-          <PayForm dict={dict} onPaid={() => { trackEvent("purchase", { transaction_id: String(invoice?.id ?? ""), value: invoice?.total ?? 0, currency: invoice?.currency ?? "" }); setState("paid"); onActivated?.(); }} />
+          <PayForm dict={dict} value={invoice?.total ?? 0} currency={invoice?.currency ?? ""} onPaid={() => { trackEvent("purchase", { transaction_id: String(invoice?.id ?? ""), value: invoice?.total ?? 0, currency: invoice?.currency ?? "" }); setState("paid"); onActivated?.(); }} />
         </Elements>
       )}
     </section>
