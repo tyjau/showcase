@@ -18,6 +18,7 @@ import {
 import { apiAuthed, apiHandoffToken, getToken, getWorkspace, getSessionName, clearSession, PROFILE_EVENT } from "@/lib/api";
 import { PaymentMethod } from "@/components/payment-method";
 import { OrderCheckout } from "@/components/order-checkout";
+import { PaymentReturn } from "@/components/payment-return";
 import { ConsumptionSection } from "@/components/consumption-section";
 import { ReferralsSection } from "@/components/referrals-section";
 import { SettingsSection } from "@/components/settings-section";
@@ -205,6 +206,8 @@ export function AccountPortal({ lang, dict, addons = [] }: { lang: string; dict:
   const [firstName, setFirstName] = useState<string | null>(null);
   const [tab, setTab] = useState("plan");
   const [opening, setOpening] = useState(false);
+  // Remonte OrderCheckout après un règlement mobile money confirmé (la bannière commande se met à jour).
+  const [payRefresh, setPayRefresh] = useState(0);
 
   useEffect(() => {
     setWorkspace(getWorkspace());
@@ -336,9 +339,15 @@ export function AccountPortal({ lang, dict, addons = [] }: { lang: string; dict:
         </div>
       </div>
 
+      {/* Retour du checkout hébergé (mobile money) : vérifie côté serveur + émet le purchase GA4 —
+          angle mort du rail hosted, dont le règlement se conclut hors de la page (webhook). */}
+      <div className="mt-6">
+        <PaymentReturn dict={dict} onSettled={() => setPayRefresh((k) => k + 1)} />
+      </div>
+
       {/* pay_first / dunning banner — always visible while the order is pending */}
       <div className="mt-6">
-        <OrderCheckout dict={dict} />
+        <OrderCheckout key={payRefresh} dict={dict} />
       </div>
 
       <div className="mt-6 grid gap-[30px] md:grid-cols-[228px_1fr]">
