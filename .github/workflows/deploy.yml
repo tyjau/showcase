@@ -104,6 +104,8 @@ jobs:
           # Vide (aucune des deux vars) → build à la racine, comportement historique inchangé.
           FRONT_SMOKE_URL: ${{ vars.FRONT_SMOKE_URL }}
           FRONT_BASE_PATH: ${{ vars.FRONT_BASE_PATH }}
+          # Pilote le noindex des pages (app/[lang]/layout.tsx) : staging → noindex, production → indexable.
+          SHOWCASE_ENV: ${{ needs.setup.outputs.env_name }}
         run: |
           if [ -n "${FRONT_BASE_PATH:-}" ]; then
             BASE_PATH="$FRONT_BASE_PATH"

@@ -30,6 +30,7 @@ export async function generateMetadata(props: {
   const name = m ? moduleText(m, params.lang).headline : "";
   return {
     title: name ? `${name} — ${t.guidePage.eyebrow}` : t.seo.pages.resources,
+    description: t.resourcesPage.lead,
     alternates: buildAlternates(params.lang, `/resources/guides/${params.code}`),
   };
 }

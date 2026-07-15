@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { withBase } from "@/lib/asset";
+import { Picture } from "@/components/picture";
 import type { Metadata } from "next";
 import {
   Server,
@@ -38,7 +38,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const params = await props.params;
   const t = await getDictionary(params.lang);
-  return { title: t.seo.pages.platform, alternates: buildAlternates(params.lang, "/platform") };
+  return { title: t.seo.pages.platform, description: t.platformPage.lead, alternates: buildAlternates(params.lang, "/platform") };
 }
 
 const PILLAR_ICONS = [Server, Zap, ShieldCheck];
@@ -82,11 +82,11 @@ export default async function PlatformPage(
     <main>
       {/* HERO — text + platform stack diagram */}
       <section className="relative overflow-hidden bg-hero-bg text-hero-fg">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={withBase("/img/hero-photo.png")}
+        <Picture
+          src="/img/hero-photo.png"
           alt=""
-          aria-hidden="true"
+          ariaHidden
+          priority
           className="absolute inset-0 h-full w-full object-cover opacity-[0.35]"
         />
         <div className="absolute inset-0 bg-[linear-gradient(100deg,var(--hero-bg)_34%,transparent_100%)]" />

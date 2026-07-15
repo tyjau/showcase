@@ -30,7 +30,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const params = await props.params;
   const t = await getDictionary(params.lang);
-  return { title: t.helpPage.eyebrow, alternates: buildAlternates(params.lang, "/help") };
+  return { title: t.helpPage.eyebrow, description: t.helpPage.lead, alternates: buildAlternates(params.lang, "/help") };
 }
 
 const CAT_ICON: Record<HelpCategory, LucideIcon> = {

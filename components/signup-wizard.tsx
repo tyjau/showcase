@@ -24,6 +24,7 @@ type Dict = {
   planLead: string;
   employees: string;
   addOptions: string;
+  included: string;
   perEmployee: string;
   estTotal: string;
   monthlyTotal: string;
@@ -45,12 +46,17 @@ type Dict = {
   lastName: string;
   email: string;
   emailPh: string;
+  password: string;
+  passwordPh: string;
+  passwordHint: string;
   reviewTitle: string;
   reviewLead: string;
   rPlan: string;
   rOptions: string;
   rWorkspace: string;
   rAdmin: string;
+  promoLabel: string;
+  promoPh: string;
   termsPre: string;
   termsAnd: string;
   create: string;
@@ -79,6 +85,10 @@ function slugify(s: string): string {
 }
 
 const STEP_KEYS = ["plan", "workspace", "account", "review"] as const;
+// Offres en vente assistée : PAS de self-serve dans le wizard. Cohérent avec la page Tarifs, qui route
+// Enterprise vers /enterprise (contact) et non /signup. On les filtre de la grille de plans ET on
+// redirige un éventuel ?plan= vers la page contact (sinon Enterprise s'afficherait tarifé + soumettable).
+const CONTACT_ONLY = new Set(["ENTERPRISE"]);
 const INPUT_CLS =
   "w-full rounded-lg border border-line px-3 py-2.5 text-sm outline-none focus:border-sky";
 
@@ -130,8 +140,10 @@ export function SignupWizard({
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [agree, setAgree] = useState(false);
   const [captcha, setCaptcha] = useState("");
+  const [promo, setPromo] = useState("");
   const [done, setDone] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -139,10 +151,15 @@ export function SignupWizard({
   useEffect(() => {
     const sp = new URLSearchParams(window.location.search);
     const plan = sp.get("plan");
+    // Enterprise (vente assistée) n'est pas self-serve → renvoyer vers la page contact dédiée.
+    if (plan && CONTACT_ONLY.has(plan)) {
+      window.location.replace(`/${lang}/enterprise`);
+      return;
+    }
     if (plan && catalog.packages.some((p) => p.code === plan)) setPlanCode(plan);
     const ad = sp.get("addons");
     if (ad) setAddons(new Set(ad.split(",").filter(Boolean)));
-  }, [catalog]);
+  }, [catalog, lang]);
 
   useEffect(() => {
     if (!subTouched) setSubdomain(slugify(company));
@@ -159,6 +176,12 @@ export function SignupWizard({
   const addonMods = catalog.modules.filter(
     (m) => m.isAddon && pkg && !pkg.modules.includes(m.code),
   );
+  // Modules inclus dans le plan choisi — repréciser l'inclus AVANT de proposer les options.
+  const includedMods = pkg
+    ? pkg.modules
+        .map((code) => catalog.modules.find((m) => m.code === code))
+        .filter((m): m is CatalogModule => !!m)
+    : [];
   const base = pkg ? unitPrice(pkg.prices, currency) : 0;
   const addonSum = addonMods.reduce(
     (s, m) => (addons.has(m.code) ? s + unitPrice(m.prices, currency) : s),
@@ -172,6 +195,8 @@ export function SignupWizard({
   const domainBase = partner?.domain ?? "skyrh.app";
 
   const emailOk = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
+  // Même règle que le back (isPasswordComplex) : min 8, avec minuscule, majuscule, chiffre, symbole.
+  const pwOk = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d]).{8,}$/.test(password);
   const subOk = /^[a-z0-9](?:[a-z0-9-]{1,28}[a-z0-9])$/.test(subdomain);
   const canNext =
     step === 0
@@ -179,7 +204,7 @@ export function SignupWizard({
       : step === 1
         ? company.trim().length > 1 && subOk && country.trim().length > 1
         : step === 2
-          ? firstName.trim().length > 0 && lastName.trim().length > 0 && emailOk
+          ? firstName.trim().length > 0 && lastName.trim().length > 0 && emailOk && pwOk
           : agree && (!TURNSTILE_ON || !!captcha);
 
   function toggleAddon(code: string) {
@@ -203,19 +228,21 @@ export function SignupWizard({
       employees,
       first_name: firstName,
       last_name: lastName,
+      password,
       country,
       currency,
       lang,
       turnstile_token: captcha,
       // Attribution partenaire (funnels co-brandés) — referrers/referrals (back migr.112)
       ...(refCode ? { referral_code: refCode } : {}),
+      ...(promo.trim() ? { coupon: promo.trim() } : {}),
       ...(utm.source ? { utm_source: utm.source } : {}),
       ...(utm.campaign ? { utm_campaign: utm.campaign } : {}),
       ...(utm.medium ? { utm_medium: utm.medium } : {}),
     });
     setSubmitting(false);
     if (res.ok) {
-      trackEvent("sign_up", { method: "email", plan: planCode }); // conversion clé du funnel showcase
+      trackEvent("sign_up_request", { method: "email", plan: planCode }); // LEAD : formulaire soumis, email non confirmé. La VRAIE conversion = "sign_up" émis à l'activation (signup-confirm)
       setDone(true);
     } else {
       setError(res.error ?? "Something went wrong");
@@ -280,7 +307,7 @@ export function SignupWizard({
           <h1 className="text-2xl font-bold text-heading">{dict.planTitle}</h1>
           <p className="mt-1 text-muted">{dict.planLead}</p>
           <div className="mt-6 grid gap-3 sm:grid-cols-3">
-            {catalog.packages.map((p) => {
+            {catalog.packages.filter((p) => !CONTACT_ONLY.has(p.code)).map((p) => {
               const pBase = unitPrice(p.prices, currency);
               const active = p.code === planCode;
               const pop = p.code === "BUSINESS";
@@ -318,6 +345,22 @@ export function SignupWizard({
               );
             })}
           </div>
+
+          {pkg && includedMods.length > 0 && (
+            <div className="mt-4 rounded-xl border border-line bg-mist/60 p-4">
+              <div className="mb-2 text-sm font-semibold text-ink">
+                {dict.included.replace("{plan}", pkg.name)}
+              </div>
+              <ul className="grid gap-x-4 gap-y-1.5 sm:grid-cols-2">
+                {includedMods.map((m) => (
+                  <li key={m.code} className="flex items-center gap-2 text-sm text-muted">
+                    <Check size={14} className="flex-none text-sky-text" strokeWidth={3} />
+                    {moduleText(m, lang).headline}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           <div className="mt-6 flex items-center gap-3 text-sm">
             <span className="text-muted">{dict.employees}</span>
@@ -472,6 +515,17 @@ export function SignupWizard({
                 className={INPUT_CLS}
               />
             </Field>
+            <Field label={dict.password}>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder={dict.passwordPh}
+                className={INPUT_CLS}
+                autoComplete="new-password"
+              />
+              <p className="mt-1.5 text-xs text-muted">{dict.passwordHint}</p>
+            </Field>
           </div>
         </div>
       )}
@@ -501,6 +555,17 @@ export function SignupWizard({
               value={`${firstName} ${lastName} · ${email}`}
             />
           </dl>
+          <div className="mt-5">
+            <Field label={dict.promoLabel}>
+              <input
+                value={promo}
+                onChange={(e) => setPromo(e.target.value)}
+                placeholder={dict.promoPh}
+                autoComplete="off"
+                className={INPUT_CLS}
+              />
+            </Field>
+          </div>
           <label className="mt-5 flex items-start gap-2 text-sm text-muted">
             <input
               type="checkbox"

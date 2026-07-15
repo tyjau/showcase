@@ -14,7 +14,7 @@ export function generateStaticParams() {
 export async function generateMetadata(props: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const params = await props.params;
   const t = await getDictionary(params.lang);
-  return { title: t.enterprisePage.title, alternates: buildAlternates(params.lang, "/enterprise") };
+  return { title: t.enterprisePage.title, description: t.enterprisePage.lead, alternates: buildAlternates(params.lang, "/enterprise") };
 }
 
 const MODE_ICONS: LucideIcon[] = [Cloud, Server, Package];

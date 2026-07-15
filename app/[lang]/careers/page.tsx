@@ -16,7 +16,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const params = await props.params;
   const t = await getDictionary(params.lang);
-  return { title: t.seo.pages.careers, alternates: buildAlternates(params.lang, "/careers") };
+  return { title: t.seo.pages.careers, description: t.careersPage.lead, alternates: buildAlternates(params.lang, "/careers") };
 }
 
 const VALUE_ICONS: LucideIcon[] = [Heart, ShieldCheck, Globe, BookOpen];

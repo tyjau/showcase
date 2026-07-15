@@ -99,17 +99,11 @@ export default async function TrustPage(props: { params: Promise<{ lang: string 
         </div>
       </section>
 
-      {/* CONFORMITÉ — formulations honnêtes + rappel interne (dev-only) pour renseigner les faits réels */}
+      {/* CONFORMITÉ — faits réels : hébergement OVHcloud (France), sous-traitants OVHcloud + Stripe
+          (e-mails en interne), pas de certif revendiquée à ce jour, DPA RGPD sur demande. */}
       <section className="mx-auto max-w-6xl px-5 py-16">
         <h2 className="text-center text-2xl font-bold text-heading sm:text-3xl">{p.complianceTitle}</h2>
         <p className="mx-auto mt-2 max-w-2xl text-center text-muted">{p.complianceLead}</p>
-        {/* Jamais affiché aux visiteurs (même pattern que les pages légales) : rappelle à l'équipe de
-            remplacer les formulations génériques par les faits réels avant la mise en production. */}
-        {process.env.NODE_ENV !== "production" && (
-          <div className="mx-auto mt-6 max-w-2xl rounded-lg border border-warn-border bg-warn-bg px-4 py-3 text-sm text-warn-fg">
-            {p.draft}
-          </div>
-        )}
         <div className="mt-8 grid gap-4 sm:grid-cols-2">
           {p.complianceItems.map((ci: Item, i: number) => {
             const Icon = COMPLIANCE_ICONS[i] ?? Globe2;

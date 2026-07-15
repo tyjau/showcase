@@ -25,6 +25,7 @@ export async function generateMetadata(
   const t = await getDictionary(params.lang);
   return {
     title: a ? helpText(a, params.lang).title : t.helpPage.eyebrow,
+    description: t.helpPage.lead,
     alternates: buildAlternates(params.lang, `/help/${params.slug}`),
   };
 }

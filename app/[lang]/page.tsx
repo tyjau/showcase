@@ -13,13 +13,14 @@ import {
 } from "lucide-react";
 import { getDictionary } from "@/lib/dictionaries";
 import { i18n, type Locale } from "@/lib/i18n";
-import { withBase } from "@/lib/asset";
+import { Picture } from "@/components/picture";
 import { SocialProof } from "@/components/social-proof";
 import { ParallaxTriangles } from "@/components/parallax-triangles";
 import { ModulesCarousel } from "@/components/modules-carousel";
 import { HomePacks } from "@/components/home-packs";
 import { CtaBand } from "@/components/cta-band";
 import { fetchCatalog, type Money } from "@/lib/catalog";
+import { GEO_FRAMEWORK_COUNT } from "@/lib/geo";
 import { FileText, ArrowRight } from "lucide-react";
 import type { Metadata } from "next";
 import { buildAlternates } from "@/lib/seo";
@@ -174,11 +175,11 @@ export default async function Home(
     <main>
       <section className="relative overflow-hidden bg-hero-bg text-hero-fg">
         {/* Photo backdrop + navy overlay + sky radial + parallax triangles. */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={withBase("/img/hero-office.png")}
+        <Picture
+          src="/img/hero-office.png"
           alt=""
-          aria-hidden="true"
+          ariaHidden
+          priority
           className="absolute inset-0 h-full w-full object-cover opacity-[0.55]"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-hero-bg via-hero-bg/85 to-hero-bg/30" />
@@ -220,6 +221,10 @@ export default async function Home(
             <p className="mt-4 inline-flex items-center gap-1.5 text-xs text-hero-fg-faint">
               <Check size={14} className="text-sky-soft" /> {t.hero.trustNote}
             </p>
+            <div className="mt-7 inline-flex items-baseline gap-2.5 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+              <span className="text-2xl font-extrabold tracking-tight text-white tabular-nums">{GEO_FRAMEWORK_COUNT}</span>
+              <span className="max-w-[15rem] text-[13px] leading-snug text-hero-fg-muted">{t.hero.coverageLabel}</span>
+            </div>
           </div>
 
           <PayrollPreview dict={t.preview} />
@@ -287,12 +292,12 @@ export default async function Home(
             })}
           </div>
           {/* Photo tile with caption overlay */}
-          <div
-            className="relative hidden min-h-[300px] overflow-hidden rounded-2xl border border-line bg-cover bg-[center_42%] min-[895px]:block"
-            style={{ backgroundImage: `url('${withBase("/img/feat-photo-filled.png")}')` }}
-            role="img"
-            aria-label={t.features.lateralAlt}
-          >
+          <div className="relative hidden min-h-[300px] overflow-hidden rounded-2xl border border-line min-[895px]:block">
+            <Picture
+              src="/img/feat-photo-filled.png"
+              alt={t.features.lateralAlt}
+              className="absolute inset-0 h-full w-full object-cover object-[center_42%]"
+            />
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-hero-bg/60" />
             <div className="absolute inset-x-5 bottom-[18px] text-white">
               <div className="text-base font-extrabold">{t.features.photoTitle}</div>

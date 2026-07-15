@@ -34,6 +34,25 @@ function offerValue(value: number, valueType: string, currency: string | null): 
   return valueType === "percent" ? `${value}%` : `${value} ${currency ?? ""}`.trim();
 }
 
+// Cycle de vie d'un parrainage — « rewarded » = récompense due (à créditer) ; « credited » = crédit
+// appliqué sur une facture du parrain (mig 163, décaissement). Libellés i18n avec repli FR.
+const REF_STATUS: Record<string, { key: string; fallback: string; cls: string }> = {
+  pending: { key: "refStPending", fallback: "En attente", cls: "bg-mist text-muted" },
+  converted: { key: "refStConverted", fallback: "Converti", cls: "bg-info-bg text-info-fg" },
+  rewarded: { key: "refStRewarded", fallback: "À créditer", cls: "bg-warn-bg text-warn-fg" },
+  credited: { key: "refStCredited", fallback: "Crédité", cls: "bg-ok-bg text-ok-fg" },
+};
+
+function RefStatusBadge({ status, dict }: { status: string; dict: Dict }) {
+  const m = REF_STATUS[status];
+  const label = m ? (dict[m.key] ?? m.fallback) : status;
+  return (
+    <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${m?.cls ?? "bg-mist text-muted"}`}>
+      {label}
+    </span>
+  );
+}
+
 // Inline enrolment: turn the current account into a partner (a capability — no separate
 // login/identity). On success the parent re-fetches and the full partner UI shows in place.
 function EnrollPartner({ dict, onDone }: { dict: Dict; onDone: () => void }) {
@@ -276,7 +295,9 @@ export function ReferralsSection({ dict }: { dict: Dict }) {
                 {d.referrals.map((r, i) => (
                   <tr key={i} className="border-t border-line">
                     <td className="px-4 py-2.5">{r.referred_email || "—"}</td>
-                    <td className="px-4 py-2.5">{r.status}</td>
+                    <td className="px-4 py-2.5">
+                      <RefStatusBadge status={r.status} dict={dict} />
+                    </td>
                     <td className="px-4 py-2.5 text-right">{r.reward_amount ?? "—"}</td>
                   </tr>
                 ))}

@@ -19,7 +19,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const params = await props.params;
   const t = await getDictionary(params.lang);
-  return { title: t.seo.pages.features, alternates: buildAlternates(params.lang, "/features") };
+  return { title: t.seo.pages.features, description: t.modulesPage.sub, alternates: buildAlternates(params.lang, "/features") };
 }
 
 const CATEGORY_ORDER = ["people", "time-off", "payroll", "talent", "health"];

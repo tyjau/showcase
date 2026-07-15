@@ -7,7 +7,7 @@ import { getDictionary } from "@/lib/dictionaries";
 import { fetchCatalog, moduleText, type CatalogModule } from "@/lib/catalog";
 import { moduleContent, moduleExtras } from "@/lib/module-content";
 import { buildAlternates } from "@/lib/seo";
-import { withBase } from "@/lib/asset";
+import { Picture } from "@/components/picture";
 import { ModuleIcon } from "@/components/module-icon";
 import { MediaFrame } from "@/components/media-frame";
 import { Price } from "@/components/price";
@@ -93,8 +93,12 @@ export async function generateMetadata(
   const catalog = await fetchCatalog();
   const m = catalog.modules.find((x) => x.code === params.module);
   const t = await getDictionary(params.lang);
+  // Description par module (SEO-02) : la tagline commerciale du module, sinon sa description, sinon
+  // le sous-titre générique de la page modules.
+  const txt = m ? moduleText(m, params.lang) : null;
   return {
-    title: m ? moduleText(m, params.lang).headline : t.seo.pages.features,
+    title: txt ? txt.headline : t.seo.pages.features,
+    description: txt?.tagline ?? txt?.description ?? t.modulesPage.sub,
     alternates: buildAlternates(params.lang, `/features/${params.module}`),
   };
 }
@@ -133,11 +137,11 @@ export default async function ModulePage(
       <section className="relative overflow-hidden bg-hero-bg text-hero-fg">
         {shots?.heroPhoto && (
           <>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={withBase(shots.heroPhoto)}
+            <Picture
+              src={shots.heroPhoto}
               alt=""
-              aria-hidden="true"
+              ariaHidden
+              priority
               className="absolute inset-0 h-full w-full object-cover opacity-[0.4]"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-hero-bg via-hero-bg/85 to-hero-bg/40" />

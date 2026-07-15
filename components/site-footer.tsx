@@ -27,6 +27,8 @@ type FooterDict = {
   modules: string;
   platform: string;
   pricing: string;
+  compare: string;
+  solutions: string;
   signup: string;
   about: string;
   careers: string;
@@ -105,6 +107,8 @@ export function SiteFooter({
               [dict.modules, `/${lang}/features`],
               [dict.platform, `/${lang}/platform`],
               [dict.pricing, `/${lang}/pricing`],
+              [dict.compare, `/${lang}/compare`],
+              [dict.solutions, `/${lang}/solutions`],
               [dict.signup, `/${lang}/signup`],
             ]}
           />

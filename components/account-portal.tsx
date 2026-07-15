@@ -15,7 +15,7 @@ import {
   ExternalLink,
   type LucideIcon,
 } from "lucide-react";
-import { apiAuthed, getToken, getWorkspace, getSessionName, clearSession, PROFILE_EVENT } from "@/lib/api";
+import { apiAuthed, apiHandoffToken, getToken, getWorkspace, getSessionName, clearSession, PROFILE_EVENT } from "@/lib/api";
 import { PaymentMethod } from "@/components/payment-method";
 import { OrderCheckout } from "@/components/order-checkout";
 import { ConsumptionSection } from "@/components/consumption-section";
@@ -25,7 +25,7 @@ import { SupportSection } from "@/components/support-section";
 import { InvoicePayBox } from "@/components/invoice-pay-box";
 import { PlanManagement } from "@/components/plan-management";
 import { type Money } from "@/lib/catalog";
-import { harmonyHref, harmonyLabel } from "@/lib/harmony";
+import { appHref, appLabel, harmonyHref, harmonyConfigured } from "@/lib/harmony";
 
 type Dict = Record<string, string>;
 type AddonOpt = { code: string; label: string; prices: Money[] };
@@ -83,6 +83,13 @@ function InvoicesTab({ dict }: { dict: Dict }) {
     setPayErr(null);
     const res = await apiAuthed("pay_invoice", { invoice_id: id });
     const d = res.data || {};
+    // Rail Afrique (Flutterwave, mobile money) : checkout HÉBERGÉ → on sort vers la page du PSP
+    // (l'utilisateur vient de cliquer « Payer », la redirection est donc attendue). Rail carte
+    // (Stripe) : on monte Elements avec le client_secret.
+    if (res.ok && typeof d.redirect_url === "string" && d.redirect_url) {
+      window.location.href = d.redirect_url as string;
+      return;
+    }
     if (!res.ok || !d.client_secret || !d.publishable_key) {
       setPayErr(dict.payError);
       return;
@@ -197,6 +204,7 @@ export function AccountPortal({ lang, dict, addons = [] }: { lang: string; dict:
   const [workspace, setWorkspace] = useState<string | null>(null);
   const [firstName, setFirstName] = useState<string | null>(null);
   const [tab, setTab] = useState("plan");
+  const [opening, setOpening] = useState(false);
 
   useEffect(() => {
     setWorkspace(getWorkspace());
@@ -224,6 +232,29 @@ export function AccountPortal({ lang, dict, addons = [] }: { lang: string; dict:
   function logout() {
     clearSession();
     router.push(`/${lang}/login`);
+  }
+
+  // Continuité vitrine → app (skyrh RH OU CRM Harmony, selon le bouton) : on demande un token de handoff
+  // court (usage unique) et on ouvre <base>/auth/sso?t= qui l'échange contre une session — sans re-login.
+  // Ouverture dans un NOUVEL ONGLET : on reste sur le portail. L'onglet est ouvert SYNCHRONEMENT au clic
+  // (avant l'await du token) sinon le bloqueur de pop-ups l'annule ; on y pose l'URL une fois le token reçu.
+  // Fallback lien nu (reconnexion) si le handoff échoue ; pop-up bloqué → on bascule sur le même onglet.
+  async function openWith(base: string) {
+    if (!workspace || opening || !base || base === "#") return;
+    const dest = base.replace(/\/+$/, "");
+    const win = window.open("", "_blank"); // synchrone = préserve le geste utilisateur (anti pop-up-blocker)
+    setOpening(true);
+    try {
+      const t = await apiHandoffToken();
+      const url = t ? `${dest}/auth/sso?t=${encodeURIComponent(t)}&company=${encodeURIComponent(workspace)}` : dest;
+      if (win) win.location.href = url;
+      else window.location.href = url; // pop-up bloqué → même onglet (dégradation)
+    } catch {
+      if (win) win.location.href = dest;
+      else window.location.href = dest;
+    } finally {
+      setOpening(false); // nouvel onglet : la page reste montée → il faut réarmer le bouton
+    }
   }
 
   if (state === "loading") return <p className="text-muted">{dict.loading}</p>;
@@ -273,7 +304,7 @@ export function AccountPortal({ lang, dict, addons = [] }: { lang: string; dict:
             {workspace ? (
               <>
                 {" · "}
-                <span className="font-semibold text-ink">{harmonyLabel(workspace)}</span>
+                <span className="font-semibold text-ink">{appLabel(workspace)}</span>
               </>
             ) : (
               ""
@@ -285,12 +316,22 @@ export function AccountPortal({ lang, dict, addons = [] }: { lang: string; dict:
             {dict.logout}
           </button>
           {workspace && (
-            <a
-              href={harmonyHref(workspace)}
-              className="inline-flex items-center gap-1.5 rounded-full bg-sky-strong px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#08607f]"
+            <button
+              onClick={() => openWith(appHref(workspace))}
+              disabled={opening}
+              className="inline-flex items-center gap-1.5 rounded-full bg-sky-strong px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#08607f] disabled:opacity-60"
             >
               <ExternalLink size={15} /> {dict.openWorkspace}
-            </a>
+            </button>
+          )}
+          {workspace && harmonyConfigured() && (
+            <button
+              onClick={() => openWith(harmonyHref(workspace))}
+              disabled={opening}
+              className="inline-flex items-center gap-1.5 rounded-full border border-line px-4 py-2 text-sm font-semibold text-heading transition-colors hover:border-sky disabled:opacity-60"
+            >
+              <ExternalLink size={15} /> {dict.openCrm ?? "Ouvrir Harmony (CRM)"}
+            </button>
           )}
         </div>
       </div>

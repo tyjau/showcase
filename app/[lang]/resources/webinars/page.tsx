@@ -15,7 +15,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const params = await props.params;
   const t = await getDictionary(params.lang);
-  return { title: t.webinarsPage.title, alternates: buildAlternates(params.lang, "/resources/webinars") };
+  return { title: t.webinarsPage.title, description: t.webinarsPage.lead, alternates: buildAlternates(params.lang, "/resources/webinars") };
 }
 
 export default async function WebinarsPage(props: { params: Promise<{ lang: string }> }) {
