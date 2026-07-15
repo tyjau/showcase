@@ -76,10 +76,12 @@ describe("apiLogin", () => {
     expect(JSON.parse(init.body).scope).toBe("billing");
   });
 
-  it("surfaces a backend error and stores nothing", async () => {
+  it("surfaces a backend error (with its HTTP code) and stores nothing", async () => {
     (fetch as any).mockResolvedValue(res({ meta: { code: 401 }, error: "Bad creds" }, false, 401));
     const r = await apiLogin("acme", "u@x.io", "wrong");
-    expect(r).toEqual({ ok: false, error: "Bad creds" });
+    // apiLogin now surfaces the HTTP `code` so portal-login can show the owner-family
+    // guard message (loginPage.notAdmin) on a 403 instead of the generic error.
+    expect(r).toEqual({ ok: false, error: "Bad creds", code: 401 });
     expect(getToken()).toBeNull();
   });
 
