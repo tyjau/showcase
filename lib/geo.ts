@@ -5,13 +5,19 @@
 //
 // NB : la disponibilité en production réelle par pays dépend du productionSignoff back (chantier
 // séparé). La page porte une bannière rappel dev-only, comme le Trust Center et les comparatifs.
-export type Framework = "OHADA" | "EU";
+// Groupement d'AFFICHAGE (région), pas le champ moteur du back (qui vaut OHADA/EU/IFRS/Maghreb-PAYE…).
+// On regroupe géographiquement pour la vitrine — chaque pays garde son propre cadre paie côté moteur.
+export type Framework = "OHADA" | "EU" | "AMERICAS" | "AFRICA_EN" | "MAGHREB" | "GULF";
 
-// Libellé d'affichage du cadre (language-neutral, identique fr/en). « EU » est le regroupement moteur
-// du back — il inclut la Suisse, hors UE — donc on affiche « Europe », correct pour tout le groupe.
+// Libellé d'affichage du cadre (language-neutral, identique fr/en). « EU » inclut la Suisse (hors UE) →
+// on affiche « Europe ». Les groupes non-OHADA/EU sont des régions (faits géographiques, pas des faits paie).
 export const FRAMEWORK_LABEL: Record<Framework, string> = {
   OHADA: "OHADA",
   EU: "Europe",
+  AMERICAS: "Amériques",
+  AFRICA_EN: "Afrique anglophone",
+  MAGHREB: "Maghreb",
+  GULF: "Golfe",
 };
 
 export type GeoCountry = {
@@ -51,6 +57,24 @@ export const GEO_COUNTRIES: GeoCountry[] = [
   { slug: "pays-bas", code: "NL", name: { fr: "Pays-Bas", en: "Netherlands" }, framework: "EU", currency: "EUR", funds: ["Belastingdienst"] },
   { slug: "portugal", code: "PT", name: { fr: "Portugal", en: "Portugal" }, framework: "EU", currency: "EUR", funds: ["Segurança Social", "IRS"] },
   { slug: "suisse", code: "CH", name: { fr: "Suisse", en: "Switzerland" }, framework: "EU", currency: "CHF", funds: ["AVS", "LPP"] },
+  // Extension hors zone OHADA/Europe (couverture back en expansion). Devise = fait back (metadata.currency).
+  // Caisses = SEULEMENT là où le back les structure (metadata.immatriculationRequiredBodies) — sinon [] :
+  // on n'invente pas de caisses. NB : les Amériques sont MODÉLISÉES mais pas encore productionSignoff côté
+  // back — la bannière dev-only + le signup (liste live signée) restent la source de vérité déployable.
+  { slug: "ghana", code: "GH", name: { fr: "Ghana", en: "Ghana" }, framework: "AFRICA_EN", currency: "GHS", funds: ["SSNIT", "GRA"] },
+  { slug: "kenya", code: "KE", name: { fr: "Kenya", en: "Kenya" }, framework: "AFRICA_EN", currency: "KES", funds: ["NSSF", "SHA", "KRA"] },
+  { slug: "nigeria", code: "NG", name: { fr: "Nigeria", en: "Nigeria" }, framework: "AFRICA_EN", currency: "NGN", funds: [] },
+  { slug: "maroc", code: "MA", name: { fr: "Maroc", en: "Morocco" }, framework: "MAGHREB", currency: "MAD", funds: [] },
+  { slug: "arabie-saoudite", code: "SA", name: { fr: "Arabie Saoudite", en: "Saudi Arabia" }, framework: "GULF", currency: "SAR", funds: [] },
+  { slug: "etats-unis", code: "US", name: { fr: "États-Unis", en: "United States" }, framework: "AMERICAS", currency: "USD", funds: [] },
+  { slug: "canada", code: "CA", name: { fr: "Canada", en: "Canada" }, framework: "AMERICAS", currency: "CAD", funds: [] },
+  { slug: "mexique", code: "MX", name: { fr: "Mexique", en: "Mexico" }, framework: "AMERICAS", currency: "MXN", funds: [] },
+  { slug: "bresil", code: "BR", name: { fr: "Brésil", en: "Brazil" }, framework: "AMERICAS", currency: "BRL", funds: [] },
+  { slug: "argentine", code: "AR", name: { fr: "Argentine", en: "Argentina" }, framework: "AMERICAS", currency: "ARS", funds: [] },
+  { slug: "chili", code: "CL", name: { fr: "Chili", en: "Chile" }, framework: "AMERICAS", currency: "CLP", funds: [] },
+  { slug: "colombie", code: "CO", name: { fr: "Colombie", en: "Colombia" }, framework: "AMERICAS", currency: "COP", funds: [] },
+  { slug: "perou", code: "PE", name: { fr: "Pérou", en: "Peru" }, framework: "AMERICAS", currency: "PEN", funds: [] },
+  { slug: "uruguay", code: "UY", name: { fr: "Uruguay", en: "Uruguay" }, framework: "AMERICAS", currency: "UYU", funds: [] },
 ];
 
 // Nombre de cadres réglementaires couverts (1 pays = 1 cadre = 1 entrée ci-dessus). Source UNIQUE du

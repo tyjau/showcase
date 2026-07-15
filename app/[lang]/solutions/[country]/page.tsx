@@ -55,7 +55,8 @@ export default async function CountryPage(
   const facts = [
     { label: g.frameworkLabel, value: FRAMEWORK_LABEL[c.framework] },
     { label: g.currencyLabel, value: c.currency },
-    { label: g.fundsLabel, value: c.funds.join(" · ") },
+    // Caisses : uniquement si le back les documente — sinon pas de ligne vide (on n'invente pas de caisses).
+    ...(c.funds.length ? [{ label: g.fundsLabel, value: c.funds.join(" · ") }] : []),
   ];
 
   const breadcrumb = {

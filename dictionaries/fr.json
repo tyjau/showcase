@@ -48,7 +48,7 @@
     "ctaPrimary": "Démarrer l'essai gratuit",
     "ctaDemo": "Réserver une démo",
     "trustNote": "14 jours d'essai · sans carte bancaire",
-    "coverageLabel": "cadres réglementaires · Europe + OHADA · en expansion"
+    "coverageLabel": "cadres réglementaires · OHADA, Europe, Amériques & plus · en expansion"
   },
   "preview": {
     "title": "Paie · juin 2026",
@@ -162,7 +162,7 @@
     "heroJoin": "Nous rejoindre",
     "stats": [
       { "value": "1 200+", "label": "entreprises" },
-      { "value": "24", "label": "pays couverts" },
+      { "value": "38", "label": "pays couverts" },
       { "value": "300 000+", "label": "employés gérés" },
       { "value": "99,9 %", "label": "de disponibilité" }
     ],
@@ -1077,7 +1077,7 @@
     "stats": [
       { "value": "1 200+", "label": "entreprises" },
       { "value": "40 000+", "label": "bulletins / mois" },
-      { "value": "24", "label": "pays couverts" },
+      { "value": "38", "label": "pays couverts" },
       { "value": "99,9 %", "label": "de disponibilité" }
     ],
     "logosTitle": "Ils nous font confiance — 1 200+ entreprises dans 24 pays",
@@ -1175,6 +1175,10 @@
     },
     "groupOHADA": "Afrique — espace OHADA",
     "groupEU": "Europe",
+    "groupAmericas": "Amériques",
+    "groupAfricaEn": "Afrique anglophone",
+    "groupMaghreb": "Maghreb",
+    "groupGulf": "Golfe",
     "titlePattern": "Logiciel de paie et conformité — {name}",
     "lead": "Paie, cotisations et déclarations aux caisses locales, sur la même plateforme que vos entités des autres pays. Une seule paie, du siège à la filiale.",
     "frameworkLabel": "Cadre",

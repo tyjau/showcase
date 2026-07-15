@@ -48,7 +48,7 @@
     "ctaPrimary": "Start free trial",
     "ctaDemo": "Book a demo",
     "trustNote": "14-day free trial · no credit card",
-    "coverageLabel": "regulatory frameworks · Europe + OHADA · and growing"
+    "coverageLabel": "regulatory frameworks · OHADA, Europe, Americas & beyond · and growing"
   },
   "preview": {
     "title": "Payroll · June 2026",
@@ -162,7 +162,7 @@
     "heroJoin": "Join us",
     "stats": [
       { "value": "1,200+", "label": "companies" },
-      { "value": "24", "label": "countries covered" },
+      { "value": "38", "label": "countries covered" },
       { "value": "300,000+", "label": "employees managed" },
       { "value": "99.9%", "label": "uptime" }
     ],
@@ -1077,7 +1077,7 @@
     "stats": [
       { "value": "1,200+", "label": "companies" },
       { "value": "40,000+", "label": "payslips / month" },
-      { "value": "24", "label": "countries covered" },
+      { "value": "38", "label": "countries covered" },
       { "value": "99.9%", "label": "uptime" }
     ],
     "logosTitle": "Trusted by 1,200+ companies across 24 countries",
@@ -1175,6 +1175,10 @@
     },
     "groupOHADA": "Africa — OHADA zone",
     "groupEU": "Europe",
+    "groupAmericas": "Americas",
+    "groupAfricaEn": "Anglophone Africa",
+    "groupMaghreb": "Maghreb",
+    "groupGulf": "Gulf",
     "titlePattern": "Payroll & compliance software — {name}",
     "lead": "Payroll, contributions and filings to local social funds, on the same platform as your entities in other countries. One payroll, from HQ to subsidiary.",
     "frameworkLabel": "Framework",

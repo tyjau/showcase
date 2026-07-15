@@ -38,6 +38,10 @@ export default async function SolutionsHub(props: { params: Promise<{ lang: stri
   const groups: { key: Framework; label: string }[] = [
     { key: "OHADA", label: g.groupOHADA },
     { key: "EU", label: g.groupEU },
+    { key: "AMERICAS", label: g.groupAmericas },
+    { key: "AFRICA_EN", label: g.groupAfricaEn },
+    { key: "MAGHREB", label: g.groupMaghreb },
+    { key: "GULF", label: g.groupGulf },
   ];
 
   const breadcrumb = {
