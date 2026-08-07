@@ -82,6 +82,14 @@ const gaId = cfg["ga_id"] ?? cfg["gaId"] ?? "";
 // OPTIONNEL, bracket → PAS dans le contrat config-keys.json. Vide → aucune balise émise (on peut aussi
 // vérifier via la propriété GA4 liée, sans code).
 const gscVerification = cfg["gsc_verification"] ?? cfg["gscVerification"] ?? "";
+// Connexion/inscription sociales (lot 4, SPEC-oauth-multi-provider côté Guardian). Ces client ids
+// sont PUBLICS par construction (ils vivent dans le navigateur) — contrairement à catalog_api_key,
+// ils n'ont donc rien d'un secret. Lecture BRACKET ⇒ HORS contrat config-keys.json, donc OPTIONNELS
+// comme harmony_url/ga_id : une vitrine sans client id masque simplement les boutons sociaux, elle
+// ne casse pas le build. C'est ce qui permet de déployer la vitrine AVANT que les apps OAuth
+// existent chez Google/Microsoft.
+const googleClientId = cfg["google_client_id"] ?? cfg["googleClientId"] ?? "";
+const microsoftClientId = cfg["microsoft_client_id"] ?? cfg["microsoftClientId"] ?? "";
 
 // 🔒 The catalog key is a SECRET promoted into $GITHUB_ENV below. GitHub only auto-masks
 // `secrets.*`, NOT values we inject — so register a mask explicitly, else any later env dump
@@ -100,6 +108,8 @@ if (appUrl) lines.push(`NEXT_PUBLIC_APP_URL=${appUrl}`);
 if (harmonyUrl) lines.push(`NEXT_PUBLIC_HARMONY_URL=${harmonyUrl}`);
 if (gaId) lines.push(`NEXT_PUBLIC_GA_ID=${gaId}`);
 if (gscVerification) lines.push(`NEXT_PUBLIC_GSC_VERIFICATION=${gscVerification}`);
+if (googleClientId) lines.push(`NEXT_PUBLIC_GOOGLE_CLIENT_ID=${googleClientId}`);
+if (microsoftClientId) lines.push(`NEXT_PUBLIC_MICROSOFT_CLIENT_ID=${microsoftClientId}`);
 
 if (process.env.GITHUB_ENV && lines.length) {
   appendFileSync(process.env.GITHUB_ENV, lines.join("\n") + "\n");
@@ -114,6 +124,8 @@ console.log(
   "| HARMONY_URL:", harmonyUrl || "(empty)",
   "| GA_ID:", gaId || "(empty)",
   "| GSC:", gscVerification ? "(set)" : "(empty)",
+  "| GOOGLE_CLIENT_ID:", googleClientId ? "(set)" : "(empty)",
+  "| MICROSOFT_CLIENT_ID:", microsoftClientId ? "(set)" : "(empty)",
 );
 if (!apiBase) {
   console.log("⚠ pas de api_base_url dans le snapshot → build avec les defaults dev (saas.test)");
