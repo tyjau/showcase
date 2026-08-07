@@ -351,6 +351,55 @@ export async function apiLoginOAuth(
   }
 }
 
+/**
+ * Inscription SOCIALE — crée l'espace SANS aller-retour email. Le provider fournit une adresse
+ * déjà vérifiée, donc le back court-circuite l'étape de confirmation et renvoie DIRECTEMENT une
+ * session : on la stocke ici, et l'appelant peut atterrir authentifié sur le portail.
+ *
+ * C'est la différence de fond avec `signup_request`, qui ne fait qu'ouvrir une demande en attente
+ * d'un clic dans un email.
+ */
+export async function apiSignupOauth(
+  provider: "google" | "microsoft",
+  token: string,
+  payload: Record<string, unknown>,
+): Promise<{ ok: boolean; error?: string }> {
+  try {
+    const res = await fetch(apiUrl("signup_oauth"), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ provider, token, ...payload }),
+    });
+    const json = (await res.json().catch(() => ({}))) as {
+      meta?: { code?: number };
+      data?: {
+        subdomain?: string;
+        access_token?: string;
+        refresh_token?: string;
+        user_token?: string;
+      };
+      error?: string;
+    };
+    const code = json?.meta?.code ?? res.status;
+    if (!res.ok || code >= 400) return { ok: false, error: json?.error || `Error ${code}` };
+
+    // L'espace est créé même si la session manque (best-effort côté back) : on ne transforme pas
+    // une inscription RÉUSSIE en échec — l'utilisateur passera simplement par l'écran de connexion.
+    const tok = json?.data?.access_token;
+    if (tok) {
+      storeSession(
+        json?.data?.subdomain ?? "",
+        tok,
+        json?.data?.refresh_token ?? null,
+        json?.data?.user_token ?? null,
+      );
+    }
+    return { ok: true };
+  } catch {
+    return { ok: false, error: "Network error — please try again." };
+  }
+}
+
 function getRefresh(): string | null {
   if (typeof window === "undefined") return null;
   try {

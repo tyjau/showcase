@@ -11,12 +11,17 @@ import {
 } from "@/lib/catalog";
 import { useCurrency } from "./currency-provider";
 import { usePartner } from "./partner-provider";
-import { apiPost } from "@/lib/api";
+import { apiPost, apiSignupOauth } from "@/lib/api";
+import { availableProviders, getIdToken, type OauthProvider } from "@/lib/oauth";
 import { trackEvent } from "@/lib/analytics";
 import { formatMoney, formatRate } from "@/lib/money";
+
 import { TurnstileWidget } from "@/components/turnstile-widget";
 
 const TURNSTILE_ON = !!process.env.NEXT_PUBLIC_TURNSTILE_SITEKEY;
+// Providers utilisables a l'inscription : un client id absent MASQUE le bouton, ce qui permet
+// de deployer la vitrine avant que les apps OAuth existent.
+const SIGNUP_PROVIDERS: OauthProvider[] = availableProviders();
 
 type Dict = {
   steps: Record<string, string>;
@@ -67,6 +72,14 @@ type Dict = {
   successHint: string;
   successCta: string;
   none: string;
+  // Inscription sociale — OPTIONNELLES : le bloc social est masque sans client id, et les
+  // libelles ont un repli, donc un dictionnaire non encore traduit ne casse pas le build.
+  socialGoogle?: string;
+  socialMicrosoft?: string;
+  socialOr?: string;
+  socialSignupTitle?: string;
+  socialSignupLead?: string;
+  socialPopupBlocked?: string;
 };
 
 function unitPrice(prices: Money[], currency: string): number {
@@ -214,6 +227,54 @@ export function SignupWizard({
       else next.add(code);
       return next;
     });
+  }
+
+  /**
+   * Inscription SOCIALE — la voie qui convertit le mieux, parce qu'elle supprime une ÉTAPE
+   * ENTIÈRE : le provider fournit une adresse déjà vérifiée, donc plus d'email à aller chercher
+   * ni de mot de passe à inventer. L'espace est créé immédiatement et l'utilisateur atterrit
+   * authentifié, là où la voie email le laisse en attente d'un clic dans sa boîte.
+   */
+  async function submitSocial(provider: OauthProvider) {
+    setSubmitting(true);
+    setError(null);
+    try {
+      const token = await getIdToken(provider);
+      const res = await apiSignupOauth(provider, token, {
+        company_name: company,
+        subdomain,
+        plan_code: planCode,
+        addons: Array.from(addons),
+        employees,
+        // Repli seulement : les claims du provider font foi côté back.
+        first_name: firstName,
+        last_name: lastName,
+        country,
+        currency,
+        lang,
+        turnstile_token: captcha,
+        ...(refCode ? { referral_code: refCode } : {}),
+        ...(promo.trim() ? { coupon: promo.trim() } : {}),
+        ...(utm.source ? { utm_source: utm.source } : {}),
+        ...(utm.campaign ? { utm_campaign: utm.campaign } : {}),
+        ...(utm.medium ? { utm_medium: utm.medium } : {}),
+      });
+      setSubmitting(false);
+      if (!res.ok) {
+        setError(res.error ?? "Something went wrong");
+        return;
+      }
+      // VRAIE conversion, contrairement à la voie email : l'espace existe déjà (aucune
+      // confirmation en attente), d'où `sign_up` et non `sign_up_request`.
+      trackEvent("sign_up", { method: provider, plan: planCode });
+      window.location.assign(`/${lang}/account`);
+    } catch (e) {
+      setSubmitting(false);
+      // Fenêtre refermée = ANNULATION, pas erreur : ne rien afficher d'alarmant.
+      const reason = e instanceof Error ? e.message : "";
+      if (reason === "cancelled") return;
+      setError(reason === "popup_blocked" ? (dict.socialPopupBlocked ?? "") : "Something went wrong");
+    }
   }
 
   async function submit() {
@@ -534,6 +595,36 @@ export function SignupWizard({
         <div>
           <h1 className="text-2xl font-bold text-heading">{dict.reviewTitle}</h1>
           <p className="mt-1 text-muted">{dict.reviewLead}</p>
+
+          {/* Voie SOCIALE, présentée AVANT le récapitulatif : c'est le chemin le plus court
+              (aucun email à confirmer, aucun mot de passe), donc la voie principale — pas une
+              alternative reléguée en bas. Masquée si aucun client id n'est provisionné. */}
+          {SIGNUP_PROVIDERS.length > 0 && (
+            <div className="mt-5 rounded-xl border border-line p-4">
+              <p className="text-sm font-semibold text-heading">
+                {dict.socialSignupTitle ?? dict.create}
+              </p>
+              <p className="mt-1 text-sm text-muted">{dict.socialSignupLead ?? ""}</p>
+              <div className="mt-3 grid gap-2">
+                {SIGNUP_PROVIDERS.map((p) => (
+                  <button
+                    key={p}
+                    type="button"
+                    onClick={() => submitSocial(p)}
+                    disabled={submitting || !agree || (TURNSTILE_ON && !captcha)}
+                    className="w-full rounded-full border border-line px-6 py-2.5 text-sm font-semibold text-heading hover:border-sky disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    {p === "google" ? dict.socialGoogle : dict.socialMicrosoft}
+                  </button>
+                ))}
+              </div>
+              <div className="mt-4 flex items-center gap-3 text-xs uppercase text-muted">
+                <span className="h-px flex-1 bg-line" />
+                {dict.socialOr}
+                <span className="h-px flex-1 bg-line" />
+              </div>
+            </div>
+          )}
           <dl className="mt-6 divide-y divide-line rounded-xl border border-line">
             <Row
               label={dict.rPlan}
