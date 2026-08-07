@@ -288,6 +288,39 @@ export function storeSession(
   }
 }
 
+export type OauthSpace = { slug: string; name: string };
+
+/**
+ * 1er temps de la connexion sociale : le back valide l'id_token, en dérive l'email VÉRIFIÉ et
+ * renvoie les espaces où cette identité a un compte, plus un ticket à usage unique (120 s).
+ *
+ * Pas de `?company=` — c'est justement ce que cet appel sert à découvrir : un provider prouve QUI
+ * est l'utilisateur, pas OÙ il entre. Un seul espace ⇒ l'appelant enchaîne sans rien demander.
+ * Une liste VIDE n'est pas une erreur : l'identité est valide mais n'a aucun compte ici.
+ */
+export async function apiOauthResolve(
+  provider: "google" | "microsoft",
+  token: string,
+): Promise<{ ok: boolean; spaces?: OauthSpace[]; ticket?: string; error?: string }> {
+  try {
+    const res = await fetch(apiUrl("oauth_resolve"), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ provider, token }),
+    });
+    const json = (await res.json().catch(() => ({}))) as {
+      meta?: { code?: number };
+      data?: { spaces?: OauthSpace[]; ticket?: string };
+      error?: string;
+    };
+    const code = json?.meta?.code ?? res.status;
+    if (!res.ok || code >= 400) return { ok: false, error: json?.error || `Error ${code}` };
+    return { ok: true, spaces: json?.data?.spaces ?? [], ticket: json?.data?.ticket };
+  } catch {
+    return { ok: false, error: "network" };
+  }
+}
+
 // Social login (Google / Microsoft). The browser obtains a provider id_token (or, in dev mock
 // mode, a `mock:<email>` token); the backend validates it + issues the session. scope=billing
 // like apiLogin. Reuses storeSession on success.

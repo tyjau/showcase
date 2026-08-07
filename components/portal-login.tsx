@@ -3,14 +3,19 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { apiLogin, apiLoginOAuth, apiVerifyMfa, getToken } from "@/lib/api";
+import { apiLogin, apiLoginOAuth, apiOauthResolve, apiVerifyMfa, getToken, type OauthSpace } from "@/lib/api";
+import { availableProviders, getIdToken, type OauthProvider } from "@/lib/oauth";
 
 type Dict = Record<string, string>;
 
 const APP_DOMAIN = process.env.NEXT_PUBLIC_APP_DOMAIN ?? "skyrh.app";
 const INPUT = "w-full rounded-lg border border-line px-3 py-2.5 text-sm outline-none focus:border-sky";
-// Dev: show the social buttons (mock OAuth). In prod, wire the real Google/Microsoft SDK + client ID.
+// Mock de DÉV : le jeton est `mock:<email>` (le back ne l'accepte que hors production ET avec
+// OAUTH_ALLOW_MOCK). En prod, les vrais SDK sont utilisés — cf. lib/oauth.ts.
 const OAUTH_MOCK = process.env.NEXT_PUBLIC_OAUTH_MOCK === "1";
+// Providers réellement utilisables : un client id absent MASQUE le bouton plutôt que de le laisser
+// échouer au clic. En mode mock on montre les deux, puisqu'aucun client id n'est requis.
+const PROVIDERS: OauthProvider[] = OAUTH_MOCK ? ["google", "microsoft"] : availableProviders();
 
 // Client portal login. Tenants live on per-workspace subdomains, so we collect the
 // workspace slug (scopes the tenant) + the account owner's credentials, authenticate
@@ -26,6 +31,10 @@ export function PortalLogin({ lang, dict }: { lang: string; dict: Dict }) {
   // d'une session -> on bascule sur l'étape « code » (verify_mfa).
   const [mfaToken, setMfaToken] = useState<string | null>(null);
   const [code, setCode] = useState("");
+  // Connexion sociale : espaces résolus pour l'identité (sélecteur si plusieurs) + ticket à usage
+  // unique émis par le back. null = parcours social non engagé.
+  const [spaces, setSpaces] = useState<OauthSpace[] | null>(null);
+  const [ticket, setTicket] = useState<{ provider: OauthProvider; value: string } | null>(null);
 
   // Already signed in (token present) → straight to the account portal, so the header
   // "account" link and re-visiting /login don't show the form pointlessly.
@@ -49,19 +58,63 @@ export function PortalLogin({ lang, dict }: { lang: string; dict: Dict }) {
     else setError(res.code === 403 ? (dict.notAdmin ?? dict.error) : dict.error);
   }
 
-  // Social login. The real Google/Microsoft SDK is wired when client IDs exist; in dev mock mode
-  // the entered email is sent as a `mock:<email>` token (no password).
-  async function social(provider: "google" | "microsoft") {
-    if (!slug || !email.trim()) {
-      setError(dict.error);
-      return;
-    }
+  /**
+   * Connexion sociale, en DEUX temps — un provider prouve QUI est l'utilisateur, pas OÙ il entre :
+   * on obtient un id_token, le back le valide et renvoie les espaces de cette identité avec un
+   * ticket à usage unique. UN SEUL espace ⇒ on enchaîne sans rien demander (le clic unique promis) ;
+   * plusieurs ⇒ sélecteur. Le slug n'est donc PAS saisi au préalable, contrairement au mot de passe.
+   */
+  async function social(provider: OauthProvider) {
     setSubmitting(true);
     setError(null);
-    const res = await apiLoginOAuth(slug, provider, `mock:${email.trim()}`);
+    setSpaces(null);
+    try {
+      // En mock, l'identité est l'email saisi ; sinon le vrai SDK du provider.
+      const token = OAUTH_MOCK ? `mock:${email.trim()}` : await getIdToken(provider);
+      const res = await apiOauthResolve(provider, token);
+      if (!res.ok || !res.ticket) {
+        setSubmitting(false);
+        setError(dict.error);
+        return;
+      }
+      const list = res.spaces ?? [];
+      if (list.length === 0) {
+        // Identité valide, mais aucun compte ici : on n'en crée PAS un au passage.
+        setSubmitting(false);
+        setError(dict.socialNoWorkspace ?? dict.error);
+        return;
+      }
+      if (list.length === 1) {
+        await finishSocial(provider, res.ticket, list[0].slug);
+        return;
+      }
+      setTicket({ provider, value: res.ticket });
+      setSpaces(list);
+      setSubmitting(false);
+    } catch (e) {
+      setSubmitting(false);
+      // Fenêtre fermée par l'utilisateur = ANNULATION, pas échec d'authentification : ne rien
+      // afficher d'alarmant. Une popup bloquée, elle, mérite un message actionnable.
+      const reason = e instanceof Error ? e.message : "";
+      if (reason === "cancelled") return;
+      setError(reason === "popup_blocked" ? (dict.socialPopupBlocked ?? dict.error) : dict.error);
+    }
+  }
+
+  /** 2e temps : le ticket (usage unique) ouvre la session sur l'espace choisi. */
+  async function finishSocial(provider: OauthProvider, value: string, chosenSlug: string) {
+    setSubmitting(true);
+    setError(null);
+    const res = await apiLoginOAuth(chosenSlug, provider, value);
     setSubmitting(false);
-    if (res.ok) router.push(`/${lang}/account`);
-    else setError(dict.error);
+    if (res.ok) {
+      router.push(`/${lang}/account`);
+      return;
+    }
+    // Le ticket est CONSOMMÉ même en échec : il faut relancer le parcours, pas re-cliquer.
+    setSpaces(null);
+    setTicket(null);
+    setError(dict.error);
   }
 
   async function verifyCode() {
@@ -193,31 +246,51 @@ export function PortalLogin({ lang, dict }: { lang: string; dict: Dict }) {
         {submitting ? "…" : dict.cta}
       </button>
 
-      {OAUTH_MOCK && (
+      {PROVIDERS.length > 0 && (
         <div className="mt-4">
           <div className="flex items-center gap-3 text-xs uppercase text-muted">
             <span className="h-px flex-1 bg-line" />
             {dict.socialOr}
             <span className="h-px flex-1 bg-line" />
           </div>
-          <div className="mt-3 grid gap-2">
-            <button
-              type="button"
-              onClick={() => social("google")}
-              disabled={!slug || !email.trim() || submitting}
-              className="w-full rounded-full border border-line px-6 py-2.5 text-sm font-semibold text-heading hover:border-sky disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {dict.socialGoogle}
-            </button>
-            <button
-              type="button"
-              onClick={() => social("microsoft")}
-              disabled={!slug || !email.trim() || submitting}
-              className="w-full rounded-full border border-line px-6 py-2.5 text-sm font-semibold text-heading hover:border-sky disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {dict.socialMicrosoft}
-            </button>
-          </div>
+
+          {/* Sélecteur d'espace : n'apparaît que si l'identité en dessert PLUSIEURS. Le cas
+              nominal (un seul espace) ne l'affiche jamais — la connexion s'enchaîne. */}
+          {spaces && ticket ? (
+            <div className="mt-3">
+              <p className="mb-2 text-sm text-muted">{dict.socialPickWorkspace ?? dict.socialOr}</p>
+              <div className="grid gap-2">
+                {spaces.map((s) => (
+                  <button
+                    key={s.slug}
+                    type="button"
+                    onClick={() => finishSocial(ticket.provider, ticket.value, s.slug)}
+                    disabled={submitting}
+                    className="w-full rounded-full border border-line px-6 py-2.5 text-left text-sm font-semibold text-heading hover:border-sky disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    {s.name}
+                    <span className="ml-2 font-normal text-muted">{s.slug}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className="mt-3 grid gap-2">
+              {PROVIDERS.map((p) => (
+                <button
+                  key={p}
+                  type="button"
+                  onClick={() => social(p)}
+                  // Le slug n'est PAS requis : c'est oauth_resolve qui le découvre. Seul le mode
+                  // mock a besoin de l'email, puisqu'il en fait l'identité.
+                  disabled={submitting || (OAUTH_MOCK && !email.trim())}
+                  className="w-full rounded-full border border-line px-6 py-2.5 text-sm font-semibold text-heading hover:border-sky disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {p === "google" ? dict.socialGoogle : dict.socialMicrosoft}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
