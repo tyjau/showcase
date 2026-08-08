@@ -2,6 +2,7 @@
 
 import { useEffect, useLayoutEffect, useState } from "react";
 import Link from "next/link";
+import { notifyAccountTab } from "@/lib/account-events";
 import { useRouter, usePathname } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import {
@@ -137,7 +138,15 @@ export function HeaderAccount({ lang, labels }: { lang: string; labels: Labels }
           </div>
         </div>
         {items.map((it) => (
-          <Link key={it.href} href={it.href} className="block px-4 py-2.5 text-sm text-ink hover:bg-mist">
+          <Link
+            key={it.href}
+            href={it.href}
+            // Ces entrées ciblent des ONGLETS du portail (#invoices, #payment, #referrals). Déjà
+            // sur /account, la navigation ne change que le fragment sans remonter le portail :
+            // sans ce signal, le clic restait sans effet. Cf. lib/account-events.ts.
+            onClick={notifyAccountTab}
+            className="block px-4 py-2.5 text-sm text-ink hover:bg-mist"
+          >
             {it.label}
           </Link>
         ))}

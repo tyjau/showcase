@@ -21,6 +21,7 @@ import { OrderCheckout } from "@/components/order-checkout";
 import { PaymentReturn } from "@/components/payment-return";
 import { ConsumptionSection } from "@/components/consumption-section";
 import { ReferralsSection } from "@/components/referrals-section";
+import { ACCOUNT_TAB_EVENT } from "@/lib/account-events";
 import { SettingsSection } from "@/components/settings-section";
 import { SupportSection } from "@/components/support-section";
 import { InvoicePayBox } from "@/components/invoice-pay-box";
@@ -223,6 +224,26 @@ export function AccountPortal({ lang, dict, addons = [] }: { lang: string; dict:
     const h = window.location.hash.replace("#", "");
     const match = TABS.find((t) => t.anchor === h);
     if (match) setTab(match.key);
+  }, []);
+
+  // Ouverture d'onglet DEPUIS le portail lui-même. L'effet de montage ci-dessus ne joue qu'à
+  // l'arrivée : déjà sur /account, cliquer « Factures » / « Moyen de paiement » / « Parrainage »
+  // dans le menu avatar ne changeait que le fragment, sans remonter ce composant — l'onglet ne
+  // bougeait pas et le clic semblait mort (c'est ce qui rendait le parrainage introuvable).
+  // On écoute l'événement émis par le menu ET `hashchange`, qui couvre les accès directs, les
+  // favoris et les boutons précédent/suivant.
+  useEffect(() => {
+    const openFromHash = () => {
+      const h = window.location.hash.replace("#", "");
+      const match = TABS.find((t) => t.anchor === h);
+      if (match) setTab(match.key);
+    };
+    window.addEventListener("hashchange", openFromHash);
+    window.addEventListener(ACCOUNT_TAB_EVENT, openFromHash);
+    return () => {
+      window.removeEventListener("hashchange", openFromHash);
+      window.removeEventListener(ACCOUNT_TAB_EVENT, openFromHash);
+    };
   }, []);
 
   // Live-refresh the greeting when the profile name changes (Settings → Display name).
