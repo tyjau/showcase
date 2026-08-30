@@ -259,7 +259,7 @@ export function AccountPortal({ lang, dict, addons = [] }: { lang: string; dict:
   }
 
   // Continuité vitrine → app (skyrh RH OU CRM Harmony, selon le bouton) : on demande un token de handoff
-  // court (usage unique) et on ouvre <base>/auth/sso?t= qui l'échange contre une session — sans re-login.
+  // court (usage unique) et on ouvre <base>/sso?t= qui l'échange contre une session — sans re-login.
   // Ouverture dans un NOUVEL ONGLET : on reste sur le portail. L'onglet est ouvert SYNCHRONEMENT au clic
   // (avant l'await du token) sinon le bloqueur de pop-ups l'annule ; on y pose l'URL une fois le token reçu.
   // Fallback lien nu (reconnexion) si le handoff échoue ; pop-up bloqué → on bascule sur le même onglet.
@@ -270,7 +270,11 @@ export function AccountPortal({ lang, dict, addons = [] }: { lang: string; dict:
     setOpening(true);
     try {
       const t = await apiHandoffToken();
-      const url = t ? `${dest}/auth/sso?t=${encodeURIComponent(t)}&company=${encodeURIComponent(workspace)}` : dest;
+      // ⚠️ `/sso`, PAS `/auth/sso` : le SPA RH monte le module auth à la RACINE (login=`/`,
+      // sso=`/sso`) — `/auth/sso` tombe dans le joker `**` → `/404` (mesuré bange 2026-08-30,
+      // même piège que le lien de reset). Le docstring de SsoComponent dit `/auth/sso` mais la
+      // route réelle est `/sso`.
+      const url = t ? `${dest}/sso?t=${encodeURIComponent(t)}&company=${encodeURIComponent(workspace)}` : dest;
       if (win) win.location.href = url;
       else window.location.href = url; // pop-up bloqué → même onglet (dégradation)
     } catch {
