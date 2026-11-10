@@ -33,12 +33,55 @@ try {
 
 const cfg = snap?.products?.[repo]?.config ?? {};
 
-// Turnstile : clé DÉMO (Cloudflare test sitekey `1x00000000000000000000AA`, always-passes — valeur PUBLIQUE)
-// si le snapshot n'en fournit pas encore. Débloque le build ; la vraie clé arrivera via le snapshot Guardian
-// (config_json) d'un déploiement Ignition ultérieur — qui ÉCRASE ce défaut (appliqué SEULEMENT si absent/vide).
-// N'agit QUE sur un déploiement RÉEL (cfg non vide) — le mode mock/dev à config vide reste no-op.
-if (Object.keys(cfg).length > 0 && (cfg.turnstile_sitekey == null || cfg.turnstile_sitekey === "")) {
-  cfg.turnstile_sitekey = "1x00000000000000000000AA"; // placeholder démo — remplacé par le vrai sitekey via Ignition
+// ── Environnement (F-0016 / R8) ─────────────────────────────────────────────────────────────────
+// SHOWCASE_ENV = production | staging | development, posé par deploy.yml (dérivé du tag). Sert à NE PAS
+// traiter la production comme la staging : une clé Turnstile de TEST en production = inscription sans
+// anti-robot, sans un mot. ÉCHEC FERMÉ : absent sous GitHub Actions → production ; inconnu → erreur.
+const KNOWN_ENVS = ["production", "staging", "development"];
+const envName = (process.env.SHOWCASE_ENV || "").trim().toLowerCase()
+  || (process.env.GITHUB_ACTIONS ? "production" : "development");
+if (!KNOWN_ENVS.includes(envName)) {
+  console.error(`forge: SHOWCASE_ENV="${process.env.SHOWCASE_ENV}" inconnu — valeurs admises : ${KNOWN_ENVS.join(", ")}`);
+  process.exit(1);
+}
+const isProduction = envName === "production";
+
+// Clés de TEST publiques de Cloudflare Turnstile : 1x…AA (passe toujours), 2x…AB (bloque toujours),
+// 1x…BB / 2x…BB (invisibles), 3x…FF (défi interactif forcé). Les vraies clés commencent par `0x` :
+// aucune collision possible. On reconnaît la FAMILLE (`[123]x` + zéros), pas une liste figée.
+const TEST_KEY_DEFAULT = "1x00000000000000000000AA";
+const isTestSitekey = (k) => /^[123]x0{8,}/i.test(String(k ?? "").trim());
+const rawSitekey = String(cfg.turnstile_sitekey ?? cfg.turnstileSitekey ?? "").trim();
+const sitekeyMissing = rawSitekey === "";
+
+// PRODUCTION : clé absente ou de test → la forge S'ARRÊTE (rien n'est écrit dans $GITHUB_ENV, le build
+// ne part pas). Y compris snapshot vide (secret RELEASE_SNAPSHOT_PROD non posé), qui sinon partirait
+// avec les valeurs de développement. La vraie clé se pose dans le config_json de Guardian, via Ignition.
+if (isProduction && (sitekeyMissing || isTestSitekey(rawSitekey))) {
+  console.error(
+    sitekeyMissing
+      ? "forge: PRODUCTION refusée — clé Turnstile `turnstile_sitekey` ABSENTE de la config du snapshot"
+        + (Object.keys(cfg).length === 0 ? " (snapshot vide : secret RELEASE_SNAPSHOT_PROD non posé ?)" : "") + "."
+      : `forge: PRODUCTION refusée — \`turnstile_sitekey\` est une clé Cloudflare de TEST (${rawSitekey}), qui laisse tout passer.`,
+  );
+  console.error(
+    "  → Posez la VRAIE clé de site Turnstile (commence par 0x, compte Cloudflare) dans le config_json de Guardian\n"
+    + "    pour ce produit (tyjau/showcase), via Ignition, puis republiez le snapshot de production.",
+  );
+  process.exit(1);
+}
+
+// STAGING / DÉVELOPPEMENT : comportement inchangé — clé DÉMO (`1x00000000000000000000AA`, valeur PUBLIQUE)
+// si une config RÉELLE (cfg non vide) n'en fournit pas ; le mode mock/dev à config vide reste no-op.
+// Un avertissement VISIBLE (sortie + annotation GitHub) dit que cette clé ne protège rien.
+if (Object.keys(cfg).length > 0 && sitekeyMissing) {
+  cfg.turnstile_sitekey = TEST_KEY_DEFAULT; // placeholder démo — remplacé par le vrai sitekey via Ignition
+}
+if (!isProduction && (isTestSitekey(cfg.turnstile_sitekey) || (envName === "staging" && sitekeyMissing))) {
+  const why = sitekeyMissing && Object.keys(cfg).length === 0 ? "absente" : "de TEST (laisse tout passer)";
+  const msg = `Turnstile ${envName} : clé ${why} — l'inscription n'a PAS d'anti-robot ici. Acceptable hors production ; refusé en production.`;
+  console.warn(`forge: ⚠ ${msg}`);
+  if (process.env.GITHUB_ACTIONS) console.log(`::warning title=Turnstile (${envName})::${msg}`);
 }
 
 // App skyrh (produit RH du tenant) : URL de base bakée pour « ouvrir mon espace » (lib/harmony.appHref).

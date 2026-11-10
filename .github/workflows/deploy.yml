@@ -89,6 +89,8 @@ jobs:
           SNAP_STAGING: ${{ secrets.RELEASE_SNAPSHOT_STAGING }}
           SNAP_PROD: ${{ secrets.RELEASE_SNAPSHOT_PROD }}
           ENV_NAME: ${{ needs.setup.outputs.env_name }}
+          # F-0016 / R8 : la forge refuse la PRODUCTION sans vraie clé Turnstile (absente ou de test).
+          SHOWCASE_ENV: ${{ needs.setup.outputs.env_name }}
           FORGE_REPO: ${{ github.repository }}
         run: |
           if [ "$ENV_NAME" = "production" ]; then export RELEASE_SNAPSHOT="$SNAP_PROD"; else export RELEASE_SNAPSHOT="$SNAP_STAGING"; fi
