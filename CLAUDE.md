@@ -3,7 +3,7 @@
 Showcase est le site public de SkyRH : vitrine, inscription self-service, espace client (consommation,
 factures, Stripe, parrainage, MFA, support), espace partenaire. Next 15 en export statique, React 19,
 Vitest, Playwright + axe. Il ne parle qu'à Guardian (`auth.php`) et renvoie vers le front par `/sso`.
-Vue d'ensemble et état du projet : dépôt `skyrh-docs` (`architecture/vue-ensemble.md`, `products/showcase.md`).
+Contexte central dans le dépôt `skyrh-docs` : `architecture/vue-ensemble.md` et `architecture/README.md` (index), `products/showcase.md` (fiche projet), `products/stack/showcase.md` (versions, commandes, portes, pièges), `products/outils-et-skills.md` (skills et outils), `runbooks/README.md` (procédures).
 Ce fichier fait foi ; `AGENTS.md` y renvoie.
 
 ## Toute évolution part d'une spec
