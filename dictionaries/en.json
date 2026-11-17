@@ -583,7 +583,7 @@
     "countryPh": "Where you operate",
     "countryDefault": "Select a country",
     "countryHelp": "Countries marked “rules under review” are still offered; their payroll rules have not yet been reviewed twice.",
-    "countryUnderReview": "rules under review",
+    "countryUnderReview": "under review",
     "countriesEmptyTitle": "No country is offered yet.",
     "countriesEmptyBody": "Our payroll rules are published after two independent reviews of every legal rule. Write to us to find out how your country is progressing.",
     "countriesEmptyCta": "Contact us",
