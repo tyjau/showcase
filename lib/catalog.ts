@@ -1,3 +1,5 @@
+import { degradedResult, resultFromPayload, type CountriesResult } from "./countries";
+
 export type Money = { currency: string; cycle: string; amount: number };
 
 export type Package = {
@@ -110,22 +112,15 @@ export async function fetchCatalog(): Promise<Catalog> {
   }
 }
 
-// Fallback if the countries endpoint is unreachable (e.g. an older backend without
-// the action). Mirrors the backend's signed compliance list so the signup picker
-// always renders a correct set. Sorted by FR name.
-const FALLBACK_COUNTRIES = [
-  "Allemagne", "Belgique", "Bénin", "Burkina Faso", "Cameroun", "Centrafrique",
-  "Comores", "Congo-Brazzaville", "Côte d'Ivoire", "Espagne", "France", "Gabon",
-  "Guinée", "Guinée Équatoriale", "Guinée-Bissau", "Italie", "Luxembourg", "Mali",
-  "Niger", "Pays-Bas", "Portugal", "Sénégal", "Suisse", "Togo",
-];
-
 /**
- * Server-side fetch of the compliance-covered country names (auth.php?c=countries).
- * The list is the single source of truth on the backend (signed countries); this
- * keeps the signup picker in sync. Falls back to the static mirror on any error.
+ * Server-side fetch of the countries offered at signup (auth.php?c=countries). Returns, per country, its
+ * name and whether its payroll rules are reviewed twice (additive back field, see lib/countries.ts).
+ *  - 200 + non-empty list: the back's list, each country carrying its review state (status "ok");
+ *  - 200 + EMPTY list: an empty result (status "empty") — the static list is NOT substituted;
+ *  - network failure, non-2xx or unreadable body: the error is logged and a static fallback list is
+ *    returned (status "degraded") where EVERY country is "not reviewed" — never presented as covered.
  */
-export async function fetchCountries(): Promise<string[]> {
+export async function fetchCountries(): Promise<CountriesResult> {
   try {
     if (GUARDIAN_URL.includes("saas.test")) {
       process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
@@ -134,14 +129,17 @@ export async function fetchCountries(): Promise<string[]> {
       headers: { "X-API-KEY": CATALOG_API_KEY },
       cache: "force-cache",
     });
-    if (!res.ok) throw new Error(String(res.status));
-    const json = (await res.json()) as { data?: { countries?: { name?: string }[] } };
-    const list = (json.data?.countries ?? [])
-      .map((c) => (c?.name ?? "").trim())
-      .filter(Boolean);
-    return list.length ? list : FALLBACK_COUNTRIES;
-  } catch {
-    return FALLBACK_COUNTRIES;
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const result = resultFromPayload(await res.json());
+    if (result.status === "degraded") {
+      console.error("[countries] réponse illisible (data.countries absent) → liste de secours, aucun pays relu");
+    }
+    return result;
+  } catch (e) {
+    console.error(
+      `[countries] back injoignable ou en erreur (${e instanceof Error ? e.message : String(e)}) → liste de secours, aucun pays relu`,
+    );
+    return degradedResult();
   }
 }
 

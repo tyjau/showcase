@@ -9,6 +9,7 @@ import {
   type Money,
   moduleText,
 } from "@/lib/catalog";
+import type { CountriesResult } from "@/lib/countries";
 import { useCurrency } from "./currency-provider";
 import { usePartner } from "./partner-provider";
 import { apiPost, apiSignupOauth } from "@/lib/api";
@@ -45,6 +46,11 @@ type Dict = {
   countryPh: string;
   countryDefault: string;
   countryHelp: string;
+  countryUnderReview: string;
+  countriesEmptyTitle: string;
+  countriesEmptyBody: string;
+  countriesEmptyCta: string;
+  countriesDegradedNote: string;
   accountTitle: string;
   accountLead: string;
   firstName: string;
@@ -132,7 +138,7 @@ export function SignupWizard({
   legal,
 }: {
   catalog: Catalog;
-  countries: string[];
+  countries: CountriesResult;
   lang: string;
   dict: Dict;
   legal: { terms: string; privacy: string };
@@ -527,21 +533,33 @@ export function SignupWizard({
                 </p>
               )}
             </Field>
-            <Field label={dict.country}>
-              <select
-                value={country}
-                onChange={(e) => setCountry(e.target.value)}
-                className={`${INPUT_CLS} cursor-pointer ${country ? "text-ink" : "text-muted"}`}
-              >
-                <option value="">{dict.countryDefault}</option>
-                {countries.map((c) => (
-                  <option key={c} value={c} className="text-ink">
-                    {c}
-                  </option>
-                ))}
-              </select>
-              <p className="mt-1.5 text-xs text-muted">{dict.countryHelp}</p>
-            </Field>
+            {countries.status === "empty" ? (
+              <div role="status" className="rounded-xl border border-line bg-surface-2 p-4 text-sm">
+                <p className="font-semibold text-ink">{dict.countriesEmptyTitle}</p>
+                <p className="mt-1 text-muted">{dict.countriesEmptyBody}</p>
+                <Link href={`/${lang}/contact`} className="mt-2 inline-block font-semibold text-sky-text hover:underline">
+                  {dict.countriesEmptyCta}
+                </Link>
+              </div>
+            ) : (
+              <Field label={dict.country}>
+                <select
+                  value={country}
+                  onChange={(e) => setCountry(e.target.value)}
+                  className={`${INPUT_CLS} cursor-pointer ${country ? "text-ink" : "text-muted"}`}
+                >
+                  <option value="">{dict.countryDefault}</option>
+                  {countries.countries.map((c) => (
+                    <option key={c.name} value={c.name} className="text-ink">
+                      {c.reviewed ? c.name : `${c.name} — ${dict.countryUnderReview}`}
+                    </option>
+                  ))}
+                </select>
+                <p className="mt-1.5 text-xs text-muted">
+                  {countries.status === "degraded" ? dict.countriesDegradedNote : dict.countryHelp}
+                </p>
+              </Field>
+            )}
           </div>
         </div>
       )}
