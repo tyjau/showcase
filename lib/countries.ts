@@ -6,9 +6,9 @@
 /**
  * Nom du champ additif, par pays, qui dit « règles de paie relues deux fois ».
  * UNE seule constante : si le back le nomme autrement, on ne change que cette ligne.
- * Nom PROPOSÉ (non encore fixé par la spec F-0063 publiée) ; lecture défensive : seul `true` compte.
+ * Nom fixé par la spec F-0063 (booléen, sur chaque élément de data.countries[]) ; lecture défensive : seul `true` compte.
  */
-export const REVIEWED_FIELD = "reviewedTwice";
+export const REVIEWED_FIELD = "lawRulesReadTwice";
 
 export type CountryOption = { name: string; reviewed: boolean };
 

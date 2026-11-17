@@ -15,8 +15,8 @@ afterEach(() => {
 describe("fetchCountries — état « relu » par pays", () => {
   it("états mêlés : lit le champ additif par pays", async () => {
     stubFetch(okJson({ data: { countries: [
-      { name: "France", reviewedTwice: true },
-      { name: "Togo", reviewedTwice: false },
+      { name: "France", lawRulesReadTwice: true },
+      { name: "Togo", lawRulesReadTwice: false },
       { name: "Mali" },
     ] } }));
     const r = await fetchCountries();
@@ -38,7 +38,7 @@ describe("fetchCountries — état « relu » par pays", () => {
 
   it("champ non booléen (« true », 1) : lecture défensive = non relu", async () => {
     stubFetch(okJson({ data: { countries: [
-      { name: "A", reviewedTwice: "true" }, { name: "B", reviewedTwice: 1 }, { name: "C", reviewedTwice: true },
+      { name: "A", lawRulesReadTwice: "true" }, { name: "B", lawRulesReadTwice: 1 }, { name: "C", lawRulesReadTwice: true },
     ] } }));
     const r = await fetchCountries();
     expect(r.countries.map((c) => c.reviewed)).toEqual([false, false, true]);
